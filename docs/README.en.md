@@ -1,153 +1,186 @@
-# 🏝 Animal-Island-UI
+# Animal Island UI - Tailwind/Radix Modernization
 
-
 <div align="center">
-    <img src="img/readme-home.png" alt="animal-island-ui" style="border-radius: 12px; width: 40%; display: block; margin: 0 auto;" />    
-</div>
-<div align="center">
-    A React UI component library inspired by Animal Crossing: New Horizons
-</div>
-<br/>
-<div align="center">
-    <a href="https://github.com/guokaigdg/animal-island-ui/stargazers"><img src="https://img.shields.io/github/stars/guokaigdg/animal-island-ui?style=flat-square" alt="Stars"></a>
-    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="License"></a>
-    <a href="LICENSE"><img src="https://img.shields.io/npm/dm/animal-island-ui.svg?style=flat-square" alt=""></a>
-    <a href="https://github.com/guokaigdg/animal-island-ui/releases"><img src="https://img.shields.io/github/v/tag/guokaigdg/animal-island-ui?label=version&style=flat-square" alt="Version"></a>
-</div>
-<br/>
-<div align="center">
-    <a href="https://hellogithub.com/repository/guokaigdg/animal-island-ui" target="_blank"><img src="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=98ecff41d142466d8d72694a6fadf9e9&claim_uid=pyGqTPIRMdo7fBS&theme=neutral" alt="Featured｜HelloGitHub" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+    <img src="img/readme-home.png" alt="animal-island-ui" style="border-radius: 12px; width: 40%; display: block; margin: 0 auto;" />
 </div>
 
-<br/>
+<div align="center">
+    A Tailwind CSS v4 + Radix UI modernization of Animal Island UI that keeps the original visual language and package shape.
+</div>
+
+<br />
+
+<div align="center">
+    <a href="https://github.com/lifeodyssey/animal-island-ui"><img src="https://img.shields.io/github/stars/lifeodyssey/animal-island-ui?style=flat-square" alt="Stars"></a>
+    <a href="../LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="License"></a>
+    <a href="https://www.npmjs.com/package/animal-island-ui"><img src="https://img.shields.io/npm/dm/animal-island-ui.svg?style=flat-square" alt="npm downloads"></a>
+    <a href="https://github.com/guokaigdg/animal-island-ui"><img src="https://img.shields.io/badge/upstream-guokaigdg%2Fanimal--island--ui-19c8b9?style=flat-square" alt="Upstream"></a>
+</div>
+
+<br />
+
 <p align="center">
-    <a href="../README.md">中文</a> | English
+    <a href="../README.md">简体中文</a> | English
 </p>
 
+## Project Positioning
 
-## Introduction
+This repository is a modernization fork of [`guokaigdg/animal-island-ui`](https://github.com/guokaigdg/animal-island-ui). The goal is not to redesign the UI. The goal is to preserve the original component API, visual appearance, static assets, and npm distribution shape while migrating the internals to Tailwind CSS v4 + Radix UI and adding a reproducible Storybook / Playwright verification workflow.
 
-This project is a lightweight UI component library built with React + TypeScript. The design style is inspired by Nintendo's "Animal Crossing: New Horizons" game interface, created for personal front-end technical practice and component development learning.
+This is not an official upstream release. We opened an upstream RFC issue, [`guokaigdg/animal-island-ui#8`](https://github.com/guokaigdg/animal-island-ui/issues/8), to ask whether the maintainer is interested in this direction and how future PRs should be split.
 
-The current implementation uses Tailwind CSS v4 for shared design tokens and Radix UI primitives for accessible Switch, Checkbox, Select, Tabs, Collapse, and Modal behavior. The package keeps the original distribution shape: a single npm package, Vite library mode, ESM + CJS + type declarations, one CSS style entry, and extracted static assets under `dist/files`.
+## Relationship To The Original Library
 
-All visual elements, layouts, icons, and animations are independently designed and implemented, without directly using any official Nintendo art materials, code, or resource files.
+- Original implementation: React + TypeScript + Less CSS Modules.
+- Current implementation: React 19 + TypeScript + Tailwind CSS v4 + Radix UI primitives.
+- Visual goal: preserve the Animal Island style as closely as possible, including color, radius, shadow, motion, fonts, and assets.
+- Package goal: keep the original single-package npm distribution model instead of introducing per-component packages or subpath builds.
+- Contribution strategy: maintain this as a fork first; if upstream is interested, split the work into tests, docs, and implementation PRs.
 
+## Stack
 
-## Preview
+- React 19
+- TypeScript
+- Tailwind CSS v4
+- Radix UI primitives
+- Vite library mode
+- Storybook 10
+- Storybook/Vitest interaction tests
+- Playwright behavior tests
+- Playwright visual regression screenshots
 
-- Online Preview (PC) [animal-island-ui-pc](https://guokaigdg.github.io/animal-island-ui/#/)
-- Online Preview (Mobile) [animal-island-ui-mobile](https://guokaigdg.github.io/animal-island-ui/#/)
+## Components
 
-## Installation
+The library currently covers 18 components:
+
+| Interactive | Surface / Content | Decorative / Special |
+|---|---|---|
+| Button | Card | Divider |
+| Input | Modal | Icon |
+| Switch | Collapse | Typewriter |
+| Checkbox | CodeBlock | Phone |
+| Select | Footer | Time |
+| Tabs | Loading | Cursor |
+
+## Installation And Usage
+
+If this version has been published to npm, install it with the original package name:
 
 ```bash
 npm install animal-island-ui
 ```
 
-
-
-## Quick Start
-
-> ⚠️ **Important**: Please make sure to import the styles with `import 'animal-island-ui/style'`, otherwise the components will have no styles or fonts!
+The style entry is required. Without it, components will not include styles, tokens, or fonts:
 
 ```tsx
 import { Button, Card } from 'animal-island-ui';
 import 'animal-island-ui/style';
 
-function App() {
+export function App() {
     return (
-        <div>
+        <Card color="app-blue">
             <Button type="primary">Start Adventure</Button>
-            <Card color="app-blue">
-                Welcome to the deserted island!
-            </Card>
-        </div>
+        </Card>
     );
 }
 ```
 
+To verify the fork before publishing, build and pack it locally:
+
+```bash
+npm install
+npm run build
+npm pack
+```
+
 ## Package Shape
 
-This package follows the original `animal-island-ui` publishing model:
+This fork intentionally keeps the original `animal-island-ui` publishing model:
 
-- `animal-island-ui`: JavaScript component entry with ESM, CJS, and TypeScript declarations.
-- `animal-island-ui/style`: component styles, design tokens, and bundled font assets.
-- `dist/files`: extracted fonts, images, SVGs, and other static assets.
+- Single npm package: `animal-island-ui`
+- ESM entry: `dist/es/index.js`
+- CJS entry: `dist/cjs/index.cjs`
+- Type declarations: `dist/types/index.d.ts`
+- Style entry: `animal-island-ui/style`
+- Compatibility style entry: `animal-island-ui/dist/index.css`
+- Static assets: `dist/files`
 
-The npm package whitelist only includes `dist`, `README.md`, and `AI_USAGE.md`. Storybook, Playwright tests, visual snapshots, and demo build output are not published in the npm tarball.
+The `package.json` publish whitelist includes only:
 
-## Documentation
+- `dist`
+- `README.md`
+- `AI_USAGE.md`
 
-Complete reference for different scenarios:
-
-| Document | Purpose |
-|---|---|
-| [`AI_USAGE.md`](../AI_USAGE.md) | AI code assistant handbook - all component props, types and defaults word-for-word, 17 hard rules and copy-paste boilerplate, no invented APIs. |
-| [`DESIGN_PROMPT.md`](../DESIGN_PROMPT.md) | One-click reproduction prompts for v0 / Figma AI / Midjourney / DALL-E, including color palette, fonts, size tables, Modal clip-path and prohibition list. |
-| [`skill/SKILL.md`](../skill/SKILL.md) | Pixel-perfect style specification Skill - design tokens, all component CSS, Demo layout values, CSS variable templates and new component development checklist. |
-| [`CONTRIBUTING.md`](../CONTRIBUTING.md) | Contributing Guide |
-
+Storybook, Playwright tests, screenshot baselines, demo build output, and local development files are not included in the npm tarball.
 
 ## Local Development
 
 ```bash
-# Clone the repository
-git clone https://github.com/guokaigdg/animal-island-ui.git
-cd animal-island-ui
-
-# Install dependencies
 npm install
 
-# Start Demo development server
+# Demo
 npm run dev
 
-# Start Storybook verification server
+# Storybook verification server; port 6106 avoids the default 6006
 npm run storybook:test
 
-# Build component library
+# Library build
 npm run build
 
-# Build Demo site
+# Demo build
 npm run build:demo
 
-# Storybook + Playwright + pixel-to-pixel verification
-npm test
+# Storybook static build
+npm run build:storybook
+```
 
-# Inspect npm package contents
+## Verification
+
+Full verification:
+
+```bash
+npm test
+npx tsc --noEmit
 npm pack --dry-run
 ```
 
+`npm test` runs:
 
-## Usage Cases
+- `tests/migration.test.mjs`: migration structure and dependency invariants.
+- Storybook/Vitest: stories and play-function interaction tests.
+- Playwright behavior tests: DOM, state, and interaction behavior.
+- Playwright visual regression: scoped pixel-to-pixel screenshot comparisons.
 
-|<a href="https://github.com/yunxinz/ac-site-template">ac-site-template</a> (Animal Crossing themed personal website template)  |  <a href="https://github.com/xiaochong/hi-kid">HiKid</a> (English learning app for children) | 
-| --- | --- | 
-|  <img src="img/ac-site-template.png" alt="ac-site-template" style="border-radius: 8px; width: 90%; display: block; margin: 0 auto;" /> | <img src="img/hi-kid.png" alt="HiKid" style="border-radius: 8px; width: 90%; display: block; margin: 0 auto;" />| 
-|<a href="https://github.com/guokaigdg/animal-island-blog">animal-island-blog</a>（animal-island blog）  |   |
-|  <img src="img/case-animal-blog.png" alt="ac-site-template" style="border-radius: 8px; width: 90%; display: block; margin: 0 auto;" /> | | 
+Visual tests prefer stable component-region screenshots over full-page screenshots. For stories with auto-running `play` functions, Playwright uses dedicated no-play stories where needed to avoid state races.
 
+## Upstream Contribution
 
+This work is a modernization proposal, not a small CSS swap. To contribute it upstream, use an RFC / proposal flow:
 
-## Notes
+1. Ask whether the maintainer is interested in the Tailwind/Radix direction.
+2. If yes, split out the Storybook / Playwright parity test infrastructure first.
+3. Then split out package/docs cleanup.
+4. Finally submit the Tailwind/Radix rewrite as a `next`, `v1`, or experimental-branch PR.
 
-- This project is for personal learning, research, and non-commercial demonstration only. Any form of commercial use, resale, or profit-making activities is prohibited.
-- Not for use in any commercial products, enterprise projects, external services, or paid templates.
-- Users are solely responsible for any risks arising from the use of this component library.
+Current RFC: [`guokaigdg/animal-island-ui#8`](https://github.com/guokaigdg/animal-island-ui/issues/8).
 
-## Copyright and Disclaimer
+## Documentation
 
-- This project is not an official Nintendo product and has no association, authorization, or cooperation with Nintendo Co., Ltd.
-- The game name included in the project name is only a descriptive reference to the style and does not constitute trademark use or brand association.
-- All interface styles are merely design inspiration references and do not constitute reproduction or infringement of the original work.
-- If the copyright holder believes that related content is suspected of infringement, they can contact via email, and I will make rectifications or deletions immediately.
+| Document | Purpose |
+|---|---|
+| [`AI_USAGE.md`](../AI_USAGE.md) | API handbook for AI coding assistants, including props, types, defaults, and strict usage rules. |
+| [`DESIGN_PROMPT.md`](../DESIGN_PROMPT.md) | Visual reproduction prompt and design token reference. |
+| [`skill/SKILL.md`](../skill/SKILL.md) | Pixel-level style specification Skill for component CSS, tokens, demo layout, and new-component checklist. |
+| [`CONTRIBUTING.md`](../CONTRIBUTING.md) | Development and contribution guide for this fork. |
+| [`README.md`](../README.md) | Chinese README. |
 
-## Contact
+## Copyright And Disclaimer
 
-For any questions or copyright-related communications, please contact via Issue or email.
+- This project inherits the original MIT License.
+- This project is not an official Nintendo product and has no association, authorization, or partnership with Nintendo Co., Ltd.
+- The style is used only as a learning and research reference. This repository does not include official Nintendo art, code, or assets.
+- Credit for the original project and upstream maintenance belongs to [`guokaigdg/animal-island-ui`](https://github.com/guokaigdg/animal-island-ui).
 
 ## License
 
 MIT
-For learning purposes only.
-This project is released under the MIT open-source license, for learning use only. The author is not responsible for any legal issues or losses caused by the use of this library.

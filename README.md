@@ -1,162 +1,186 @@
-# 🏝 Animal-Island-UI
+# Animal Island UI - Tailwind/Radix Modernization
 
+<div align="center">
+    <img src="docs/img/readme-home.png" alt="animal-island-ui" style="border-radius: 12px; width: 40%; display: block; margin: 0 auto;" />
+</div>
 
 <div align="center">
-    <img src="docs/img/readme-home.png" alt="animal-island-ui" style="border-radius: 12px; width: 40%; display: block; margin: 0 auto;" />    
+    一个保留 Animal Island UI 视觉语言与包形态的 Tailwind CSS v4 + Radix UI 现代化实现。
 </div>
+
+<br />
+
 <div align="center">
-一款参考《动物森友会》风格的 React UI 组件库
-</div>
-<br/>
-<div align="center">
-    <a href="https://github.com/guokaigdg/animal-island-ui/stargazers"><img src="https://img.shields.io/github/stars/guokaigdg/animal-island-ui?style=flat-square" alt="Stars"></a>
+    <a href="https://github.com/lifeodyssey/animal-island-ui"><img src="https://img.shields.io/github/stars/lifeodyssey/animal-island-ui?style=flat-square" alt="Stars"></a>
     <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="License"></a>
-    <a href="LICENSE"><img src="https://img.shields.io/npm/dm/animal-island-ui.svg?style=flat-square" alt=""></a>
-    <a href="https://github.com/guokaigdg/animal-island-ui/releases"><img src="https://img.shields.io/github/v/tag/guokaigdg/animal-island-ui?label=version&style=flat-square" alt="Version"></a>
+    <a href="https://www.npmjs.com/package/animal-island-ui"><img src="https://img.shields.io/npm/dm/animal-island-ui.svg?style=flat-square" alt="npm downloads"></a>
+    <a href="https://github.com/guokaigdg/animal-island-ui"><img src="https://img.shields.io/badge/upstream-guokaigdg%2Fanimal--island--ui-19c8b9?style=flat-square" alt="Upstream"></a>
 </div>
-<br/>
-<div align="center">
-    <a href="https://hellogithub.com/repository/guokaigdg/animal-island-ui" target="_blank"><img src="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=98ecff41d142466d8d72694a6fadf9e9&claim_uid=pyGqTPIRMdo7fBS&theme=neutral" alt="Featured｜HelloGitHub" style="width: 250px; height: 54px;" width="250" height="54" /></a>
-</div>
-<br/>
+
+<br />
+
 <p align="center">
     简体中文 | <a href="./docs/README.en.md">English</a>
 </p>
 
-## 介绍
+## 项目定位
 
-本项目是基于 React + TypeScript 实现的轻量 UI 组件库，设计风格灵感来源于任天堂《集合啦！动物森友会》游戏界面，用于个人前端技术练习与组件化开发学习。
+本仓库是 [`guokaigdg/animal-island-ui`](https://github.com/guokaigdg/animal-island-ui) 的现代化重构 fork。目标不是重新设计一套 UI，而是在尽量保留原组件 API、视觉表现、静态资源和 npm 发布形态的前提下，把内部实现迁移到 Tailwind CSS v4 + Radix UI，并补齐可复现的 Storybook / Playwright 验收体系。
 
-当前实现使用 Tailwind CSS v4 统一设计 token，并用 Radix UI primitives 承载 Switch、Checkbox、Select、Tabs、Collapse、Modal 等交互组件的无障碍行为。组件库仍沿用原版发布方式：单 npm 包、Vite library mode、ESM + CJS + 类型声明、单 CSS 入口与 `dist/files` 静态资源目录。
+这不是上游仓库的正式版本。我们已经在上游创建 RFC Issue：[`guokaigdg/animal-island-ui#8`](https://github.com/guokaigdg/animal-island-ui/issues/8)，用于询问维护者是否接受这个方向，以及后续 PR 应该如何拆分。
 
-所有视觉元素、布局、图标、动画均为独立设计实现，未直接使用任何任天堂官方美术素材、代码或资源文件。
+## 和原版的关系
 
+- 原版实现：React + TypeScript + Less CSS Modules。
+- 当前实现：React 19 + TypeScript + Tailwind CSS v4 + Radix UI primitives。
+- 视觉目标：尽量 1:1 保留 Animal Island 风格，包括颜色、圆角、阴影、动画、字体和资源。
+- 发布目标：继续沿用原库的单 npm 包形态，而不是拆成多个 package 或 per-component subpath。
+- 贡献策略：先作为 fork 维护；若上游接受，再按测试、文档、重构分批提交 PR。
 
-## 预览
+## 技术栈
 
-- 在线预览 (PC 端) [animal-island-ui-pc](https://guokaigdg.github.io/animal-island-ui/#/)
-- 在线预览（移动端）[animal-island-ui-mobile](https://guokaigdg.github.io/animal-island-ui/#/)
+- React 19
+- TypeScript
+- Tailwind CSS v4
+- Radix UI primitives
+- Vite library mode
+- Storybook 10
+- Storybook/Vitest interaction tests
+- Playwright behavior tests
+- Playwright visual regression screenshots
 
-## 安装
+## 组件
+
+当前覆盖 18 个组件：
+
+| 交互组件 | 展示与容器组件 | 装饰与特殊组件 |
+|---|---|---|
+| Button | Card | Divider |
+| Input | Modal | Icon |
+| Switch | Collapse | Typewriter |
+| Checkbox | CodeBlock | Phone |
+| Select | Footer | Time |
+| Tabs | Loading | Cursor |
+
+## 安装与使用
+
+如果该版本已发布到 npm，可以按原包名安装：
 
 ```bash
 npm install animal-island-ui
 ```
 
-
-
-## 快速上手
-
-> ⚠️ **重要**: 请务必导入样式文件 `import 'animal-island-ui/style'`，否则组件将没有样式与字体!
+必须导入样式入口，否则组件没有样式、token 和字体：
 
 ```tsx
 import { Button, Card } from 'animal-island-ui';
 import 'animal-island-ui/style';
 
-function App() {
+export function App() {
     return (
-        <div>
+        <Card color="app-blue">
             <Button type="primary">开始冒险</Button>
-            <Card color="app-blue">
-                欢迎来到无人岛！
-            </Card>
-        </div>
+        </Card>
     );
 }
 ```
 
+如果要在发布前验证当前 fork，可以从源码构建 tarball 后安装到临时项目：
+
+```bash
+npm install
+npm run build
+npm pack
+```
+
 ## 发布形态
 
-本包按原 `animal-island-ui` 的分发形态发布：
+本 fork 刻意保持原 `animal-island-ui` 的发布方式：
 
-- `animal-island-ui`：组件 JS 入口，提供 ESM、CJS 与 TypeScript 声明。
-- `animal-island-ui/style`：组件样式、设计 token 与字体资源入口。
-- `dist/files`：构建时抽出的字体、图片、SVG 等静态资源。
+- 单 npm 包：`animal-island-ui`
+- ESM 入口：`dist/es/index.js`
+- CJS 入口：`dist/cjs/index.cjs`
+- 类型声明：`dist/types/index.d.ts`
+- 样式入口：`animal-island-ui/style`
+- 兼容入口：`animal-island-ui/dist/index.css`
+- 静态资源：`dist/files`
 
-发布包白名单只包含 `dist`、`README.md` 与 `AI_USAGE.md`。Storybook、Playwright tests、视觉截图基线和 Demo 构建产物不会进入 npm tarball。
+`package.json` 的发布白名单只包含：
 
-## 向上游贡献
+- `dist`
+- `README.md`
+- `AI_USAGE.md`
 
-当前 Tailwind CSS v4 + Radix UI 版本不是一个普通的小修补，而是一次保留公开 API 与发布形态的内部实现现代化重构。因此向原作者贡献时，建议先按 RFC / proposal 的方式沟通，而不是直接提交一个巨大 PR。
-
-已在上游仓库创建中文 RFC Issue：[`guokaigdg/animal-island-ui#8`](https://github.com/guokaigdg/animal-island-ui/issues/8)。
-
-建议的贡献路径：
-
-1. 先确认维护者是否接受 Tailwind/Radix 方向。
-2. 如果接受，优先拆出 Storybook / Playwright parity test infrastructure。
-3. 再拆出 package/docs cleanup。
-4. 最后把 Tailwind/Radix rewrite 作为 `next` / `v1` / experimental branch 的 PR 提交。
-
-## 文档
-面向不同场景的完整参考：
-
-| 文档 | 用途 |
-|---|---|
-| [`AI_USAGE.md`](./AI_USAGE.md) | 面向 AI 代码助手的使用手册，逐字收录全部组件 props、类型与默认值，附 19 条硬性规则与可复制样板，杜绝臆造 API。 |
-| [`DESIGN_PROMPT.md`](./DESIGN_PROMPT.md) | 一键复刻提示词，适配 v0 / Figma AI / Midjourney / DALL-E，含色板、字体、尺寸表、Modal clip-path 与禁用清单。 |
-| [`skill/SKILL.md`](./skill/SKILL.md) | 像素级样式规范 Skill，覆盖设计 token、全部组件精确 CSS、Demo 布局数值、CSS 变量模板与新组件开发 Checklist。 |
-| [`CONTRIBUTING.md`](./CONTRIBUTING.md) | 贡献指南 |
-
+Storybook、Playwright tests、截图基线、Demo 构建产物和本地开发文件不会进入 npm tarball。
 
 ## 本地开发
 
 ```bash
-# 克隆仓库
-git clone https://github.com/guokaigdg/animal-island-ui.git
-cd animal-island-ui
-
-# 安装依赖
 npm install
 
-# 启动 Demo 开发服务器
+# Demo
 npm run dev
 
-# 启动 Storybook 验收环境
+# Storybook，测试端口固定为 6106，避免占用默认 6006
 npm run storybook:test
 
-# 构建组件库
+# 组件库构建
 npm run build
 
-# 构建 Demo 站点
+# Demo 构建
 npm run build:demo
 
-# Storybook + Playwright + pix-to-pix 验收
-npm test
+# Storybook 静态构建
+npm run build:storybook
+```
 
-# 检查 npm 发布内容
+## 验收与测试
+
+完整验收命令：
+
+```bash
+npm test
+npx tsc --noEmit
 npm pack --dry-run
 ```
 
+`npm test` 会依次运行：
 
-## 案例
+- `tests/migration.test.mjs`：迁移结构与依赖约束。
+- Storybook/Vitest：stories 和 play function 交互测试。
+- Playwright behavior tests：组件 DOM、状态和交互行为。
+- Playwright visual regression：局部区域 pix-to-pix 截图对比。
 
-|<a href="https://github.com/yunxinz/ac-site-template">ac-site-template</a>（动森主题个人网站模板）  |  <a href="https://github.com/xiaochong/hi-kid">HiKid</a>（儿童教育练习英语口语和听力） |
-| --- | --- |
-|  <img src="docs/img/ac-site-template.png" alt="ac-site-template" style="border-radius: 8px; width: 90%; display: block; margin: 0 auto;" /> | <img src="docs/img/hi-kid.png" alt="HiKid" style="border-radius: 8px; width: 90%; display: block; margin: 0 auto;" />| 
-|<a href="https://github.com/guokaigdg/animal-island-blog">animal-island-blog</a>（动森风格博客）  |   |
-|  <img src="docs/img/case-animal-blog.png" alt="ac-site-template" style="border-radius: 8px; width: 90%; display: block; margin: 0 auto;" /> | | 
+视觉对比优先截取稳定的组件区域，而不是整页截图。对于会自动运行 `play` function 的 Storybook story，Playwright 使用独立 no-play story，避免测试过程互相抢状态。
 
+## 向上游贡献
 
+这次改动本质上是一次现代化重构提案，而不是普通 CSS 替换。因此给原作者贡献时，建议按 RFC / proposal 方式沟通：
 
-## 注意事项
+1. 先在上游 Issue 中确认维护者是否接受 Tailwind/Radix 方向。
+2. 如果接受，优先拆出 Storybook / Playwright parity test infrastructure。
+3. 再拆出 package/docs cleanup。
+4. 最后把 Tailwind/Radix rewrite 作为 `next` / `v1` / experimental branch 的 PR。
 
-- 本项目仅用于个人学习、研究与非商业展示，禁止任何形式的商业使用、二次售卖或盈利行为。
-- 不用于任何商业产品、企业项目、对外服务或付费模板。
-- 使用本组件库产生的任何风险由使用者自行承担。
+当前 RFC：[`guokaigdg/animal-island-ui#8`](https://github.com/guokaigdg/animal-island-ui/issues/8)。
+
+## 文档
+
+| 文档 | 用途 |
+|---|---|
+| [`AI_USAGE.md`](./AI_USAGE.md) | 面向 AI 代码助手的组件 API 手册，包含 props、类型、默认值和硬性使用规则。 |
+| [`DESIGN_PROMPT.md`](./DESIGN_PROMPT.md) | 视觉复刻提示词与设计 token 说明。 |
+| [`skill/SKILL.md`](./skill/SKILL.md) | 像素级样式规范 Skill，覆盖组件 CSS、token、Demo 布局和新组件 Checklist。 |
+| [`CONTRIBUTING.md`](./CONTRIBUTING.md) | 本 fork 的开发与贡献指南。 |
+| [`docs/README.en.md`](./docs/README.en.md) | 英文 README。 |
 
 ## 版权与免责声明
 
-- 本项目并非任天堂官方产品，与任天堂株式会社无任何关联、授权或合作关系。
-- 项目名称中包含的游戏名称仅为风格描述性引用，不构成商标使用或品牌关联。
-- 所有界面风格仅为设计灵感参考，不构成对原作品的复制或侵权。
-- 若版权方认为相关内容存在侵权嫌疑，可通过邮箱联系，本人将在第一时间进行整改或删除处理。
-
-## 联系方式
-
-如有问题或版权相关沟通，请通过 Issue 或邮件联系。
+- 本项目继承原项目 MIT License。
+- 本项目不是任天堂官方产品，与任天堂株式会社无关联、授权或合作关系。
+- 项目风格仅为学习与研究目的的设计参考，不包含任天堂官方美术素材、代码或资源。
+- 原项目与上游维护工作归功于 [`guokaigdg/animal-island-ui`](https://github.com/guokaigdg/animal-island-ui)。
 
 ## License
 
 MIT
-本项目基于 MIT 开源协议发布，仅限学习使用，作者不对因使用本库导致的任何法律问题或损失承担责任。
