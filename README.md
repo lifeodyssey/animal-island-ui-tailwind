@@ -75,6 +75,19 @@ function App() {
 
 发布包白名单只包含 `dist`、`README.md` 与 `AI_USAGE.md`。Storybook、Playwright tests、视觉截图基线和 Demo 构建产物不会进入 npm tarball。
 
+## 向上游贡献
+
+当前 Tailwind CSS v4 + Radix UI 版本不是一个普通的小修补，而是一次保留公开 API 与发布形态的内部实现现代化重构。因此向原作者贡献时，建议先按 RFC / proposal 的方式沟通，而不是直接提交一个巨大 PR。
+
+已在上游仓库创建中文 RFC Issue：[`guokaigdg/animal-island-ui#8`](https://github.com/guokaigdg/animal-island-ui/issues/8)。
+
+建议的贡献路径：
+
+1. 先确认维护者是否接受 Tailwind/Radix 方向。
+2. 如果接受，优先拆出 Storybook / Playwright parity test infrastructure。
+3. 再拆出 package/docs cleanup。
+4. 最后把 Tailwind/Radix rewrite 作为 `next` / `v1` / experimental branch 的 PR 提交。
+
 ## 文档
 面向不同场景的完整参考：
 
