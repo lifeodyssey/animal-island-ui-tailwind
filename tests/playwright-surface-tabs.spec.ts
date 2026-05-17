@@ -1,9 +1,9 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
 
-const tabsStoryUrl = '/iframe.html?id=wave-1-parity-surface-tabs--tabs-parity&viewMode=story';
-const surfaceStoryUrl = '/iframe.html?id=wave-1-parity-surface-tabs--surface-parity&viewMode=story';
-const tabsMatrixStoryUrl = '/iframe.html?id=wave-1-parity-surface-tabs--tabs-matrix-parity&viewMode=story';
-const surfaceEdgeStoryUrl = '/iframe.html?id=wave-1-parity-surface-tabs--surface-edge-parity&viewMode=story';
+const tabsStoryUrl = '/iframe.html?id=regression-parity-surface-tabs--tabs-parity&viewMode=story';
+const surfaceStoryUrl = '/iframe.html?id=regression-parity-surface-tabs--surface-parity&viewMode=story';
+const tabsMatrixStoryUrl = '/iframe.html?id=regression-parity-surface-tabs--tabs-matrix-parity&viewMode=story';
+const surfaceEdgeStoryUrl = '/iframe.html?id=regression-parity-surface-tabs--surface-edge-parity&viewMode=story';
 
 const tabByName = (scope: Locator | Page, name: RegExp) =>
     scope.getByRole('button', { name }).or(scope.getByRole('tab', { name }));

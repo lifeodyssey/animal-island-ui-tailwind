@@ -1,8 +1,8 @@
 import { expect, test, type Locator } from '@playwright/test';
 
-const storyUrl = '/iframe.html?id=wave-1-parity-button-input--button-input-parity&viewMode=story';
-const buttonMatrixStoryUrl = '/iframe.html?id=wave-1-parity-button-input--button-matrix-parity&viewMode=story';
-const inputMatrixStoryUrl = '/iframe.html?id=wave-1-parity-button-input--input-matrix-parity&viewMode=story';
+const storyUrl = '/iframe.html?id=regression-parity-button-input--button-input-parity&viewMode=story';
+const buttonMatrixStoryUrl = '/iframe.html?id=regression-parity-button-input--button-matrix-parity&viewMode=story';
+const inputMatrixStoryUrl = '/iframe.html?id=regression-parity-button-input--input-matrix-parity&viewMode=story';
 
 const wrapperForInput = (input: Locator) => input.locator('xpath=..');
 

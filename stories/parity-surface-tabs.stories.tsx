@@ -6,7 +6,7 @@ import { Button, Card, Collapse, Modal, Tabs } from '../src';
 import type { TabItem } from '../src';
 
 const meta = {
-    title: 'Wave 1/Parity/Surface Tabs',
+    title: 'Regression/Parity/Surface Tabs',
     parameters: {
         layout: 'padded',
     },

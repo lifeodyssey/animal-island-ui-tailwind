@@ -17,7 +17,7 @@ import {
 } from '../src';
 
 const meta = {
-    title: 'Wave 1/Parity/Display Utilities',
+    title: 'Regression/Parity/Display Utilities',
     parameters: {
         layout: 'padded',
     },

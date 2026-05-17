@@ -1,9 +1,9 @@
 import { expect, test, type Page } from '@playwright/test';
 
-const storyUrl = '/iframe.html?id=wave-1-parity-controls--controls-playwright-parity&viewMode=story';
-const matrixStoryUrl = '/iframe.html?id=wave-1-parity-controls--controls-state-matrix-parity&viewMode=story';
-const placementStoryUrl = '/iframe.html?id=wave-1-parity-controls--select-placement-parity&viewMode=story';
-const emptyKeyStoryUrl = '/iframe.html?id=wave-1-parity-controls--select-empty-key-playwright-parity&viewMode=story';
+const storyUrl = '/iframe.html?id=regression-parity-controls--controls-playwright-parity&viewMode=story';
+const matrixStoryUrl = '/iframe.html?id=regression-parity-controls--controls-state-matrix-parity&viewMode=story';
+const placementStoryUrl = '/iframe.html?id=regression-parity-controls--select-placement-parity&viewMode=story';
+const emptyKeyStoryUrl = '/iframe.html?id=regression-parity-controls--select-empty-key-playwright-parity&viewMode=story';
 
 const disableMotion = async (page: Page) => {
     await page.addStyleTag({

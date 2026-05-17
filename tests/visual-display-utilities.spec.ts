@@ -1,8 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
 
-const assetsStoryUrl = '/iframe.html?id=wave-1-parity-display-utilities--assets-parity&viewMode=story';
-const textStoryUrl = '/iframe.html?id=wave-1-parity-display-utilities--text-utility-stable&viewMode=story';
-const statusStoryUrl = '/iframe.html?id=wave-1-parity-display-utilities--status-scene-stable&viewMode=story';
+const assetsStoryUrl = '/iframe.html?id=regression-parity-display-utilities--assets-parity&viewMode=story';
+const textStoryUrl = '/iframe.html?id=regression-parity-display-utilities--text-utility-stable&viewMode=story';
+const statusStoryUrl = '/iframe.html?id=regression-parity-display-utilities--status-scene-stable&viewMode=story';
 
 const freezeClock = async (page: Page) => {
     await page.addInitScript(() => {

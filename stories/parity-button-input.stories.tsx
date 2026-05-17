@@ -5,7 +5,7 @@ import { expect, userEvent } from 'storybook/test';
 import { Button, Input } from '../src';
 
 const meta = {
-    title: 'Wave 1/Parity/Button Input',
+    title: 'Regression/Parity/Button Input',
     parameters: {
         layout: 'padded',
     },

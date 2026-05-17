@@ -6,7 +6,7 @@ import { Checkbox, Select, Switch } from '../src';
 import type { CheckboxOption, SelectOption } from '../src';
 
 const meta = {
-    title: 'Wave 1/Parity/Controls',
+    title: 'Regression/Parity/Controls',
     parameters: {
         layout: 'padded',
     },
