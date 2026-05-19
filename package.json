@@ -42,6 +42,7 @@
         "storybook:test": "storybook dev -p 6106 --host 127.0.0.1",
         "build:storybook": "storybook build",
         "test": "npm run test:migration && npm run test-storybook && npm run test:playwright && npm run test:visual",
+        "test:ci": "npm run test:migration && npm run test-storybook && npm run test:playwright",
         "test-storybook": "vitest --project=storybook --run",
         "test:playwright": "playwright test tests/playwright-*.spec.ts",
         "test:migration": "node --test tests/migration.test.mjs",

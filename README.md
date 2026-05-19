@@ -126,7 +126,7 @@ npx skills add lifeodyssey/animal-island-ui --skill animal-island-ui-style
 
 仓库包含两条 GitHub Actions：
 
-- `CI`：在 PR 和 `main` push 上运行 type check、library build、完整测试、Demo build、Storybook build 和 `npm pack --dry-run`。
+- `CI`：在 PR 和 `main` push 上运行 type check、library build、`npm run test:ci`、Demo build、Storybook build 和 `npm pack --dry-run`。视觉回归快照仍保留在本地 `npm test` 中运行，避免 Linux runner 缺少平台快照时阻塞发布。
 - `Release`：在 `v*.*.*` tag 或手动触发时复用同一套检查；首发可通过带 bypass 2FA 的 `NPM_TOKEN` 发布，后续也支持 npm trusted publishing / GitHub OIDC token-free 发布。
 
 首次 CI 发布前建议在 GitHub 仓库中配置 `NPM_TOKEN` secret；包创建后可在 npm 设置 trusted publisher 并移除长期 token。完整流程见 [`PUBLISHING.md`](./PUBLISHING.md)。

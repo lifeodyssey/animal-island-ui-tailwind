@@ -65,7 +65,10 @@ local shell.
 
 ## GitHub Actions Publish
 
-The `Release` workflow publishes after all verification steps pass. Trigger it
+The `Release` workflow publishes after CI verification steps pass. Visual
+snapshot regression remains part of local `npm test`; the hosted workflow runs
+`npm run test:ci` so Linux runners do not require platform-specific snapshots.
+Trigger it
 by either:
 
 - pushing a version tag such as `v0.8.0`

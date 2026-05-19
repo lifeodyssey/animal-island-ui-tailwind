@@ -127,8 +127,10 @@ npx skills add lifeodyssey/animal-island-ui --skill animal-island-ui-style
 
 The repository includes two GitHub Actions workflows:
 
-- `CI`: runs type checking, the library build, the full test suite, demo build,
+- `CI`: runs type checking, the library build, `npm run test:ci`, demo build,
   Storybook build, and `npm pack --dry-run` on pull requests and `main` pushes.
+  Visual screenshot regression stays in local `npm test` so Linux runners do not
+  block releases when platform snapshots are absent.
 - `Release`: runs the same verification when a `v*.*.*` tag is pushed or the
   workflow is triggered manually. The first publish can use an `NPM_TOKEN` with
   bypass 2FA, and later releases can use npm trusted publishing / GitHub OIDC
