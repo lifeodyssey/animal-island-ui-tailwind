@@ -13,6 +13,11 @@ const LoadingDemo: React.FC = () => {
             <div style={labelStyle}>
                 动森风格小岛 Loading 动画组件，带有漂浮的小岛、摇曳的树叶和游动的鱼。关闭时会从中间圆形透明扩散，露出底层内容。
             </div>
+            <div style={{ marginBottom: 16 }}>
+                <Button type={active ? 'default' : 'primary'} onClick={() => setActive(!active)}>
+                    {active ? '关闭 Loading' : '开启 Loading'}
+                </Button>
+            </div>
             <div style={{ ...demoBodyStyle, position: 'relative', height: 800, padding: 0, overflow: 'hidden' }}>
                 <div
                     style={{
@@ -33,11 +38,6 @@ const LoadingDemo: React.FC = () => {
                     active={active}
                     style={{ height: '100%', position: 'absolute', inset: 0 }}
                 />
-            </div>
-            <div style={{ marginTop: 16 }}>
-                <Button type={active ? 'default' : 'primary'} onClick={() => setActive(!active)}>
-                    {active ? '关闭 Loading' : '开启 Loading'}
-                </Button>
             </div>
             <CodeBlock
                 code={`import React, { useState } from 'react';

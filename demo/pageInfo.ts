@@ -68,4 +68,8 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
         title: 'Loading 加载',
         desc: '动森风格小岛 Loading 动画组件，支持自定义样式和类名',
     },
+    table: {
+        title: 'Table 表格',
+        desc: '数据表格组件，支持斑马纹、边框、加载状态等常用功能',
+    },
 };

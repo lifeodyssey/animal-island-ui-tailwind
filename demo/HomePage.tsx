@@ -329,8 +329,8 @@ const features = [
     },
     {
         icon: 'Property-Shopping.svg',
-        title: '18 个组件',
-        desc: 'Button / Input / Switch / Modal / Typewriter / Card / Collapse / Cursor / Divider / Time / Phone / Footer / Icon / Checkbox / Select / Tabs / CodeBlock / Loading 等',
+        title: '19 个组件',
+        desc: 'Button / Input / Switch / Modal / Typewriter / Card / Collapse / Cursor / Divider / Time / Phone / Footer / Icon / Checkbox / Select / Tabs / CodeBlock / Loading / Table 等',
     },
     {
         icon: 'Property-Camera.svg',
@@ -379,6 +379,7 @@ const components = [
     { key: 'phone', name: 'Phone', desc: 'Phone 模拟器' },
     { key: 'codeblock', name: 'CodeBlock', desc: '代码语法高亮组件' },
     { key: 'loading', name: 'Loading', desc: '动森风格小岛加载动画' },
+    { key: 'table', name: 'Table', desc: '数据表格，支持斑马纹与加载态' },
 ];
 
 // ============================================

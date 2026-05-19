@@ -93,3 +93,8 @@ export const Loading: Story = {
     name: 'Loading 加载',
     render: renderDemoPage('loading'),
 };
+
+export const Table: Story = {
+    name: 'Table 表格',
+    render: renderDemoPage('table'),
+};

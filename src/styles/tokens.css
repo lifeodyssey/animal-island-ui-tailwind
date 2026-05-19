@@ -79,6 +79,11 @@
     --animal-height-sm: 32px;
     --animal-height-base: 40px;
     --animal-height-lg: 48px;
+    --animal-table-stripe-bg: rgba(248, 248, 240, 0.6);
+    --animal-table-hover-stripe-start: rgba(25, 200, 185, 0.62);
+    --animal-table-hover-stripe-end: rgba(14, 196, 182, 0.62);
+    --animal-table-hover-text: var(--animal-text-color);
+    --animal-table-overlay-bg: rgba(247, 243, 223, 0.8);
   }
 
   /* Keep styles isolated: do not globally reset the consumer app. */
@@ -1430,6 +1435,165 @@
   .animal-loading-closing {
     mask-image: radial-gradient(circle at center, transparent var(--mask-r), black calc(var(--mask-r) + 1px));
     -webkit-mask-image: radial-gradient(circle at center, transparent var(--mask-r), black calc(var(--mask-r) + 1px));
+  }
+
+  .animal-table-wrapper {
+    position: relative;
+    width: 100%;
+    border-radius: 20px;
+    padding: 6px;
+    background: var(--animal-bg-color-content);
+  }
+
+  .animal-table-scrollable {
+    overflow: auto;
+  }
+
+  .animal-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--animal-bg-color-content);
+  }
+
+  .animal-table-head {
+    background: var(--animal-bg-color-content);
+  }
+
+  .animal-table-head-row {
+    position: relative;
+  }
+
+  .animal-table-head-row::after {
+    content: "";
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 0;
+    height: 1px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--animal-bg-color-secondary) 0,
+      var(--animal-bg-color-secondary) 6px,
+      transparent 6px,
+      transparent 12px
+    );
+  }
+
+  .animal-table-head-cell {
+    padding: 16px 20px;
+    color: var(--animal-text-color-body);
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+    background: transparent;
+  }
+
+  .animal-table-row {
+    position: relative;
+    transition: all var(--animal-motion-duration-base) var(--animal-motion-ease);
+  }
+
+  .animal-table-row::after {
+    content: "";
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 0;
+    height: 1px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--animal-bg-color-secondary) 0,
+      var(--animal-bg-color-secondary) 6px,
+      transparent 6px,
+      transparent 12px
+    );
+  }
+
+  .animal-table-row:last-child::after {
+    display: none;
+  }
+
+  .animal-table-row-striped {
+    background: var(--animal-table-stripe-bg);
+  }
+
+  .animal-table-row:hover,
+  .animal-table-row-striped:hover {
+    transform: scale(1.01);
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--animal-table-hover-stripe-start),
+      var(--animal-table-hover-stripe-start) 10px,
+      var(--animal-table-hover-stripe-end) 10px,
+      var(--animal-table-hover-stripe-end) 20px
+    );
+    background-size: 28.28px 28.28px;
+    clip-path: inset(0 0 0 0 round 30px);
+  }
+
+  .animal-table-row:hover::after,
+  .animal-table-row-striped:hover::after {
+    opacity: 0;
+  }
+
+  .animal-table-row:hover .animal-table-cell,
+  .animal-table-row-striped:hover .animal-table-cell {
+    color: var(--animal-table-hover-text);
+  }
+
+  .animal-table-cell {
+    padding: 14px 20px;
+    color: var(--animal-text-color-body);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.6;
+    transition: all var(--animal-motion-duration-base) var(--animal-motion-ease);
+  }
+
+  .animal-table-empty-cell {
+    padding: 60px 20px;
+    text-align: center;
+  }
+
+  .animal-table-empty-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    color: var(--animal-text-color-secondary);
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .animal-table-empty-icon {
+    color: var(--animal-text-color-secondary);
+    opacity: 0.5;
+  }
+
+  .animal-table-loading {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  .animal-table-loading-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--animal-table-overlay-bg);
+    backdrop-filter: blur(2px);
+    border-radius: inherit;
+  }
+
+  .animal-table-loading-spinner {
+    color: var(--animal-primary-color);
+    animation: animal-spin 0.6s linear infinite;
+  }
+
+  .animal-table-loading-spinner svg {
+    display: block;
   }
 }
 
