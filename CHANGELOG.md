@@ -5,6 +5,16 @@ All notable changes to `animal-island-ui-tailwind` are documented here.
 This project follows a lightweight Keep a Changelog style and uses semantic
 versioning for npm releases.
 
+## 0.8.2 - 2026-05-20
+
+### Fixed
+
+- GitHub Actions CI and release workflows now use Node 24 so the bundled npm
+  CLI supports npm Trusted Publishing through OIDC.
+- GitHub Actions CI and release workflows now explicitly upgrade to npm 11.14.1
+  before installing dependencies or publishing.
+- Package lock metadata now matches the intended npm release version.
+
 ## 0.8.1 - 2026-05-19
 
 ### Added
