@@ -445,12 +445,15 @@ type SelectOption = { key: string; label: string };
 
 interface SelectProps {
   options: SelectOption[];                 // REQUIRED
-  value: string;                           // REQUIRED — controlled-only
-  onChange: (key: string) => void;         // REQUIRED
+  value?: string;                          // controlled mode
+  defaultValue?: string;                   // uncontrolled mode — initial selection
+  onChange?: (key: string) => void;        // called on every change in both modes
   placeholder?: string;                    // default '请选择'
   disabled?: boolean;                      // default false
 }
 ```
+
+Controlled usage (you manage the state):
 
 ```tsx
 const [lang, setLang] = useState('zh');
@@ -466,8 +469,23 @@ const [lang, setLang] = useState('zh');
 />
 ```
 
+Uncontrolled usage (component manages its own state):
+
+```tsx
+<Select
+  defaultValue="en"
+  onChange={(key) => console.log('selected', key)}
+  options={[
+    { key: 'zh', label: '简体中文' },
+    { key: 'en', label: 'English' },
+    { key: 'ja', label: '日本語' },
+  ]}
+  placeholder="Choose language"
+/>
+```
+
 Notes:
-- **Controlled only.** `value` and `onChange` are required — there is no `defaultValue`.
+- **Controlled and uncontrolled modes.** Pass `value` for controlled mode or `defaultValue` for uncontrolled mode. When `value` is provided, it takes precedence over `defaultValue`. Both modes fire `onChange` on every selection change.
 - Dropdown positioning and click-outside behavior are handled by Radix Select.
 - `className` is applied to the trigger. There is no custom `renderOption`; style via package CSS or a wrapper class.
 

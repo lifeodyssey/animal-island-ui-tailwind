@@ -121,11 +121,11 @@ npm pack --dry-run       # Verify npm package contents
 
 ## CI/CD
 
-| Workflow | Trigger | Purpose |
+| Platform | Trigger | Purpose |
 |----------|---------|---------|
-| CI | PR / main push | Type check + build + test + demo + Storybook + package verify |
-| Release | `v*.*.*` tag / manual | CI checks + npm Trusted Publishing / OIDC publish |
-| Pages | main push | Auto-deploy demo site to GitHub Pages |
+| GitHub Actions CI | PR / main push | Type check + build + test + a11y scan + package verify |
+| GitHub Actions Release | `v*.*.*` tag / manual | CI checks + npm Trusted Publishing |
+| Cloudflare Pages | main push / PR | Auto-deploy Storybook to [animalcrossing.zhenjia.org](https://animalcrossing.zhenjia.org) |
 
 See [PUBLISHING.md](../PUBLISHING.md) for the full release flow.
 

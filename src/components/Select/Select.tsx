@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as RadixSelect from '@radix-ui/react-select';
 import { cn } from '../../utils/cn';
 
@@ -12,8 +12,9 @@ export interface SelectProps extends Omit<
     'children' | 'defaultValue' | 'disabled' | 'onChange' | 'value'
 > {
     options: SelectOption[];
-    value: string;
-    onChange: (key: string) => void;
+    value?: string;
+    defaultValue?: string;
+    onChange?: (key: string) => void;
     placeholder?: string;
     disabled?: boolean;
 }
@@ -35,6 +36,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
         {
             options,
             value,
+            defaultValue,
             onChange,
             placeholder = '请选择',
             disabled = false,
@@ -43,15 +45,24 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
         },
         ref,
     ) => {
-        const selectedOption = options.find((option) => option.key === value);
-        const radixValue = selectedOption ? toRadixValue(value) : '';
+        const isControlled = value !== undefined;
+        const [uncontrolledValue, setUncontrolledValue] = useState(defaultValue ?? '');
+        const currentValue = isControlled ? value : uncontrolledValue;
+
+        const handleChange = (key: string) => {
+            if (!isControlled) setUncontrolledValue(key);
+            onChange?.(key);
+        };
+
+        const selectedOption = options.find((option) => option.key === currentValue);
+        const radixValue = selectedOption ? toRadixValue(currentValue) : '';
 
         return (
             <RadixSelect.Root
                 value={radixValue}
                 onValueChange={(nextValue) => {
                     const key = fromRadixValue(nextValue, options);
-                    if (key !== undefined) onChange(key);
+                    if (key !== undefined) handleChange(key);
                 }}
                 disabled={disabled}
             >

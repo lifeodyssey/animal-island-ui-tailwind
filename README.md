@@ -121,11 +121,11 @@ npm pack --dry-run       # 检查 npm 包内容
 
 ## CI/CD
 
-| Workflow | 触发条件 | 功能 |
-|----------|---------|------|
-| CI | PR / main push | 类型检查 + 构建 + 测试 + Demo + Storybook + 包验证 |
-| Release | `v*.*.*` tag / 手动 | CI 验证 + npm Trusted Publishing / OIDC 发布 |
-| Pages | main push | 自动部署 Demo 站点到 GitHub Pages |
+| 平台 | 触发条件 | 功能 |
+|------|---------|------|
+| GitHub Actions CI | PR / main push | 类型检查 + 构建 + 测试 + 无障碍扫描 + 包验证 |
+| GitHub Actions Release | `v*.*.*` tag / 手动 | CI 验证 + npm Trusted Publishing |
+| Cloudflare Pages | main push / PR | 自动部署 Storybook 到 [animalcrossing.zhenjia.org](https://animalcrossing.zhenjia.org) |
 
 详细发布流程见 [PUBLISHING.md](./PUBLISHING.md)。
 

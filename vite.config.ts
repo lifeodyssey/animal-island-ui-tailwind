@@ -58,23 +58,48 @@ export default defineConfig({
     build: {
         lib: {
             entry: resolve(__dirname, 'src/index.ts'),
-            formats: ['es', 'cjs'],
-            fileName: (format) =>
-                `${format === 'es' ? 'es' : 'cjs'}/index.${format === 'es' ? 'js' : 'cjs'}`,
         },
         rollupOptions: {
-            external: ['react', 'react-dom', 'react/jsx-runtime'],
-            output: {
-                globals: {
-                    react: 'React',
-                    'react-dom': 'ReactDOM',
+            external: [
+                'react',
+                'react-dom',
+                'react/jsx-runtime',
+                /^@radix-ui\//,
+                'gsap',
+                'gsap/MotionPathPlugin',
+            ],
+            output: [
+                {
+                    format: 'es',
+                    dir: 'dist',
+                    entryFileNames: 'es/[name].js',
+                    chunkFileNames: 'es/[name].js',
+                    preserveModules: true,
+                    preserveModulesRoot: 'src',
+                    assetFileNames: (assetInfo) => {
+                        if (assetInfo.name?.endsWith('.css'))
+                            return 'index.css';
+                        return assetInfo.name ?? '[asset]';
+                    },
                 },
-                assetFileNames: (assetInfo) => {
-                    if (assetInfo.name?.endsWith('.css')) return 'index.css';
-                    return assetInfo.name ?? '[asset]';
+                {
+                    format: 'cjs',
+                    dir: 'dist',
+                    entryFileNames: 'cjs/[name].cjs',
+                    chunkFileNames: 'cjs/[name].cjs',
+                    globals: {
+                        react: 'React',
+                        'react-dom': 'ReactDOM',
+                    },
+                    assetFileNames: (assetInfo) => {
+                        if (assetInfo.name?.endsWith('.css'))
+                            return 'index.css';
+                        return assetInfo.name ?? '[asset]';
+                    },
                 },
-            },
+            ],
         },
+        emptyOutDir: true,
         cssCodeSplit: false,
     },
 });
