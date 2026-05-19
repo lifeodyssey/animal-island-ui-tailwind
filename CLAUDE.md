@@ -16,16 +16,18 @@ content and the single source of truth.
 
 - Package: `animal-island-ui-tailwind` on npm
 - Repo: `lifeodyssey/animal-island-ui` on GitHub
+- Storybook: `animalcrossing.zhenjia.org` (Cloudflare Pages)
 - Origin: forked from `guokaigdg/animal-island-ui` (MIT), now independent
 
 ## Stack
 
-- React 19 + TypeScript
+- React 18+ (peer dep >=18.0.0)
+- TypeScript
 - Tailwind CSS v4
-- Radix UI primitives for headless interactive behavior
+- Radix UI primitives (peerDependencies, optional)
 - Storybook 10 with Storybook/Vitest tests
 - Playwright behavior tests and visual regression screenshots
-- Vite library mode
+- Vite library mode with preserveModules (tree-shakeable ESM)
 
 ## Component Inventory
 
@@ -53,11 +55,12 @@ The library exposes 19 components:
 
 ## Implementation Rules
 
-- Runtime CSS belongs in `src/styles/tokens.css`.
+- CSS is split into modular files under `src/styles/` (theme, tokens, base,
+  components, keyframes), assembled by `src/styles/index.css`.
 - Use stable `animal-*` class names for component styling and testing hooks.
 - Use `--animal-*` CSS custom properties for design tokens.
 - Keep component class composition static enough for Tailwind v4 scanning.
-- Prefer the local `cn` helper for class merging.
+- Prefer the local `cn` helper (`clsx` + `tailwind-merge`) for class merging.
 - Use Radix UI for Switch, Checkbox, Select, Tabs, Collapse, and Modal behavior.
 - Preserve the original visual details: warm brown text, cream surfaces, teal
   accents, pill inputs, 3D button shadows, organic card/modal shapes, and the
@@ -73,15 +76,16 @@ Keep the single-package distribution model:
 - `module`: `dist/es/index.js`
 - `types`: `dist/types/index.d.ts`
 - `exports["."]`: `types`, `import`, and `require`
-- `exports["./style"]`: `dist/index.css`
+- `exports["./style"]`: `dist/index.css` (full, with fonts)
+- `exports["./style/core"]`: `dist/core.css` (no fonts)
+- `exports["./style/fonts"]`: `dist/fonts.css` (fonts only)
 - `exports["./dist/index.css"]`: `dist/index.css`
 - Assets emitted to `dist/files`
 - npm `files`: `dist`, `README.md`, `AI_USAGE.md`, `DESIGN_PROMPT.md`, `skill`
 
-Vite should continue to build ESM and CJS outputs. Only React, React DOM, and
-`react/jsx-runtime` are externalized. Radix UI, `classnames`, and
-`tailwind-merge` stay as runtime dependencies to preserve the original
-"install and use" consumer experience.
+Radix UI packages are peerDependencies (optional). `clsx` and `tailwind-merge`
+are runtime dependencies. Only React, React DOM, and `react/jsx-runtime` plus
+all `@radix-ui/*` and `gsap` are externalized from the bundle.
 
 ## Test And Release Checks
 
@@ -110,6 +114,36 @@ const { Button } = require('animal-island-ui-tailwind');
 
 When CJS is checked directly in Node, stub browser asset extensions because this
 UI package imports CSS, images, SVGs, and fonts.
+
+## Testing Strategy
+
+| Test | Where | Command |
+|------|-------|---------|
+| Migration structure | Local + CI | `npm run test:migration` |
+| Storybook/Vitest interaction | Local + CI | `npm run test-storybook` |
+| Playwright behavior | Local + CI | `npm run test:playwright` |
+| Visual regression screenshots | **Local only** | `npm run test:visual` |
+| Accessibility (axe-core) | Local + CI | `npm run test:a11y` |
+
+Visual regression runs only locally because macOS and Linux render fonts
+differently. The local baselines (macOS) are the source of truth, confirmed
+by visual inspection against upstream.
+
+## Release Workflow
+
+To publish a new version:
+
+```bash
+npm version patch    # or minor / major
+git push --follow-tags
+```
+
+This triggers the Release workflow which automatically:
+1. Runs all CI tests
+2. Publishes to npm (Trusted Publishing / OIDC)
+3. Creates a GitHub Release with auto-generated notes
+
+Do NOT manually create GitHub Releases or run `npm publish`.
 
 ## Storybook And Visual Parity
 
