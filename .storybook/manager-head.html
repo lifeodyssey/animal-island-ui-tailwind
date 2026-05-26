@@ -14,6 +14,83 @@
     document.title = "Animal Island UI Tailwind | React component library";
   });
 </script>
+<script>
+  (function () {
+    function provideComponentContext() {
+      var modelContext = navigator.modelContext;
+      if (!modelContext || typeof modelContext.provideContext !== "function") return;
+
+      modelContext.provideContext({
+        tools: [
+          {
+            name: "describe_animal_island_ui",
+            description: "Return package, Storybook, repository, and design-system context for Animal Island UI Tailwind.",
+            inputSchema: { type: "object", properties: {}, additionalProperties: false },
+            execute: async function () {
+              return {
+                content: [
+                  {
+                    type: "text",
+                    text: [
+                      "# Animal Island UI Tailwind",
+                      "",
+                      "Storybook: https://animalcrossing.zhenjia.dev/",
+                      "Repository: https://github.com/lifeodyssey/animal-island-ui",
+                      "npm: https://www.npmjs.com/package/animal-island-ui-tailwind",
+                      "AI guide: https://animalcrossing.zhenjia.dev/llms.txt",
+                      "",
+                      "Use this library for React components with an Animal Crossing-inspired visual language, Tailwind CSS v4 tokens, Radix UI primitives, and TypeScript APIs."
+                    ].join("\n")
+                  }
+                ]
+              };
+            }
+          },
+          {
+            name: "get_component_doc_links",
+            description: "Return canonical Storybook documentation links for common component categories.",
+            inputSchema: {
+              type: "object",
+              properties: {
+                component: {
+                  type: "string",
+                  enum: ["button", "card", "input", "select", "tabs", "table"]
+                }
+              },
+              required: ["component"],
+              additionalProperties: false
+            },
+            execute: async function (args) {
+              var component = args && args.component;
+              var links = {
+                button: "/?path=/docs/components-button--docs",
+                card: "/?path=/docs/components-card--docs",
+                input: "/?path=/docs/components-input--docs",
+                select: "/?path=/docs/components-select--docs",
+                tabs: "/?path=/docs/components-tabs--docs",
+                table: "/?path=/docs/components-table--docs"
+              };
+              return {
+                content: [
+                  {
+                    type: "text",
+                    text: "https://animalcrossing.zhenjia.dev" + (links[component] || "/")
+                  }
+                ]
+              };
+            }
+          }
+        ]
+      });
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", provideComponentContext, { once: true });
+    } else {
+      provideComponentContext();
+    }
+  })();
+</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",

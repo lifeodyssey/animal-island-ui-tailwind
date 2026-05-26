@@ -31,9 +31,10 @@ Use this skill when you need to inspect, reuse, or cite the Animal Island UI Tai
 `;
 
 export async function onRequest(context) {
-  const url = new URL(context.request.url);
+  const request = context.request;
+  const url = new URL(request.url);
   const pathname = normalizePath(url.pathname);
-  const discoveryResponse = discoveryRoute(pathname);
+  const discoveryResponse = discoveryRoute(pathname, request);
 
   if (discoveryResponse) {
     return withDiscoveryHeaders(discoveryResponse, true);
@@ -43,17 +44,26 @@ export async function onRequest(context) {
   return withDiscoveryHeaders(response, shouldAttachDiscovery(pathname, response));
 }
 
-function discoveryRoute(pathname) {
+function discoveryRoute(pathname, request) {
+  if (pathname === "/" && acceptsMarkdown(request)) {
+    return textResponse(COMPONENT_SKILL, "text/markdown; charset=utf-8", request.method);
+  }
+
   switch (pathname) {
     case "/.well-known/api-catalog":
-      return jsonResponse(apiCatalog(), "application/linkset+json; charset=utf-8");
+      return jsonResponse(apiCatalog(), "application/linkset+json; charset=utf-8", request.method);
     case "/.well-known/agent-skills/index.json":
-      return jsonResponse(agentSkillsIndex(), "application/json; charset=utf-8");
+      return jsonResponse(agentSkillsIndex(), "application/json; charset=utf-8", request.method);
     case "/.well-known/agent-skills/animal-island-ui/SKILL.md":
-      return textResponse(COMPONENT_SKILL, "text/markdown; charset=utf-8");
+      return textResponse(COMPONENT_SKILL, "text/markdown; charset=utf-8", request.method);
     default:
       return null;
   }
+}
+
+function acceptsMarkdown(request) {
+  if (request.method !== "GET" && request.method !== "HEAD") return false;
+  return (request.headers.get("Accept") || "").toLowerCase().includes("text/markdown");
 }
 
 function normalizePath(pathname) {
@@ -83,7 +93,12 @@ function withDiscoveryHeaders(response, attachLinks) {
   }
 
   const headers = new Headers(response.headers);
-  headers.append("Link", DISCOVERY_LINKS);
+  const currentLink = headers.get("Link");
+  if (!currentLink) {
+    headers.set("Link", DISCOVERY_LINKS);
+  } else if (!currentLink.includes("/.well-known/api-catalog")) {
+    headers.set("Link", `${currentLink}, ${DISCOVERY_LINKS}`);
+  }
   headers.set("X-Content-Type-Options", "nosniff");
 
   return new Response(response.body, {
@@ -93,8 +108,8 @@ function withDiscoveryHeaders(response, attachLinks) {
   });
 }
 
-function textResponse(body, contentType) {
-  return new Response(body, {
+function textResponse(body, contentType, method = "GET") {
+  return new Response(method === "HEAD" ? null : body, {
     headers: {
       "Content-Type": contentType,
       "Cache-Control": "public, max-age=3600",
@@ -102,8 +117,8 @@ function textResponse(body, contentType) {
   });
 }
 
-function jsonResponse(body, contentType) {
-  return new Response(JSON.stringify(body, null, 2), {
+function jsonResponse(body, contentType, method = "GET") {
+  return new Response(method === "HEAD" ? null : JSON.stringify(body, null, 2), {
     headers: {
       "Content-Type": contentType,
       "Cache-Control": "public, max-age=3600",
