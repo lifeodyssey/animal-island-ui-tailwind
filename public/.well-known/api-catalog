@@ -1,0 +1,36 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://animalcrossing.zhenjia.dev/",
+      "service-doc": [
+        {
+          "href": "https://animalcrossing.zhenjia.dev/llms.txt",
+          "type": "text/markdown",
+          "title": "AI-readable component library guide"
+        },
+        {
+          "href": "https://github.com/lifeodyssey/animal-island-ui#readme",
+          "type": "text/html",
+          "title": "GitHub README"
+        },
+        {
+          "href": "https://www.npmjs.com/package/animal-island-ui-tailwind",
+          "type": "text/html",
+          "title": "npm package"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://animalcrossing.zhenjia.dev/sitemap.xml",
+          "type": "application/xml",
+          "title": "Storybook sitemap"
+        },
+        {
+          "href": "https://animalcrossing.zhenjia.dev/.well-known/agent-skills/index.json",
+          "type": "application/json",
+          "title": "Agent skills index"
+        }
+      ]
+    }
+  ]
+}

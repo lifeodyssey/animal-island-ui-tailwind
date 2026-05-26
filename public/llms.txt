@@ -1,0 +1,35 @@
+# Animal Island UI Tailwind
+
+Animal Island UI Tailwind is a React component library with an Animal Crossing-inspired visual language. It is built with Tailwind CSS v4, Radix UI primitives, TypeScript, Vite, and Storybook.
+
+## Site Identity
+
+- Canonical Storybook: https://animalcrossing.zhenjia.dev/
+- GitHub repository: https://github.com/lifeodyssey/animal-island-ui
+- npm package: https://www.npmjs.com/package/animal-island-ui-tailwind
+- License: MIT
+
+## Package
+
+```bash
+npm install animal-island-ui-tailwind
+```
+
+```tsx
+import "animal-island-ui-tailwind/style";
+import { Button, Card } from "animal-island-ui-tailwind";
+```
+
+## Component Inventory
+
+- Button, Input, Switch, Checkbox, Select, Tabs
+- Card, Modal, Collapse, Divider, Table
+- Icon, Typewriter, Phone, Footer, Time, Cursor, CodeBlock, Loading
+- WeddingInvitation
+
+## Agent Use
+
+- Treat this site as public component-library documentation and Storybook examples.
+- Use the GitHub repository for source code, issue context, and installation details.
+- Use Storybook pages for visual examples and component behavior.
+- Do not treat this Storybook as a user-data API. It is documentation for a UI package.

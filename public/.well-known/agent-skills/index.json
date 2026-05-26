@@ -1,0 +1,11 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "animal-island-ui",
+      "type": "skill-md",
+      "description": "Use this skill when choosing, installing, or citing Animal Island UI Tailwind components.",
+      "url": "/.well-known/agent-skills/animal-island-ui/SKILL.md"
+    }
+  ]
+}
