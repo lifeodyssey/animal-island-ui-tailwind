@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { cn } from '../../utils/cn';
 
 export type RadioSize = 'small' | 'middle' | 'large';
@@ -50,16 +50,28 @@ export const Radio = React.forwardRef<HTMLDivElement, RadioProps>(
         const isControlled = value !== undefined;
         const checkedValue = isControlled ? value : innerValue;
         const groupRef = useRef<HTMLDivElement | null>(null);
+        const groupId = `animal-radio-${useId().replace(/:/g, '')}`;
 
         const [focusedIndex, setFocusedIndex] = useState<number>(() => {
-            const selectedIndex = options.findIndex((opt) => opt.value === checkedValue);
-            return selectedIndex >= 0 ? selectedIndex : 0;
+            const selectedIndex = options.findIndex(
+                (opt) => opt.value === checkedValue && !opt.disabled,
+            );
+            if (selectedIndex >= 0) return selectedIndex;
+            const firstEnabled = options.findIndex((opt) => !opt.disabled);
+            return firstEnabled >= 0 ? firstEnabled : 0;
         });
 
         useEffect(() => {
-            const selectedIndex = options.findIndex((opt) => opt.value === checkedValue);
+            const selectedIndex = options.findIndex(
+                (opt) => opt.value === checkedValue && !opt.disabled,
+            );
             if (selectedIndex >= 0) {
                 setFocusedIndex(selectedIndex);
+                return;
+            }
+            const firstEnabled = options.findIndex((opt) => !opt.disabled);
+            if (firstEnabled >= 0) {
+                setFocusedIndex(firstEnabled);
             }
         }, [checkedValue, options]);
 
@@ -150,6 +162,7 @@ export const Radio = React.forwardRef<HTMLDivElement, RadioProps>(
                     const isChecked = checkedValue === option.value;
                     const isDisabled = disabled || option.disabled;
                     const isFocusable = index === focusedIndex && !isDisabled;
+                    const labelId = `${groupId}-label-${index}`;
 
                     return (
                         <label
@@ -169,6 +182,7 @@ export const Radio = React.forwardRef<HTMLDivElement, RadioProps>(
                             <span
                                 data-radio-circle
                                 role="radio"
+                                aria-labelledby={labelId}
                                 aria-checked={isChecked}
                                 aria-disabled={isDisabled || undefined}
                                 tabIndex={isFocusable ? 0 : -1}
@@ -190,7 +204,7 @@ export const Radio = React.forwardRef<HTMLDivElement, RadioProps>(
                                     </span>
                                 )}
                             </span>
-                            <span className="animal-radio-label">{option.label}</span>
+                            <span id={labelId} className="animal-radio-label">{option.label}</span>
                         </label>
                     );
                 })}

@@ -47,6 +47,7 @@ test.describe('reference controls visual parity', () => {
         });
 
         await page.getByRole('button', { name: 'hover default' }).hover();
+        await expect(page.getByRole('tooltip', { name: '默认提示' })).toBeVisible();
         await expect(page.locator('body')).toHaveScreenshot('tooltip-open-parity.png', {
             animations: 'disabled',
             mask: [

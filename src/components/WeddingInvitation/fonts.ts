@@ -99,6 +99,9 @@ export const prepareWeddingFontsForExport = (): Promise<string> => {
                     const dataUrl = await new Promise<string>((resolve) => {
                         const reader = new FileReader();
                         reader.onload = () => resolve(reader.result as string);
+                        // Fall back to the original URL if reading the blob fails so the
+                        // export pipeline never hangs on a stuck FileReader.
+                        reader.onerror = () => resolve(url);
                         reader.readAsDataURL(blob);
                     });
                     dataUrlMap.set(url, dataUrl);

@@ -498,7 +498,7 @@ export const ControlsParity: Story = {
         await userEvent.click(canvas.getAllByText('☀️ 夏天')[0]);
         await expect(canvas.getByTestId('radio-selected-label')).toHaveTextContent('夏天');
         await userEvent.hover(canvas.getByRole('button', { name: 'hover default' }));
-        await expect(canvas.getByRole('tooltip')).toHaveTextContent('默认提示');
+        await expect(await canvas.findByRole('tooltip')).toHaveTextContent('默认提示');
     },
 };
 

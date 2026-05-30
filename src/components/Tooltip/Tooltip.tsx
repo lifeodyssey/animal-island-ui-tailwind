@@ -76,7 +76,9 @@ export const Tooltip: React.FC<TooltipProps> = ({
 }) => {
     const [visible, setVisible] = useState(false);
     const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const clipId = `animal-tooltip-clip-${useId().replace(/:/g, '')}`;
+    const uid = useId().replace(/:/g, '');
+    const clipId = `animal-tooltip-clip-${uid}`;
+    const tooltipId = `animal-tooltip-${uid}`;
 
     const clearTimer = useCallback(() => {
         if (!timerRef.current) return;
@@ -130,10 +132,15 @@ export const Tooltip: React.FC<TooltipProps> = ({
 
     const isIsland = variant === 'island';
 
+    if (visible) {
+        triggerProps['aria-describedby'] = tooltipId;
+    }
+
     return (
         <div className={cn('animal-tooltip-wrapper', className)} style={style}>
             {React.cloneElement(child, triggerProps)}
             <div
+                id={tooltipId}
                 role="tooltip"
                 aria-hidden={!visible}
                 className={cn(

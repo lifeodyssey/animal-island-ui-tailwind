@@ -763,7 +763,7 @@
     position: relative;
     z-index: 1;
     white-space: pre-line;
-    word-break: break-word;
+    overflow-wrap: break-word;
   }
 
   .animal-tooltip-bordered:not(.animal-tooltip-island) {
@@ -2220,7 +2220,6 @@
     background:
       radial-gradient(circle at 20% 10%, rgba(248, 166, 178, 0.18), transparent 40%),
       radial-gradient(circle at 80% 90%, rgba(138, 198, 138, 0.18), transparent 40%),
-      url("../assets/img/animalisland_1440_2560.JPG") center / cover no-repeat,
       rgb(247, 243, 223);
     box-shadow: inset 0 0 0 2px rgba(114, 93, 66, 0.12);
     filter: drop-shadow(0 10px 24px rgba(61, 52, 40, 0.18));
