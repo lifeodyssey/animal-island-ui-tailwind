@@ -1652,7 +1652,6 @@
   .animal-modal-clipped {
     width: 100%;
     height: 100%;
-    clip-path: url("#animal-modal-clip");
     padding: 48px 48px 32px;
     overflow: hidden;
     display: flex;
