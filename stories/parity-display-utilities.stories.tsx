@@ -154,7 +154,7 @@ const CodeCursorTypewriterSection = () => {
                 <button type="button" data-testid="cursor-scoped-button">
                     scoped button
                 </button>
-                <input data-testid="cursor-scoped-input" type="text" defaultValue="scoped input" />
+                <input data-testid="cursor-scoped-input" type="text" defaultValue="scoped input" aria-label="scoped cursor demo input" />
                 <button type="button" data-testid="cursor-scoped-disabled" disabled>
                     disabled
                 </button>
