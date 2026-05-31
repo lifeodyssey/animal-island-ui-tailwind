@@ -1,4 +1,4 @@
-import React, { useId } from 'react';
+import React, { useId, useState } from 'react';
 import * as RadixRadioGroup from '@radix-ui/react-radio-group';
 import { cn } from '../../utils/cn';
 
@@ -51,10 +51,22 @@ export const Radio = React.forwardRef<HTMLDivElement, RadioProps>(
         ref,
     ) => {
         const groupId = `animal-radio-${useId().replace(/:/g, '')}`;
+        const [innerValue, setInnerValue] = useState<string | number | undefined>(defaultValue);
+        const isControlled = value !== undefined;
+        // Mirror the selection internally in uncontrolled mode. The teal fill
+        // comes from the stable `animal-radio-checked` class, which we drive
+        // off `checkedValue` — Radix only exposes data-state, and our CSS does
+        // not key off it. Without this mirror, an uncontrolled radio (only
+        // defaultValue) never gets `animal-radio-checked` and loses its
+        // highlight (regression from the Radix migration).
+        const checkedValue = isControlled ? value : innerValue;
 
         const handleValueChange = (next: string) => {
             const matched = options.find((opt) => String(opt.value) === next);
             if (matched && !matched.disabled) {
+                if (!isControlled) {
+                    setInnerValue(matched.value);
+                }
                 onChange?.(matched.value);
             }
         };
@@ -80,7 +92,6 @@ export const Radio = React.forwardRef<HTMLDivElement, RadioProps>(
             >
                 {options.map((option, index) => {
                     const isDisabled = disabled || option.disabled;
-                    const checkedValue = value !== undefined ? value : undefined;
                     const isChecked = checkedValue !== undefined && checkedValue === option.value;
                     const itemId = `${groupId}-item-${index}`;
                     const labelId = `${groupId}-label-${index}`;

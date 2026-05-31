@@ -21,6 +21,15 @@ type Story = StoryObj<typeof meta>;
 export const Horizontal: Story = { args: { options: seasons, defaultValue: 'spring' } };
 export const Vertical: Story = {
     args: { options: seasons, defaultValue: 'summer', direction: 'vertical' },
+    play: async ({ canvas }) => {
+        // Guardrail for the uncontrolled-selection regression: with only
+        // defaultValue (no value prop), the selected item must still carry the
+        // stable `animal-radio-checked` class that renders the teal fill.
+        const summerRadio = canvas.getAllByRole('radio')[1];
+        await expect(summerRadio).toHaveAttribute('aria-checked', 'true');
+        const summerItem = summerRadio.closest('.animal-radio-item');
+        await expect(summerItem).toHaveClass(/animal-radio-checked/);
+    },
 };
 export const DisabledGroup: Story = {
     args: { options: seasons, defaultValue: 'autumn', disabled: true },
