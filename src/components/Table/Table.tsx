@@ -170,7 +170,7 @@ const TableInner = <T extends TableRecord>(
 
             {loading && (
                 <div className="animal-table-loading-overlay">
-                    <div className="animal-table-loading-spinner" aria-label="loading">
+                    <div className="animal-table-loading-spinner" role="status" aria-label="loading">
                         <svg viewBox="0 0 50 50" width="40" height="40" aria-hidden="true">
                             <circle
                                 cx="25"

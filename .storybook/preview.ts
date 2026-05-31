@@ -1,6 +1,7 @@
 import type { Preview } from '@storybook/react-vite';
 import React from 'react';
 import { initialize, mswLoader } from 'msw-storybook-addon';
+import { INITIAL_VIEWPORTS } from 'storybook/viewport';
 import '../src/styles/index.css';
 import { mswHandlers } from './msw-handlers';
 
@@ -13,6 +14,8 @@ import { mswHandlers } from './msw-handlers';
 initialize({ onUnhandledRequest: 'bypass' });
 
 const preview: Preview = {
+    // Generate an autodocs page for every component story (props table + preview).
+    tags: ['autodocs'],
     decorators: [
         (Story) =>
             React.createElement(
@@ -31,6 +34,27 @@ const preview: Preview = {
         },
         layout: 'padded',
         msw: { handlers: mswHandlers },
+        // Accessibility addon. Runs axe-core on every story and surfaces results
+        // in the Storybook "Accessibility" panel + the Vitest component test run.
+        //
+        // test: 'todo' reports violations without failing the run. The hard a11y
+        // gate is the dedicated Playwright + @axe-core/playwright suite
+        // (`npm run test:a11y`, executed in CI). This Vitest layer is the
+        // fast in-Storybook feedback loop, which is Storybook's recommended way
+        // to adopt a11y testing on a project that already has many stories.
+        //
+        // color-contrast is disabled outright as a known, accepted deviation:
+        // the Animal Crossing visual language intentionally uses low-contrast
+        // warm tones (cream surfaces, soft brown text, teal accents) that the
+        // project is required to preserve (see CLAUDE.md).
+        a11y: {
+            test: 'todo',
+            config: {
+                rules: [{ id: 'color-contrast', enabled: false }],
+            },
+        },
+        // Device presets selectable from the toolbar for manual responsive checks.
+        viewport: { options: INITIAL_VIEWPORTS },
     },
 };
 

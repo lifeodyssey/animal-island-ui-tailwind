@@ -1,0 +1,58 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Overview/Introduction" />
+
+# Animal Island UI Tailwind
+
+动物森友会风格的 React 组件库 —— 奶油色背景、圆润卡片、3D 按钮阴影、手写体字体。
+内部用 **Tailwind CSS v4 + Radix UI** 重写，以 `animal-island-ui-tailwind` 的包名独立发布到 npm。
+
+视觉设计来自上游 [guokaigdg/animal-island-ui](https://github.com/guokaigdg/animal-island-ui)（MIT）。
+
+## 安装
+
+```bash
+npm install animal-island-ui-tailwind
+```
+
+```tsx
+import { Button } from 'animal-island-ui-tailwind';
+import 'animal-island-ui-tailwind/style';
+
+export function Example() {
+    return <Button type="primary">集合啦</Button>;
+}
+```
+
+按需加载字体：`animal-island-ui-tailwind/style/core`（不含字体）或 `animal-island-ui-tailwind/style/fonts`（仅字体）。
+
+## 设计 token
+
+组件样式由 `--animal-*` CSS 自定义属性驱动，覆盖这些变量即可整体改主题。
+
+| Token | 值 | 用途 |
+|-------|-----|------|
+| `--animal-primary-color` | `#19c8b9` | teal 强调色（开关、单选、链接） |
+| `--animal-text-color` | `#794f27` | 暖棕主文字 |
+| `--animal-bg-color` | `#f8f8f0` | 奶油底色 |
+
+> 这套视觉刻意使用低对比暖色调，因此组件库的 a11y 检查关闭了 `color-contrast` 规则
+> （作为已知且被接受的偏差），其余无障碍规则保持开启。
+
+## 组件总览（22 个）
+
+| 交互 | 容器 / 展示 | 装饰 / 特殊 |
+|------|-----------|------------|
+| Button、Input、Switch、Checkbox、Radio、Select、Tabs | Card、Modal、Collapse、CodeBlock、Footer、Loading、Table | Divider、Icon、Typewriter、Phone、Time、Cursor、Tooltip、WeddingInvitation |
+
+左侧 **Components** 分组里每个组件都有独立 stories 和自动生成的 props 文档（autodocs）；
+**Regression / Parity** 分组是对照上游的视觉/行为回归测试。
+
+## 测试分层
+
+| 层 | 工具 | 作用 |
+|----|------|------|
+| 交互 / play | Storybook + Vitest（浏览器模式） | 每个 story 渲染 + 行为断言 |
+| 行为对照 | Playwright | 对照上游交互 parity |
+| 视觉回归 | Playwright 截图 | 像素级 parity（本地 macOS 基线） |
+| 无障碍 | `@axe-core/playwright`（硬门禁）+ `@storybook/addon-a11y`（开发反馈） | WCAG 检查 |

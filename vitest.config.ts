@@ -11,6 +11,17 @@ export default mergeConfig(
     viteConfig,
     defineConfig({
         test: {
+            coverage: {
+                provider: 'istanbul',
+                include: ['src/**/*.{ts,tsx}'],
+                exclude: [
+                    'src/**/*.stories.tsx',
+                    'src/**/index.ts',
+                    'src/**/*.d.ts',
+                    'src/components/WeddingInvitation/fonts.ts',
+                ],
+                reporter: ['text-summary', 'json-summary', 'html', 'lcov'],
+            },
             projects: [
                 {
                     extends: true,

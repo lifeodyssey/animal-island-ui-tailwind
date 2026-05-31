@@ -5,6 +5,9 @@ import { Switch } from './Switch';
 const meta = {
     component: Switch,
     tags: ['ai-generated'],
+    // A switch with no visible text label needs an accessible name; demonstrate
+    // the correct usage so the stories themselves pass axe button-name.
+    args: { 'aria-label': '示例开关' },
 } satisfies Meta<typeof Switch>;
 
 export default meta;

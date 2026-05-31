@@ -11,10 +11,15 @@
 <br />
 
 <div align="center">
-    <a href="https://github.com/lifeodyssey/animal-island-ui"><img src="https://img.shields.io/github/stars/lifeodyssey/animal-island-ui?style=flat-square" alt="Stars"></a>
+    <a href="https://www.npmjs.com/package/animal-island-ui-tailwind"><img src="https://img.shields.io/npm/v/animal-island-ui-tailwind?style=flat-square" alt="npm version"></a>
     <a href="https://github.com/lifeodyssey/animal-island-ui/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/lifeodyssey/animal-island-ui/ci.yml?branch=main&style=flat-square" alt="CI"></a>
+    <a href="https://codecov.io/gh/lifeodyssey/animal-island-ui"><img src="https://img.shields.io/codecov/c/github/lifeodyssey/animal-island-ui?style=flat-square" alt="Coverage"></a>
+    <a href="https://bundlephobia.com/package/animal-island-ui-tailwind"><img src="https://img.shields.io/bundlephobia/minzip/animal-island-ui-tailwind?style=flat-square" alt="Bundle size"></a>
+    <a href="https://www.npmjs.com/package/animal-island-ui-tailwind"><img src="https://img.shields.io/npm/types/animal-island-ui-tailwind?style=flat-square" alt="Types"></a>
+    <a href="https://github.com/lifeodyssey/animal-island-ui"><img src="https://img.shields.io/github/stars/lifeodyssey/animal-island-ui?style=flat-square" alt="Stars"></a>
     <a href="../LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="License"></a>
     <a href="https://www.npmjs.com/package/animal-island-ui-tailwind"><img src="https://img.shields.io/npm/dm/animal-island-ui-tailwind.svg?style=flat-square" alt="npm downloads"></a>
+    <a href="https://animalcrossing.zhenjia.dev"><img src="https://img.shields.io/badge/Storybook-FF4785?style=flat-square&logo=storybook&logoColor=white" alt="Storybook"></a>
 </div>
 
 <br />
