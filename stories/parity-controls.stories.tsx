@@ -7,6 +7,7 @@ import type { CheckboxOption, RadioOption, SelectOption } from '../src';
 
 const meta = {
     title: 'Regression/Parity/Controls',
+    tags: ['!dev', '!autodocs'],
     parameters: {
         layout: 'padded',
     },

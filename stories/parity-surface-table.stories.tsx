@@ -16,6 +16,7 @@ type Islander = {
 
 const meta = {
     title: 'Regression/Parity/Surface Table',
+    tags: ['!dev', '!autodocs'],
     parameters: {
         layout: 'padded',
     },
