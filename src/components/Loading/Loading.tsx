@@ -11,6 +11,110 @@ export interface LoadingProps {
     active?: boolean;
 }
 
+/**
+ * Declarative spec for the idle island animation, ported byte-for-byte from
+ * upstream `src/components/Loading/island/script.js` (guokaigdg/animal-island-ui).
+ * Tweens run in array order. `set` entries must keep their position relative to
+ * the tweens that depend on them — in particular the `#fish-path` `set` must
+ * precede the `#fish` motionPath tween.
+ */
+type IdleTween =
+    | { method: 'to'; target: string; vars: gsap.TweenVars }
+    | { method: 'set'; target: string; vars: gsap.TweenVars }
+    | { method: 'fromTo'; target: string; from: gsap.TweenVars; vars: gsap.TweenVars };
+
+const IDLE_TWEENS: IdleTween[] = [
+    // Island bobbing
+    {
+        method: 'to',
+        target: '#whole-island',
+        vars: { transformOrigin: 'bottom center', y: -15, rotation: 1, duration: 1, ease: 'sine.inOut', yoyo: true, repeat: -1 },
+    },
+    // Tree swaying
+    {
+        method: 'fromTo',
+        target: '#tree',
+        from: { transformOrigin: 'bottom center', rotation: -6 },
+        vars: { transformOrigin: 'bottom center', rotation: 5, duration: 2, ease: 'sine.inOut', yoyo: true, repeat: -1 },
+    },
+    // Leaf animations
+    {
+        method: 'to',
+        target: '#leaf1',
+        vars: { transformOrigin: 'center right', y: -3, duration: 1, ease: 'sine.inOut', yoyo: true, repeat: -1 },
+    },
+    {
+        method: 'fromTo',
+        target: '#leaf2',
+        from: { transformOrigin: 'bottom right', rotation: 3 },
+        vars: { transformOrigin: 'bottom right', rotation: -4, x: -3, y: -3, duration: 1, ease: 'sine.inOut', yoyo: true, repeat: -1 },
+    },
+    {
+        method: 'to',
+        target: '#leaf3',
+        vars: { transformOrigin: 'bottom center', rotation: -6, duration: 1, ease: 'sine.inOut', yoyo: true, repeat: -1 },
+    },
+    {
+        method: 'to',
+        target: '#leaf4',
+        vars: { transformOrigin: 'bottom left', rotation: -6, y: -3, duration: 1, ease: 'sine.inOut', yoyo: true, repeat: -1 },
+    },
+    {
+        method: 'to',
+        target: '#leaf5',
+        vars: { transformOrigin: 'top left', y: -3, duration: 1, ease: 'sine.inOut', yoyo: true, repeat: -1 },
+    },
+    // Water circle animations
+    {
+        method: 'to',
+        target: '#water-circle1',
+        vars: { transformOrigin: 'center center', scaleX: 1.2, duration: 1, ease: 'sine.inOut', yoyo: true, repeat: -1 },
+    },
+    {
+        method: 'to',
+        target: '#water-circle2',
+        vars: { transformOrigin: 'center center', scaleX: 0.8, duration: 1, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: -0.5 },
+    },
+    // Triangle wave animations
+    { method: 'fromTo', target: '#tri-wave1', from: { x: -60 }, vars: { x: 20, duration: 6, repeat: -1, ease: 'none' } },
+    { method: 'fromTo', target: '#tri-wave2', from: { x: -10 }, vars: { x: 50, duration: 6, repeat: -1, ease: 'none' } },
+    {
+        method: 'fromTo',
+        target: '#tri-wave1>path, #tri-wave2>path',
+        from: { scaleY: 0 },
+        vars: { scaleY: 1, duration: 1, repeat: -1, yoyo: true, transformOrigin: 'bottom center' },
+    },
+    // Sine wave animations
+    { method: 'fromTo', target: '#sine-wave-group *', from: { x: 0 }, vars: { x: 75, repeat: -1, duration: 2, ease: 'none' } },
+    {
+        method: 'fromTo',
+        target: '#sine-wave-group *',
+        from: { scaleY: 0.8, transformOrigin: 'bottom center' },
+        vars: { scaleY: 1.2, transformOrigin: 'bottom center', repeat: -1, duration: 1, yoyo: true, ease: 'sine.inOut' },
+    },
+    // Fish motion path animation — the `set` must run before the `#fish` tween
+    { method: 'set', target: '#fish-path', vars: { scaleY: 1.3, scaleX: 1.3, transformOrigin: 'bottom left' } },
+    {
+        method: 'to',
+        target: '#fish',
+        vars: {
+            duration: 3,
+            repeat: -1,
+            repeatDelay: 4,
+            ease: 'slow(0.3, 0.7, false)',
+            immediateRender: true,
+            motionPath: {
+                path: '#fish-path',
+                align: '#fish-path',
+                alignOrigin: [0.5, 0.5],
+                autoRotate: true,
+                start: 0,
+                end: 1,
+            },
+        },
+    },
+];
+
 const SVG_CONTENT = `<svg viewBox="0 0 446 540" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" class="illustration">
 <defs>
     <path id="wave-segment" d="M78.238,447.196C99.161,447.224 102.365,433.986 117.183,433.986C132.006,433.986 138.546,447.165 154.302,447.165C170.057,447.165 179.54,433.877 192.035,433.877C204.53,433.877 212.069,447.271 228.234,447.2L228.238,447.2L228.238,456.742L174.344,456.758L78.238,456.773L78.238,447.196Z" style="fill:rgb(186,228,240);"></path>
@@ -89,163 +193,18 @@ export function Loading({ className, style, active = true }: LoadingProps) {
         if (!containerRef.current) return;
 
         const ctx = gsap.context(() => {
-            // Island bobbing
-            gsap.to('#whole-island', {
-                transformOrigin: 'bottom center',
-                y: -15,
-                rotation: 1,
-                duration: 1,
-                ease: 'sine.inOut',
-                yoyo: true,
-                repeat: -1,
-            });
-
-            // Tree swaying
-            gsap.fromTo(
-                '#tree',
-                { transformOrigin: 'bottom center', rotation: -6 },
-                {
-                    transformOrigin: 'bottom center',
-                    rotation: 5,
-                    duration: 2,
-                    ease: 'sine.inOut',
-                    yoyo: true,
-                    repeat: -1,
-                },
-            );
-
-            // Leaf animations
-            gsap.to('#leaf1', {
-                transformOrigin: 'center right',
-                y: -3,
-                duration: 1,
-                ease: 'sine.inOut',
-                yoyo: true,
-                repeat: -1,
-            });
-
-            gsap.fromTo(
-                '#leaf2',
-                { transformOrigin: 'bottom right', rotation: 3 },
-                {
-                    transformOrigin: 'bottom right',
-                    rotation: -4,
-                    x: -3,
-                    y: -3,
-                    duration: 1,
-                    ease: 'sine.inOut',
-                    yoyo: true,
-                    repeat: -1,
-                },
-            );
-
-            gsap.to('#leaf3', {
-                transformOrigin: 'bottom center',
-                rotation: -6,
-                duration: 1,
-                ease: 'sine.inOut',
-                yoyo: true,
-                repeat: -1,
-            });
-
-            gsap.to('#leaf4', {
-                transformOrigin: 'bottom left',
-                rotation: -6,
-                y: -3,
-                duration: 1,
-                ease: 'sine.inOut',
-                yoyo: true,
-                repeat: -1,
-            });
-
-            gsap.to('#leaf5', {
-                transformOrigin: 'top left',
-                y: -3,
-                duration: 1,
-                ease: 'sine.inOut',
-                yoyo: true,
-                repeat: -1,
-            });
-
-            // Water circle animations
-            gsap.to('#water-circle1', {
-                transformOrigin: 'center center',
-                scaleX: 1.2,
-                duration: 1,
-                ease: 'sine.inOut',
-                yoyo: true,
-                repeat: -1,
-            });
-
-            gsap.to('#water-circle2', {
-                transformOrigin: 'center center',
-                scaleX: 0.8,
-                duration: 1,
-                ease: 'sine.inOut',
-                yoyo: true,
-                repeat: -1,
-                delay: -0.5,
-            });
-
-            // Triangle wave animations
-            gsap.fromTo('#tri-wave1', { x: -60 }, { x: 20, duration: 6, repeat: -1, ease: 'none' });
-
-            gsap.fromTo('#tri-wave2', { x: -10 }, { x: 50, duration: 6, repeat: -1, ease: 'none' });
-
-            gsap.fromTo(
-                '#tri-wave1>path, #tri-wave2>path',
-                { scaleY: 0 },
-                {
-                    scaleY: 1,
-                    duration: 1,
-                    repeat: -1,
-                    yoyo: true,
-                    transformOrigin: 'bottom center',
-                },
-            );
-
-            // Sine wave animations
-            gsap.fromTo(
-                '#sine-wave-group *',
-                { x: 0 },
-                { x: 75, repeat: -1, duration: 2, ease: 'none' },
-            );
-
-            gsap.fromTo(
-                '#sine-wave-group *',
-                { scaleY: 0.8, transformOrigin: 'bottom center' },
-                {
-                    scaleY: 1.2,
-                    transformOrigin: 'bottom center',
-                    repeat: -1,
-                    duration: 1,
-                    yoyo: true,
-                    ease: 'sine.inOut',
-                },
-            );
-
-            // Fish motion path animation
-            gsap.set('#fish-path', {
-                scaleY: 1.3,
-                scaleX: 1.3,
-                transformOrigin: 'bottom left',
-            });
-
-            gsap.to('#fish', {
-                duration: 3,
-                repeat: -1,
-                repeatDelay: 4,
-                ease: 'slow(0.3, 0.7, false)',
-                immediateRender: true,
-                motionPath: {
-                    path: '#fish-path',
-                    align: '#fish-path',
-                    alignOrigin: [0.5, 0.5],
-                    autoRotate: true,
-                    start: 0,
-                    end: 1,
-                },
-            });
+            // Drive the idle tweens from the declarative spec, in order. The
+            // ordering is load-bearing: the `#fish-path` `set` must precede the
+            // `#fish` motionPath tween.
+            for (const tween of IDLE_TWEENS) {
+                if (tween.method === 'fromTo') {
+                    gsap.fromTo(tween.target, tween.from, tween.vars);
+                } else if (tween.method === 'set') {
+                    gsap.set(tween.target, tween.vars);
+                } else {
+                    gsap.to(tween.target, tween.vars);
+                }
+            }
         }, containerRef);
 
         return () => {
