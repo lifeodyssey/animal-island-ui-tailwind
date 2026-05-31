@@ -6,6 +6,10 @@ import { Button, Input } from '../src';
 
 const meta = {
     title: 'Regression/Parity/Button Input',
+    // Internal visual-regression fixtures: hide from the published sidebar
+    // (!dev) and skip autodocs, but keep them built + URL-reachable so the
+    // Playwright/visual tests and the vitest test-runner still cover them.
+    tags: ['!dev', '!autodocs'],
     parameters: {
         layout: 'padded',
     },

@@ -21,6 +21,7 @@ import {
 
 const meta = {
     title: 'Regression/Parity/Display Utilities',
+    tags: ['!dev', '!autodocs'],
     parameters: {
         layout: 'padded',
     },

@@ -7,6 +7,7 @@ import type { TabItem } from '../src';
 
 const meta = {
     title: 'Regression/Parity/Surface Tabs',
+    tags: ['!dev', '!autodocs'],
     parameters: {
         layout: 'padded',
     },

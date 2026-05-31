@@ -4,7 +4,7 @@
 
 ## 提交 Issue
 
-- 使用 [GitHub Issues](https://github.com/lifeodyssey/animal-island-ui/issues) 提交 Bug 报告或功能建议
+- 使用 [GitHub Issues](https://github.com/lifeodyssey/animal-island-ui-tailwind/issues) 提交 Bug 报告或功能建议
 - Bug 报告请附上：复现步骤、预期行为、实际行为、浏览器/系统环境
 - 功能建议请说明使用场景和期望的 API 设计
 
@@ -22,7 +22,7 @@
 ## 本地开发
 
 ```bash
-git clone https://github.com/lifeodyssey/animal-island-ui.git
+git clone https://github.com/lifeodyssey/animal-island-ui-tailwind.git
 cd animal-island-ui
 npm install
 

@@ -29,11 +29,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/lifeodyssey/animal-island-ui"
+    "url": "https://github.com/lifeodyssey/animal-island-ui-tailwind"
   },
-  "homepage": "https://github.com/lifeodyssey/animal-island-ui#readme",
+  "homepage": "https://github.com/lifeodyssey/animal-island-ui-tailwind#readme",
   "bugs": {
-    "url": "https://github.com/lifeodyssey/animal-island-ui/issues"
+    "url": "https://github.com/lifeodyssey/animal-island-ui-tailwind/issues"
   },
   "author": "lifeodyssey",
   "scripts": {
