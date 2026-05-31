@@ -11,7 +11,29 @@ export default mergeConfig(
     viteConfig,
     defineConfig({
         test: {
+            coverage: {
+                provider: 'istanbul',
+                include: ['src/**/*.{ts,tsx}'],
+                exclude: [
+                    'src/**/*.stories.tsx',
+                    'src/**/index.ts',
+                    'src/**/*.d.ts',
+                    'src/components/WeddingInvitation/fonts.ts',
+                ],
+                reporter: ['text-summary', 'json-summary', 'html', 'lcov'],
+            },
             projects: [
+                {
+                    // Node/jsdom unit tests for logic that can't be asserted in
+                    // the browser story runner (e.g. spying gsap tween calls
+                    // against the upstream animation spec). Files: *.unit.test.tsx
+                    extends: true,
+                    test: {
+                        name: 'unit',
+                        environment: 'jsdom',
+                        include: ['src/**/*.unit.test.{ts,tsx}'],
+                    },
+                },
                 {
                     extends: true,
                     plugins: [

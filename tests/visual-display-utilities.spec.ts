@@ -3,6 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 const assetsStoryUrl = '/iframe.html?id=regression-parity-display-utilities--assets-parity&viewMode=story';
 const textStoryUrl = '/iframe.html?id=regression-parity-display-utilities--text-utility-stable&viewMode=story';
 const statusStoryUrl = '/iframe.html?id=regression-parity-display-utilities--status-scene-stable&viewMode=story';
+const weddingStoryUrl = '/iframe.html?id=regression-parity-display-utilities--wedding-invitation-stable&viewMode=story';
 
 const freezeClock = async (page: Page) => {
     await page.addInitScript(() => {
@@ -58,6 +59,12 @@ test.describe('reference display utility visual parity', () => {
         await expect(page.getByTestId('code-block-region')).toHaveScreenshot('code-block-region.png', {
             animations: 'disabled',
         });
+        await expect(page.getByTestId('cursor-force-region')).toHaveScreenshot('cursor-force-region.png', {
+            animations: 'disabled',
+        });
+        await expect(page.getByTestId('cursor-scoped-region')).toHaveScreenshot('cursor-scoped-region.png', {
+            animations: 'disabled',
+        });
         await expect(page.getByTestId('typewriter-region')).toHaveScreenshot('typewriter-region.png', {
             animations: 'disabled',
         });
@@ -90,6 +97,16 @@ test.describe('reference display utility visual parity', () => {
         await expect(page.getByTestId('time-region')).toContainText('13:45');
 
         await expect(page.getByTestId('time-region')).toHaveScreenshot('time-mobile-region.png', {
+            animations: 'disabled',
+        });
+    });
+
+    test('captures WeddingInvitation region', async ({ page }) => {
+        await page.goto(weddingStoryUrl);
+        await disableMotion(page);
+        await expect(page.getByTestId('wedding-invitation-region')).toBeVisible();
+
+        await expect(page.getByTestId('wedding-invitation-region')).toHaveScreenshot('wedding-invitation-region.png', {
             animations: 'disabled',
         });
     });

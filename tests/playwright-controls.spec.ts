@@ -41,6 +41,8 @@ test.describe('reference controls parity', () => {
         await expect(page.getByTestId('switch-parity-region')).toBeVisible();
         await expect(page.getByTestId('checkbox-parity-region')).toBeVisible();
         await expect(page.getByTestId('select-parity-region')).toBeVisible();
+        await expect(page.getByTestId('radio-parity-region')).toBeVisible();
+        await expect(page.getByTestId('tooltip-parity-region')).toBeVisible();
     });
 
     test('covers Switch interactions', async ({ page }) => {
@@ -117,6 +119,45 @@ test.describe('reference controls parity', () => {
         await expect(dropdown.locator('.animal-select-item')).toHaveCount(2);
         await dropdown.locator('.animal-select-item').filter({ hasText: '空键选项' }).first().click({ force: true });
         await expect(page.getByTestId('select-empty-key-label')).toContainText('空键选项');
+    });
+
+    test('covers Radio states and keyboard navigation', async ({ page }) => {
+        const region = page.getByTestId('radio-parity-region');
+        await expect(page.getByTestId('radio-selected-label')).toContainText('春天');
+
+        const summer = region.locator('.animal-radio-item').filter({ hasText: '☀️ 夏天' }).first();
+        await summer.click();
+        await expect(page.getByTestId('radio-selected-label')).toContainText('夏天');
+        await expect(summer.getByRole('radio')).toHaveAttribute('aria-checked', 'true');
+
+        const checkedCircle = region.locator('.animal-radio-item.animal-radio-checked .animal-radio-circle').first();
+        await expect(checkedCircle).toHaveCSS('background-color', 'rgb(25, 200, 185)');
+
+        const firstRadio = region.getByRole('radio').first();
+        await firstRadio.focus();
+        await page.keyboard.press('ArrowRight');
+        await expect(page.getByTestId('radio-selected-label')).toContainText('夏天');
+
+        const disabledPear = region.locator('.animal-radio-item').filter({ hasText: '🍐 梨子' }).first();
+        await expect(disabledPear.getByRole('radio')).toBeDisabled();
+        await disabledPear.click({ force: true });
+        await expect(disabledPear.getByRole('radio')).toHaveAttribute('aria-checked', 'false');
+    });
+
+    test('covers Tooltip triggers and variants', async ({ page }) => {
+        const region = page.getByTestId('tooltip-parity-region');
+        const hoverButton = region.getByRole('button', { name: 'hover default' });
+        await hoverButton.hover();
+        await expect(page.getByRole('tooltip').first()).toContainText('默认提示');
+
+        const clickButton = region.getByRole('button', { name: 'click trigger' });
+        await clickButton.click();
+        await expect(page.getByRole('tooltip').filter({ hasText: '点击提示' })).toBeVisible();
+
+        const islandTooltip = page.locator('.animal-tooltip.animal-tooltip-island').first();
+        await region.getByRole('button', { name: 'island', exact: true }).hover();
+        await expect(islandTooltip).toBeVisible();
+        await expect(islandTooltip).toHaveCSS('max-width', '280px');
     });
 
     test('covers Switch state matrix including disabled and loading states', async ({ page }) => {

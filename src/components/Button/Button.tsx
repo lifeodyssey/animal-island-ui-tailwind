@@ -1,8 +1,9 @@
 import React from 'react';
 import { cn } from '../../utils/cn';
+import type { ComponentSize } from '../../utils/types';
 
 export type ButtonType = 'primary' | 'default' | 'dashed' | 'text' | 'link';
-export type ButtonSize = 'small' | 'middle' | 'large';
+export type ButtonSize = ComponentSize;
 export type ButtonHTMLType = 'submit' | 'reset' | 'button';
 
 const buttonTypeClassName: Record<ButtonType, string> = {

@@ -1,6 +1,7 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import * as RadixSwitch from '@radix-ui/react-switch';
 import { cn } from '../../utils/cn';
+import { useControllableState } from '../../utils/useControllableState';
 
 export type SwitchSize = 'small' | 'default';
 
@@ -42,19 +43,20 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
         },
         ref,
     ) => {
-        const [innerChecked, setInnerChecked] = useState(defaultChecked);
-        const isControlled = checked !== undefined;
-        const isChecked = isControlled ? checked : innerChecked;
+        const { value: isChecked, setValue } = useControllableState<boolean>({
+            value: checked,
+            defaultValue: defaultChecked,
+            onChange,
+        });
         const isDisabled = disabled || loading;
 
         // Radix passes the next checked state. Use it directly to avoid "toggle based on stale state" bugs.
         const handleCheckedChange = useCallback(
             (nextChecked: boolean) => {
                 if (isDisabled) return;
-                if (!isControlled) setInnerChecked(nextChecked);
-                onChange?.(nextChecked);
+                setValue(nextChecked);
             },
-            [isDisabled, isControlled, onChange],
+            [isDisabled, setValue],
         );
 
         return (

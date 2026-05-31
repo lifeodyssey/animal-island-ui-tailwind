@@ -42,7 +42,14 @@ jobs:
         run: npm run build
 
       - name: Run tests (excluding visual regression)
-        run: npm run test:migration && npm run test-storybook && npm run test:playwright && npm run test:a11y
+        run: npm run test:migration && npm run test:coverage && npm run test:playwright && npm run test:a11y
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@75cd11691c0faa626561e295848008c8a7dddffe # v5.5.4
+        with:
+          files: ./coverage/lcov.info
+          fail_ci_if_error: false
+        continue-on-error: true
 
       - name: Build Storybook
         run: npm run build:storybook

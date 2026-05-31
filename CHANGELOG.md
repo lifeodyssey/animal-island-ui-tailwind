@@ -22,7 +22,7 @@ versioning for npm releases.
 - Table component with striped rows, loading overlay, empty state, and scroll support.
 - Automated accessibility testing with @axe-core/playwright (WCAG 2.0 AA).
 - Select now supports uncontrolled mode via `defaultValue` prop.
-- Storybook deployed to Cloudflare Pages at animalcrossing.zhenjia.org.
+- Storybook deployed to Cloudflare Pages at animalcrossing.zhenjia.dev.
 - Optional font loading: `style/core` (no fonts) and `style/fonts` (fonts only).
 - Per-component ESM output for tree-shaking (`preserveModules`).
 

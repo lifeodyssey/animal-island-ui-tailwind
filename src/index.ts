@@ -31,10 +31,10 @@ import '@fontsource/zen-maru-gothic/japanese-900.css';
 // 基础 UI 组件
 // ============================================
 export { Button } from './components/Button';
-export type { ButtonProps, ButtonType, ButtonSize } from './components/Button';
+export type { ButtonProps, ButtonType, ButtonSize, ButtonHTMLType } from './components/Button';
 
 export { Input } from './components/Input';
-export type { InputProps, InputSize } from './components/Input';
+export type { InputProps, InputSize, InputStatus } from './components/Input';
 
 export { Switch } from './components/Switch';
 export type { SwitchProps, SwitchSize } from './components/Switch';
@@ -61,7 +61,7 @@ export { Phone } from './components/Phone';
 export type { PhoneProps } from './components/Phone';
 
 export { Divider } from './components/Divider';
-export type { DividerProps } from './components/Divider';
+export type { DividerProps, DividerType } from './components/Divider';
 
 export { Typewriter } from './components/Typewriter';
 export type { TypewriterProps } from './components/Typewriter';
@@ -78,6 +78,12 @@ export type { TabsProps, TabItem } from './components/Tabs';
 export { Checkbox } from './components/Checkbox';
 export type { CheckboxProps, CheckboxOption, CheckboxSize } from './components/Checkbox';
 
+export { Radio } from './components/Radio';
+export type { RadioProps, RadioOption, RadioSize } from './components/Radio';
+
+export { Tooltip } from './components/Tooltip';
+export type { TooltipProps, TooltipPlacement, TooltipTrigger, TooltipVariant } from './components/Tooltip';
+
 export { CodeBlock } from './components/CodeBlock';
 export type { CodeBlockProps } from './components/CodeBlock';
 
@@ -86,3 +92,10 @@ export type { LoadingProps } from './components/Loading';
 
 export { Table } from './components/Table';
 export type { TableProps, TableColumn } from './components/Table';
+
+export { WeddingInvitation, WeddingInvitationExportButton } from './components/WeddingInvitation';
+export type {
+    WeddingInvitationProps,
+    WeddingInvitationRef,
+    WeddingInvitationExportButtonProps,
+} from './components/WeddingInvitation';

@@ -21,6 +21,8 @@ test.describe('reference controls visual parity', () => {
         await expect(page.getByTestId('switch-parity-region')).toBeVisible();
         await expect(page.getByTestId('checkbox-parity-region')).toBeVisible();
         await expect(page.getByTestId('select-parity-region')).toBeVisible();
+        await expect(page.getByTestId('radio-parity-region')).toBeVisible();
+        await expect(page.getByTestId('tooltip-parity-region')).toBeVisible();
 
         await expect(page.getByTestId('switch-parity-region')).toHaveScreenshot('switch-parity-region.png', {
             animations: 'disabled',
@@ -31,11 +33,29 @@ test.describe('reference controls visual parity', () => {
         await expect(page.getByTestId('select-parity-region')).toHaveScreenshot('select-parity-region.png', {
             animations: 'disabled',
         });
+        await expect(page.getByTestId('radio-parity-region')).toHaveScreenshot('radio-parity-region.png', {
+            animations: 'disabled',
+        });
+        await expect(page.getByTestId('tooltip-parity-region')).toHaveScreenshot('tooltip-parity-region.png', {
+            animations: 'disabled',
+        });
 
         await page.getByText('鲈鱼').first().click();
         await expect(page.locator('body')).toHaveScreenshot('select-open-parity.png', {
             animations: 'disabled',
             mask: [page.locator('#storybook-root').locator('section').nth(0), page.locator('#storybook-root').locator('section').nth(1)],
+        });
+
+        await page.getByRole('button', { name: 'hover default' }).hover();
+        await expect(page.getByRole('tooltip', { name: '默认提示' })).toBeVisible();
+        await expect(page.locator('body')).toHaveScreenshot('tooltip-open-parity.png', {
+            animations: 'disabled',
+            mask: [
+                page.getByTestId('switch-parity-region'),
+                page.getByTestId('checkbox-parity-region'),
+                page.getByTestId('select-parity-region'),
+                page.getByTestId('radio-parity-region'),
+            ],
         });
     });
 

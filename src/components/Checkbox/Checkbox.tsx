@@ -1,8 +1,12 @@
-import React, { useCallback, useId, useState } from 'react';
+import React, { useCallback } from 'react';
 import * as RadixCheckbox from '@radix-ui/react-checkbox';
 import { cn } from '../../utils/cn';
+import { CheckmarkIcon } from '../../utils/CheckmarkIcon';
+import { useSafeId } from '../../utils/useSafeId';
+import { useControllableState } from '../../utils/useControllableState';
+import type { ComponentSize } from '../../utils/types';
 
-export type CheckboxSize = 'small' | 'middle' | 'large';
+export type CheckboxSize = ComponentSize;
 
 export interface CheckboxOption {
     /** 选项标签 */
@@ -54,11 +58,12 @@ export const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
         },
         ref,
     ) => {
-        const [innerValue, setInnerValue] = useState<Array<string | number>>(defaultValue);
-        const isControlled = value !== undefined;
-        const checkedValues = isControlled ? value! : innerValue;
-        const groupId = useId();
-        const safeGroupId = groupId.replace(/[^a-zA-Z0-9_-]/g, '');
+        const { value: checkedValues, setValue } = useControllableState<Array<string | number>>({
+            value,
+            defaultValue,
+            onChange,
+        });
+        const safeGroupId = useSafeId();
 
         const handleCheckedChange = useCallback(
             (optValue: string | number, nextChecked: boolean | 'indeterminate', optDisabled?: boolean) => {
@@ -70,10 +75,9 @@ export const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
                     ? (checkedValues.includes(optValue) ? checkedValues : [...checkedValues, optValue])
                     : checkedValues.filter((v) => v !== optValue);
 
-                if (!isControlled) setInnerValue(next);
-                onChange?.(next);
+                setValue(next);
             },
-            [disabled, checkedValues, isControlled, onChange],
+            [disabled, checkedValues, setValue],
         );
 
         return (
@@ -110,9 +114,7 @@ export const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
                                 onCheckedChange={(nextChecked) => handleCheckedChange(opt.value, nextChecked, opt.disabled)}
                             >
                                 <RadixCheckbox.Indicator className="animal-checkbox-indicator">
-                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M2 8L6 12L14 4" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                    </svg>
+                                    <CheckmarkIcon />
                                 </RadixCheckbox.Indicator>
                             </RadixCheckbox.Root>
                             <label className="animal-checkbox-label" htmlFor={optionId}>

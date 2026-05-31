@@ -3,6 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 const assetsStoryUrl = '/iframe.html?id=regression-parity-display-utilities--assets-parity&viewMode=story';
 const textStoryUrl = '/iframe.html?id=regression-parity-display-utilities--text-utility-stable&viewMode=story';
 const statusStoryUrl = '/iframe.html?id=regression-parity-display-utilities--status-scene-stable&viewMode=story';
+const weddingStoryUrl = '/iframe.html?id=regression-parity-display-utilities--wedding-invitation-stable&viewMode=story';
 
 const freezeClock = async (page: Page) => {
     await page.addInitScript(() => {
@@ -29,10 +30,26 @@ test.describe('reference display utility parity', () => {
         await expect(page.getByTestId('icon-region')).toBeVisible();
 
         const dividers = page.getByTestId('divider-matrix').locator('div[class*="divider"]');
-        await expect(dividers).toHaveCount(6);
-        for (const divider of await dividers.all()) {
+        await expect(dividers).toHaveCount(10);
+        const solidAndWaveDividers = page
+            .getByTestId('divider-matrix')
+            .locator(
+                '.animal-divider:not(.animal-divider-dashed-brown):not(.animal-divider-dashed-teal):not(.animal-divider-dashed-white):not(.animal-divider-dashed-yellow)',
+            );
+        const dashedDividers = page
+            .getByTestId('divider-matrix')
+            .locator(
+                '.animal-divider.animal-divider-dashed-brown, .animal-divider.animal-divider-dashed-teal, .animal-divider.animal-divider-dashed-white, .animal-divider.animal-divider-dashed-yellow',
+            );
+
+        for (const divider of await solidAndWaveDividers.all()) {
             await expect(divider).toHaveCSS('height', '12px');
             await expect(divider).toHaveCSS('background-repeat', 'no-repeat');
+        }
+        for (const divider of await dashedDividers.all()) {
+            await expect(divider).toHaveCSS('height', '12px');
+            await expect(divider).toHaveCSS('background-repeat', 'repeat-x');
+            await expect(divider).toHaveCSS('background-size', '12px 2px');
         }
         await expect(dividers.last()).toHaveCSS('width', '220px');
 
@@ -63,7 +80,11 @@ test.describe('reference display utility parity', () => {
         await expect(codeBlock.locator('span')).toHaveCount(72);
         await expect(codeBlock.locator('span').filter({ hasText: 'React' }).first()).toHaveCSS('color', 'rgb(224, 108, 117)');
 
-        await expect(page.getByRole('button', { name: 'cursor target' })).toHaveCSS('cursor', /cursor-icon/);
+        await expect(page.getByTestId('cursor-force-button')).toHaveCSS('cursor', /cursor-icon/);
+        await expect(page.getByTestId('cursor-scoped-region')).toHaveCSS('cursor', /cursor-icon/);
+        await expect(page.getByTestId('cursor-scoped-button')).toHaveCSS('cursor', 'pointer');
+        await expect(page.getByTestId('cursor-scoped-input')).toHaveCSS('cursor', 'text');
+        await expect(page.getByTestId('cursor-scoped-disabled')).toHaveCSS('cursor', 'not-allowed');
         await expect(page.getByTestId('typewriter-static')).toHaveText('Instant message');
         await expect(page.getByTestId('typewriter-live')).toHaveText('Island typing');
         await expect(page.getByTestId('typewriter-done-count')).toHaveText('done: 1');
@@ -109,5 +130,24 @@ test.describe('reference display utility parity', () => {
         await expect(timeRoot.locator('[class*="acMonthday"], .animal-time-monthday').first()).toHaveCSS('font-size', '16px');
         await expect(timeRoot.locator('[class*="acTime"], .animal-time-clock').first()).toHaveCSS('font-size', '32px');
         await expect(timeRoot.locator('[class*="acColon"], .animal-time-colon').first()).toHaveCSS('font-size', '32px');
+    });
+
+    test('covers WeddingInvitation structure and export affordance', async ({ page }) => {
+        await page.goto(weddingStoryUrl);
+        await expect(page.getByTestId('wedding-invitation-region')).toBeVisible();
+
+        const card = page.getByTestId('wedding-invitation-card');
+        await expect(card).toContainText('Wedding Invitation');
+        await expect(card).toContainText('婚礼时间');
+        await expect(card).toContainText('彩虹岛 · 樱花广场');
+        await expect(card).toContainText('婚礼抽奖券');
+
+        const weddingRoot = card.locator('.animal-wedding-invitation').first();
+        await expect(weddingRoot).toHaveCSS('max-width', '420px');
+        await expect(weddingRoot).toHaveCSS('border-radius', '16px');
+
+        const exportButton = page.getByRole('button', { name: '保存为图片' });
+        await expect(exportButton).toBeVisible();
+        await expect(exportButton).toBeEnabled();
     });
 });

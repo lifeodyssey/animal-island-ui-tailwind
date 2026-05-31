@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import type { CSSProperties } from 'react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import {
     Button,
@@ -14,6 +14,9 @@ import {
     Phone,
     Time,
     Typewriter,
+    WeddingInvitation,
+    WeddingInvitationExportButton,
+    type WeddingInvitationRef,
 } from '../src';
 
 const meta = {
@@ -61,7 +64,17 @@ const panelStyle = {
     borderRadius: 12,
 } satisfies CSSProperties;
 
-const dividerTypes = ['line-brown', 'line-teal', 'line-white', 'line-yellow', 'wave-yellow'] as const;
+const dividerTypes = [
+    'line-brown',
+    'line-teal',
+    'line-white',
+    'line-yellow',
+    'wave-yellow',
+    'dashed-brown',
+    'dashed-teal',
+    'dashed-white',
+    'dashed-yellow',
+] as const;
 const footerTypes = ['sea', 'tree'] as const;
 
 const codeSample = `import React, { useState } from 'react';
@@ -126,9 +139,26 @@ const CodeCursorTypewriterSection = () => {
                 <CodeBlock code={codeSample} className="parity-code-block" style={{ width: 720, maxHeight: 260 }} />
             </div>
             <div style={labelStyle}>Cursor</div>
-            <Cursor className="parity-cursor" style={{ ...panelStyle, width: 360 }}>
-                <button type="button">cursor target</button>
+            <Cursor className="parity-cursor" style={{ ...panelStyle, width: 360 }} data-testid="cursor-force-region">
+                <button type="button" data-testid="cursor-force-button">
+                    cursor target
+                </button>
                 <span style={{ marginLeft: 12 }}>custom cursor wraps descendants</span>
+            </Cursor>
+            <Cursor
+                className="parity-cursor"
+                forceAll={false}
+                style={{ ...panelStyle, width: 480, display: 'flex', gap: 12, alignItems: 'center' }}
+                data-testid="cursor-scoped-region"
+            >
+                <button type="button" data-testid="cursor-scoped-button">
+                    scoped button
+                </button>
+                <input data-testid="cursor-scoped-input" type="text" defaultValue="scoped input" aria-label="scoped cursor demo input" />
+                <button type="button" data-testid="cursor-scoped-disabled" disabled>
+                    disabled
+                </button>
+                <span>scoped cursor preserves interaction semantics</span>
             </Cursor>
             <div style={labelStyle}>Typewriter</div>
             <div data-testid="typewriter-region" style={{ ...panelStyle, minHeight: 90 }}>
@@ -181,6 +211,24 @@ const StatusSceneSection = () => {
     );
 };
 
+const WeddingInvitationSection = () => {
+    const invitationRef = useRef<WeddingInvitationRef>(null);
+
+    return (
+        <section data-testid="wedding-invitation-region" style={sectionStyle}>
+            <div style={labelStyle}>WeddingInvitation</div>
+            <div data-testid="wedding-invitation-card" style={{ ...panelStyle, width: 'fit-content' }}>
+                <WeddingInvitation ref={invitationRef} className="parity-wedding-invitation" />
+            </div>
+            <div data-testid="wedding-invitation-export" style={rowStyle}>
+                <WeddingInvitationExportButton targetRef={invitationRef} filename="storybook-wedding-invitation">
+                    保存为图片
+                </WeddingInvitationExportButton>
+            </div>
+        </section>
+    );
+};
+
 export const AssetsParity: Story = {
     render: () => (
         <div style={pageStyle}>
@@ -190,7 +238,7 @@ export const AssetsParity: Story = {
     ),
     play: async ({ canvas }) => {
         await waitFor(() => {
-            expect(canvas.getByTestId('divider-matrix').querySelectorAll('div[class*="divider"]').length).toBeGreaterThanOrEqual(6);
+            expect(canvas.getByTestId('divider-matrix').querySelectorAll('div[class*="divider"]').length).toBeGreaterThanOrEqual(10);
         });
         await waitFor(() => {
             expect(canvas.getByTestId('footer-matrix').querySelectorAll('div[class*="footer"]').length).toBeGreaterThanOrEqual(2);
@@ -209,7 +257,10 @@ export const TextUtilityParity: Story = {
     render: () => <CodeCursorTypewriterSection />,
     play: async ({ canvas }) => {
         await expect(canvas.getByTestId('code-block-region')).toHaveTextContent('useState');
-        await expect(canvas.getByRole('button', { name: 'cursor target' })).toBeVisible();
+        await expect(canvas.getByTestId('cursor-force-button')).toBeVisible();
+        await expect(canvas.getByTestId('cursor-scoped-button')).toBeVisible();
+        await expect(canvas.getByTestId('cursor-scoped-input')).toBeVisible();
+        await expect(canvas.getByTestId('cursor-scoped-disabled')).toBeVisible();
         await expect(canvas.getByTestId('typewriter-static')).toHaveTextContent('Instant message');
         await waitFor(() => expect(canvas.getByTestId('typewriter-live')).toHaveTextContent('Island typing'), {
             timeout: 5000,
@@ -245,4 +296,19 @@ export const StatusSceneParity: Story = {
 
 export const StatusSceneStable: Story = {
     render: () => <StatusSceneSection />,
+};
+
+export const WeddingInvitationParity: Story = {
+    render: () => <WeddingInvitationSection />,
+    play: async ({ canvasElement }) => {
+        const canvas = within(canvasElement);
+        await expect(canvas.getByTestId('wedding-invitation-region')).toBeVisible();
+        await expect(canvas.getByTestId('wedding-invitation-card')).toHaveTextContent('Wedding Invitation');
+        await expect(canvas.getByTestId('wedding-invitation-card')).toHaveTextContent('婚礼时间');
+        await expect(canvas.getByRole('button', { name: '保存为图片' })).toBeVisible();
+    },
+};
+
+export const WeddingInvitationStable: Story = {
+    render: () => <WeddingInvitationSection />,
 };

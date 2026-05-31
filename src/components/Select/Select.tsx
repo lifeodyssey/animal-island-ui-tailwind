@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as RadixSelect from '@radix-ui/react-select';
 import { cn } from '../../utils/cn';
+import { useControllableState } from '../../utils/useControllableState';
 
 export type SelectOption = {
     key: string;
@@ -45,14 +46,11 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
         },
         ref,
     ) => {
-        const isControlled = value !== undefined;
-        const [uncontrolledValue, setUncontrolledValue] = useState(defaultValue ?? '');
-        const currentValue = isControlled ? value : uncontrolledValue;
-
-        const handleChange = (key: string) => {
-            if (!isControlled) setUncontrolledValue(key);
-            onChange?.(key);
-        };
+        const { value: currentValue, setValue: handleChange } = useControllableState<string>({
+            value,
+            defaultValue: defaultValue ?? '',
+            onChange,
+        });
 
         const selectedOption = options.find((option) => option.key === currentValue);
         const radixValue = selectedOption ? toRadixValue(currentValue) : '';

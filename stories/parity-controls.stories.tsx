@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 import type { CSSProperties } from 'react';
 import { useState } from 'react';
 import { expect, userEvent, within } from 'storybook/test';
-import { Checkbox, Select, Switch } from '../src';
-import type { CheckboxOption, SelectOption } from '../src';
+import { Button, Checkbox, Radio, Select, Switch, Tooltip } from '../src';
+import type { CheckboxOption, RadioOption, SelectOption } from '../src';
 
 const meta = {
     title: 'Regression/Parity/Controls',
@@ -117,6 +117,20 @@ const matrixSelectOptions: SelectOption[] = [
     { key: 'winter', label: '冬莓' },
 ];
 
+const radioSeasonOptions: RadioOption[] = [
+    { label: '🌸 春天', value: 'spring' },
+    { label: '☀️ 夏天', value: 'summer' },
+    { label: '🍁 秋天', value: 'autumn' },
+    { label: '❄️ 冬天', value: 'winter' },
+];
+
+const radioFruitOptions: RadioOption[] = [
+    { label: '🍎 苹果', value: 'apple' },
+    { label: '🍊 橙子', value: 'orange' },
+    { label: '🍑 桃子', value: 'peach' },
+    { label: '🍐 梨子', value: 'pear', disabled: true },
+];
+
 const SwitchSection = () => {
     const [checked, setChecked] = useState(false);
 
@@ -216,6 +230,80 @@ const SelectSection = () => {
         </section>
     );
 };
+
+const RadioSection = () => {
+    const [value, setValue] = useState<string | number>('spring');
+
+    return (
+        <section data-testid="radio-parity-region" style={sectionStyle}>
+            <div style={labelStyle}>horizontal controlled + keyboard roving</div>
+            <div data-testid="radio-selected-label" style={{ marginBottom: 8, fontSize: 13, color: '#a08060' }}>
+                已选中:{' '}
+                <span style={{ color: '#19c8b9', fontWeight: 600 }}>
+                    {radioSeasonOptions.find((item) => item.value === value)?.label}
+                </span>
+            </div>
+            <div style={boxStyle}>
+                <Radio options={radioSeasonOptions} value={value} onChange={setValue} style={{ gap: 20 }} />
+            </div>
+            <div style={labelStyle}>vertical + disabled option</div>
+            <div style={boxStyle}>
+                <Radio options={radioFruitOptions} defaultValue="orange" direction="vertical" />
+            </div>
+            <div style={labelStyle}>small / middle / large</div>
+            <div style={{ ...boxStyle, display: 'flex', flexDirection: 'column', gap: 12 }}>
+                <Radio options={radioSeasonOptions.slice(0, 3)} defaultValue="spring" size="small" />
+                <Radio options={radioSeasonOptions.slice(0, 3)} defaultValue="summer" size="middle" />
+                <Radio options={radioSeasonOptions.slice(0, 3)} defaultValue="autumn" size="large" />
+            </div>
+            <div style={labelStyle}>group disabled</div>
+            <div style={boxStyle}>
+                <Radio options={radioSeasonOptions.slice(0, 3)} defaultValue="spring" disabled />
+            </div>
+        </section>
+    );
+};
+
+const TooltipSection = () => (
+    <section data-testid="tooltip-parity-region" style={sectionStyle}>
+        <div style={labelStyle}>trigger and variants</div>
+        <div style={{ ...boxStyle, overflow: 'visible', display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+            <Tooltip title="默认提示">
+                <Button size="small">hover default</Button>
+            </Tooltip>
+            <Tooltip title="点击提示" trigger="click">
+                <Button size="small">click trigger</Button>
+            </Tooltip>
+            <Tooltip title="island 风格" variant="island">
+                <Button size="small">island</Button>
+            </Tooltip>
+            <Tooltip title="无边框 island" variant="island" bordered={false}>
+                <Button size="small">island borderless</Button>
+            </Tooltip>
+        </div>
+        <div style={labelStyle}>placements</div>
+        <div style={{ ...boxStyle, overflow: 'visible', display: 'grid', gridTemplateColumns: 'repeat(3, minmax(120px, 1fr))', gap: 16 }}>
+            <Tooltip title="top-start" placement="top-start">
+                <Button size="small">top-start</Button>
+            </Tooltip>
+            <Tooltip title="top" placement="top">
+                <Button size="small">top</Button>
+            </Tooltip>
+            <Tooltip title="top-end" placement="top-end">
+                <Button size="small">top-end</Button>
+            </Tooltip>
+            <Tooltip title="left" placement="left">
+                <Button size="small">left</Button>
+            </Tooltip>
+            <Tooltip title="bottom" placement="bottom">
+                <Button size="small">bottom</Button>
+            </Tooltip>
+            <Tooltip title="right" placement="right">
+                <Button size="small">right</Button>
+            </Tooltip>
+        </div>
+    </section>
+);
 
 const SelectEmptyKeySection = () => {
     const [value, setValue] = useState('');
@@ -386,9 +474,11 @@ export const ControlsParity: Story = {
             <SwitchSection />
             <CheckboxSection />
             <SelectSection />
+            <RadioSection />
+            <TooltipSection />
         </div>
     ),
-    play: async ({ canvas }) => {
+    play: async ({ canvas, canvasElement }) => {
         await expect(canvas.getByTestId('switch-state-label')).toHaveTextContent('OFF');
         await userEvent.click(canvas.getAllByRole('switch')[0]);
         await expect(canvas.getByTestId('switch-state-label')).toHaveTextContent('ON');
@@ -404,6 +494,13 @@ export const ControlsParity: Story = {
 
         await expect(canvas.getByText('请选择花朵')).toBeVisible();
         await expect(canvas.getByText('玫瑰')).toBeVisible();
+        await expect(canvas.getByTestId('radio-selected-label')).toHaveTextContent('春天');
+        await userEvent.click(canvas.getAllByText('☀️ 夏天')[0]);
+        await expect(canvas.getByTestId('radio-selected-label')).toHaveTextContent('夏天');
+        await userEvent.hover(canvas.getByRole('button', { name: 'hover default' }));
+        const docBody = within(canvasElement.ownerDocument.body);
+        const tooltip = await docBody.findByRole('tooltip', {}, { timeout: 3000 });
+        await expect(tooltip).toHaveTextContent('默认提示');
     },
 };
 
@@ -413,6 +510,8 @@ export const ControlsPlaywrightParity: Story = {
             <SwitchSection />
             <CheckboxSection />
             <SelectSection />
+            <RadioSection />
+            <TooltipSection />
         </div>
     ),
 };

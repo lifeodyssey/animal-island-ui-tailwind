@@ -1,7 +1,8 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { cn } from '../../utils/cn';
+import type { ComponentSize } from '../../utils/types';
 
-export type InputSize = 'small' | 'middle' | 'large';
+export type InputSize = ComponentSize;
 export type InputStatus = 'error' | 'warning';
 type InputValue = NonNullable<React.InputHTMLAttributes<HTMLInputElement>['value']>;
 

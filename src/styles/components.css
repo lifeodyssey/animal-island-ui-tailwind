@@ -1,7 +1,46 @@
 @layer components {
+  /* Base: custom cursor on container and all descendants. */
   .animal-cursor,
   .animal-cursor * {
     cursor: url("../assets/img/cursor/cursor-icon.png") 4 0, auto !important;
+  }
+
+  /* Scoped mode: restore semantic cursors on interactive descendants. */
+  .animal-cursor--scoped * {
+    cursor: auto !important;
+  }
+
+  .animal-cursor--scoped a[href],
+  .animal-cursor--scoped button,
+  .animal-cursor--scoped [role="button"],
+  .animal-cursor--scoped [role="link"],
+  .animal-cursor--scoped label[for],
+  .animal-cursor--scoped select,
+  .animal-cursor--scoped summary,
+  .animal-cursor--scoped input[type="button"],
+  .animal-cursor--scoped input[type="submit"],
+  .animal-cursor--scoped input[type="reset"],
+  .animal-cursor--scoped input[type="checkbox"],
+  .animal-cursor--scoped input[type="radio"],
+  .animal-cursor--scoped input[type="range"],
+  .animal-cursor--scoped [data-animal-cursor="pointer"] {
+    cursor: pointer !important;
+  }
+
+  .animal-cursor--scoped input[type="text"],
+  .animal-cursor--scoped input[type="search"],
+  .animal-cursor--scoped input[type="email"],
+  .animal-cursor--scoped input[type="password"],
+  .animal-cursor--scoped input[type="number"],
+  .animal-cursor--scoped input[type="tel"],
+  .animal-cursor--scoped input[type="url"],
+  .animal-cursor--scoped textarea {
+    cursor: text !important;
+  }
+
+  .animal-cursor--scoped [disabled],
+  .animal-cursor--scoped [aria-disabled="true"] {
+    cursor: not-allowed !important;
   }
 
   .animal-btn {
@@ -549,6 +588,637 @@
     color: var(--animal-text-color-disabled);
   }
 
+  .animal-radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--animal-spacing-md);
+    font-family: var(--animal-font-family);
+  }
+
+  .animal-radio-group-vertical {
+    flex-direction: column;
+    gap: var(--animal-spacing-sm);
+  }
+
+  .animal-radio-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--animal-spacing-sm);
+    cursor: pointer;
+    user-select: none;
+    transition: all var(--animal-motion-duration-base) var(--animal-motion-ease);
+  }
+
+  .animal-radio-circle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: rgb(247, 243, 223);
+    border: 2px solid #c4b89e;
+    border-radius: 8px;
+    outline: none;
+    transition: all var(--animal-motion-duration-base) var(--animal-motion-ease);
+  }
+
+  .animal-radio-circle:focus-visible {
+    outline: 2px solid var(--animal-focus-yellow);
+    outline-offset: 2px;
+  }
+
+  .animal-radio-small .animal-radio-circle {
+    width: 18px;
+    height: 18px;
+    border-radius: 6px;
+  }
+
+  .animal-radio-middle .animal-radio-circle {
+    width: 22px;
+    height: 22px;
+    border-radius: 8px;
+  }
+
+  .animal-radio-large .animal-radio-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 12px;
+  }
+
+  .animal-radio-checked .animal-radio-circle {
+    background: var(--animal-primary-color);
+    border-color: var(--animal-primary-color-active);
+  }
+
+  .animal-radio-indicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    line-height: 1;
+    animation: animal-checkbox-pop var(--animal-motion-duration-fast) var(--animal-motion-ease);
+  }
+
+  .animal-radio-small .animal-radio-indicator {
+    width: 10px;
+    height: 10px;
+  }
+
+  .animal-radio-middle .animal-radio-indicator {
+    width: 12px;
+    height: 12px;
+  }
+
+  .animal-radio-large .animal-radio-indicator {
+    width: 14px;
+    height: 14px;
+  }
+
+  .animal-radio-indicator svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .animal-radio-label {
+    color: #725d42;
+    font-size: var(--animal-font-size-base);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    transition: color var(--animal-motion-duration-fast) var(--animal-motion-ease);
+  }
+
+  .animal-radio-small .animal-radio-label {
+    font-size: var(--animal-font-size-sm);
+  }
+
+  .animal-radio-large .animal-radio-label {
+    font-size: var(--animal-font-size-lg);
+  }
+
+  .animal-radio-checked .animal-radio-label {
+    color: #794f27;
+  }
+
+  .animal-radio-disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
+  .animal-radio-disabled .animal-radio-circle {
+    background: #f0ece2;
+    border-color: #d4c9b4;
+  }
+
+  .animal-radio-disabled .animal-radio-label {
+    color: #c4b89e;
+  }
+
+  .animal-radio-group-disabled .animal-radio-item {
+    cursor: not-allowed;
+  }
+
+  .animal-tooltip-wrapper {
+    position: relative;
+    display: inline-flex;
+    vertical-align: middle;
+    font-family: var(--animal-font-family);
+  }
+
+  .animal-tooltip {
+    position: absolute;
+    z-index: 100;
+    box-sizing: border-box;
+    width: max-content;
+    max-width: 240px;
+    padding: 6px 12px;
+    background: rgb(247, 243, 223);
+    border-radius: var(--animal-radius-sm);
+    box-shadow: var(--animal-shadow-base);
+    color: #725d42;
+    font-size: var(--animal-font-size-sm);
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--animal-motion-duration-base) var(--animal-motion-ease),
+      transform var(--animal-motion-duration-base) var(--animal-motion-ease);
+  }
+
+  .animal-tooltip-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .animal-tooltip::after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: rgb(247, 243, 223);
+    border-radius: 2px;
+  }
+
+  .animal-tooltip-content {
+    position: relative;
+    z-index: 1;
+    white-space: pre-line;
+    overflow-wrap: break-word;
+  }
+
+  .animal-tooltip-bordered:not(.animal-tooltip-island) {
+    border: var(--animal-border-width) solid #c4b89e;
+  }
+
+  .animal-tooltip-borderless:not(.animal-tooltip-island)::after {
+    border: none !important;
+  }
+
+  .animal-tooltip-island {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    max-width: 280px;
+  }
+
+  .animal-tooltip-island::after {
+    display: none;
+  }
+
+  .animal-tooltip-island-body {
+    position: relative;
+    width: max-content;
+    max-width: 280px;
+  }
+
+  .animal-tooltip-island-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .animal-tooltip-island-content {
+    position: relative;
+    z-index: 1;
+    padding: 12px 20px;
+  }
+
+  .animal-tooltip-island-content .animal-tooltip-content {
+    font-weight: 600;
+    line-height: 1.55;
+    text-align: center;
+  }
+
+  .animal-tooltip-island.animal-tooltip-bordered .animal-tooltip-island-body {
+    padding: 2px;
+    filter: drop-shadow(0 4px 14px rgba(121, 79, 39, 0.14));
+  }
+
+  .animal-tooltip-island.animal-tooltip-borderless .animal-tooltip-island-content {
+    background: rgb(247, 243, 223);
+    filter: drop-shadow(0 4px 14px rgba(121, 79, 39, 0.14));
+  }
+
+  .animal-tooltip-tail {
+    position: absolute;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .animal-tooltip-island.animal-tooltip-borderless .animal-tooltip-tail {
+    width: 14px;
+    height: 14px;
+    background: rgb(247, 243, 223);
+    border-radius: 999px;
+  }
+
+  .animal-tooltip-island.animal-tooltip-bordered .animal-tooltip-tail {
+    width: 10px;
+    height: 10px;
+    background: rgb(247, 243, 223);
+    border-radius: 2px;
+  }
+
+  .animal-tooltip-top {
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+  }
+
+  .animal-tooltip-top.animal-tooltip-visible {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .animal-tooltip-top::after {
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    border-right: var(--animal-border-width) solid #c4b89e;
+    border-bottom: var(--animal-border-width) solid #c4b89e;
+  }
+
+  .animal-tooltip-top-start {
+    bottom: calc(100% + 10px);
+    left: 0;
+    transform: translateY(4px);
+  }
+
+  .animal-tooltip-top-start.animal-tooltip-visible {
+    transform: translateY(0);
+  }
+
+  .animal-tooltip-top-start::after {
+    bottom: -5px;
+    left: 16px;
+    transform: rotate(45deg);
+    border-right: var(--animal-border-width) solid #c4b89e;
+    border-bottom: var(--animal-border-width) solid #c4b89e;
+  }
+
+  .animal-tooltip-top-end {
+    bottom: calc(100% + 10px);
+    right: 0;
+    transform: translateY(4px);
+  }
+
+  .animal-tooltip-top-end.animal-tooltip-visible {
+    transform: translateY(0);
+  }
+
+  .animal-tooltip-top-end::after {
+    bottom: -5px;
+    right: 16px;
+    transform: rotate(45deg);
+    border-right: var(--animal-border-width) solid #c4b89e;
+    border-bottom: var(--animal-border-width) solid #c4b89e;
+  }
+
+  .animal-tooltip-bottom {
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(-4px);
+  }
+
+  .animal-tooltip-bottom.animal-tooltip-visible {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .animal-tooltip-bottom::after {
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    border-top: var(--animal-border-width) solid #c4b89e;
+    border-left: var(--animal-border-width) solid #c4b89e;
+  }
+
+  .animal-tooltip-bottom-start {
+    top: calc(100% + 10px);
+    left: 0;
+    transform: translateY(-4px);
+  }
+
+  .animal-tooltip-bottom-start.animal-tooltip-visible {
+    transform: translateY(0);
+  }
+
+  .animal-tooltip-bottom-start::after {
+    top: -5px;
+    left: 16px;
+    transform: rotate(45deg);
+    border-top: var(--animal-border-width) solid #c4b89e;
+    border-left: var(--animal-border-width) solid #c4b89e;
+  }
+
+  .animal-tooltip-bottom-end {
+    top: calc(100% + 10px);
+    right: 0;
+    transform: translateY(-4px);
+  }
+
+  .animal-tooltip-bottom-end.animal-tooltip-visible {
+    transform: translateY(0);
+  }
+
+  .animal-tooltip-bottom-end::after {
+    top: -5px;
+    right: 16px;
+    transform: rotate(45deg);
+    border-top: var(--animal-border-width) solid #c4b89e;
+    border-left: var(--animal-border-width) solid #c4b89e;
+  }
+
+  .animal-tooltip-left {
+    right: calc(100% + 10px);
+    top: 50%;
+    transform: translateY(-50%) translateX(4px);
+  }
+
+  .animal-tooltip-left.animal-tooltip-visible {
+    transform: translateY(-50%) translateX(0);
+  }
+
+  .animal-tooltip-left::after {
+    right: -5px;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    border-top: var(--animal-border-width) solid #c4b89e;
+    border-right: var(--animal-border-width) solid #c4b89e;
+  }
+
+  .animal-tooltip-left-start {
+    right: calc(100% + 10px);
+    top: 0;
+    transform: translateX(4px);
+  }
+
+  .animal-tooltip-left-start.animal-tooltip-visible {
+    transform: translateX(0);
+  }
+
+  .animal-tooltip-left-start::after {
+    right: -5px;
+    top: 12px;
+    transform: rotate(45deg);
+    border-top: var(--animal-border-width) solid #c4b89e;
+    border-right: var(--animal-border-width) solid #c4b89e;
+  }
+
+  .animal-tooltip-left-end {
+    right: calc(100% + 10px);
+    bottom: 0;
+    transform: translateX(4px);
+  }
+
+  .animal-tooltip-left-end.animal-tooltip-visible {
+    transform: translateX(0);
+  }
+
+  .animal-tooltip-left-end::after {
+    right: -5px;
+    bottom: 12px;
+    transform: rotate(45deg);
+    border-top: var(--animal-border-width) solid #c4b89e;
+    border-right: var(--animal-border-width) solid #c4b89e;
+  }
+
+  .animal-tooltip-right {
+    left: calc(100% + 10px);
+    top: 50%;
+    transform: translateY(-50%) translateX(-4px);
+  }
+
+  .animal-tooltip-right.animal-tooltip-visible {
+    transform: translateY(-50%) translateX(0);
+  }
+
+  .animal-tooltip-right::after {
+    left: -5px;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    border-bottom: var(--animal-border-width) solid #c4b89e;
+    border-left: var(--animal-border-width) solid #c4b89e;
+  }
+
+  .animal-tooltip-right-start {
+    left: calc(100% + 10px);
+    top: 0;
+    transform: translateX(-4px);
+  }
+
+  .animal-tooltip-right-start.animal-tooltip-visible {
+    transform: translateX(0);
+  }
+
+  .animal-tooltip-right-start::after {
+    left: -5px;
+    top: 12px;
+    transform: rotate(45deg);
+    border-bottom: var(--animal-border-width) solid #c4b89e;
+    border-left: var(--animal-border-width) solid #c4b89e;
+  }
+
+  .animal-tooltip-right-end {
+    left: calc(100% + 10px);
+    bottom: 0;
+    transform: translateX(-4px);
+  }
+
+  .animal-tooltip-right-end.animal-tooltip-visible {
+    transform: translateX(0);
+  }
+
+  .animal-tooltip-right-end::after {
+    left: -5px;
+    bottom: 12px;
+    transform: rotate(45deg);
+    border-bottom: var(--animal-border-width) solid #c4b89e;
+    border-left: var(--animal-border-width) solid #c4b89e;
+  }
+
+  .animal-tooltip-island.animal-tooltip-borderless.animal-tooltip-top .animal-tooltip-tail {
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .animal-tooltip-island.animal-tooltip-borderless.animal-tooltip-top-start .animal-tooltip-tail {
+    bottom: -5px;
+    left: 20px;
+  }
+
+  .animal-tooltip-island.animal-tooltip-borderless.animal-tooltip-top-end .animal-tooltip-tail {
+    bottom: -5px;
+    right: 20px;
+  }
+
+  .animal-tooltip-island.animal-tooltip-borderless.animal-tooltip-bottom .animal-tooltip-tail {
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .animal-tooltip-island.animal-tooltip-borderless.animal-tooltip-bottom-start .animal-tooltip-tail {
+    top: -5px;
+    left: 20px;
+  }
+
+  .animal-tooltip-island.animal-tooltip-borderless.animal-tooltip-bottom-end .animal-tooltip-tail {
+    top: -5px;
+    right: 20px;
+  }
+
+  .animal-tooltip-island.animal-tooltip-borderless.animal-tooltip-left .animal-tooltip-tail {
+    right: -5px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .animal-tooltip-island.animal-tooltip-borderless.animal-tooltip-left-start .animal-tooltip-tail {
+    right: -5px;
+    top: 16px;
+  }
+
+  .animal-tooltip-island.animal-tooltip-borderless.animal-tooltip-left-end .animal-tooltip-tail {
+    right: -5px;
+    bottom: 16px;
+  }
+
+  .animal-tooltip-island.animal-tooltip-borderless.animal-tooltip-right .animal-tooltip-tail {
+    left: -5px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .animal-tooltip-island.animal-tooltip-borderless.animal-tooltip-right-start .animal-tooltip-tail {
+    left: -5px;
+    top: 16px;
+  }
+
+  .animal-tooltip-island.animal-tooltip-borderless.animal-tooltip-right-end .animal-tooltip-tail {
+    left: -5px;
+    bottom: 16px;
+  }
+
+  .animal-tooltip-island.animal-tooltip-bordered.animal-tooltip-top .animal-tooltip-tail {
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    border-right: var(--animal-border-width) solid #c4b89e;
+    border-bottom: var(--animal-border-width) solid #c4b89e;
+  }
+
+  .animal-tooltip-island.animal-tooltip-bordered.animal-tooltip-top-start .animal-tooltip-tail {
+    bottom: -5px;
+    left: 20px;
+    transform: rotate(45deg);
+    border-right: var(--animal-border-width) solid #c4b89e;
+    border-bottom: var(--animal-border-width) solid #c4b89e;
+  }
+
+  .animal-tooltip-island.animal-tooltip-bordered.animal-tooltip-top-end .animal-tooltip-tail {
+    bottom: -5px;
+    right: 20px;
+    transform: rotate(45deg);
+    border-right: var(--animal-border-width) solid #c4b89e;
+    border-bottom: var(--animal-border-width) solid #c4b89e;
+  }
+
+  .animal-tooltip-island.animal-tooltip-bordered.animal-tooltip-bottom .animal-tooltip-tail {
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    border-top: var(--animal-border-width) solid #c4b89e;
+    border-left: var(--animal-border-width) solid #c4b89e;
+  }
+
+  .animal-tooltip-island.animal-tooltip-bordered.animal-tooltip-bottom-start .animal-tooltip-tail {
+    top: -5px;
+    left: 20px;
+    transform: rotate(45deg);
+    border-top: var(--animal-border-width) solid #c4b89e;
+    border-left: var(--animal-border-width) solid #c4b89e;
+  }
+
+  .animal-tooltip-island.animal-tooltip-bordered.animal-tooltip-bottom-end .animal-tooltip-tail {
+    top: -5px;
+    right: 20px;
+    transform: rotate(45deg);
+    border-top: var(--animal-border-width) solid #c4b89e;
+    border-left: var(--animal-border-width) solid #c4b89e;
+  }
+
+  .animal-tooltip-island.animal-tooltip-bordered.animal-tooltip-left .animal-tooltip-tail {
+    right: -5px;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    border-top: var(--animal-border-width) solid #c4b89e;
+    border-right: var(--animal-border-width) solid #c4b89e;
+  }
+
+  .animal-tooltip-island.animal-tooltip-bordered.animal-tooltip-left-start .animal-tooltip-tail {
+    right: -5px;
+    top: 16px;
+    transform: rotate(45deg);
+    border-top: var(--animal-border-width) solid #c4b89e;
+    border-right: var(--animal-border-width) solid #c4b89e;
+  }
+
+  .animal-tooltip-island.animal-tooltip-bordered.animal-tooltip-left-end .animal-tooltip-tail {
+    right: -5px;
+    bottom: 16px;
+    transform: rotate(45deg);
+    border-top: var(--animal-border-width) solid #c4b89e;
+    border-right: var(--animal-border-width) solid #c4b89e;
+  }
+
+  .animal-tooltip-island.animal-tooltip-bordered.animal-tooltip-right .animal-tooltip-tail {
+    left: -5px;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    border-bottom: var(--animal-border-width) solid #c4b89e;
+    border-left: var(--animal-border-width) solid #c4b89e;
+  }
+
+  .animal-tooltip-island.animal-tooltip-bordered.animal-tooltip-right-start .animal-tooltip-tail {
+    left: -5px;
+    top: 16px;
+    transform: rotate(45deg);
+    border-bottom: var(--animal-border-width) solid #c4b89e;
+    border-left: var(--animal-border-width) solid #c4b89e;
+  }
+
+  .animal-tooltip-island.animal-tooltip-bordered.animal-tooltip-right-end .animal-tooltip-tail {
+    left: -5px;
+    bottom: 16px;
+    transform: rotate(45deg);
+    border-bottom: var(--animal-border-width) solid #c4b89e;
+    border-left: var(--animal-border-width) solid #c4b89e;
+  }
+
   .animal-select-wrapper {
     position: relative;
     display: inline-block;
@@ -982,7 +1652,6 @@
   .animal-modal-clipped {
     width: 100%;
     height: 100%;
-    clip-path: url("#animal-modal-clip");
     padding: 48px 48px 32px;
     overflow: hidden;
     display: flex;
@@ -1036,6 +1705,32 @@
   .animal-divider-line-white { background-image: url("../assets/img/dividers/divider-line-white.png"); }
   .animal-divider-line-yellow { background-image: url("../assets/img/dividers/divider-line-yellow.svg"); }
   .animal-divider-wave-yellow { background-image: url("../assets/img/dividers/wave-yellow.svg"); }
+
+  .animal-divider-dashed-brown,
+  .animal-divider-dashed-teal,
+  .animal-divider-dashed-white,
+  .animal-divider-dashed-yellow {
+    background-image: none;
+    background-repeat: repeat-x;
+    background-position: center;
+    background-size: 12px 2px;
+  }
+
+  .animal-divider-dashed-brown {
+    background: linear-gradient(to right, #c4b89e 50%, transparent 50%) center / 12px 2px repeat-x;
+  }
+
+  .animal-divider-dashed-teal {
+    background: linear-gradient(to right, #19c8b9 50%, transparent 50%) center / 12px 2px repeat-x;
+  }
+
+  .animal-divider-dashed-white {
+    background: linear-gradient(to right, #ffffff 50%, transparent 50%) center / 12px 2px repeat-x;
+  }
+
+  .animal-divider-dashed-yellow {
+    background: linear-gradient(to right, #f5d04a 50%, transparent 50%) center / 12px 2px repeat-x;
+  }
 
   .animal-footer {
     width: 100%;
@@ -1496,5 +2191,445 @@
 
   .animal-table-loading-spinner svg {
     display: block;
+  }
+
+  .animal-wedding-invitation {
+    --animal-wedding-lottery-h: 160px;
+    --animal-wedding-notch-r: 14px;
+    position: relative;
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 56px 36px var(--animal-wedding-lottery-h);
+    color: #725d42;
+    text-align: center;
+    font-family:
+      Nunito,
+      "Noto Sans SC",
+      "Zen Maru Gothic",
+      "HarmonyOS Sans SC",
+      "MiSans",
+      -apple-system,
+      "PingFang SC",
+      "Hiragino Sans GB",
+      "Microsoft YaHei",
+      sans-serif;
+    font-weight: 500;
+    border-radius: 16px;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 20% 10%, rgba(248, 166, 178, 0.18), transparent 40%),
+      radial-gradient(circle at 80% 90%, rgba(138, 198, 138, 0.18), transparent 40%),
+      rgb(247, 243, 223);
+    box-shadow: inset 0 0 0 2px rgba(114, 93, 66, 0.12);
+    filter: drop-shadow(0 10px 24px rgba(61, 52, 40, 0.18));
+    -webkit-mask-image:
+      radial-gradient(
+        circle var(--animal-wedding-notch-r) at 0% calc(100% - var(--animal-wedding-lottery-h)),
+        transparent calc(var(--animal-wedding-notch-r) - 0.5px),
+        #000 var(--animal-wedding-notch-r)
+      ),
+      radial-gradient(
+        circle var(--animal-wedding-notch-r) at 100% calc(100% - var(--animal-wedding-lottery-h)),
+        transparent calc(var(--animal-wedding-notch-r) - 0.5px),
+        #000 var(--animal-wedding-notch-r)
+      );
+    -webkit-mask-composite: source-in;
+    mask-image:
+      radial-gradient(
+        circle var(--animal-wedding-notch-r) at 0% calc(100% - var(--animal-wedding-lottery-h)),
+        transparent calc(var(--animal-wedding-notch-r) - 0.5px),
+        #000 var(--animal-wedding-notch-r)
+      ),
+      radial-gradient(
+        circle var(--animal-wedding-notch-r) at 100% calc(100% - var(--animal-wedding-lottery-h)),
+        transparent calc(var(--animal-wedding-notch-r) - 0.5px),
+        #000 var(--animal-wedding-notch-r)
+      );
+    mask-composite: intersect;
+  }
+
+  .animal-wedding-invitation::before {
+    content: "";
+    position: absolute;
+    inset: 14px 14px calc(var(--animal-wedding-lottery-h) + 2px) 14px;
+    border-radius: 22px 20px 24px 22px / 20px 24px 22px 20px;
+    background: radial-gradient(circle, rgba(114, 93, 66, 0.08) 1px, transparent 1.5px) 0 0 / 14px 14px;
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
+  .animal-wedding-invitation::after {
+    content: "";
+    position: absolute;
+    inset: 18px 18px calc(var(--animal-wedding-lottery-h) + 6px) 18px;
+    border: 1.5px dashed rgba(114, 93, 66, 0.35);
+    border-radius: 22px 20px 24px 22px / 20px 24px 22px 20px;
+    pointer-events: none;
+  }
+
+  .animal-wedding-no-lottery {
+    --animal-wedding-lottery-h: 0px;
+    padding-bottom: 36px;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .animal-wedding-corner-leaf,
+  .animal-wedding-float-item {
+    position: absolute;
+    z-index: 3;
+    pointer-events: none;
+    filter: drop-shadow(0 2px 3px rgba(61, 52, 40, 0.15));
+  }
+
+  .animal-wedding-corner-tl { top: -10px; left: -10px; transform: rotate(-25deg); }
+  .animal-wedding-corner-tr { top: -10px; right: -10px; transform: rotate(115deg) scaleX(-1); }
+  .animal-wedding-corner-bl { bottom: -10px; left: -10px; transform: rotate(-115deg); }
+  .animal-wedding-corner-br { bottom: -10px; right: -10px; transform: rotate(25deg) scaleX(-1); }
+
+  .animal-wedding-float-item {
+    animation: animal-wedding-float 4.5s ease-in-out infinite;
+  }
+  .animal-wedding-float-f1 { top: 60px; right: 38px; animation-delay: 0s; }
+  .animal-wedding-float-f2 { top: 130px; left: 30px; animation-delay: 0.6s; }
+  .animal-wedding-float-f3 { bottom: calc(var(--animal-wedding-lottery-h) + 24px); right: 26px; animation-delay: 1.2s; }
+  .animal-wedding-float-s1 { top: 100px; right: 80px; animation-delay: 0.3s; }
+  .animal-wedding-float-s2 { bottom: calc(var(--animal-wedding-lottery-h) - 4px); left: 60px; animation-delay: 1s; }
+
+  .animal-wedding-banner,
+  .animal-wedding-couple-row,
+  .animal-wedding-date-meta,
+  .animal-wedding-venue-card,
+  .animal-wedding-signature-lottery,
+  .animal-wedding-lottery-label,
+  .animal-wedding-lottery-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .animal-wedding-banner {
+    position: relative;
+    z-index: 4;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .animal-wedding-banner-line {
+    width: 64px;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(to right, transparent, #725d42, transparent);
+  }
+
+  .animal-wedding-title-en,
+  .animal-wedding-title-zh,
+  .animal-wedding-couple-image,
+  .animal-wedding-couple-row,
+  .animal-wedding-date-card,
+  .animal-wedding-venue-card,
+  .animal-wedding-message,
+  .animal-wedding-signature-lottery {
+    position: relative;
+    z-index: 4;
+  }
+
+  .animal-wedding-title-en {
+    font-size: 14px;
+    letter-spacing: 6px;
+    font-weight: 700;
+    color: #9a835a;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+
+  .animal-wedding-title-zh {
+    font-size: 26px;
+    font-weight: 900;
+    color: #725d42;
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+  }
+
+  .animal-wedding-title-zh img {
+    display: block;
+    margin: 0 auto;
+    max-width: 80%;
+    height: auto;
+  }
+
+  .animal-wedding-couple-image {
+    margin: 0 auto 12px;
+  }
+
+  .animal-wedding-couple-image img {
+    display: block;
+    margin: 0 auto;
+    max-width: 70%;
+    height: auto;
+    filter: drop-shadow(0 3px 4px rgba(61, 52, 40, 0.18));
+  }
+
+  .animal-wedding-couple-row {
+    gap: 2px;
+    margin-bottom: 15px;
+  }
+
+  .animal-wedding-mascot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .animal-wedding-name {
+    min-width: 64px;
+    padding: 4px 16px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #725d42;
+    border-radius: 20px 18px 22px 20px / 18px 22px 20px 18px;
+  }
+
+  .animal-wedding-heart-col {
+    animation: animal-wedding-heartbeat 1.6s ease-in-out infinite;
+  }
+
+  .animal-wedding-date-card {
+    margin: 0 auto 18px;
+    padding: 14px 20px 16px;
+    min-width: 220px;
+    width: fit-content;
+    background: #fdfdf5;
+    border-radius: 28px 26px 30px 28px / 26px 30px 28px 26px;
+    box-shadow:
+      0 4px 0 rgba(114, 93, 66, 0.18),
+      inset 0 0 0 2px rgba(114, 93, 66, 0.18);
+  }
+
+  .animal-wedding-date-label {
+    margin-bottom: 4px;
+    font-size: 16px;
+    letter-spacing: 4px;
+    font-weight: 700;
+    color: #9a835a;
+  }
+
+  .animal-wedding-date-value {
+    font-size: 24px;
+    font-weight: 900;
+    color: #725d42;
+    letter-spacing: 3px;
+    line-height: 1.2;
+  }
+
+  .animal-wedding-date-meta {
+    margin-top: 6px;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #794f27;
+  }
+
+  .animal-wedding-dot {
+    color: #fc736d;
+    font-weight: 900;
+  }
+
+  .animal-wedding-venue-card {
+    gap: 12px;
+    margin: 0 auto 22px;
+    padding: 12px 18px;
+    max-width: 320px;
+    text-align: left;
+    background: rgba(237, 246, 243, 0.18);
+    border: 1.5px dashed rgba(114, 93, 66, 0.3);
+    border-radius: 22px 20px 24px 22px / 20px 24px 22px 20px;
+  }
+
+  .animal-wedding-venue-icon {
+    display: flex;
+    flex-shrink: 0;
+  }
+
+  .animal-wedding-venue-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .animal-wedding-venue-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #725d42;
+    letter-spacing: 1px;
+  }
+
+  .animal-wedding-venue-addr {
+    margin-top: 2px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #9a835a;
+  }
+
+  .animal-wedding-message {
+    padding: 0 8px;
+    margin-bottom: 200px;
+    font-size: 13px;
+    line-height: 1.8;
+    color: #794f27;
+    font-weight: 500;
+  }
+
+  .animal-wedding-signature-lottery {
+    display: inline-flex;
+    gap: 8px;
+    margin: 0 auto 25px;
+    padding: 4px 14px;
+    border-radius: 14px;
+    background: rgba(253, 253, 245, 0.85);
+    box-shadow: inset 0 0 0 1.2px rgba(114, 93, 66, 0.3);
+    font-size: 12px;
+    letter-spacing: 3px;
+    font-weight: 700;
+    color: #9a835a;
+  }
+
+  .animal-wedding-signature-lottery-no,
+  .animal-wedding-lottery-number {
+    font-family: "Courier New", "SF Mono", Consolas, monospace;
+    font-weight: 900;
+    color: #fc736d;
+  }
+
+  .animal-wedding-signature-lottery-no {
+    gap: 3px;
+    font-size: 14px;
+    letter-spacing: 2px;
+    display: inline-flex;
+    align-items: baseline;
+  }
+
+  .animal-wedding-lottery {
+    position: absolute;
+    inset: auto 0 0 0;
+    z-index: 4;
+    height: var(--animal-wedding-lottery-h);
+    margin: 0;
+    padding: 38px 36px 18px;
+    text-align: center;
+    background-color: rgb(247, 243, 223);
+    background-image: radial-gradient(circle, rgba(114, 93, 66, 0.7) 1.6px, transparent 2px);
+    background-size: 10px 5px;
+    background-repeat: repeat-x;
+    background-position: top center;
+    box-shadow: inset 0 4px 6px -3px rgba(61, 52, 40, 0.18);
+  }
+
+  .animal-wedding-tear-hint {
+    position: absolute;
+    top: 2px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 3px 12px;
+    border-radius: 12px;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    letter-spacing: 3px;
+    font-weight: 700;
+    color: #9a835a;
+    background: rgb(247, 243, 223);
+    box-shadow: inset 0 0 0 1.2px rgba(114, 93, 66, 0.3);
+  }
+
+  .animal-wedding-lottery-title {
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 6px;
+    color: #725d42;
+  }
+
+  .animal-wedding-lottery-label {
+    gap: 6px;
+    margin-bottom: 4px;
+    font-size: 11px;
+    line-height: 1;
+    letter-spacing: 4px;
+    font-weight: 700;
+    color: #9a835a;
+  }
+
+  .animal-wedding-lottery-number {
+    gap: 6px;
+    font-size: 26px;
+    letter-spacing: 6px;
+    line-height: 1.1;
+  }
+
+  .animal-wedding-lottery-hash {
+    margin-left: 3px;
+    font-size: 14px;
+    color: #9a835a;
+    letter-spacing: 2px;
+  }
+
+  .animal-wedding-signature-lottery-no .animal-wedding-lottery-hash {
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+
+  .animal-wedding-lottery-hint {
+    margin-top: 4px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: #9a835a;
+  }
+
+  .animal-wedding-export-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 20px;
+    white-space: nowrap;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    color: #725d42;
+    background: #fdfdf5;
+    border: 2px solid rgba(114, 93, 66, 0.5);
+    border-radius: 22px 20px 24px 22px / 20px 24px 22px 20px;
+    box-shadow: 0 3px 0 rgba(114, 93, 66, 0.25);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .animal-wedding-export-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 0 rgba(114, 93, 66, 0.3);
+    background: #fffbe6;
+  }
+
+  .animal-wedding-export-btn:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 rgba(114, 93, 66, 0.25);
+  }
+
+  .animal-wedding-export-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  @keyframes animal-wedding-float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-6px) rotate(8deg); }
+  }
+
+  @keyframes animal-wedding-heartbeat {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.12); }
+    50% { transform: scale(1); }
+    75% { transform: scale(1.08); }
   }
 }

@@ -99,3 +99,14 @@ test('Tailwind token file preserves the animal-island design variables', () => {
   assert.doesNotMatch(css, /\n\s*body\s*\{/);
   assert.doesNotMatch(css, /\n\s*p\s*\{/);
 });
+
+test('WeddingInvitation public exports are wired when upstream sync adds the component', () => {
+  assert.ok(
+    existsSync(join(root, 'src/components/WeddingInvitation/WeddingInvitation.tsx')),
+    'WeddingInvitation component source should exist',
+  );
+  assert.match(
+    read('src/index.ts'),
+    /export \{ WeddingInvitation, WeddingInvitationExportButton \} from '\.\/components\/WeddingInvitation';/,
+  );
+});

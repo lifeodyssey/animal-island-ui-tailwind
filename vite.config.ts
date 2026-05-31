@@ -160,5 +160,10 @@ export default defineConfig({
         },
         emptyOutDir: true,
         cssCodeSplit: false,
+        // Don't copy public/ into the library dist. public/ holds Storybook-site
+        // assets (msw worker, robots.txt, sitemap.xml, llms.txt, .well-known) that
+        // are served via Storybook's staticDirs — they must not ship in the npm
+        // package. Runtime component assets are bundled into dist/files instead.
+        copyPublicDir: false,
     },
 });

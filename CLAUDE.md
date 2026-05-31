@@ -16,7 +16,7 @@ content and the single source of truth.
 
 - Package: `animal-island-ui-tailwind` on npm
 - Repo: `lifeodyssey/animal-island-ui` on GitHub
-- Storybook: `animalcrossing.zhenjia.org` (Cloudflare Pages)
+- Storybook: `animalcrossing.zhenjia.dev` (Cloudflare Pages)
 - Origin: forked from `guokaigdg/animal-island-ui` (MIT), now independent
 
 ## Stack
@@ -31,27 +31,30 @@ content and the single source of truth.
 
 ## Component Inventory
 
-The library exposes 19 components:
+The library exposes 22 components:
 
 1. Button
 2. Input
 3. Switch
 4. Checkbox
-5. Select
-6. Tabs
-7. Card
-8. Modal
-9. Collapse
-10. Divider
-11. Icon
-12. Typewriter
-13. Phone
-14. Footer
-15. Time
-16. Cursor
-17. CodeBlock
-18. Loading
-19. Table
+5. Radio
+6. Select
+7. Tabs
+8. Card
+9. Modal
+10. Collapse
+11. Divider
+12. Icon
+13. Typewriter
+14. Phone
+15. Footer
+16. Time
+17. Cursor
+18. CodeBlock
+19. Loading
+20. Table
+21. Tooltip
+22. WeddingInvitation
 
 ## Implementation Rules
 

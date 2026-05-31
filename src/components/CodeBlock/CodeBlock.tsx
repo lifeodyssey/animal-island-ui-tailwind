@@ -15,6 +15,30 @@ const COLORS = {
     default: '#e8d5bc',
 };
 
+// Declarative syntax-highlight pattern table.
+// ORDER IS LOAD-BEARING: patterns are registered top-to-bottom and earlier
+// patterns win on overlap (see the token-merge loop below). Do not reorder.
+const HIGHLIGHT_PATTERNS: { regex: RegExp; color: string }[] = [
+    { regex: /\/\*[\s\S]*?\*\//g, color: COLORS.comment },
+    { regex: /\/\/.*$/gm, color: COLORS.comment },
+    { regex: /`[^`]*`/g, color: COLORS.string },
+    { regex: /"[^"]*"/g, color: COLORS.string },
+    { regex: /'[^']*'/g, color: COLORS.string },
+    { regex: /<\/?[A-Z][\w.$]*/g, color: COLORS.jsx },
+    { regex: /<\/?[a-z][\w-]*/g, color: COLORS.jsx },
+    { regex: /\/?>/g, color: COLORS.jsx },
+    { regex: /\b(React|useState|useEffect|useCallback|useMemo|useRef|useContext|useReducer|useLayoutEffect|useImperativeHandle|useDebugValue|createContext|createElement|cloneElement|Fragment|Suspense|lazy|memo|forwardRef|useId|FC|ReactNode|ReactElement|CSSProperties)\b/g, color: COLORS.react },
+    { regex: /\b(true|false)\b/g, color: COLORS.keyword },
+    { regex: /\b(null|undefined|void|NaN|Infinity)\b/gi, color: COLORS.keyword },
+    { regex: /\b\d+\.?\d*\b/g, color: COLORS.number },
+    { regex: /\b(import|from|as|export|default|const|let|var|function|return|if|else|for|while|switch|case|break|continue|try|catch|throw|finally|new|typeof|instanceof|async|await|type|interface)\b/gi, color: COLORS.keyword },
+    { regex: /\b[A-Z][a-zA-Z0-9_$]*\b/g, color: COLORS.component },
+    { regex: /\b[a-z][a-zA-Z0-9_$]*\s*(?=\()/g, color: COLORS.func },
+    { regex: /\b[a-zA-Z_$][\w$]*\s*(?==)/g, color: COLORS.prop },
+    { regex: />|===|!==|==|!=|<=|>=|&&|\|\||[+\-*/%=<>!&|^~?:]/g, color: COLORS.operator },
+    { regex: /[{}[\]();,]/g, color: COLORS.operator },
+];
+
 const highlightJSX = (code: string): React.ReactNode[] => {
     const tokens: { start: number; end: number; color: string }[] = [];
 
@@ -30,24 +54,9 @@ const highlightJSX = (code: string): React.ReactNode[] => {
         }
     };
 
-    addPattern(/\/\*[\s\S]*?\*\//g, COLORS.comment);
-    addPattern(/\/\/.*$/gm, COLORS.comment);
-    addPattern(/`[^`]*`/g, COLORS.string);
-    addPattern(/"[^"]*"/g, COLORS.string);
-    addPattern(/'[^']*'/g, COLORS.string);
-    addPattern(/<\/?[A-Z][\w.$]*/g, COLORS.jsx);
-    addPattern(/<\/?[a-z][\w-]*/g, COLORS.jsx);
-    addPattern(/\/?>/g, COLORS.jsx);
-    addPattern(/\b(React|useState|useEffect|useCallback|useMemo|useRef|useContext|useReducer|useLayoutEffect|useImperativeHandle|useDebugValue|createContext|createElement|cloneElement|Fragment|Suspense|lazy|memo|forwardRef|useId|FC|ReactNode|ReactElement|CSSProperties)\b/g, COLORS.react);
-    addPattern(/\b(true|false)\b/g, COLORS.keyword);
-    addPattern(/\b(null|undefined|void|NaN|Infinity)\b/gi, COLORS.keyword);
-    addPattern(/\b\d+\.?\d*\b/g, COLORS.number);
-    addPattern(/\b(import|from|as|export|default|const|let|var|function|return|if|else|for|while|switch|case|break|continue|try|catch|throw|finally|new|typeof|instanceof|async|await|type|interface)\b/gi, COLORS.keyword);
-    addPattern(/\b[A-Z][a-zA-Z0-9_$]*\b/g, COLORS.component);
-    addPattern(/\b[a-z][a-zA-Z0-9_$]*\s*(?=\()/g, COLORS.func);
-    addPattern(/\b[a-zA-Z_$][\w$]*\s*(?==)/g, COLORS.prop);
-    addPattern(/>|===|!==|==|!=|<=|>=|&&|\|\||[+\-*/%=<>!&|^~?:]/g, COLORS.operator);
-    addPattern(/[{}[\]();,]/g, COLORS.operator);
+    for (const { regex, color } of HIGHLIGHT_PATTERNS) {
+        addPattern(regex, color);
+    }
 
     tokens.sort((a, b) => a.start - b.start);
 

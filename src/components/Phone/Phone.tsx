@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { cn } from '../../utils/cn';
+import { useNow } from '../../utils/useNow';
 
 export interface PhoneProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -27,14 +28,7 @@ const apps: App[] = [
 ];
 
 export const Phone = React.forwardRef<HTMLDivElement, PhoneProps>(({ className, ...rest }, ref) => {
-    const [time, setTime] = useState(new Date());
-
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setTime(new Date());
-        }, 1000);
-        return () => clearInterval(timer);
-    }, []);
+    const time = useNow();
 
     const hours = time.getHours();
     const minutes = time.getMinutes();
