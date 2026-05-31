@@ -3,8 +3,9 @@ import * as RadixRadioGroup from '@radix-ui/react-radio-group';
 import { cn } from '../../utils/cn';
 import { CheckmarkIcon } from '../../utils/CheckmarkIcon';
 import { useSafeId } from '../../utils/useSafeId';
+import type { ComponentSize } from '../../utils/types';
 
-export type RadioSize = 'small' | 'middle' | 'large';
+export type RadioSize = ComponentSize;
 
 export interface RadioOption {
     /** 选项标签 */

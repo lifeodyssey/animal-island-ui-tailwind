@@ -1,10 +1,12 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import * as RadixCheckbox from '@radix-ui/react-checkbox';
 import { cn } from '../../utils/cn';
 import { CheckmarkIcon } from '../../utils/CheckmarkIcon';
 import { useSafeId } from '../../utils/useSafeId';
+import { useControllableState } from '../../utils/useControllableState';
+import type { ComponentSize } from '../../utils/types';
 
-export type CheckboxSize = 'small' | 'middle' | 'large';
+export type CheckboxSize = ComponentSize;
 
 export interface CheckboxOption {
     /** 选项标签 */
@@ -56,9 +58,11 @@ export const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
         },
         ref,
     ) => {
-        const [innerValue, setInnerValue] = useState<Array<string | number>>(defaultValue);
-        const isControlled = value !== undefined;
-        const checkedValues = isControlled ? value! : innerValue;
+        const { value: checkedValues, setValue } = useControllableState<Array<string | number>>({
+            value,
+            defaultValue,
+            onChange,
+        });
         const safeGroupId = useSafeId();
 
         const handleCheckedChange = useCallback(
@@ -71,10 +75,9 @@ export const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
                     ? (checkedValues.includes(optValue) ? checkedValues : [...checkedValues, optValue])
                     : checkedValues.filter((v) => v !== optValue);
 
-                if (!isControlled) setInnerValue(next);
-                onChange?.(next);
+                setValue(next);
             },
-            [disabled, checkedValues, isControlled, onChange],
+            [disabled, checkedValues, setValue],
         );
 
         return (
