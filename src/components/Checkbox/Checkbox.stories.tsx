@@ -45,3 +45,16 @@ export const KeyboardToggle: Story = {
         await expect(first).toHaveAttribute('aria-checked', 'true');
     },
 };
+
+/** 逐项禁用：森林小道正在维护中，仅该选项不可选，其余岛区照常开放 */
+export const PerOptionDisabled: Story = {
+    args: {
+        options: [
+            { label: '🏖️ 海滩', value: 'beach' },
+            { label: '🌳 森林小道（维护中）', value: 'forest', disabled: true },
+            { label: '🌸 花园', value: 'garden' },
+            { label: '🍄 蘑菇丛', value: 'mushroom', disabled: true },
+        ],
+        defaultValue: ['beach', 'garden'],
+    },
+};
