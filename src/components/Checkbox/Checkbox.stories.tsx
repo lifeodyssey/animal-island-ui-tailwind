@@ -31,3 +31,17 @@ export const PicksForest: Story = {
         await expect(checkboxes[1]).toHaveAttribute('aria-checked', 'true');
     },
 };
+
+export const KeyboardToggle: Story = {
+    args: { options: islands },
+    play: async ({ canvas, userEvent }) => {
+        // Upstream toggles a checkbox on Space/Enter (Checkbox.tsx:92 onKeyDown
+        // guards e.key === ' ' || 'Enter'); our Radix checkbox toggles on Space
+        // natively. Assert the keyboard contract holds.
+        const first = canvas.getAllByRole('checkbox')[0];
+        await expect(first).toHaveAttribute('aria-checked', 'false');
+        first.focus();
+        await userEvent.keyboard(' ');
+        await expect(first).toHaveAttribute('aria-checked', 'true');
+    },
+};
