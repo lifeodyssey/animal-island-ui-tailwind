@@ -31,10 +31,10 @@ import '@fontsource/zen-maru-gothic/japanese-900.css';
 // 基础 UI 组件
 // ============================================
 export { Button } from './components/Button';
-export type { ButtonProps, ButtonType, ButtonSize } from './components/Button';
+export type { ButtonProps, ButtonType, ButtonSize, ButtonHTMLType } from './components/Button';
 
 export { Input } from './components/Input';
-export type { InputProps, InputSize } from './components/Input';
+export type { InputProps, InputSize, InputStatus } from './components/Input';
 
 export { Switch } from './components/Switch';
 export type { SwitchProps, SwitchSize } from './components/Switch';
@@ -61,7 +61,7 @@ export { Phone } from './components/Phone';
 export type { PhoneProps } from './components/Phone';
 
 export { Divider } from './components/Divider';
-export type { DividerProps } from './components/Divider';
+export type { DividerProps, DividerType } from './components/Divider';
 
 export { Typewriter } from './components/Typewriter';
 export type { TypewriterProps } from './components/Typewriter';
