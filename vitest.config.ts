@@ -24,6 +24,17 @@ export default mergeConfig(
             },
             projects: [
                 {
+                    // Node/jsdom unit tests for logic that can't be asserted in
+                    // the browser story runner (e.g. spying gsap tween calls
+                    // against the upstream animation spec). Files: *.unit.test.tsx
+                    extends: true,
+                    test: {
+                        name: 'unit',
+                        environment: 'jsdom',
+                        include: ['src/**/*.unit.test.{ts,tsx}'],
+                    },
+                },
+                {
                     extends: true,
                     plugins: [
                         storybookTest({
