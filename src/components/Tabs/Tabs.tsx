@@ -45,14 +45,14 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
         // Track the active key for leaf animation styling.
         // In controlled mode this is always `activeKey`.
         // In uncontrolled mode we mirror what Radix tracks via onValueChange.
-        const [trackedKey, setTrackedKey] = useState(
+        const [innerKey, setInnerKey] = useState(
             defaultActiveKey ?? items[0]?.key
         );
-        const currentActiveKey = isControlled ? activeKey : trackedKey;
+        const currentActiveKey = isControlled ? activeKey : innerKey;
 
         const handleValueChange = (key: string) => {
             if (!isControlled) {
-                setTrackedKey(key);
+                setInnerKey(key);
             }
             onChange?.(key);
         };

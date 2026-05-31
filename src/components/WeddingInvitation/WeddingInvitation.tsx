@@ -381,8 +381,10 @@ export const WeddingInvitationExportButton: React.FC<WeddingInvitationExportButt
         try {
             await targetRef.current?.exportAsImage(filename);
         } catch (error) {
-            console.error('[WeddingInvitation] export failed:', error);
-            alert(`导出失败：${error instanceof Error ? error.message : String(error)}`);
+            console.error(
+                `[WeddingInvitation] export failed: ${error instanceof Error ? error.message : String(error)}`,
+                error,
+            );
         } finally {
             setExporting(false);
         }

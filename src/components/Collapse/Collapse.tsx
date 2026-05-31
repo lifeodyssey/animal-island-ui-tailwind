@@ -39,13 +39,13 @@ export const Collapse = React.forwardRef<HTMLDivElement, CollapseProps>(
         ref
     ) => {
         const isControlled = expanded !== undefined;
-        const [uncontrolledExpanded, setUncontrolledExpanded] = useState(defaultExpanded);
-        const currentExpanded = isControlled ? expanded : uncontrolledExpanded;
+        const [innerExpanded, setInnerExpanded] = useState(defaultExpanded);
+        const currentExpanded = isControlled ? expanded : innerExpanded;
 
         const handleValueChange = (value: string) => {
             const nextExpanded = value === COLLAPSE_ITEM_VALUE;
             if (!isControlled) {
-                setUncontrolledExpanded(nextExpanded);
+                setInnerExpanded(nextExpanded);
             }
             onChange?.(nextExpanded);
         };
