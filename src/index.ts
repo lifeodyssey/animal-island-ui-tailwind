@@ -45,6 +45,9 @@ export type { ModalProps } from './components/Modal';
 export { Card } from './components/Card';
 export type { CardProps, CardType, CardColor } from './components/Card';
 
+export { Title } from './components/Title';
+export type { TitleProps, TitleSize, TitleColor } from './components/Title';
+
 export { Footer } from './components/Footer';
 export type { FooterProps, FooterType } from './components/Footer';
 
