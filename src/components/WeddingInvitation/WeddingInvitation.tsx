@@ -5,8 +5,6 @@ import brideAndGroomImg from './img/brideandgroom.png';
 import weddingTitleImg from './img/wedding.png';
 import { injectWeddingFonts, prepareWeddingFontsForExport } from './fonts';
 
-injectWeddingFonts();
-
 export interface WeddingInvitationProps {
     groomName?: string;
     brideName?: string;
@@ -231,6 +229,14 @@ export const WeddingInvitation = forwardRef<WeddingInvitationRef, WeddingInvitat
         ref,
     ) => {
         const rootRef = useRef<HTMLDivElement>(null);
+
+        // Inject the wedding @font-face rules on mount (idempotent + SSR-safe)
+        // instead of at module import time, so importing this component has no
+        // side effects (better tree-shaking / SSR). The export path has its own
+        // independent font handling via prepareWeddingFontsForExport().
+        React.useEffect(() => {
+            injectWeddingFonts();
+        }, []);
 
         const exportAsImage = React.useCallback(async (filename = 'wedding-invitation') => {
             if (!rootRef.current) {
