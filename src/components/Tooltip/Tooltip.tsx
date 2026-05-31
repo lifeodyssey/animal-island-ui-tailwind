@@ -1,6 +1,7 @@
-import React, { useId, useState } from 'react';
+import React, { useState } from 'react';
 import * as RadixTooltip from '@radix-ui/react-tooltip';
 import { cn } from '../../utils/cn';
+import { useSafeId } from '../../utils/useSafeId';
 
 export type TooltipPlacement =
     | 'top'
@@ -88,7 +89,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
     const [clickOpen, setClickOpen] = useState(false);
     const isClick = trigger === 'click';
     const isIsland = variant === 'island';
-    const uid = useId().replace(/:/g, '');
+    const uid = useSafeId();
     const clipId = `animal-tooltip-clip-${uid}`;
 
     const child = React.Children.only(children);

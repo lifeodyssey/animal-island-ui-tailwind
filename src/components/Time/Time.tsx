@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Cursor } from '../Cursor';
 import { cn } from '../../utils/cn';
+import { useNow } from '../../utils/useNow';
 
 export interface TimeProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -8,12 +9,7 @@ const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Frida
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 export const Time = React.forwardRef<HTMLDivElement, TimeProps>(({ className, ...rest }, ref) => {
-    const [currentTime, setCurrentTime] = useState(new Date());
-
-    useEffect(() => {
-        const timer = setInterval(() => setCurrentTime(new Date()), 1000);
-        return () => clearInterval(timer);
-    }, []);
+    const currentTime = useNow();
 
     return (
         <Cursor>

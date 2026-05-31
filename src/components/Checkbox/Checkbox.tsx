@@ -1,6 +1,8 @@
-import React, { useCallback, useId, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import * as RadixCheckbox from '@radix-ui/react-checkbox';
 import { cn } from '../../utils/cn';
+import { CheckmarkIcon } from '../../utils/CheckmarkIcon';
+import { useSafeId } from '../../utils/useSafeId';
 
 export type CheckboxSize = 'small' | 'middle' | 'large';
 
@@ -57,8 +59,7 @@ export const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
         const [innerValue, setInnerValue] = useState<Array<string | number>>(defaultValue);
         const isControlled = value !== undefined;
         const checkedValues = isControlled ? value! : innerValue;
-        const groupId = useId();
-        const safeGroupId = groupId.replace(/[^a-zA-Z0-9_-]/g, '');
+        const safeGroupId = useSafeId();
 
         const handleCheckedChange = useCallback(
             (optValue: string | number, nextChecked: boolean | 'indeterminate', optDisabled?: boolean) => {
@@ -110,9 +111,7 @@ export const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
                                 onCheckedChange={(nextChecked) => handleCheckedChange(opt.value, nextChecked, opt.disabled)}
                             >
                                 <RadixCheckbox.Indicator className="animal-checkbox-indicator">
-                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M2 8L6 12L14 4" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                    </svg>
+                                    <CheckmarkIcon />
                                 </RadixCheckbox.Indicator>
                             </RadixCheckbox.Root>
                             <label className="animal-checkbox-label" htmlFor={optionId}>

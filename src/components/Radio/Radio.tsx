@@ -1,6 +1,8 @@
-import React, { useId, useState } from 'react';
+import React, { useState } from 'react';
 import * as RadixRadioGroup from '@radix-ui/react-radio-group';
 import { cn } from '../../utils/cn';
+import { CheckmarkIcon } from '../../utils/CheckmarkIcon';
+import { useSafeId } from '../../utils/useSafeId';
 
 export type RadioSize = 'small' | 'middle' | 'large';
 
@@ -50,7 +52,7 @@ export const Radio = React.forwardRef<HTMLDivElement, RadioProps>(
         },
         ref,
     ) => {
-        const groupId = `animal-radio-${useId().replace(/:/g, '')}`;
+        const groupId = useSafeId('radio');
         const [innerValue, setInnerValue] = useState<string | number | undefined>(defaultValue);
         const isControlled = value !== undefined;
         // Mirror the selection internally in uncontrolled mode. The teal fill
@@ -115,21 +117,7 @@ export const Radio = React.forwardRef<HTMLDivElement, RadioProps>(
                                 className="animal-radio-circle"
                             >
                                 <RadixRadioGroup.Indicator className="animal-radio-indicator">
-                                    <svg
-                                        width="16"
-                                        height="16"
-                                        viewBox="0 0 16 16"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path
-                                            d="M2 8L6 12L14 4"
-                                            stroke="currentColor"
-                                            strokeWidth="2.5"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        />
-                                    </svg>
+                                    <CheckmarkIcon />
                                 </RadixRadioGroup.Indicator>
                             </RadixRadioGroup.Item>
                             <span id={labelId} className="animal-radio-label">
