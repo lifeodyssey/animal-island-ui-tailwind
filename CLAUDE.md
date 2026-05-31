@@ -15,7 +15,7 @@ content and the single source of truth.
 ## Repository
 
 - Package: `animal-island-ui-tailwind` on npm
-- Repo: `lifeodyssey/animal-island-ui` on GitHub
+- Repo: `lifeodyssey/animal-island-ui-tailwind` on GitHub
 - Storybook: `animalcrossing.zhenjia.dev` (Cloudflare Pages)
 - Origin: forked from `guokaigdg/animal-island-ui` (MIT), now independent
 

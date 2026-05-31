@@ -686,7 +686,7 @@ Repo-only (NOT published to npm — read on GitHub):
 
 - `.github/workflows/*` — CI and release automation
 - `tests/*` and `stories/*` — Storybook, Playwright, and visual parity verification
-- GitHub: https://github.com/lifeodyssey/animal-island-ui
+- GitHub: https://github.com/lifeodyssey/animal-island-ui-tailwind
 - Upstream: https://github.com/guokaigdg/animal-island-ui
 
 **When to use which:** API shape / legal prop values → this file. Pixel-exact CSS (sizes, shadows, animations) → `SKILL.md`. Feeding another design AI → `DESIGN_PROMPT.md`.

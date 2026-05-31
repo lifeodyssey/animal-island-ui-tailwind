@@ -1,5 +1,5 @@
 const SITE_ORIGIN = "https://animalcrossing.zhenjia.dev";
-const REPOSITORY_URL = "https://github.com/lifeodyssey/animal-island-ui";
+const REPOSITORY_URL = "https://github.com/lifeodyssey/animal-island-ui-tailwind";
 const PACKAGE_URL = "https://www.npmjs.com/package/animal-island-ui-tailwind";
 
 const DISCOVERY_LINKS = [

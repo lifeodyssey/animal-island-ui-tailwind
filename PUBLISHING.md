@@ -17,7 +17,7 @@ to a separate registry. After pushing this repository, agent users can install
 the visual-language guide with:
 
 ```bash
-npx skills add lifeodyssey/animal-island-ui --skill animal-island-ui-style
+npx skills add lifeodyssey/animal-island-ui-tailwind --skill animal-island-ui-style
 ```
 
 ## Required Checks
@@ -46,7 +46,7 @@ publishing:
 
 - Package: `animal-island-ui-tailwind`
 - Publisher: GitHub Actions
-- Repository: `lifeodyssey/animal-island-ui`
+- Repository: `lifeodyssey/animal-island-ui-tailwind`
 - Workflow file: `release.yml`
 
 The package publishing access is set to "Require two-factor authentication and

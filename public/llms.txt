@@ -5,7 +5,7 @@ Animal Island UI Tailwind is a React component library with an Animal Crossing-i
 ## Site Identity
 
 - Canonical Storybook: https://animalcrossing.zhenjia.dev/
-- GitHub repository: https://github.com/lifeodyssey/animal-island-ui
+- GitHub repository: https://github.com/lifeodyssey/animal-island-ui-tailwind
 - npm package: https://www.npmjs.com/package/animal-island-ui-tailwind
 - License: MIT
 
