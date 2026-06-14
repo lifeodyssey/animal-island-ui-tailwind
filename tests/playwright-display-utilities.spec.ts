@@ -62,6 +62,8 @@ test.describe('reference display utility parity', () => {
         await expect(seamlessFooters).toHaveCount(2);
         for (const footer of await seamlessFooters.all()) {
             await expect(footer).toHaveCSS('background-repeat', 'repeat-x');
+            await expect(footer).toHaveCSS('background-size', 'auto 100%');
+            await expect(footer).toHaveCSS('background-position', '0% 100%');
         }
         await expect(
             page.getByTestId('footer-matrix').locator('.animal-footer-tree:not(.animal-footer-seamless)'),

@@ -245,7 +245,7 @@ export const AssetsParity: Story = {
             expect(canvas.getByTestId('divider-matrix').querySelectorAll('div[class*="divider"]').length).toBeGreaterThanOrEqual(10);
         });
         await waitFor(() => {
-            expect(canvas.getByTestId('footer-matrix').querySelectorAll('div[class*="footer"]').length).toBeGreaterThanOrEqual(2);
+            expect(canvas.getByTestId('footer-matrix').querySelectorAll('div[class*="footer"]').length).toBeGreaterThanOrEqual(4);
         });
         for (const icon of ICON_LIST) {
             await expect(canvas.getByText(icon.label)).toBeVisible();

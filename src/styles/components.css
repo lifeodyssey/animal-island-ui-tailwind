@@ -1744,7 +1744,7 @@
     background-size: cover;
   }
 
-  .animal-footer-seamless {
+  .animal-footer.animal-footer-seamless {
     background-repeat: repeat-x;
     background-size: auto 100%;
     background-position: left bottom;
