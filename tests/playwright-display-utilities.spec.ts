@@ -53,11 +53,19 @@ test.describe('reference display utility parity', () => {
         }
         await expect(dividers.last()).toHaveCSS('width', '220px');
 
-        const footers = page.getByTestId('footer-matrix').locator('div[class*="footer"]');
-        await expect(footers).toHaveCount(2);
-        await expect(footers.first()).toHaveCSS('height', '80px');
-        await expect(footers.last()).toHaveCSS('height', '80px');
-        await expect(footers.last()).toHaveCSS('background-size', 'cover');
+        const footers = page.getByTestId('footer-matrix').locator('.animal-footer');
+        await expect(footers).toHaveCount(4);
+        for (const footer of await footers.all()) {
+            await expect(footer).toHaveCSS('height', '80px');
+        }
+        const seamlessFooters = page.getByTestId('footer-matrix').locator('.animal-footer-seamless');
+        await expect(seamlessFooters).toHaveCount(2);
+        for (const footer of await seamlessFooters.all()) {
+            await expect(footer).toHaveCSS('background-repeat', 'repeat-x');
+        }
+        await expect(
+            page.getByTestId('footer-matrix').locator('.animal-footer-tree:not(.animal-footer-seamless)'),
+        ).toHaveCSS('background-size', 'cover');
 
         const iconGrid = page.getByTestId('icon-grid');
         await expect(iconGrid.locator('span[class*="icon"]')).toHaveCount(10);
