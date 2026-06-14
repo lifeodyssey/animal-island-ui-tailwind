@@ -100,10 +100,13 @@ const DividerFooterSection = () => (
         </div>
         <div style={labelStyle}>Footer variants</div>
         <div data-testid="footer-matrix" style={{ ...panelStyle, display: 'grid', gridTemplateColumns: '1fr', gap: 16 }}>
-            {footerTypes.map((type) => (
-                <div key={type}>
-                    <div style={{ color: '#725d42', fontSize: 13, fontWeight: 700, marginBottom: 8 }}>{type}</div>
-                    <Footer type={type} className={`parity-footer-${type}`} style={{ width: 520 }} />
+            {footerTypes.flatMap((type) => [
+                { type, seamless: false, label: type },
+                { type, seamless: true, label: `${type} seamless` },
+            ]).map(({ type, seamless, label }) => (
+                <div key={label}>
+                    <div style={{ color: '#725d42', fontSize: 13, fontWeight: 700, marginBottom: 8 }}>{label}</div>
+                    <Footer type={type} seamless={seamless} className={`parity-footer-${type}${seamless ? '-seamless' : ''}`} style={{ width: 520 }} />
                 </div>
             ))}
         </div>
