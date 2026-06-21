@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useRef } from 'react';
+import { cva } from 'class-variance-authority';
 import { cn } from '../../utils/cn';
 import type { ComponentSize } from '../../utils/types';
 
@@ -6,16 +7,23 @@ export type InputSize = ComponentSize;
 export type InputStatus = 'error' | 'warning';
 type InputValue = NonNullable<React.InputHTMLAttributes<HTMLInputElement>['value']>;
 
-const inputSizeClassName: Record<InputSize, string> = {
-    small: 'animal-input-small',
-    middle: 'animal-input-middle',
-    large: 'animal-input-large',
-};
-
-const inputStatusClassName: Record<InputStatus, string> = {
-    error: 'animal-input-error',
-    warning: 'animal-input-warning',
-};
+// Byte-identical class output (order: wrapper → size → status → disabled → no-shadow).
+const inputWrapperVariants = cva('animal-input-wrapper', {
+    variants: {
+        size: {
+            small: 'animal-input-small',
+            middle: 'animal-input-middle',
+            large: 'animal-input-large',
+        },
+        status: {
+            error: 'animal-input-error',
+            warning: 'animal-input-warning',
+        },
+        disabled: { true: 'animal-input-disabled' },
+        shadow: { false: 'animal-input-no-shadow' },
+    },
+    defaultVariants: { size: 'middle' },
+});
 
 const setNativeInputValue = (input: HTMLInputElement, value: string) => {
     const ownValueSetter = Object.getOwnPropertyDescriptor(input, 'value')?.set;
@@ -128,11 +136,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         return (
             <span
                 className={cn(
-                    'animal-input-wrapper',
-                    inputSizeClassName[size],
-                    status && inputStatusClassName[status],
-                    disabled && 'animal-input-disabled',
-                    !shadow && 'animal-input-no-shadow',
+                    inputWrapperVariants({ size, status, disabled, shadow }),
                     className
                 )}
                 aria-disabled={disabled || undefined}

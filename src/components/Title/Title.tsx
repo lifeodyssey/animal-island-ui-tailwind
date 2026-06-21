@@ -1,4 +1,5 @@
 import React from 'react';
+import { cva } from 'class-variance-authority';
 import { cn } from '../../utils/cn';
 
 export type TitleSize = 'small' | 'middle' | 'large';
@@ -41,21 +42,28 @@ const SIZE_MAP: Record<TitleSize, number> = {
     large: 28,
 };
 
-const titleColorClassNames: Record<TitleColor, string | false> = {
-    default: false,
-    'app-pink': 'animal-title-app-pink',
-    purple: 'animal-title-purple',
-    'app-blue': 'animal-title-app-blue',
-    'app-yellow': 'animal-title-app-yellow',
-    'app-orange': 'animal-title-app-orange',
-    'app-teal': 'animal-title-app-teal',
-    'app-green': 'animal-title-app-green',
-    'app-red': 'animal-title-app-red',
-    'lime-green': 'animal-title-lime-green',
-    'yellow-green': 'animal-title-yellow-green',
-    brown: 'animal-title-brown',
-    'warm-peach-pink': 'animal-title-warm-peach-pink',
-};
+// color variant only overrides the --rf/--rb/--rk/--rt CSS vars on the ribbon;
+// byte-identical class output (default adds no modifier).
+const ribbonVariants = cva('animal-title-ribbon', {
+    variants: {
+        color: {
+            default: '',
+            'app-pink': 'animal-title-app-pink',
+            purple: 'animal-title-purple',
+            'app-blue': 'animal-title-app-blue',
+            'app-yellow': 'animal-title-app-yellow',
+            'app-orange': 'animal-title-app-orange',
+            'app-teal': 'animal-title-app-teal',
+            'app-green': 'animal-title-app-green',
+            'app-red': 'animal-title-app-red',
+            'lime-green': 'animal-title-lime-green',
+            'yellow-green': 'animal-title-yellow-green',
+            brown: 'animal-title-brown',
+            'warm-peach-pink': 'animal-title-warm-peach-pink',
+        },
+    },
+    defaultVariants: { color: 'default' },
+});
 
 /**
  * Ribbon（飘带）— 上游六层结构的移植：
@@ -72,7 +80,7 @@ const Ribbon: React.FC<{ children: React.ReactNode; fontSize: number; color: Tit
     color,
 }) => (
     <span
-        className={cn('animal-title-ribbon', titleColorClassNames[color])}
+        className={cn(ribbonVariants({ color }))}
         style={{ fontSize: `${fontSize}px` }}
     >
         <span className="animal-title-ribbon-back animal-title-ribbon-back-left" aria-hidden />
