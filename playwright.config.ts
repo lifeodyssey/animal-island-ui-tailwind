@@ -9,14 +9,15 @@ export default defineConfig({
     snapshotPathTemplate: '{testDir}/{testFileDir}/{testFileName}-snapshots/{arg}{-projectName}{ext}',
     expect: {
         timeout: 10_000,
-        // "Effectively pixel-perfect" gate. Absolute maxDiffPixels:0 is not stable
-        // on macOS Chromium — subpixel font AA jitters by ≤20px between runs even
-        // with deterministic font flags. threshold:0.15 ignores faint AA color
-        // jitter; maxDiffPixels:50 caps residual jitter while staying orders of
-        // magnitude below any REAL style change (which moves hundreds+ of pixels).
+        // Pixel-exact gate: maxDiffPixels:0 (ZERO differing pixels allowed).
+        // The per-pixel `threshold` (YIQ color distance) absorbs Chromium's faint
+        // subpixel font-AA jitter so those pixels don't count as "different" —
+        // giving a stable, literal maxDiffPixels:0 — while any REAL style change
+        // (large per-pixel delta) still counts and fails the gate. Verified stable
+        // across runs AND failing on a deliberate token change (primary→red).
         toHaveScreenshot: {
-            maxDiffPixels: 50,
-            threshold: 0.15,
+            maxDiffPixels: 0,
+            threshold: 0.2,
             animations: 'disabled',
         },
     },
