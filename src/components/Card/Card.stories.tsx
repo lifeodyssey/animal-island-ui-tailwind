@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Card, type CardColor, type CardType } from './Card';
+import { Card, type CardColor, type CardType, type CardPattern } from './Card';
 
 const meta = {
     component: Card,
@@ -63,6 +63,35 @@ export const AllColors: Story = {
                 <Card key={color} color={color} style={{ width: 180, padding: 16 }}>
                     <div style={{ fontWeight: 600, marginBottom: 4 }}>{color}</div>
                     <div>岛民招募中 🌿</div>
+                </Card>
+            ))}
+        </div>
+    ),
+};
+
+const ALL_PATTERNS: CardPattern[] = [
+    'default',
+    'app-pink',
+    'purple',
+    'app-blue',
+    'app-yellow',
+    'app-orange',
+    'app-teal',
+    'app-green',
+    'app-red',
+    'lime-green',
+    'yellow-green',
+    'brown',
+    'warm-peach-pink',
+];
+
+export const AllPatterns: Story = {
+    render: () => (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
+            {ALL_PATTERNS.map((pattern) => (
+                <Card key={pattern} pattern={pattern} style={{ width: 180, padding: 16 }}>
+                    <div style={{ fontWeight: 600, marginBottom: 4 }}>{pattern}</div>
+                    <div>圆点纹理底 🌿</div>
                 </Card>
             ))}
         </div>

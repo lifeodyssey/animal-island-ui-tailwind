@@ -1,0 +1,182 @@
+/* ============================================
+   Form component styles (animal-form*)
+
+   Ported from upstream guokaigdg/animal-island-ui Form.module.less.
+   Reuses existing --animal-* design tokens where possible and declares
+   Form-specific tokens here so the rest of the system is untouched.
+   ============================================ */
+
+:root {
+    /* Status colors map onto the existing animal palette so Form errors/help
+       text match the warm Animal Island language rather than antd defaults. */
+    --animal-form-label-color: var(--animal-text-color);
+    --animal-form-help-color: var(--animal-text-color-secondary);
+    --animal-form-error-color: var(--animal-error-color);
+    --animal-form-warning-color: var(--animal-warning-color);
+    --animal-form-success-color: var(--animal-success-color);
+    --animal-form-validating-color: var(--animal-primary-color);
+    --animal-form-required-color: var(--animal-error-color);
+
+    --animal-form-help-font-size: var(--animal-font-size-sm, 12px);
+    --animal-form-label-font-size-small: 12px;
+    --animal-form-label-font-size-middle: 14px;
+    --animal-form-label-font-size-large: 16px;
+
+    --animal-form-vertical-gap: 6px;
+    --animal-form-inline-gap: 8px;
+    --animal-form-item-gap: 8px;
+    --animal-form-label-line-height: 1.6;
+}
+
+/* ============================================
+   animal-form
+   ============================================ */
+
+.animal-form {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    color: var(--animal-text-color-body);
+    font-family: var(--animal-font-family);
+    font-size: var(--animal-font-size-base, 14px);
+    line-height: var(--animal-form-label-line-height);
+    list-style: none;
+}
+
+.animal-form-horizontal {
+    display: flex;
+    flex-direction: column;
+    gap: var(--animal-form-item-gap);
+}
+
+.animal-form-horizontal .animal-form-item {
+    display: grid;
+    grid-template-columns: repeat(24, minmax(0, 1fr));
+    align-items: baseline;
+    row-gap: var(--animal-form-item-gap);
+    /* horizontal 下 label/wrapper 在 24 列栅格里相邻，不该有 column-gap */
+}
+
+.animal-form-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: var(--animal-form-item-gap);
+}
+
+.animal-form-vertical .animal-form-item {
+    display: block;
+}
+
+.animal-form-vertical .animal-form-item-label {
+    display: block;
+    margin-bottom: var(--animal-form-vertical-gap);
+}
+
+.animal-form-inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--animal-form-inline-gap);
+}
+
+.animal-form-inline .animal-form-item {
+    flex: 0 0 auto;
+}
+
+.animal-form-small .animal-form-item-label {
+    font-size: var(--animal-form-label-font-size-small);
+}
+
+.animal-form-middle .animal-form-item-label {
+    font-size: var(--animal-form-label-font-size-middle);
+}
+
+.animal-form-large .animal-form-item-label {
+    font-size: var(--animal-form-label-font-size-large);
+}
+
+.animal-form-disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* ============================================
+   animal-form-item
+   ============================================ */
+
+.animal-form-item {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    vertical-align: top;
+}
+
+.animal-form-item-label {
+    display: inline-block;
+    flex: 0 0 auto;
+    line-height: var(--animal-form-label-line-height);
+    color: var(--animal-form-label-color);
+    font-weight: normal;
+    white-space: nowrap;
+}
+
+.animal-form-item-label-required::before {
+    content: '*';
+    color: var(--animal-form-required-color);
+    margin-right: 4px;
+}
+
+.animal-form-item-label-colon::after {
+    content: ':';
+    margin: 0 4px 0 2px;
+}
+
+.animal-form-item-control {
+    min-width: 0;
+}
+
+.animal-form-item-control-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 32px;
+}
+
+.animal-form-item-control-input > * {
+    flex: 1 1 auto;
+    max-width: 100%;
+}
+
+.animal-form-item-explain {
+    min-height: 22px;
+    color: var(--animal-form-help-color);
+    font-size: var(--animal-form-help-font-size);
+    line-height: 1.5;
+    margin-top: 4px;
+}
+
+.animal-form-item-explain-error {
+    color: var(--animal-form-error-color);
+}
+
+.animal-form-item-feedback-icon {
+    display: inline-block;
+    margin-right: 4px;
+    color: var(--animal-form-error-color);
+    font-size: 12px;
+}
+
+.animal-form-item-has-error .animal-form-item-explain {
+    color: var(--animal-form-error-color);
+}
+
+.animal-form-item-has-warning .animal-form-item-explain {
+    color: var(--animal-form-warning-color);
+}
+
+.animal-form-item-has-success .animal-form-item-explain {
+    color: var(--animal-form-success-color);
+}
+
+.animal-form-item-is-validating .animal-form-item-explain {
+    color: var(--animal-form-validating-color);
+}

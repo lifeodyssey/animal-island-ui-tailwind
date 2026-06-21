@@ -142,6 +142,29 @@ export const MaskNotClosable: Story = {
     },
 };
 
+/** maskStyle 自定义遮罩外观（颜色、模糊等）。 */
+export const CustomMaskStyle: Story = {
+    render: () => {
+        const [open, setOpen] = useState(false);
+        return (
+            <>
+                <Button type="primary" onClick={() => setOpen(true)}>
+                    自定义遮罩
+                </Button>
+                <Modal
+                    open={open}
+                    title="梦境入口"
+                    maskStyle={{ backgroundColor: 'rgba(25, 200, 185, 0.35)', backdropFilter: 'blur(2px)' }}
+                    onClose={() => setOpen(false)}
+                    onOk={() => setOpen(false)}
+                >
+                    阿猫说：「遮罩换成了岛屿的青色，还加了点朦胧感。」
+                </Modal>
+            </>
+        );
+    },
+};
+
 /** typewriter=true（默认），内容逐字打出。 */
 export const WithTypewriter: Story = {
     render: () => {

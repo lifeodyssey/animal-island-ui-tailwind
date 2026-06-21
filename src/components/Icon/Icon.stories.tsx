@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Icon, ICON_LIST } from './Icon';
+import { Icon, ICON_LIST, ITEM_LIST, ITEM_COUNT } from './Icon';
 
 const meta = {
     component: Icon,
@@ -83,4 +83,21 @@ export const AccessibleLabel: Story = {
         size: 36,
         'aria-label': '集合啦商店',
     },
+};
+
+export const Items: Story = {
+    name: `Item glyphs (${ITEM_COUNT})`,
+    render: () => (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, maxWidth: 640 }}>
+            {ITEM_LIST.slice(0, 48).map((id) => (
+                <div
+                    key={id}
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}
+                >
+                    <Icon item={id} size={40} />
+                    <span style={{ fontSize: 11 }}>{id}</span>
+                </div>
+            ))}
+        </div>
+    ),
 };

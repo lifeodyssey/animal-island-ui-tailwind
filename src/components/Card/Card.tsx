@@ -18,11 +18,30 @@ export type CardColor =
     | 'brown'
     | 'warm-peach-pink';
 
+/** 背景花纹类型（圆点纹理底，与 color 纯色背景正交，可叠加使用）。 */
+export type CardPattern =
+    | 'none'
+    | 'default'
+    | 'app-pink'
+    | 'purple'
+    | 'app-blue'
+    | 'app-yellow'
+    | 'app-orange'
+    | 'app-teal'
+    | 'app-green'
+    | 'app-red'
+    | 'lime-green'
+    | 'yellow-green'
+    | 'brown'
+    | 'warm-peach-pink';
+
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-    /** 卡片类型 */
+    /** 卡片类型。`title` 为兼容保留（上游已移除），新代码请用 Title 组件。 */
     type?: CardType;
     /** 背景颜色类型 */
     color?: CardColor;
+    /** 背景花纹类型 */
+    pattern?: CardPattern;
     /** 自定义内容 */
     children?: React.ReactNode;
 }
@@ -54,6 +73,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
         {
             type = 'default',
             color = 'default',
+            pattern = 'none',
             children,
             className,
             style,
@@ -68,6 +88,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
                     'animal-card',
                     cardTypeClassNames[type],
                     cardColorClassNames[color],
+                    pattern !== 'none' && `animal-card-pattern animal-card-pattern-${pattern}`,
                     className
                 )}
                 style={style}

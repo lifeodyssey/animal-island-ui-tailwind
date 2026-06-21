@@ -72,6 +72,7 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
                 checked={isChecked}
                 onCheckedChange={handleCheckedChange}
                 disabled={isDisabled}
+                aria-busy={loading || undefined}
                 {...rest}
             >
                 <span className="animal-switch-inner">

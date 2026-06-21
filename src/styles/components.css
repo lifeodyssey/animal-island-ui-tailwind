@@ -504,6 +504,7 @@
   }
 
   .animal-checkbox-box {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -526,6 +527,22 @@
   .animal-checkbox-box[data-state="checked"] {
     background: var(--animal-primary-color);
     border-color: var(--animal-primary-color-active);
+  }
+
+  .animal-checkbox-box[data-state="checked"]::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: animal-control-splash var(--animal-motion-duration-base) var(--animal-motion-ease);
+  }
+
+  .animal-checkbox-disabled .animal-checkbox-box[data-state="checked"]::after {
+    animation: none;
   }
 
   .animal-checkbox-small .animal-checkbox-box {
@@ -648,6 +665,22 @@
   .animal-radio-checked .animal-radio-circle {
     background: var(--animal-primary-color);
     border-color: var(--animal-primary-color-active);
+  }
+
+  .animal-radio-checked .animal-radio-circle::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: animal-control-splash var(--animal-motion-duration-base) var(--animal-motion-ease);
+  }
+
+  .animal-radio-disabled .animal-radio-circle::after {
+    animation: none;
   }
 
   .animal-radio-indicator {
@@ -1624,6 +1657,111 @@
   .animal-card-brown { background: #9a835a; color: #fff; }
   .animal-card-warm-peach-pink { background: #e18c6f; color: #fff; }
 
+  /* Card patterns — Animal Crossing dotted texture. Shared base holds the
+     two-layer radial-gradient structure; each variant only swaps the four
+     colors (dedup of upstream's 14 near-identical .pattern-* rules). */
+  .animal-card-pattern {
+    background:
+      radial-gradient(circle, var(--animal-card-pattern-dot1) 1.5px, transparent 1.5px),
+      radial-gradient(circle, var(--animal-card-pattern-dot2) 1px, transparent 1px),
+      var(--animal-card-pattern-bg);
+    background-size: 28px 28px, 14px 14px;
+    background-position: 0 0, 7px 7px;
+    border: 1.5px solid var(--animal-card-pattern-border);
+    color: var(--animal-card-pattern-text);
+  }
+  .animal-card-pattern-default {
+    --animal-card-pattern-dot1: rgba(196, 184, 158, 0.15);
+    --animal-card-pattern-dot2: rgba(196, 184, 158, 0.1);
+    --animal-card-pattern-bg: rgb(247, 243, 223);
+    --animal-card-pattern-border: #d4c4a8;
+    --animal-card-pattern-text: #725d42;
+  }
+  .animal-card-pattern-app-pink {
+    --animal-card-pattern-dot1: rgba(248, 166, 178, 0.18);
+    --animal-card-pattern-dot2: rgba(255, 200, 210, 0.12);
+    --animal-card-pattern-bg: #fde4e8;
+    --animal-card-pattern-border: #f8a6b2;
+    --animal-card-pattern-text: #a85565;
+  }
+  .animal-card-pattern-purple {
+    --animal-card-pattern-dot1: rgba(183, 125, 238, 0.18);
+    --animal-card-pattern-dot2: rgba(220, 180, 255, 0.12);
+    --animal-card-pattern-bg: #f0e8ff;
+    --animal-card-pattern-border: #b77dee;
+    --animal-card-pattern-text: #6a3a9a;
+  }
+  .animal-card-pattern-app-blue {
+    --animal-card-pattern-dot1: rgba(136, 157, 240, 0.18);
+    --animal-card-pattern-dot2: rgba(180, 195, 255, 0.12);
+    --animal-card-pattern-bg: #e8edff;
+    --animal-card-pattern-border: #889df0;
+    --animal-card-pattern-text: #4a5a8a;
+  }
+  .animal-card-pattern-app-yellow {
+    --animal-card-pattern-dot1: rgba(247, 205, 103, 0.18);
+    --animal-card-pattern-dot2: rgba(255, 230, 160, 0.12);
+    --animal-card-pattern-bg: #fff8e0;
+    --animal-card-pattern-border: #f7cd67;
+    --animal-card-pattern-text: #7a6528;
+  }
+  .animal-card-pattern-app-orange {
+    --animal-card-pattern-dot1: rgba(229, 146, 102, 0.18);
+    --animal-card-pattern-dot2: rgba(255, 190, 150, 0.12);
+    --animal-card-pattern-bg: #fff0e8;
+    --animal-card-pattern-border: #e59266;
+    --animal-card-pattern-text: #8a4a2a;
+  }
+  .animal-card-pattern-app-teal {
+    --animal-card-pattern-dot1: rgba(130, 213, 187, 0.18);
+    --animal-card-pattern-dot2: rgba(170, 235, 210, 0.12);
+    --animal-card-pattern-bg: #e8faf5;
+    --animal-card-pattern-border: #82d5bb;
+    --animal-card-pattern-text: #2a6b5a;
+  }
+  .animal-card-pattern-app-green {
+    --animal-card-pattern-dot1: rgba(138, 198, 138, 0.18);
+    --animal-card-pattern-dot2: rgba(180, 220, 180, 0.12);
+    --animal-card-pattern-bg: #e8f5e8;
+    --animal-card-pattern-border: #8ac68a;
+    --animal-card-pattern-text: #3a6b3a;
+  }
+  .animal-card-pattern-app-red {
+    --animal-card-pattern-dot1: rgba(252, 115, 109, 0.18);
+    --animal-card-pattern-dot2: rgba(255, 160, 155, 0.12);
+    --animal-card-pattern-bg: #ffe8e8;
+    --animal-card-pattern-border: #fc736d;
+    --animal-card-pattern-text: #9a3a3a;
+  }
+  .animal-card-pattern-lime-green {
+    --animal-card-pattern-dot1: rgba(209, 218, 73, 0.18);
+    --animal-card-pattern-dot2: rgba(230, 240, 130, 0.12);
+    --animal-card-pattern-bg: #f5f8e0;
+    --animal-card-pattern-border: #d1da49;
+    --animal-card-pattern-text: #5a6b28;
+  }
+  .animal-card-pattern-yellow-green {
+    --animal-card-pattern-dot1: rgba(236, 223, 82, 0.18);
+    --animal-card-pattern-dot2: rgba(255, 245, 140, 0.12);
+    --animal-card-pattern-bg: #fffde8;
+    --animal-card-pattern-border: #ecdf52;
+    --animal-card-pattern-text: #6a5a28;
+  }
+  .animal-card-pattern-brown {
+    --animal-card-pattern-dot1: rgba(154, 131, 90, 0.18);
+    --animal-card-pattern-dot2: rgba(190, 165, 120, 0.12);
+    --animal-card-pattern-bg: #f5f0e0;
+    --animal-card-pattern-border: #9a835a;
+    --animal-card-pattern-text: #5a4a2a;
+  }
+  .animal-card-pattern-warm-peach-pink {
+    --animal-card-pattern-dot1: rgba(225, 140, 111, 0.18);
+    --animal-card-pattern-dot2: rgba(255, 185, 160, 0.12);
+    --animal-card-pattern-bg: #fff0e8;
+    --animal-card-pattern-border: #e18c6f;
+    --animal-card-pattern-text: #8a4a2a;
+  }
+
   .animal-modal-overlay {
     position: fixed;
     inset: 0;
@@ -1631,7 +1769,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.35);
+    background: var(--animal-mask-bg);
     animation: animal-fade-in 0.25s ease;
   }
 
@@ -2819,5 +2957,90 @@
     --rb: #b85a30;
     --rk: #6a2a10;
     --rt: #fff;
+  }
+
+  /* Wallet — Animal Crossing bell pouch. Size vars are scoped to the component
+     (matching upstream) so size variants only re-declare the five vars. */
+  .animal-wallet {
+    --animal-wallet-pill-w: 132px;
+    --animal-wallet-pill-h: 42px;
+    --animal-wallet-bag: 50px;
+    --animal-wallet-text-size: 17px;
+    --animal-wallet-halo: 4px;
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    width: var(--animal-wallet-pill-w);
+    /* leave room for the pouch overhanging ~70% above the pill */
+    padding-top: calc(var(--animal-wallet-bag) * 0.7);
+    user-select: none;
+    line-height: 1;
+  }
+
+  .animal-wallet-small {
+    --animal-wallet-pill-w: 96px;
+    --animal-wallet-pill-h: 32px;
+    --animal-wallet-bag: 38px;
+    --animal-wallet-text-size: 12px;
+    --animal-wallet-halo: 3px;
+  }
+
+  .animal-wallet-large {
+    --animal-wallet-pill-w: 176px;
+    --animal-wallet-pill-h: 54px;
+    --animal-wallet-bag: 66px;
+    --animal-wallet-text-size: 22px;
+    --animal-wallet-halo: 6px;
+  }
+
+  .animal-wallet-bag-slot {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: var(--animal-wallet-bag);
+    height: var(--animal-wallet-bag);
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 2;
+    filter: drop-shadow(0 4px 6px rgba(91, 78, 30, 0.18));
+  }
+
+  .animal-wallet-pill {
+    position: relative;
+    width: 100%;
+    height: var(--animal-wallet-pill-h);
+    border-radius: 999px;
+    background: #b3a046;
+    box-shadow:
+      inset 0 -6px 0 rgba(91, 78, 30, 0.18),
+      inset 0 0 0 2px rgba(91, 78, 30, 0.12),
+      0 0 0 var(--animal-wallet-halo) #fffbe7,
+      0 6px 14px rgba(91, 78, 30, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+  }
+
+  .animal-wallet-value {
+    font-family: 'Nunito', 'Noto Sans SC', system-ui, sans-serif;
+    font-weight: 800;
+    font-size: var(--animal-wallet-text-size);
+    color: #fff;
+    letter-spacing: 0.04em;
+    text-shadow:
+      0 2px 0 rgba(91, 78, 30, 0.55),
+      0 0 1px rgba(91, 78, 30, 0.55);
+    font-variant-numeric: tabular-nums;
+    padding: 0 12px;
+    white-space: nowrap;
+  }
+
+  .animal-wallet:hover .animal-wallet-bag-slot {
+    animation: animal-wallet-bag-bounce 0.5s ease-in-out;
   }
 }
