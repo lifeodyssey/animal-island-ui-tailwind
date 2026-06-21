@@ -47,6 +47,8 @@
     "test:playwright": "playwright test tests/playwright-*.spec.ts",
     "test:migration": "node --test tests/migration.test.mjs",
     "test:visual": "playwright test tests/visual-*.spec.ts",
+    "test:visual-baseline": "playwright test tests/visual-*.spec.ts --update-snapshots",
+    "test:visual-check": "playwright test tests/visual-*.spec.ts",
     "test:a11y": "playwright test tests/a11y-axe.spec.ts",
     "test:coverage": "vitest --project=storybook --run --coverage",
     "test:unit": "vitest --project=unit --run",

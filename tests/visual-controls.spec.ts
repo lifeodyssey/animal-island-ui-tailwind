@@ -8,10 +8,12 @@ const emptyKeyStoryUrl = '/iframe.html?id=regression-parity-controls--select-emp
 const disableMotion = async (page: Page) => {
     await page.addStyleTag({
         content: `
-            *, *::before, *::after { animation: none !important; transition: none !important; caret-color: transparent !important; outline: none !important; }
+            *, *::before, *::after { animation: none !important; animation-duration: 0s !important; transition: none !important; transition-duration: 0s !important; caret-color: transparent !important; outline: none !important; -webkit-font-smoothing: antialiased !important; -moz-osx-font-smoothing: grayscale !important; }
             [class*="dropdown"], .animal-select-content { opacity: 1 !important; animation: none !important; }
         `,
     });
+    await page.evaluate(() => document.fonts.ready);
+    await page.waitForLoadState('networkidle');
 };
 
 test.describe('reference controls visual parity', () => {

@@ -1,4 +1,5 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test } from '@playwright/test';
+import { disableMotion } from './visual-helpers';
 
 const defaultStoryUrl = '/iframe.html?id=components-title--default&viewMode=story';
 const colorsStoryUrl = '/iframe.html?id=components-title--colors&viewMode=story';
@@ -8,12 +9,6 @@ const sizeStories = [
     { url: '/iframe.html?id=components-title--middle&viewMode=story', screenshot: 'title-middle-region.png' },
     { url: '/iframe.html?id=components-title--large&viewMode=story', screenshot: 'title-large-region.png' },
 ] as const;
-
-const disableMotion = async (page: Page) => {
-    await page.addStyleTag({
-        content: `*, *::before, *::after { animation: none !important; transition: none !important; caret-color: transparent !important; outline: none !important; }`,
-    });
-};
 
 test.describe('Title visual parity', () => {
     test('captures default and size ribbon regions', async ({ page }) => {

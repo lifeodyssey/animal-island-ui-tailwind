@@ -1,15 +1,10 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test } from '@playwright/test';
+import { disableMotion } from './visual-helpers';
 
 const tabsStoryUrl = '/iframe.html?id=regression-parity-surface-tabs--tabs-parity&viewMode=story';
 const surfaceStoryUrl = '/iframe.html?id=regression-parity-surface-tabs--surface-parity&viewMode=story';
 const tabsMatrixStoryUrl = '/iframe.html?id=regression-parity-surface-tabs--tabs-matrix-parity&viewMode=story';
 const surfaceEdgeStoryUrl = '/iframe.html?id=regression-parity-surface-tabs--surface-edge-parity&viewMode=story';
-
-const disableMotion = async (page: Page) => {
-    await page.addStyleTag({
-        content: `*, *::before, *::after { animation: none !important; transition: none !important; caret-color: transparent !important; outline: none !important; }`,
-    });
-};
 
 test.describe('reference surface/tabs visual parity', () => {
     test('captures stable Tabs region', async ({ page }) => {
