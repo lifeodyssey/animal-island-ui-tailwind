@@ -31,7 +31,7 @@ content and the single source of truth.
 
 ## Component Inventory
 
-The library exposes 22 components:
+The library exposes 25 components:
 
 1. Button
 2. Input
@@ -55,6 +55,9 @@ The library exposes 22 components:
 20. Table
 21. Tooltip
 22. WeddingInvitation
+23. Title
+24. Form
+25. Wallet
 
 ## Implementation Rules
 
