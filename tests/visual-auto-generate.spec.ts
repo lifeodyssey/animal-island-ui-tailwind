@@ -9,17 +9,16 @@ const storyIds: string[] = JSON.parse(
     readFileSync(new URL('./story-ids.json', import.meta.url), 'utf8')
 );
 
-// Inherently NON-deterministic stories (JS-driven animation / per-frame state)
-// that cannot be pinned pixel-exact without a dedicated frozen no-play story.
-// Tracked here explicitly (no silent cap) — to be replaced by frozen variants.
-const DENYLIST = new Set<string>([]);
+// The only stories with no stable frame: the Loading island runs an infinite GSAP
+// timeline (irreducible animation per the design). Every other animated story
+// (Typewriter typing-out, Cursor, Loading toggle) settles and IS pinned. Tracked
+// explicitly here — no silent cap.
+const DENYLIST = new Set<string>([
+    'components-loading--active',
+    'components-loading--inactive',
+]);
 
-// typewriter = JS char reveal; loading = GSAP island; cursor = some stories render
-// a zero-size root. All need dedicated frozen/sized no-play stories to pin (follow-up).
-const isAnimated = (id: string) =>
-    id.startsWith('components-typewriter--') ||
-    id.startsWith('components-loading--') ||
-    id.startsWith('components-cursor--');
+const isAnimated = (_id: string) => false;
 
 // Freeze Date so clock/time-based stories (Time) render deterministically.
 const FREEZE_CLOCK = `(() => {
@@ -47,8 +46,10 @@ test.describe('auto visual parity (per story)', () => {
                 g?.globalTimeline?.pause(0);
             });
             const root = page.locator('#storybook-root');
-            await expect(root).toBeVisible();
-            await expect(root).toHaveScreenshot(`${id}.png`);
+            await expect(root).toBeAttached();
+            // toHaveScreenshot polls until two consecutive shots match, so finite
+            // animations (Typewriter typing out, paused GSAP) settle to a stable frame.
+            await expect(root).toHaveScreenshot(`${id}.png`, { timeout: 15_000 });
         });
     }
 });
