@@ -1,4 +1,5 @@
 import React from 'react';
+import { cva } from 'class-variance-authority';
 import { cn } from '../../utils/cn';
 import type { ComponentSize } from '../../utils/types';
 
@@ -6,19 +7,30 @@ export type ButtonType = 'primary' | 'default' | 'dashed' | 'text' | 'link';
 export type ButtonSize = ComponentSize;
 export type ButtonHTMLType = 'submit' | 'reset' | 'button';
 
-const buttonTypeClassName: Record<ButtonType, string> = {
-    primary: 'animal-btn-primary',
-    default: 'animal-btn-default',
-    dashed: 'animal-btn-dashed',
-    text: 'animal-btn-text',
-    link: 'animal-btn-link',
-};
-
-const buttonSizeClassName: Record<ButtonSize, string> = {
-    small: 'animal-btn-small',
-    middle: 'animal-btn-middle',
-    large: 'animal-btn-large',
-};
+// Variants emit byte-identical animal-* class literals in the same order as the
+// previous lookup + boolean chain, so the rendered class list (and pixels) are
+// unchanged: animal-btn → type → size → danger → ghost → block → loading.
+const buttonVariants = cva('animal-btn', {
+    variants: {
+        type: {
+            primary: 'animal-btn-primary',
+            default: 'animal-btn-default',
+            dashed: 'animal-btn-dashed',
+            text: 'animal-btn-text',
+            link: 'animal-btn-link',
+        },
+        size: {
+            small: 'animal-btn-small',
+            middle: 'animal-btn-middle',
+            large: 'animal-btn-large',
+        },
+        danger: { true: 'animal-btn-danger' },
+        ghost: { true: 'animal-btn-ghost' },
+        block: { true: 'animal-btn-block' },
+        loading: { true: 'animal-btn-loading' },
+    },
+    defaultVariants: { type: 'default', size: 'middle' },
+});
 
 export interface ButtonProps extends Omit<
     React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -82,13 +94,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                 ref={ref}
                 type={htmlType}
                 className={cn(
-                    'animal-btn',
-                    buttonTypeClassName[type],
-                    buttonSizeClassName[size],
-                    danger && 'animal-btn-danger',
-                    ghost && 'animal-btn-ghost',
-                    block && 'animal-btn-block',
-                    loading && 'animal-btn-loading',
+                    buttonVariants({ type, size, danger, ghost, block, loading }),
                     className
                 )}
                 disabled={disabled}
