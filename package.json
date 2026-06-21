@@ -50,6 +50,7 @@
     "test:a11y": "playwright test tests/a11y-axe.spec.ts",
     "test:coverage": "vitest --project=storybook --run --coverage",
     "test:unit": "vitest --project=unit --run",
+    "upstream:delta": "node scripts/upstream-delta.mjs",
     "codex:upstream-check": "node scripts/check-upstream-sync.mjs",
     "verify": "npm run build && npm pack --dry-run && npm test && npm run build:storybook && tsc --noEmit",
     "publish:dry-run": "npm publish --dry-run",
