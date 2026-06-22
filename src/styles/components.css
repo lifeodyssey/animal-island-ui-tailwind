@@ -532,13 +532,10 @@
   .animal-checkbox-box[data-state="checked"]::after {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
+    inset: 0;
     border-radius: 50%;
     pointer-events: none;
-    animation: animal-control-splash var(--animal-motion-duration-base) var(--animal-motion-ease);
+    animation: animal-control-splash 0.6s ease forwards;
   }
 
   .animal-checkbox-disabled .animal-checkbox-box[data-state="checked"]::after {
@@ -670,13 +667,10 @@
   .animal-radio-checked .animal-radio-circle::after {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
+    inset: 0;
     border-radius: 50%;
     pointer-events: none;
-    animation: animal-control-splash var(--animal-motion-duration-base) var(--animal-motion-ease);
+    animation: animal-control-splash 0.6s ease forwards;
   }
 
   .animal-radio-disabled .animal-radio-circle::after {
