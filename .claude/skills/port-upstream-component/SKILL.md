@@ -53,6 +53,16 @@ This is a **refactor with an invariant**, not a redesign. Distribution stays **n
 ## After merging an upstream sync
 Update the `.upstream-sync` ledger to the synced upstream SHA: `git rev-parse upstream/main > .upstream-sync`.
 
+## Animation-driven components (Loading/GSAP, Typewriter, Cursor)
+
+Test the **contract/wiring, not the frames**. Pixel snapshots are for static appearance only — an infinite/JS-driven animation has no stable frame, so do NOT put live-animation stories in the pixel gate.
+
+1. **Unit — spy the animation engine** (canonical: `src/components/Loading/Loading.gsap.unit.test.tsx`): `vi.mock('gsap')`, render, capture every `to`/`fromTo`/`set` call, assert each target gets the expected method + params (the upstream tween set). Deterministic, frame-free, the real regression net.
+2. **Behavior — play/Playwright**: assert structure renders, `active`/`trigger` toggles mount/visibility, a11y (`role="status"`/`aria-busy`/`aria-live`), and cleanup on unmount (gsap `context.revert()`).
+3. **Visual — only a frozen frame**: if a snapshot is wanted, pin a deterministic frame (GSAP `pause(0)`, fake timers, or a static "first-frame" no-play story) — never the live loop. `toHaveScreenshot`'s stabilization polling DOES settle *finite* animations (Typewriter typing out, Cursor slide-in), so those CAN be auto-pinned; only truly infinite loops (Loading island) are excluded.
+
+In `tests/visual-auto-generate.spec.ts`, infinite-animation stories live in the documented `DENYLIST` (no silent cap). Excluding them from the pixel gate is correct — their correctness is covered by layers 1+2, not pixels.
+
 ## Notes
 - Pixel gate tolerance lives in `playwright.config.ts` (`maxDiffPixels` / `threshold`). It is "effectively pixel-perfect" — absolute 0 flaps on macOS font AA; see the config comment and `docs/MIGRATION_DESIGN.md` §3.
 - Baselines are committed; a baseline PNG changing in a diff is a review red flag requiring human visual approval — never auto-update on merge.

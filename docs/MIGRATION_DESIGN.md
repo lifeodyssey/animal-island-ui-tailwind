@@ -138,6 +138,16 @@ const disableMotion = async (page) => {
 
 Storybook `play` tests + Playwright are the behavior gate, independent of pixels (so the screenshot gate can never give false confidence about behavior). See §7 for the Storybook system. CI runs `toHaveCSS()` token-value assertions (§9.4) as the cross-platform backstop because screenshots are local-only.
 
+### Animation-driven components (Loading/GSAP, Typewriter, Cursor) — test the wiring, not the frames
+
+Pixel snapshots are for **static appearance only**. An infinite or JS-driven animation has no stable frame, so it must NOT be pinned in the pixel gate. Layer its tests instead:
+
+1. **Spy the animation engine (unit).** Canonical example: `src/components/Loading/Loading.gsap.unit.test.tsx` — `vi.mock('gsap')`, render, capture every `to`/`fromTo`/`set` call, assert each target gets the expected method + params (the upstream tween set). Deterministic, frame-free; this is the real regression net.
+2. **Behavior (play/Playwright).** Structure renders; `active`/`trigger` toggles mount/visibility; a11y (`role="status"`/`aria-busy`/`aria-live`); cleanup on unmount (gsap `context.revert()`).
+3. **Visual — frozen frame only.** Pin a deterministic frame (GSAP `pause(0)`, fake timers, or a static first-frame no-play story), never the live loop. `toHaveScreenshot`'s stabilization polling settles *finite* animations (Typewriter typing out, Cursor slide-in) — so those ARE auto-pinned in `tests/visual-auto-generate.spec.ts`. Only truly infinite loops (the Loading island GSAP timeline) sit in that spec's documented `DENYLIST` — excluded from the pixel gate by design, with correctness covered by layers 1+2. This is consistent with §1 constraint #4 (GSAP is irreducible) and not a coverage gap.
+
+**Rule of thumb:** static states → pixel snapshot; dynamic/infinite animation → engine-spy + behavior assertions.
+
 ---
 
 ## 5. Per-component migration loop
