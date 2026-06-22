@@ -1,6 +1,6 @@
 # Animal Island UI — Less → Tailwind v4 + Radix Migration & Automation Design
 
-> Status: design (awaiting approval before execution).
+> Status: largely implemented (PR #6). Landed: Wave 0 foundation (delta detection, pixel gate, skill), CVA for all variant components, tokens → @theme, and the pixel-exact gate over 224 stories. Remaining: the documentation rewrite in §8 and frozen-frame coverage for the 2 infinite-GSAP Loading stories.
 >
 > **Architecture verdict — the "daisyUI model":** distribute as an **npm + pre-compiled CSS** package; expose **semantic `animal-*` classes + `--animal-*` runtime tokens** as the consumer contract; author styles **internally** with Tailwind v4 best practice (`@theme` + `@utility` + CVA), compiled into `dist` — **utilities never appear in consumer markup**. Every styling change is guarded by a **pixel-exact (zero-diff) gate**. Automation is **Claude Code native** (skill + `/loop`/Workflow + daily `/schedule`).
 
@@ -111,7 +111,7 @@ Rendered DOM and class list unchanged → pixel gate stays green; test selectors
 
 `playwright.config.ts`:
 ```ts
-expect: { toHaveScreenshot: { maxDiffPixels: 0, threshold: 0, animations: 'disabled' } },
+expect: { toHaveScreenshot: { maxDiffPixels: 0, threshold: 0.2, animations: 'disabled' } }, // threshold:0.2 absorbs faint font-AA jitter; maxDiffPixels:0 still allows zero real diffs
 use: { deviceScaleFactor: 1 },   // lock DPI subpixels
 ```
 Mandatory determinism helper (every visual spec):
@@ -210,7 +210,7 @@ For each changed file, first ask "can this be reused from upstream via git?":
 | `CLAUDE.md` | Add "pixel-exact parity strategy + Radix/Storybook conventions + git 3-tier reuse + daisyUI model" sections (inventory already 25). |
 | `README.md` / `DESIGN_PROMPT.md` / `CONTRIBUTING.md` | Light updates (new-component examples + docs map + pixel-gate workflow). |
 | `PUBLISHING.md` / `CHANGELOG.md` / community files | No change. |
-| **NEW `docs/MIGRATION_METHODOLOGY.md`** | Less→Tailwind rules + git 3-tier reuse + pixel-gate workflow + case studies (this doc is the source). |
+| Migration methodology | Less→Tailwind rules + git 3-tier reuse + pixel-gate workflow + case studies — **covered by THIS document** (`docs/MIGRATION_DESIGN.md`) + the `port-upstream-component` skill; no separate file needed. |
 | **NEW `docs/KNOWN_DEVIATIONS.md`** | Intentional fork divergences (Card title kept, Japanese fonts removed, Icon 488 items, Modal maskStyle, etc.). |
 
 ---
