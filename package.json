@@ -1,6 +1,6 @@
 {
   "name": "animal-island-ui-tailwind",
-  "version": "1.0.0",
+  "version": "1.0.16",
   "description": "Tailwind CSS v4 + Radix UI modernization of Animal Island UI",
   "type": "module",
   "main": "dist/cjs/index.cjs",
