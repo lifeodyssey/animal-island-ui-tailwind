@@ -46,7 +46,7 @@
 
 ## 组件一览
 
-当前包含 22 个组件：
+当前包含 25 个组件：
 
 | 交互组件 | 容器与展示 | 装饰与特殊 |
 |----------|-----------|-----------|
@@ -57,6 +57,7 @@
 | Radio 单选框 | Footer 页脚 | Time 时间 |
 | Select 选择器 | Loading 加载 | Cursor 光标 |
 | Tabs 标签页 | Table 表格 | Tooltip 气泡提示 |
+| Form 表单 | Title 标题缎带 | Wallet 钱袋 |
 | | WeddingInvitation 婚礼请柬 | |
 
 ## 快速开始

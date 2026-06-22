@@ -37,6 +37,8 @@ export interface ModalProps {
     width?: number | string;
     /** 点击遮罩关闭 */
     maskClosable?: boolean;
+    /** 自定义遮罩样式 */
+    maskStyle?: React.CSSProperties;
     /** 底部按钮区域 */
     footer?: React.ReactNode | null;
     /** 关闭回调 */
@@ -59,6 +61,7 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
             title,
             width = 520,
             maskClosable = true,
+            maskStyle,
             footer,
             onClose,
             onOk,
@@ -104,7 +107,7 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
             <Cursor>
                 <RadixDialog.Root open={open} onOpenChange={handleOpenChange}>
                     <RadixDialog.Portal>
-                        <RadixDialog.Overlay className="animal-modal-overlay" />
+                        <RadixDialog.Overlay className="animal-modal-overlay" style={maskStyle} />
                         <RadixDialog.Content
                             ref={ref}
                             className={cn('animal-modal', className)}

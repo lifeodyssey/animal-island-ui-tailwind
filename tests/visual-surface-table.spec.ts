@@ -1,13 +1,8 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test } from '@playwright/test';
+import { disableMotion } from './visual-helpers';
 
 const tableStableStoryUrl = '/iframe.html?id=regression-parity-surface-table--table-stable&viewMode=story';
 const tableEmptyStoryUrl = '/iframe.html?id=regression-parity-surface-table--table-empty-stable&viewMode=story';
-
-const disableMotion = async (page: Page) => {
-    await page.addStyleTag({
-        content: `*, *::before, *::after { animation: none !important; transition: none !important; caret-color: transparent !important; outline: none !important; }`,
-    });
-};
 
 test.describe('reference Table visual parity', () => {
     test('captures stable table region and loading overlay', async ({ page }) => {

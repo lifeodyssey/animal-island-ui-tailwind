@@ -26,13 +26,15 @@ const freezeClock = async (page: Page) => {
 const disableMotion = async (page: Page) => {
     await page.addStyleTag({
         content: `
-            *, *::before, *::after { animation: none !important; transition: none !important; caret-color: transparent !important; outline: none !important; }
+            *, *::before, *::after { animation: none !important; animation-duration: 0s !important; transition: none !important; transition-duration: 0s !important; caret-color: transparent !important; outline: none !important; -webkit-font-smoothing: antialiased !important; -moz-osx-font-smoothing: grayscale !important; }
         `,
     });
     await page.evaluate(() => {
         const maybeGsap = (window as Window & { gsap?: { globalTimeline?: { pause: (time?: number) => void } } }).gsap;
         maybeGsap?.globalTimeline?.pause(0);
     });
+    await page.evaluate(() => document.fonts.ready);
+    await page.waitForLoadState('networkidle');
 };
 
 test.describe('reference display utility visual parity', () => {

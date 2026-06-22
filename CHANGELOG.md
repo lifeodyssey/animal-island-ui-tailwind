@@ -5,6 +5,31 @@ All notable changes to `animal-island-ui-tailwind` are documented here.
 This project follows a lightweight Keep a Changelog style and uses semantic
 versioning for npm releases.
 
+## 1.1.0 - 2026-06-21
+
+Syncs the upstream feature set up to `guokaigdg/animal-island-ui` 1.0.16,
+adapted to this Tailwind v4 + Radix fork.
+
+### Added
+
+- `Form` component: `Form` / `Form.Item` / `Form.useForm` with field store,
+  validation rules (required/type/min/max/len/pattern/whitespace/custom-async),
+  and horizontal/vertical/inline layouts.
+- `Wallet` component: bell-pouch pill with thousand-separator formatting and
+  small/medium/large size presets.
+- `Icon` now accepts an `item` prop backed by the full 488-glyph item sheet;
+  `name` is now optional. New `ITEM_LIST` / `ITEM_COUNT` exports.
+- `Card` gains a `pattern` prop (dotted texture, orthogonal to `color`) and an
+  exported `CardPattern` type.
+- `Modal` gains a `maskStyle` prop and a `--animal-mask-bg` token.
+- `Radio` and `Checkbox` now play a check "splash" animation.
+- `Switch` exposes `aria-busy` while loading.
+
+### Changed
+
+- Zen Maru Gothic is no longer bundled in the default style / global font stack
+  (follows upstream). It remains available to the `WeddingInvitation` loader.
+
 ## 0.8.2 - 2026-05-20
 
 ### Fixed

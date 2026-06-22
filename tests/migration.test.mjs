@@ -79,7 +79,8 @@ test('Radix primitives back the headless interactive components', () => {
 });
 
 test('Tailwind token file preserves the animal-island design variables', () => {
-  const css = read('src/styles/tokens.css');
+  // Design tokens live in theme.css @theme (Tailwind v4 token layer).
+  const css = read('src/styles/theme.css');
   for (const token of [
     '--animal-primary-color: #19c8b9',
     '--animal-primary-color-hover: #3dd4c6',

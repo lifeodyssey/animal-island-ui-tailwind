@@ -1,10 +1,10 @@
 // Global Tailwind v4 token/style entry (design tokens, base resets, component styles)
 import './styles/index.css';
 
-// Bundled @fontsource font-face declarations (Nunito, Noto Sans SC, Zen Maru Gothic).
+// Bundled @fontsource font-face declarations (Nunito, Noto Sans SC).
 // Consumers who want to provide their own fonts can import
 // `animal-island-ui-tailwind/style/core` instead of the default
-// `animal-island-ui-tailwind/style` to skip these ~7.9 MB of font assets.
+// `animal-island-ui-tailwind/style` to skip these font assets.
 
 // Nunito (latin subset only)
 import '@fontsource/nunito/latin-500.css';
@@ -18,14 +18,6 @@ import '@fontsource/noto-sans-sc/latin-700.css';
 import '@fontsource/noto-sans-sc/chinese-simplified-400.css';
 import '@fontsource/noto-sans-sc/chinese-simplified-500.css';
 import '@fontsource/noto-sans-sc/chinese-simplified-700.css';
-
-// Zen Maru Gothic (latin + Japanese subset — kana + JIS kanji)
-import '@fontsource/zen-maru-gothic/latin-500.css';
-import '@fontsource/zen-maru-gothic/latin-700.css';
-import '@fontsource/zen-maru-gothic/latin-900.css';
-import '@fontsource/zen-maru-gothic/japanese-500.css';
-import '@fontsource/zen-maru-gothic/japanese-700.css';
-import '@fontsource/zen-maru-gothic/japanese-900.css';
 
 // ============================================
 // 基础 UI 组件
@@ -43,7 +35,7 @@ export { Modal } from './components/Modal';
 export type { ModalProps } from './components/Modal';
 
 export { Card } from './components/Card';
-export type { CardProps, CardType, CardColor } from './components/Card';
+export type { CardProps, CardType, CardColor, CardPattern } from './components/Card';
 
 export { Title } from './components/Title';
 export type { TitleProps, TitleSize, TitleColor } from './components/Title';
@@ -69,8 +61,36 @@ export type { DividerProps, DividerType } from './components/Divider';
 export { Typewriter } from './components/Typewriter';
 export type { TypewriterProps } from './components/Typewriter';
 
-export { Icon, ICON_LIST } from './components/Icon';
+export { Icon, ICON_LIST, ITEM_LIST, ITEM_COUNT } from './components/Icon';
 export type { IconProps, IconName } from './components/Icon';
+
+export { Wallet } from './components/Wallet';
+export type { WalletProps, WalletSize } from './components/Wallet';
+
+export { Form, FormItem, useForm } from './components/Form';
+export type {
+    ColProps,
+    FieldData,
+    FormInstance,
+    FormItemLayout,
+    FormItemProps,
+    FormLabelAlign,
+    FormLayout,
+    FormProps,
+    FormProviderProps,
+    FormSize,
+    NamePath,
+    RequiredMark,
+    RuleObject,
+    RuleRender,
+    RuleType,
+    Rules,
+    ScrollOptions,
+    StoreValue,
+    ValidateError,
+    ValidateInfo,
+    ValidateStatus,
+} from './components/Form';
 
 export { Select } from './components/Select';
 export type { SelectProps, SelectOption } from './components/Select';
