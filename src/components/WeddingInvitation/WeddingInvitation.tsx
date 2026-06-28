@@ -20,6 +20,8 @@ export interface WeddingInvitationProps {
     lotteryNumber?: string;
     lotteryLabel?: React.ReactNode;
     lotteryHint?: React.ReactNode;
+    /** 自定义新郎新娘合照图片，不传则使用内置默认图 */
+    brideAndGroomImage?: string;
     className?: string;
     style?: React.CSSProperties;
 }
@@ -223,6 +225,7 @@ export const WeddingInvitation = forwardRef<WeddingInvitationRef, WeddingInvitat
             lotteryNumber = '0001',
             lotteryLabel = 'LUCKY NUMBER',
             lotteryHint = '凭此号码参与现场抽奖 · Keep this stub for the lucky draw',
+            brideAndGroomImage,
             className,
             style,
         },
@@ -281,7 +284,7 @@ export const WeddingInvitation = forwardRef<WeddingInvitationRef, WeddingInvitat
                 <div className="animal-wedding-title-zh">{subtitle}</div>
 
                 <div className="animal-wedding-couple-image">
-                    <img src={brideAndGroomImg} alt="bride and groom" />
+                    <img src={brideAndGroomImage ?? brideAndGroomImg} alt="bride and groom" />
                 </div>
 
                 <div className="animal-wedding-couple-row">
