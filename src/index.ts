@@ -116,6 +116,9 @@ export type { LoadingProps } from './components/Loading';
 export { Table } from './components/Table';
 export type { TableProps, TableColumn } from './components/Table';
 
+export { Tag } from './components/Tag';
+export type { TagProps, TagSize, TagVariant, TagColor } from './components/Tag';
+
 export { WeddingInvitation, WeddingInvitationExportButton } from './components/WeddingInvitation';
 export type {
     WeddingInvitationProps,
