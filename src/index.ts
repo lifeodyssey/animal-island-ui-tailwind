@@ -122,3 +122,9 @@ export type {
     WeddingInvitationRef,
     WeddingInvitationExportButtonProps,
 } from './components/WeddingInvitation';
+
+export { Tag } from './components/Tag';
+export type { TagProps, TagSize, TagVariant, TagColor } from './components/Tag';
+
+export { Drawer } from './components/Drawer';
+export type { DrawerProps, DrawerPlacement } from './components/Drawer';
