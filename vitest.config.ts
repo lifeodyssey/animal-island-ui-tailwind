@@ -24,14 +24,17 @@ export default mergeConfig(
             },
             projects: [
                 {
-                    // Node/jsdom unit tests for logic that can't be asserted in
-                    // the browser story runner (e.g. spying gsap tween calls
-                    // against the upstream animation spec). Files: *.unit.test.tsx
+                    // Node/jsdom unit tests. Includes *.unit.test.tsx (existing convention),
+                    // *.test.tsx component tests ported from upstream, and Form.test.tsx.
                     extends: true,
                     test: {
                         name: 'unit',
                         environment: 'jsdom',
-                        include: ['src/**/*.unit.test.{ts,tsx}', 'src/components/Form/Form.test.tsx'],
+                        include: [
+                            'src/**/*.unit.test.{ts,tsx}',
+                            'src/**/*.test.{ts,tsx}',
+                        ],
+                        setupFiles: ['./src/test-setup.ts'],
                     },
                 },
                 {
