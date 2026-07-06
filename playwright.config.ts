@@ -41,6 +41,7 @@ export default defineConfig({
                 // Deterministic text rasterization so maxDiffPixels:0 doesn't flap on
                 // subpixel font anti-aliasing (LCD/hinting/GPU jitter on the same machine).
                 launchOptions: {
+                    executablePath: '/opt/pw-browsers/chromium',
                     args: [
                         '--font-render-hinting=none',
                         '--disable-lcd-text',
