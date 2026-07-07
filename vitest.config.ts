@@ -31,7 +31,17 @@ export default mergeConfig(
                     test: {
                         name: 'unit',
                         environment: 'jsdom',
-                        include: ['src/**/*.unit.test.{ts,tsx}', 'src/components/Form/Form.test.tsx'],
+                        setupFiles: ['./src/test-setup.ts'],
+                        include: [
+                            'src/**/*.unit.test.{ts,tsx}',
+                            'src/components/Form/Form.test.tsx',
+                            'src/components/Button/Button.test.tsx',
+                            'src/components/Card/Card.test.tsx',
+                            'src/components/Tag/Tag.test.tsx',
+                            'src/components/Notification/Notification.test.tsx',
+                            'src/components/Drawer/Drawer.test.tsx',
+                            'src/components/Progress/Progress.test.tsx',
+                        ],
                     },
                 },
                 {
