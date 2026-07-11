@@ -98,3 +98,30 @@
   35% { transform: translateX(-50%) translateY(-8px) rotate(-6deg); }
   70% { transform: translateX(-50%) translateY(-2px) rotate(3deg); }
 }
+
+/* Notification enter/leave animations */
+@keyframes animal-notification-slide-from-top {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes animal-notification-slide-out-top {
+  from { opacity: 1; transform: translateY(0); max-height: 200px; margin-bottom: 12px; }
+  to   { opacity: 0; transform: translateY(-16px); max-height: 0; margin-bottom: 0; }
+}
+
+@keyframes animal-notification-rise-from-bottom {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes animal-notification-sink-out-bottom {
+  from { opacity: 1; transform: translateY(0); max-height: 200px; margin-bottom: 12px; }
+  to   { opacity: 0; transform: translateY(16px); max-height: 0; margin-bottom: 0; }
+}
+
+/* Progress bar stripe animation */
+@keyframes animal-progress-stripe {
+  from { background-position: 28px 0; }
+  to   { background-position: 0 0; }
+}

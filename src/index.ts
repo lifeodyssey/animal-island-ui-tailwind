@@ -122,3 +122,15 @@ export type {
     WeddingInvitationRef,
     WeddingInvitationExportButtonProps,
 } from './components/WeddingInvitation';
+
+export { Tag } from './components/Tag';
+export type { TagProps, TagSize, TagVariant, TagColor } from './components/Tag';
+
+export { Notification, notificationOpen, notificationDestroy, NOTIFICATION_DEFAULT_DURATION } from './components/Notification';
+export type { NotificationType, NotificationPosition, NotificationPlacement, NotificationConfig, NotificationItem, NotificationStatic } from './components/Notification';
+
+export { Drawer } from './components/Drawer';
+export type { DrawerProps, DrawerPlacement } from './components/Drawer';
+
+export { Progress } from './components/Progress';
+export type { ProgressProps, ProgressSize, ProgressInfoPosition } from './components/Progress';
