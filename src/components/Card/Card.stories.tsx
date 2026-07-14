@@ -113,3 +113,8 @@ export const TypeColorCombos: Story = {
         </div>
     ),
 };
+
+
+export const Hoverable: Story = {
+    args: { hoverable: true, children: 'Hoverable card (lifts on hover)', style: { maxWidth: 400 } },
+};
