@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { fn } from '@storybook/test';
+import { vi } from 'vitest';
 import { Tag } from './Tag';
 import type { TagColor, TagSize, TagVariant } from './Tag';
 
@@ -16,11 +16,11 @@ export const Default: Story = {
 };
 
 export const Closable: Story = {
-    args: { children: '可关闭', closable: true, onClose: fn() },
+    args: { children: '可关闭', closable: true, onClose: vi.fn() },
 };
 
 export const Clickable: Story = {
-    args: { children: '可点击', onClick: fn() },
+    args: { children: '可点击', onClick: vi.fn() },
 };
 
 export const Disabled: Story = {

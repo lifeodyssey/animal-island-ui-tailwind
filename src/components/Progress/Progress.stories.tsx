@@ -5,6 +5,7 @@ import type { ProgressSize } from './types';
 const meta = {
     component: Progress,
     tags: ['ai-generated'],
+    args: { percent: 60 },
 } satisfies Meta<typeof Progress>;
 
 export default meta;

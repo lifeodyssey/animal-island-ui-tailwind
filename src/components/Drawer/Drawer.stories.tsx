@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { fn } from '@storybook/test';
+import { vi } from 'vitest';
 import { useState } from 'react';
 import { Drawer } from './Drawer';
 import type { DrawerPlacement } from './Drawer';
@@ -8,7 +8,8 @@ const meta = {
     component: Drawer,
     tags: ['ai-generated'],
     args: {
-        onClose: fn(),
+        open: false,
+        onClose: vi.fn(),
     },
 } satisfies Meta<typeof Drawer>;
 

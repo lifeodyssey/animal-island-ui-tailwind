@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { fn } from '@storybook/test';
+import { vi } from 'vitest';
 import { Notification, notificationDestroy } from './NotificationPortal';
 
 const meta = {
@@ -49,7 +49,7 @@ export const WithOnClose: Story = {
         Notification.info({
             message: '带关闭回调',
             duration: 2,
-            onClose: fn(),
+            onClose: vi.fn(),
         });
     },
 };
