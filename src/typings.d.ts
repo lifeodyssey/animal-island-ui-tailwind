@@ -1,3 +1,5 @@
+/// <reference types="@testing-library/jest-dom/vitest" />
+
 declare module '*.css' {
     const content: string;
     export default content;
