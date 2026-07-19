@@ -16,6 +16,6 @@
             "@/*": ["src/*"]
         }
     },
-    "include": ["src", "demo"],
+    "include": ["src", "demo", "node_modules/@testing-library/jest-dom/vitest.d.ts"],
     "exclude": ["node_modules", "dist", "demo-dist"]
 }

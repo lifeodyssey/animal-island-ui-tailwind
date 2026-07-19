@@ -32,6 +32,7 @@ export default mergeConfig(
                         name: 'unit',
                         environment: 'jsdom',
                         include: ['src/**/*.unit.test.{ts,tsx}', 'src/components/Form/Form.test.tsx'],
+                        setupFiles: ['./src/test-setup.ts'],
                     },
                 },
                 {
@@ -47,7 +48,11 @@ export default mergeConfig(
                         name: 'storybook',
                         browser: {
                             enabled: true,
-                            provider: playwright({}),
+                            provider: playwright({
+                                launchOptions: {
+                                    executablePath: '/opt/pw-browsers/chromium',
+                                },
+                            }),
                             headless: true,
                             instances: [{ browser: 'chromium' }],
                         },
