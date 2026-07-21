@@ -27,11 +27,20 @@ export default mergeConfig(
                     // Node/jsdom unit tests for logic that can't be asserted in
                     // the browser story runner (e.g. spying gsap tween calls
                     // against the upstream animation spec). Files: *.unit.test.tsx
+                    // and component-level *.test.tsx files ported from upstream.
                     extends: true,
                     test: {
                         name: 'unit',
                         environment: 'jsdom',
-                        include: ['src/**/*.unit.test.{ts,tsx}', 'src/components/Form/Form.test.tsx'],
+                        setupFiles: ['./src/test-setup.unit.ts'],
+                        include: [
+                            'src/**/*.unit.test.{ts,tsx}',
+                            'src/components/Form/Form.test.tsx',
+                            'src/components/Tag/Tag.test.tsx',
+                            'src/components/Progress/Progress.test.tsx',
+                            'src/components/Notification/Notification.test.tsx',
+                            'src/components/Drawer/Drawer.test.tsx',
+                        ],
                     },
                 },
                 {

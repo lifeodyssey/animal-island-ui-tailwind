@@ -16,10 +16,10 @@ describe('Footer seamless', () => {
         expect(root.classList.contains('animal-footer-seamless')).toBe(true);
     });
 
-    it('默认不添加 seamless 类', () => {
+    it('默认添加 seamless 类（seamless 默认为 true）', () => {
         const { container } = render(<Footer />);
         const root = container.firstChild as HTMLElement;
-        expect(root.classList.contains('animal-footer-seamless')).toBe(false);
+        expect(root.classList.contains('animal-footer-seamless')).toBe(true);
     });
 
     it('seamless 为 false 时不添加 seamless 类', () => {
