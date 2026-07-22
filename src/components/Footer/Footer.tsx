@@ -11,7 +11,7 @@ export interface FooterProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const Footer = React.forwardRef<HTMLDivElement, FooterProps>(
-    ({ type = 'tree', seamless = false, className, style, ...rest }, ref) => {
+    ({ type = 'tree', seamless = true, className, style, ...rest }, ref) => {
         return (
             <div
                 ref={ref}

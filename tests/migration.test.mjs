@@ -111,3 +111,35 @@ test('WeddingInvitation public exports are wired when upstream sync adds the com
     /export \{ WeddingInvitation, WeddingInvitationExportButton \} from '\.\/components\/WeddingInvitation';/,
   );
 });
+
+test('Tag component is exported from src/index.ts', () => {
+  assert.ok(existsSync(join(root, 'src/components/Tag/Tag.tsx')));
+  assert.match(read('src/index.ts'), /export \{ Tag \} from '\.\/components\/Tag'/);
+});
+
+test('Notification component is exported from src/index.ts', () => {
+  assert.ok(existsSync(join(root, 'src/components/Notification/NotificationPortal.tsx')));
+  assert.match(read('src/index.ts'), /Notification[\s\S]*notificationOpen[\s\S]*notificationDestroy[\s\S]*NOTIFICATION_DEFAULT_DURATION/);
+});
+
+test('Drawer component is exported from src/index.ts', () => {
+  assert.ok(existsSync(join(root, 'src/components/Drawer/Drawer.tsx')));
+  assert.match(read('src/index.ts'), /export \{ Drawer \} from '\.\/components\/Drawer'/);
+});
+
+test('Progress component is exported from src/index.ts', () => {
+  assert.ok(existsSync(join(root, 'src/components/Progress/Progress.tsx')));
+  assert.match(read('src/index.ts'), /export \{ Progress \} from '\.\/components\/Progress'/);
+});
+
+test('new components use animal-* class names (no Less modules)', () => {
+  const newComponents = ['Tag', 'Notification', 'Drawer', 'Progress'];
+  for (const name of newComponents) {
+    const dir = `src/components/${name}`;
+    const files = readdirSync(join(root, dir)).filter(f => f.endsWith('.tsx') || f.endsWith('.ts'));
+    for (const file of files) {
+      const content = read(join(dir, file));
+      assert.doesNotMatch(content, /\.module\.less/, `${name}/${file} must not import Less modules`);
+    }
+  }
+});
