@@ -20,6 +20,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+    args: { open: false },
     render: (args) => {
         const [open, setOpen] = useState(false);
         return (
@@ -35,6 +36,7 @@ export const Default: Story = {
 
 export const OpenStable: Story = {
     name: 'Open (no-play, for Playwright)',
+    args: { open: true },
     render: () => (
         <Drawer open title="测试抽屉" onClose={() => {}}>
             <p>抽屉内容</p>

@@ -25,6 +25,7 @@ export const Default: Story = {
 
 export const Sizes: Story = {
     name: 'Sizes',
+    args: { percent: 65 },
     render: () => (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 400 }}>
             <Progress percent={65} size="small" aria-label="小尺寸" />
@@ -42,6 +43,7 @@ export const Sizes: Story = {
 
 export const InfoPositions: Story = {
     name: 'Info Positions',
+    args: { percent: 42 },
     render: () => (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 400 }}>
             <Progress percent={42} infoPosition="inside" aria-label="inside" />
