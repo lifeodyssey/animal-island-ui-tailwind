@@ -326,7 +326,7 @@ export const ButtonInputParity: Story = {
         const clearableInput = canvas.getByPlaceholderText('With clear');
         await expect(clearableInput).toHaveValue('Island note');
         await userEvent.click(
-            canvas.getByRole('button', { name: /×|Clear input/ }),
+            canvas.getByRole('button', { name: /×|Clear input|清除/ }),
         );
         await expect(clearableInput).toHaveValue('');
         await userEvent.type(clearableInput, 'Island note');
@@ -370,7 +370,7 @@ export const InputMatrixParity: Story = {
 
         const controlledInput = canvas.getByPlaceholderText('Controlled clear');
         await expect(controlledInput).toHaveValue('Controlled');
-        await userEvent.click(canvas.getByRole('button', { name: /×|Clear input/ }));
+        await userEvent.click(canvas.getByRole('button', { name: /×|Clear input|清除/ }));
         await expect(controlledInput).toHaveValue('');
         await expect(canvas.getByTestId('controlled-input-state')).toHaveTextContent('empty / clears: 1');
         await expect(controlledInput).toHaveAttribute('maxlength', '8');

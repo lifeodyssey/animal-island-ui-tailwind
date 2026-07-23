@@ -72,7 +72,7 @@ test.describe('reference Button/Input parity', () => {
         await expect(disabledInput).toHaveCSS('color', 'rgb(196, 184, 158)');
 
         await expect(clearableInput).toHaveValue('Island note');
-        await page.getByRole('button', { name: '×' }).or(page.getByRole('button', { name: 'Clear input' })).first().click();
+        await page.getByRole('button', { name: '×' }).or(page.getByRole('button', { name: 'Clear input' })).or(page.getByRole('button', { name: '清除' })).first().click();
         await expect(clearableInput).toHaveValue('');
     });
 
@@ -139,7 +139,7 @@ test.describe('reference Button/Input parity', () => {
         await expect(controlledInput).toHaveAttribute('maxlength', '8');
         await controlledInput.fill('123456789');
         await expect(controlledInput).toHaveValue('12345678');
-        await page.getByRole('button', { name: '×' }).or(page.getByRole('button', { name: 'Clear input' })).first().click();
+        await page.getByRole('button', { name: '×' }).or(page.getByRole('button', { name: 'Clear input' })).or(page.getByRole('button', { name: '清除' })).first().click();
         await expect(controlledInput).toHaveValue('');
         await expect(page.getByTestId('controlled-input-state')).toContainText('empty / clears:');
     });

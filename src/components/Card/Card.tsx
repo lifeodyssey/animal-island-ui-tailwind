@@ -43,16 +43,21 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     color?: CardColor;
     /** 背景花纹类型 */
     pattern?: CardPattern;
+    /**
+     * 是否启用 hover 效果(光标 pointer + translateY -2px)。
+     * 默认 `false`(只读卡片)。设为 `true` 开启(可点击卡片等交互场景)。
+     * @default false
+     */
+    hoverable?: boolean;
     /** 自定义内容 */
     children?: React.ReactNode;
 }
 
-// Byte-identical class output (order: animal-card → type → color → pattern).
-// pattern is orthogonal to color; each non-none value emits the shared base class
-// plus its variant (matching the previous `animal-card-pattern animal-card-pattern-${p}`).
+// Byte-identical class output (order: animal-card → type → color → pattern → hoverable).
 const cardVariants = cva('animal-card', {
     variants: {
         type: { default: '', title: 'animal-card-title', dashed: 'animal-card-dashed' },
+        hoverable: { true: 'animal-card-hoverable', false: '' },
         color: {
             default: '',
             'app-pink': 'animal-card-app-pink',
@@ -85,7 +90,7 @@ const cardVariants = cva('animal-card', {
             'warm-peach-pink': 'animal-card-pattern animal-card-pattern-warm-peach-pink',
         },
     },
-    defaultVariants: { type: 'default', color: 'default', pattern: 'none' },
+    defaultVariants: { type: 'default', color: 'default', pattern: 'none', hoverable: false },
 });
 
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
@@ -94,6 +99,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
             type = 'default',
             color = 'default',
             pattern = 'none',
+            hoverable = false,
             children,
             className,
             style,
@@ -104,7 +110,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
         return (
             <div
                 ref={ref}
-                className={cn(cardVariants({ type, color, pattern }), className)}
+                className={cn(cardVariants({ type, color, pattern, hoverable }), className)}
                 style={style}
                 {...rest}
             >
