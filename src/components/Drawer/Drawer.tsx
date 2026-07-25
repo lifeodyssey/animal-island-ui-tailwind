@@ -197,7 +197,7 @@ export const Drawer: React.FC<DrawerProps> = ({
     const idPrefix = `animal-drawer-${useId().replace(/:/g, '')}`;
     const titleId = `${idPrefix}-title`;
 
-    const inertProps = !open ? ({ inert: '' } as Record<string, string>) : {};
+    const inertProps = !open ? { inert: true } : {};
 
     const panelStyle: React.CSSProperties = {};
     if (placement === 'left' || placement === 'right') {
