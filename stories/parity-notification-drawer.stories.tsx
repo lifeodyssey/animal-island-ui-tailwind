@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import type { CSSProperties } from 'react';
 import { useState } from 'react';
-import { expect, userEvent, within } from 'storybook/test';
-import { Button, Drawer, Notification, notificationOpen } from '../src';
+import { expect, screen, userEvent, within } from 'storybook/test';
+import { Button, Drawer, notificationOpen } from '../src';
 
 const meta = {
     title: 'Regression/Parity/Notification Drawer',
@@ -93,7 +93,6 @@ function NotificationTriggers() {
                     ))}
                 </div>
             </div>
-            <Notification />
         </div>
     );
 }
@@ -105,8 +104,8 @@ export const NotificationParity: Story = {
         const canvas = within(canvasElement);
         const successBtn = canvas.getByText('success');
         await userEvent.click(successBtn);
-        await expect(document.querySelector('.animal-notification-type-success')).not.toBeNull();
-        await expect(document.querySelector('.animal-notification')).not.toBeNull();
+        const notifEl = await screen.findByText('success 通知', {}, { timeout: 3000 });
+        expect(notifEl.closest('.animal-notification')).not.toBeNull();
     },
 };
 
@@ -155,11 +154,10 @@ export const DrawerParity: Story = {
         const canvas = within(canvasElement);
         const rightBtn = canvas.getByText('right');
         await userEvent.click(rightBtn);
-        const panel = document.querySelector('.animal-drawer-panel.animal-drawer-panel-open');
-        await expect(panel).not.toBeNull();
-        await expect(panel?.getAttribute('role')).toBe('dialog');
+        const panel = await screen.findByRole('dialog', {}, { timeout: 3000 });
+        expect(panel).not.toBeNull();
         await userEvent.keyboard('{Escape}');
-        await expect(document.querySelector('.animal-drawer-panel-open')).toBeNull();
+        await expect(screen.queryByRole('dialog')).toBeNull();
     },
 };
 
