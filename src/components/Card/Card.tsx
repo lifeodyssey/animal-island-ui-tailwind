@@ -43,6 +43,8 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     color?: CardColor;
     /** 背景花纹类型 */
     pattern?: CardPattern;
+    /** 开启悬停上浮效果 */
+    hoverable?: boolean;
     /** 自定义内容 */
     children?: React.ReactNode;
 }
@@ -94,6 +96,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
             type = 'default',
             color = 'default',
             pattern = 'none',
+            hoverable = false,
             children,
             className,
             style,
@@ -104,7 +107,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
         return (
             <div
                 ref={ref}
-                className={cn(cardVariants({ type, color, pattern }), className)}
+                className={cn(cardVariants({ type, color, pattern }), hoverable && 'animal-card-hoverable', className)}
                 style={style}
                 {...rest}
             >
