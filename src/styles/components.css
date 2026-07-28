@@ -1,8 +1,13 @@
 @layer components {
-  /* Base: custom cursor on container and all descendants. */
+  /* Base: custom cursor on container and all descendants.
+     Second url() is a base64 PNG fallback for environments (e.g. Windows Tauri)
+     where the file-path cursor URL does not display. */
   .animal-cursor,
   .animal-cursor * {
-    cursor: url("../assets/img/cursor/cursor-icon.png") 4 0, auto !important;
+    cursor:
+      url("../assets/img/cursor/cursor-icon.png") 4 0,
+      url("data:image/png;base64,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") 4 0,
+      default !important;
   }
 
   /* Scoped mode: restore semantic cursors on interactive descendants. */
@@ -1612,11 +1617,15 @@
     background: var(--animal-bg-color-content);
     color: var(--animal-text-color-body);
     font-weight: 500;
-    cursor: pointer;
     transition: all 0.3s ease;
+    /* hover effect off by default; enabled via hoverable prop → .animal-card-hoverable */
   }
 
-  .animal-card:hover {
+  .animal-card-hoverable {
+    cursor: pointer;
+  }
+
+  .animal-card-hoverable:hover {
     transform: translateY(-2px);
   }
 
@@ -1633,7 +1642,7 @@
     box-shadow: none;
   }
 
-  .animal-card-dashed:hover {
+  .animal-card-dashed.animal-card-hoverable:hover {
     border-color: #d4c4a8;
     transform: none;
   }
@@ -3036,5 +3045,600 @@
 
   .animal-wallet:hover .animal-wallet-bag-slot {
     animation: animal-wallet-bag-bounce 0.5s ease-in-out;
+  }
+
+  /* ============================================
+     Tag — Animal Island Style
+     ============================================ */
+
+  .animal-tag {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    line-height: 1;
+    font-family: inherit;
+    font-weight: 600;
+    border-radius: 999px;
+    border: 1.5px solid transparent;
+    transition: all 0.2s ease;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .animal-tag-small { height: 24px; line-height: 24px; padding: 0 10px; font-size: 12px; }
+  .animal-tag-medium { height: 29px; line-height: 29px; padding: 0 12px; font-size: 13px; }
+  .animal-tag-large { height: 34px; line-height: 34px; padding: 0 16px; font-size: 15px; }
+
+  .animal-tag-solid { background: rgb(247, 243, 223); color: #8f734f; border-color: #d4c4a8; }
+  .animal-tag-outlined { background: transparent; color: #8f734f; border-color: #c4b89e; }
+  .animal-tag-dashed { background: transparent; color: #8f734f; border-style: dashed; border-color: #c4b89e; }
+  .animal-tag-soft { background: #f5f0e6; color: #8f734f; border-color: transparent; }
+
+  /* Solid color variants */
+  .animal-tag-color-app-pink-solid { background: #f8a6b2; border-color: #f8a6b2; color: #fff; }
+  .animal-tag-color-purple-solid { background: #b77dee; border-color: #b77dee; color: #fff; }
+  .animal-tag-color-app-blue-solid { background: #889df0; border-color: #889df0; color: #fff; }
+  .animal-tag-color-app-yellow-solid { background: #f7cd67; border-color: #f7cd67; color: #fff; }
+  .animal-tag-color-app-orange-solid { background: #e59266; border-color: #e59266; color: #fff; }
+  .animal-tag-color-app-teal-solid { background: #82d5bb; border-color: #82d5bb; color: #fff; }
+  .animal-tag-color-app-green-solid { background: #8ac68a; border-color: #8ac68a; color: #fff; }
+  .animal-tag-color-app-red-solid { background: #fc736d; border-color: #fc736d; color: #fff; }
+  .animal-tag-color-lime-green-solid { background: #d1da49; border-color: #d1da49; color: #fff; }
+  .animal-tag-color-yellow-green-solid { background: #ecdf52; border-color: #ecdf52; color: #fff; }
+  .animal-tag-color-brown-solid { background: #9a835a; border-color: #9a835a; color: #fff; }
+  .animal-tag-color-warm-peach-pink-solid { background: #e18c6f; border-color: #e18c6f; color: #fff; }
+
+  /* Soft color variants */
+  .animal-tag-color-app-pink-soft { background: #fce4ec; color: #c2185b; }
+  .animal-tag-color-purple-soft { background: #f3e5f5; color: #7b1fa2; }
+  .animal-tag-color-app-blue-soft { background: #e6f0ff; color: #1565c0; }
+  .animal-tag-color-app-yellow-soft { background: #fff8e1; color: #f9a825; }
+  .animal-tag-color-app-orange-soft { background: #fff3e0; color: #e65100; }
+  .animal-tag-color-app-teal-soft { background: #e0f2f1; color: #00695c; }
+  .animal-tag-color-app-green-soft { background: #e8f5e9; color: #2e7d32; }
+  .animal-tag-color-app-red-soft { background: #ffebee; color: #c62828; }
+  .animal-tag-color-lime-green-soft { background: #f1f8e9; color: #558b2f; }
+  .animal-tag-color-yellow-green-soft { background: #f9fbe7; color: #827717; }
+  .animal-tag-color-brown-soft { background: #efebe9; color: #4e342e; }
+  .animal-tag-color-warm-peach-pink-soft { background: #fbe9e7; color: #bf360c; }
+
+  /* Outlined color variants */
+  .animal-tag-color-app-pink-outlined,
+  .animal-tag-color-app-pink-dashed { color: #f8a6b2; border-color: #f8a6b2; }
+  .animal-tag-color-purple-outlined,
+  .animal-tag-color-purple-dashed { color: #b77dee; border-color: #b77dee; }
+  .animal-tag-color-app-blue-outlined,
+  .animal-tag-color-app-blue-dashed { color: #889df0; border-color: #889df0; }
+  .animal-tag-color-app-yellow-outlined,
+  .animal-tag-color-app-yellow-dashed { color: #f7cd67; border-color: #f7cd67; }
+  .animal-tag-color-app-orange-outlined,
+  .animal-tag-color-app-orange-dashed { color: #e59266; border-color: #e59266; }
+  .animal-tag-color-app-teal-outlined,
+  .animal-tag-color-app-teal-dashed { color: #82d5bb; border-color: #82d5bb; }
+  .animal-tag-color-app-green-outlined,
+  .animal-tag-color-app-green-dashed { color: #8ac68a; border-color: #8ac68a; }
+  .animal-tag-color-app-red-outlined,
+  .animal-tag-color-app-red-dashed { color: #fc736d; border-color: #fc736d; }
+  .animal-tag-color-lime-green-outlined,
+  .animal-tag-color-lime-green-dashed { color: #d1da49; border-color: #d1da49; }
+  .animal-tag-color-yellow-green-outlined,
+  .animal-tag-color-yellow-green-dashed { color: #ecdf52; border-color: #ecdf52; }
+  .animal-tag-color-brown-outlined,
+  .animal-tag-color-brown-dashed { color: #9a835a; border-color: #9a835a; }
+  .animal-tag-color-warm-peach-pink-outlined,
+  .animal-tag-color-warm-peach-pink-dashed { color: #e18c6f; border-color: #e18c6f; }
+
+  .animal-tag-text { color: inherit; }
+
+  .animal-tag-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 2px;
+    margin-right: -4px;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    border: none;
+    background: rgb(149 143 143 / 8%);
+    color: inherit;
+    font-size: 14px;
+    line-height: 1;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .animal-tag-close:hover { background: rgba(0, 0, 0, 0.18); }
+  .animal-tag-close:disabled { cursor: not-allowed; opacity: 0.5; }
+
+  .animal-tag-clickable { cursor: pointer; }
+  .animal-tag-clickable:hover { transform: translateY(-1px); box-shadow: 0 2px 6px rgba(61, 52, 40, 0.12); }
+  .animal-tag-clickable:active { transform: translateY(0); }
+  .animal-tag-clickable:focus-visible { outline: 2px solid var(--animal-focus-yellow, #f5c31c); outline-offset: 2px; }
+  .animal-tag-disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+
+  /* ============================================
+     Notification — Animal Island Style
+     ============================================ */
+
+  .animal-notification-root {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2000;
+  }
+
+  .animal-notification-position-top,
+  .animal-notification-position-topLeft,
+  .animal-notification-position-topRight,
+  .animal-notification-position-bottom,
+  .animal-notification-position-bottomLeft,
+  .animal-notification-position-bottomRight {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    pointer-events: none;
+    max-width: calc(100vw - 32px);
+  }
+
+  .animal-notification-position-top {
+    top: 24px; left: 50%; transform: translateX(-50%); align-items: center;
+  }
+  .animal-notification-position-topLeft {
+    top: 24px; left: 24px; align-items: flex-start;
+  }
+  .animal-notification-position-topRight {
+    top: 24px; right: 24px; align-items: flex-end;
+  }
+  .animal-notification-position-bottom {
+    bottom: 24px; left: 50%; transform: translateX(-50%); align-items: center; flex-direction: column-reverse;
+  }
+  .animal-notification-position-bottomLeft {
+    bottom: 24px; left: 24px; align-items: flex-start; flex-direction: column-reverse;
+  }
+  .animal-notification-position-bottomRight {
+    bottom: 24px; right: 24px; align-items: flex-end; flex-direction: column-reverse;
+  }
+
+  .animal-notification {
+    pointer-events: auto;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 384px;
+    max-width: calc(100vw - 48px);
+    padding: 14px 16px;
+    background: rgb(247, 243, 223);
+    border: 2px solid #c4b89e;
+    border-radius: 18px;
+    box-shadow: 0 6px 18px rgba(61, 52, 40, 0.14);
+    font-family: Nunito, 'Noto Sans SC', -apple-system, 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+    color: #725d42;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    will-change: transform, opacity;
+  }
+
+  .animal-notification-clickable { cursor: pointer; }
+  .animal-notification-clickable:hover { box-shadow: 0 10px 26px rgba(61, 52, 40, 0.18); transform: translateY(-1px); }
+  .animal-notification-clickable:focus-visible { outline: 2px solid #ffcc00; outline-offset: 2px; }
+
+  .animal-notification-type-success {
+    background: #f5fae9; border-color: #6fba2c;
+    box-shadow: 0 6px 18px rgba(111, 186, 44, 0.18);
+  }
+  .animal-notification-type-success .animal-notification-icon-wrap { background: #d8efc1; color: #5a9e1e; }
+
+  .animal-notification-type-info {
+    background: #ecf9f6; border-color: #19c8b9;
+    box-shadow: 0 6px 18px rgba(25, 200, 185, 0.18);
+  }
+  .animal-notification-type-info .animal-notification-icon-wrap { background: #c2ece6; color: #11a89b; }
+
+  .animal-notification-type-warning {
+    background: #fdf6d9; border-color: #f5c31c;
+    box-shadow: 0 6px 18px rgba(245, 195, 28, 0.2);
+  }
+  .animal-notification-type-warning .animal-notification-icon-wrap { background: #fbeaa1; color: #b88a06; }
+
+  .animal-notification-type-error {
+    background: #fde8e8; border-color: #e05a5a;
+    box-shadow: 0 6px 18px rgba(224, 90, 90, 0.18);
+  }
+  .animal-notification-type-error .animal-notification-icon-wrap { background: #f7c8c8; color: #c94444; }
+
+  .animal-notification-icon-wrap {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 18px;
+    line-height: 1;
+    user-select: none;
+  }
+
+  .animal-notification-body {
+    flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 4px;
+  }
+  .animal-notification-title {
+    font-size: 15px; font-weight: 700; line-height: 1.4; color: #794f27;
+    letter-spacing: 0.01em; word-break: break-word;
+  }
+  .animal-notification-description {
+    font-size: 13px; font-weight: 500; line-height: 1.55; color: #8a7b66;
+    letter-spacing: 0.01em; word-break: break-word;
+  }
+  .animal-notification-btn-slot {
+    flex: 0 0 auto; display: inline-flex; align-items: center; margin-left: 4px;
+  }
+  .animal-notification-close {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    margin-left: 4px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: rgba(114, 93, 66, 0.55);
+    font-size: 18px;
+    line-height: 1;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .animal-notification-close:hover { background: rgba(114, 93, 66, 0.12); color: rgba(114, 93, 66, 1); }
+  .animal-notification-close:focus-visible { outline: 2px solid #ffcc00; outline-offset: 2px; }
+
+  .animal-notification-placement-top {
+    animation: animal-notification-slide-from-top 0.25s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+  .animal-notification-placement-top.animal-notification-leaving {
+    animation: animal-notification-slide-out-top 0.25s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+  .animal-notification-placement-bottom {
+    animation: animal-notification-rise-from-bottom 0.25s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+  .animal-notification-placement-bottom.animal-notification-leaving {
+    animation: animal-notification-sink-out-bottom 0.25s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+
+  @keyframes animal-notification-slide-from-top {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes animal-notification-slide-out-top {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-16px); }
+  }
+  @keyframes animal-notification-rise-from-bottom {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes animal-notification-sink-out-bottom {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(16px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animal-notification-placement-top,
+    .animal-notification-placement-bottom,
+    .animal-notification-placement-top.animal-notification-leaving,
+    .animal-notification-placement-bottom.animal-notification-leaving {
+      animation-duration: 0.01s;
+    }
+  }
+
+  /* ============================================
+     Drawer — Animal Island Style
+     ============================================ */
+
+  .animal-drawer-mask {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.18);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.36s ease;
+  }
+
+  .animal-drawer-mask-open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .animal-drawer-panel {
+    position: fixed;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    background: rgb(247, 243, 223);
+    color: rgb(128, 115, 89);
+    font-family: Nunito, 'Noto Sans SC', sans-serif;
+    overflow: hidden;
+    transition: transform 0.36s cubic-bezier(0.2, 0, 0.2, 1);
+  }
+
+  .animal-drawer-panel-right {
+    top: 0; right: 0; height: 100vh;
+    max-width: calc(100vw - 32px);
+    border-radius: 20px 0 0 20px;
+    box-shadow: -12px 0 32px rgba(61, 52, 40, 0.18);
+    transform: translateX(100%);
+  }
+  .animal-drawer-panel-left {
+    top: 0; left: 0; height: 100vh;
+    max-width: calc(100vw - 32px);
+    border-radius: 0 20px 20px 0;
+    box-shadow: 12px 0 32px rgba(61, 52, 40, 0.18);
+    transform: translateX(-100%);
+  }
+  .animal-drawer-panel-top {
+    top: 0; left: 0; right: 0;
+    max-height: calc(100vh - 32px);
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 12px 32px rgba(61, 52, 40, 0.18);
+    transform: translateY(-100%);
+  }
+  .animal-drawer-panel-bottom {
+    bottom: 0; left: 0; right: 0;
+    max-height: calc(100vh - 32px);
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -12px 32px rgba(61, 52, 40, 0.18);
+    transform: translateY(100%);
+  }
+
+  .animal-drawer-panel.animal-drawer-panel-open {
+    transform: none;
+  }
+
+  .animal-drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 24px 15px 24px;
+    flex-shrink: 0;
+  }
+  .animal-drawer-title { font-size: 28px; font-weight: 700; color: rgba(114, 93, 66, 1); }
+  .animal-drawer-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    font-size: 22px;
+    line-height: 1;
+    color: rgba(114, 93, 66, 0.6);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .animal-drawer-close:hover { background: rgba(114, 93, 66, 0.1); color: rgba(114, 93, 66, 1); }
+
+  .animal-drawer-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 24px 24px 24px;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.6;
+    color: #8a7b66;
+  }
+  .animal-drawer-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 0 24px 24px 24px;
+    flex-shrink: 0;
+  }
+
+  /* ============================================
+     Progress — Animal Island Style
+     ============================================ */
+
+  .animal-progress {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    font-family: inherit;
+    line-height: 1;
+    user-select: none;
+    vertical-align: middle;
+    width: 100%;
+  }
+
+  .animal-progress-body {
+    flex: 1 1 auto; min-width: 0; width: 100%;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .animal-progress-row {
+    display: flex; align-items: center; gap: 12px;
+    width: 100%; flex: 1 1 auto; min-width: 0;
+  }
+  .animal-progress-info {
+    font-weight: 700; color: #725d42; white-space: nowrap;
+    flex-shrink: 0; letter-spacing: 0.02em;
+  }
+  .animal-progress-info-right { min-width: 44px; text-align: right; }
+  .animal-progress-info-top { align-self: flex-end; }
+
+  .animal-progress-track {
+    position: relative;
+    flex: 1 1 auto;
+    width: 100%;
+    min-width: 80px;
+    background: #f8f8f0;
+    border: 2px solid #e8dcc8;
+    box-shadow: inset 0 2px 4px rgba(114, 93, 66, 0.08);
+    overflow: hidden;
+    border-radius: 999px;
+  }
+  .animal-progress-small { height: 12px; border-width: 1.5px; }
+  .animal-progress-middle { height: 20px; }
+  .animal-progress-large { height: 28px; }
+
+  .animal-progress-fill {
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 0;
+    border-radius: 999px;
+    background: #0ec4b6;
+    background-image: repeating-linear-gradient(
+      -45deg,
+      #0ec4b6 0, #0ec4b6 10px,
+      #01b0a7 10px, #01b0a7 20px
+    );
+    background-size: 28.28px 28.28px;
+    animation: animal-progress-stripe 1s linear infinite;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 4px;
+  }
+  .animal-progress-fill-no-transition { transition: none; }
+
+  @keyframes animal-progress-stripe {
+    0% { background-position: 0 0; }
+    100% { background-position: -28.28px 0; }
+  }
+
+  .animal-progress-info-inside {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 1;
+  }
+  .animal-progress-large .animal-progress-info-inside { font-size: 13px; }
+  .animal-progress-small .animal-progress-info-inside { font-size: 9px; right: 4px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animal-progress-fill { transition: none; animation: none; }
+  }
+
+  /* ============================================
+     Skeleton — Animal Island Style
+     ============================================ */
+
+  .animal-skeleton {
+    background: #eae5db;
+    border-radius: 12px;
+    display: inline-block;
+    line-height: 1;
+    position: relative;
+    overflow: hidden;
+    vertical-align: middle;
+    flex-shrink: 0;
+  }
+
+  .animal-skeleton-active::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 250, 235, 0.18),
+      rgba(255, 252, 242, 0.55),
+      rgba(255, 250, 235, 0.18),
+      transparent
+    );
+    animation: animal-skeleton-shimmer 1.6s ease-in-out infinite;
+  }
+
+  @keyframes animal-skeleton-shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  .animal-skeleton-text { border-radius: 12px; height: 16px; margin-bottom: 8px; }
+  .animal-skeleton-circle { border-radius: 50%; }
+  .animal-skeleton-rect { border-radius: 18px; }
+  .animal-skeleton-paragraph {
+    display: flex; flex-direction: column; gap: 10px;
+    border-radius: 0; background: none;
+  }
+  .animal-skeleton-paragraph-block { background: none; }
+  .animal-skeleton-line {
+    height: 14px; border-radius: 12px; background: #dfd9ce;
+  }
+  .animal-skeleton-btn { border-radius: 50px; }
+
+  /* ============================================
+     BackTop — Animal Island Style
+     ============================================ */
+
+  .animal-backtop {
+    position: fixed;
+    bottom: 48px;
+    right: 32px;
+    z-index: 1000;
+    cursor: pointer;
+    transition:
+      opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(12px);
+    user-select: none;
+    border: none;
+    outline: none;
+    background: none;
+    padding: 0;
+    line-height: 1;
+  }
+
+  .animal-backtop:hover { transform: translateY(0) scale(1.08); }
+  .animal-backtop:active { transform: translateY(2px) scale(0.96); }
+  .animal-backtop:focus-visible {
+    outline: 2px solid #ffcc00;
+    outline-offset: 4px;
+    border-radius: 50%;
+  }
+
+  .animal-backtop-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .animal-backtop-img {
+    width: 120px;
+    height: 120px;
+    display: block;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 10px rgba(91, 78, 30, 0.22));
+    transition: filter 0.25s ease;
+  }
+
+  .animal-backtop:hover .animal-backtop-img {
+    filter: drop-shadow(0 4px 14px rgba(91, 78, 30, 0.32));
+  }
+
+  @media (max-width: 768px) {
+    .animal-backtop { bottom: 24px; right: 16px; }
+    .animal-backtop-img { width: 80px; height: 80px; }
   }
 }
