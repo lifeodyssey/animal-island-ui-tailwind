@@ -17,6 +17,9 @@ const stories = [
     { name: 'Surface / Tabs', url: '/iframe.html?id=regression-parity-surface-tabs--tabs-parity&viewMode=story' },
     { name: 'Surface / Card-Collapse-Modal', url: '/iframe.html?id=regression-parity-surface-tabs--surface-parity&viewMode=story' },
     { name: 'Table', url: '/iframe.html?id=regression-parity-surface-table--table-stable&viewMode=story' },
+    { name: 'Tag', url: '/iframe.html?id=regression-parity-new-components--tag-story&viewMode=story' },
+    { name: 'Progress', url: '/iframe.html?id=regression-parity-new-components--progress-story&viewMode=story' },
+    { name: 'Skeleton', url: '/iframe.html?id=regression-parity-new-components--skeleton-story&viewMode=story' },
 ];
 
 /**
