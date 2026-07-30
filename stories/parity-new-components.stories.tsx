@@ -114,27 +114,27 @@ export const ProgressStory: Story = {
         <div style={pageStyle}>
             <div style={sectionStyle}>
                 <div style={labelStyle}>Basic (inside info)</div>
-                <Progress percent={30} />
-                <Progress percent={60} />
-                <Progress percent={100} />
+                <Progress percent={30} aria-label="Download progress 30%" />
+                <Progress percent={60} aria-label="Download progress 60%" />
+                <Progress percent={100} aria-label="Download progress 100%" />
             </div>
             <div style={sectionStyle}>
                 <div style={labelStyle}>Info position: right</div>
-                <Progress percent={45} infoPosition="right" />
+                <Progress percent={45} infoPosition="right" aria-label="Upload progress" />
             </div>
             <div style={sectionStyle}>
                 <div style={labelStyle}>Info position: top</div>
-                <Progress percent={70} infoPosition="top" />
+                <Progress percent={70} infoPosition="top" aria-label="Loading progress" />
             </div>
             <div style={sectionStyle}>
                 <div style={labelStyle}>Sizes</div>
-                <Progress percent={50} size="small" infoPosition="right" />
-                <Progress percent={50} size="middle" infoPosition="right" />
-                <Progress percent={50} size="large" infoPosition="right" />
+                <Progress percent={50} size="small" infoPosition="right" aria-label="Small progress bar" />
+                <Progress percent={50} size="middle" infoPosition="right" aria-label="Middle progress bar" />
+                <Progress percent={50} size="large" infoPosition="right" aria-label="Large progress bar" />
             </div>
             <div style={sectionStyle}>
                 <div style={labelStyle}>No info</div>
-                <Progress percent={60} showInfo={false} />
+                <Progress percent={60} showInfo={false} aria-label="File transfer progress" />
             </div>
         </div>
     ),
