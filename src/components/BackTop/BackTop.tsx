@@ -49,6 +49,7 @@ export const BackTop: React.FC<BackTopProps> = ({
     }, [getScrollTarget, handleScroll]);
 
     const scrollToTop = useCallback(() => {
+        onClick?.();
         const el = getScrollTarget();
         const isWindow = el === window;
         const start = isWindow
@@ -78,7 +79,6 @@ export const BackTop: React.FC<BackTopProps> = ({
         };
 
         requestAnimationFrame(step);
-        onClick?.();
     }, [getScrollTarget, duration, onClick]);
 
     return (
