@@ -30,32 +30,32 @@ describe('Progress', () => {
         it('sets aria-valuenow to percent value', () => {
             const { container } = render(<Progress percent={42} aria-label="progress" />);
             const el = container.querySelector('[role="progressbar"]');
-            expect(el).toHaveAttribute('aria-valuenow', '42');
+            expect(el?.getAttribute('aria-valuenow')).toBe('42');
         });
 
         it('sets aria-valuemin=0 and aria-valuemax=100', () => {
             const { container } = render(<Progress percent={50} aria-label="progress" />);
             const el = container.querySelector('[role="progressbar"]');
-            expect(el).toHaveAttribute('aria-valuemin', '0');
-            expect(el).toHaveAttribute('aria-valuemax', '100');
+            expect(el?.getAttribute('aria-valuemin')).toBe('0');
+            expect(el?.getAttribute('aria-valuemax')).toBe('100');
         });
 
         it('sets aria-label', () => {
             const { container } = render(<Progress percent={50} aria-label="loading" />);
             const el = container.querySelector('[role="progressbar"]');
-            expect(el).toHaveAttribute('aria-label', 'loading');
+            expect(el?.getAttribute('aria-label')).toBe('loading');
         });
 
         it('clamps percent above 100', () => {
             const { container } = render(<Progress percent={150} aria-label="progress" />);
             const el = container.querySelector('[role="progressbar"]');
-            expect(el).toHaveAttribute('aria-valuenow', '100');
+            expect(el?.getAttribute('aria-valuenow')).toBe('100');
         });
 
         it('clamps percent below 0', () => {
             const { container } = render(<Progress percent={-10} aria-label="progress" />);
             const el = container.querySelector('[role="progressbar"]');
-            expect(el).toHaveAttribute('aria-valuenow', '0');
+            expect(el?.getAttribute('aria-valuenow')).toBe('0');
         });
     });
 

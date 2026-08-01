@@ -11,7 +11,7 @@ describe('Drawer', () => {
     describe('rendering', () => {
         it('renders without crashing when closed', () => {
             const { container } = render(<Drawer open={false} onClose={vi.fn()} />);
-            expect(container).toBeInTheDocument();
+            expect(container).not.toBeNull();
         });
 
         it('renders panel with base animal-drawer-panel class', () => {
@@ -21,7 +21,7 @@ describe('Drawer', () => {
 
         it('renders title when provided', () => {
             render(<Drawer open title="Drawer Title" onClose={vi.fn()} />);
-            expect(screen.getByText('Drawer Title')).toBeInTheDocument();
+            expect(screen.getByText('Drawer Title')).not.toBeNull();
         });
 
         it('renders children in drawer body', () => {
@@ -30,7 +30,7 @@ describe('Drawer', () => {
                     <p>Drawer content</p>
                 </Drawer>
             );
-            expect(screen.getByText('Drawer content')).toBeInTheDocument();
+            expect(screen.getByText('Drawer content')).not.toBeNull();
         });
 
         it('renders footer when provided', () => {
@@ -131,12 +131,12 @@ describe('Drawer', () => {
     describe('accessibility', () => {
         it('renders with role=dialog', () => {
             render(<Drawer open title="Test" onClose={vi.fn()} />);
-            expect(screen.getByRole('dialog')).toBeInTheDocument();
+            expect(screen.getByRole('dialog')).not.toBeNull();
         });
 
         it('renders with aria-modal=true', () => {
             render(<Drawer open title="Test" onClose={vi.fn()} />);
-            expect(screen.getByRole('dialog')).toHaveAttribute('aria-modal', 'true');
+            expect(screen.getByRole('dialog').getAttribute('aria-modal')).toBe('true');
         });
     });
 });

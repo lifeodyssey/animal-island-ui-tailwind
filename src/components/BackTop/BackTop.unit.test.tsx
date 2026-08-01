@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, cleanup } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, cleanup, fireEvent } from '@testing-library/react';
 import { BackTop } from './BackTop';
 
 beforeEach(() => {
@@ -38,7 +37,7 @@ describe('BackTop', () => {
     it('has aria-label for accessibility', () => {
         const { container } = render(<BackTop />);
         const btn = container.querySelector('button');
-        expect(btn).toHaveAttribute('aria-label');
+        expect(btn?.hasAttribute('aria-label')).toBe(true);
     });
 
     it('applies custom className', () => {
@@ -52,18 +51,20 @@ describe('BackTop', () => {
         expect(btn.style.bottom).toBe('100px');
     });
 
-    it('calls onClick when clicked', async () => {
-        const user = userEvent.setup();
+    it('calls onClick when clicked', () => {
+        // BackTop guards scrollToTop with `if (start === 0) return`, so simulate
+        // a scrolled position so onClick is not short-circuited.
+        vi.spyOn(window, 'scrollY', 'get').mockReturnValue(500);
         const onClick = vi.fn();
         const { container } = render(<BackTop onClick={onClick} />);
         const btn = container.querySelector('button')!;
-        await user.click(btn);
+        fireEvent.click(btn);
         expect(onClick).toHaveBeenCalledTimes(1);
     });
 
     it('has type=button on the button element', () => {
         const { container } = render(<BackTop />);
         const btn = container.querySelector('button');
-        expect(btn).toHaveAttribute('type', 'button');
+        expect(btn?.getAttribute('type')).toBe('button');
     });
 });

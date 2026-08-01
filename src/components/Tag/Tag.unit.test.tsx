@@ -5,19 +5,23 @@ import { fireEvent } from '@testing-library/react';
 afterEach(cleanup);
 import { Tag } from './Tag';
 
+afterEach(() => {
+    cleanup();
+});
+
 describe('Tag', () => {
     describe('rendering', () => {
         it('renders children text', () => {
             render(<Tag>hello</Tag>);
-            expect(screen.getByText('hello')).toBeInTheDocument();
+            expect(screen.getByText('hello')).not.toBeNull();
         });
 
         it('applies base animal-tag class and size-medium/variant-soft defaults', () => {
             const { container } = render(<Tag>x</Tag>);
             const root = container.firstChild as HTMLElement;
-            expect(root).toHaveClass('animal-tag');
-            expect(root).toHaveClass('animal-tag-size-medium');
-            expect(root).toHaveClass('animal-tag-variant-soft');
+            expect(root.classList.contains('animal-tag')).toBe(true);
+            expect(root.classList.contains('animal-tag-size-medium')).toBe(true);
+            expect(root.classList.contains('animal-tag-variant-soft')).toBe(true);
         });
 
         it('supports className and style', () => {
@@ -27,37 +31,37 @@ describe('Tag', () => {
                 </Tag>
             );
             const root = container.firstChild as HTMLElement;
-            expect(root).toHaveClass('x');
-            expect(root).toHaveStyle({ marginLeft: '4px' });
+            expect(root.classList.contains('x')).toBe(true);
+            expect(root.style.marginLeft).toBe('4px');
         });
     });
 
     describe('size', () => {
         it('size=small applies animal-tag-size-small', () => {
             const { container } = render(<Tag size="small">x</Tag>);
-            expect(container.firstChild).toHaveClass('animal-tag-size-small');
+            expect((container.firstChild as HTMLElement).classList.contains('animal-tag-size-small')).toBe(true);
         });
 
         it('size=large applies animal-tag-size-large', () => {
             const { container } = render(<Tag size="large">x</Tag>);
-            expect(container.firstChild).toHaveClass('animal-tag-size-large');
+            expect((container.firstChild as HTMLElement).classList.contains('animal-tag-size-large')).toBe(true);
         });
     });
 
     describe('variant', () => {
         it('variant=outlined applies animal-tag-variant-outlined', () => {
             const { container } = render(<Tag variant="outlined">x</Tag>);
-            expect(container.firstChild).toHaveClass('animal-tag-variant-outlined');
+            expect((container.firstChild as HTMLElement).classList.contains('animal-tag-variant-outlined')).toBe(true);
         });
 
         it('variant=dashed applies animal-tag-variant-dashed', () => {
             const { container } = render(<Tag variant="dashed">x</Tag>);
-            expect(container.firstChild).toHaveClass('animal-tag-variant-dashed');
+            expect((container.firstChild as HTMLElement).classList.contains('animal-tag-variant-dashed')).toBe(true);
         });
 
         it('variant=solid applies animal-tag-variant-solid', () => {
             const { container } = render(<Tag variant="solid">x</Tag>);
-            expect(container.firstChild).toHaveClass('animal-tag-variant-solid');
+            expect((container.firstChild as HTMLElement).classList.contains('animal-tag-variant-solid')).toBe(true);
         });
     });
 
@@ -68,7 +72,7 @@ describe('Tag', () => {
                     x
                 </Tag>
             );
-            expect(container.firstChild).toHaveClass('animal-tag-color-app-pink-solid');
+            expect((container.firstChild as HTMLElement).classList.contains('animal-tag-color-app-pink-solid')).toBe(true);
         });
 
         it('color=purple + variant=outlined applies animal-tag-color-purple-outlined', () => {
@@ -77,7 +81,7 @@ describe('Tag', () => {
                     x
                 </Tag>
             );
-            expect(container.firstChild).toHaveClass('animal-tag-color-purple-outlined');
+            expect((container.firstChild as HTMLElement).classList.contains('animal-tag-color-purple-outlined')).toBe(true);
         });
 
         it('color=default applies no animal-tag-color-* class', () => {
@@ -92,14 +96,14 @@ describe('Tag', () => {
                     x
                 </Tag>
             );
-            expect(container.firstChild).toHaveClass('animal-tag-color-app-teal-soft');
+            expect((container.firstChild as HTMLElement).classList.contains('animal-tag-color-app-teal-soft')).toBe(true);
         });
     });
 
     describe('closable', () => {
         it('renders close button when closable=true', () => {
             render(<Tag closable>x</Tag>);
-            expect(screen.getByRole('button', { name: 'close' })).toBeInTheDocument();
+            expect(screen.getByRole('button', { name: 'close' })).not.toBeNull();
         });
 
         it('calls onClose when close button clicked', () => {
@@ -122,7 +126,7 @@ describe('Tag', () => {
     describe('disabled', () => {
         it('adds animal-tag-disabled class when disabled=true', () => {
             const { container } = render(<Tag disabled>x</Tag>);
-            expect(container.firstChild).toHaveClass('animal-tag-disabled');
+            expect((container.firstChild as HTMLElement).classList.contains('animal-tag-disabled')).toBe(true);
         });
 
         it('does not call onClick when disabled', () => {
@@ -141,12 +145,12 @@ describe('Tag', () => {
     describe('interactive', () => {
         it('renders as role=button when onClick provided', () => {
             render(<Tag onClick={vi.fn()}>x</Tag>);
-            expect(screen.getByRole('button')).toBeInTheDocument();
+            expect(screen.getByRole('button')).not.toBeNull();
         });
 
         it('adds animal-tag-clickable class when onClick provided', () => {
             const { container } = render(<Tag onClick={vi.fn()}>x</Tag>);
-            expect(container.firstChild).toHaveClass('animal-tag-clickable');
+            expect((container.firstChild as HTMLElement).classList.contains('animal-tag-clickable')).toBe(true);
         });
 
         it('calls onClick when clicked', () => {
