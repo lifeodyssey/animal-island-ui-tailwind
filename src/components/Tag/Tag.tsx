@@ -32,22 +32,22 @@ export interface TagProps {
 }
 
 const SIZE_CLASS: Record<TagSize, string> = {
-    small: 'animal-tag-small',
-    medium: 'animal-tag-medium',
-    large: 'animal-tag-large',
+    small: 'animal-tag-size-small',
+    medium: 'animal-tag-size-medium',
+    large: 'animal-tag-size-large',
 };
 
 const VARIANT_CLASS: Record<TagVariant, string> = {
-    solid: 'animal-tag-solid',
-    outlined: 'animal-tag-outlined',
-    dashed: 'animal-tag-dashed',
-    soft: 'animal-tag-soft',
+    solid: 'animal-tag-variant-solid',
+    outlined: 'animal-tag-variant-outlined',
+    dashed: 'animal-tag-variant-dashed',
+    soft: 'animal-tag-variant-soft',
 };
 
 const COLOR_CLASS = (color: TagColor, variant: TagVariant): string => {
     if (color === 'default') return '';
-    if (variant === 'solid') return `animal-tag-${color}-solid`;
-    return `animal-tag-${color}-${variant}`;
+    if (variant === 'solid') return `animal-tag-color-${color}-solid`;
+    return `animal-tag-color-${color}-${variant}`;
 };
 
 export const Tag: React.FC<TagProps> = ({
