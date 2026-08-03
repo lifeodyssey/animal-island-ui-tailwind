@@ -31,7 +31,7 @@ content and the single source of truth.
 
 ## Component Inventory
 
-The library exposes 25 components:
+The library exposes 32 components:
 
 1. Button
 2. Input
@@ -64,6 +64,7 @@ The library exposes 25 components:
 29. Progress
 30. Skeleton
 31. BackTop
+32. Image
 
 ## Implementation Rules
 
