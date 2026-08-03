@@ -22,6 +22,7 @@ const stories = [
     { name: 'Skeleton', url: '/iframe.html?id=regression-parity-new-components--skeleton-stable&viewMode=story' },
     { name: 'Card Hoverable', url: '/iframe.html?id=regression-parity-new-components--card-hoverable&viewMode=story' },
     { name: 'BackTop', url: '/iframe.html?id=regression-parity-new-components--back-top-stable&viewMode=story' },
+    { name: 'Image', url: '/iframe.html?id=regression-parity-new-components--image-story&viewMode=story' },
 ];
 
 /**
