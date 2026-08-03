@@ -300,8 +300,11 @@ const destroy = (key?: string): void => {
     removed.forEach((it) => it.onClose?.());
     // If all items removed, tear down the root
     if (storeItems.length === 0 && root && container) {
-        // Defer unmount to allow React to flush the empty render first
+        // Defer unmount to allow React to flush the empty render first.
+        // Re-check the store when the timeout fires: an open() issued between
+        // destroy() and this callback must not have its root torn down.
         setTimeout(() => {
+            if (storeItems.length !== 0) return;
             root?.unmount();
             container?.remove();
             root = null;

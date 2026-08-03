@@ -1,6 +1,7 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 import { mergeConfig } from 'vite';
 import tailwindcss from '@tailwindcss/vite';
+import remarkGfm from 'remark-gfm';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -15,7 +16,17 @@ const config: StorybookConfig = {
     ],
     staticDirs: ['../public'],
     addons: [
-        '@storybook/addon-docs',
+        {
+            name: '@storybook/addon-docs',
+            options: {
+                mdxPluginOptions: {
+                    mdxCompileOptions: {
+                        // MDX only speaks CommonMark; GFM tables need remark-gfm.
+                        remarkPlugins: [remarkGfm],
+                    },
+                },
+            },
+        },
         '@storybook/addon-vitest',
         '@storybook/addon-a11y',
         '@storybook/addon-mcp',

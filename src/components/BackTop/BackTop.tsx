@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { cn } from '../../utils/cn';
 import base64 from './back-top.base64?raw';
 
@@ -20,6 +20,9 @@ export const BackTop: React.FC<BackTopProps> = ({
     duration = 300,
 }) => {
     const [visible, setVisible] = useState(false);
+    const rafRef = useRef<number>(0);
+
+    useEffect(() => () => cancelAnimationFrame(rafRef.current), []);
 
     const getTarget = useCallback(() => {
         return target ? target() : window;
@@ -57,11 +60,12 @@ export const BackTop: React.FC<BackTopProps> = ({
                 }
 
                 if (progress < 1) {
-                    requestAnimationFrame(animate);
+                    rafRef.current = requestAnimationFrame(animate);
                 }
             };
 
-            requestAnimationFrame(animate);
+            cancelAnimationFrame(rafRef.current);
+            rafRef.current = requestAnimationFrame(animate);
             onClick?.(e);
         },
         [getTarget, duration, onClick]

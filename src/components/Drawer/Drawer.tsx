@@ -22,6 +22,9 @@ const getFocusable = (root: HTMLElement): HTMLElement[] => {
     );
 };
 
+let bodyScrollLocks = 0;
+let savedBodyOverflow = '';
+
 export type DrawerPlacement = 'left' | 'right' | 'top' | 'bottom';
 
 export interface DrawerProps {
@@ -112,12 +115,19 @@ export const Drawer: React.FC<DrawerProps> = ({
         return () => document.removeEventListener('keydown', handler);
     }, [open, onClose]);
 
-    // Body scroll lock
+    // Body scroll lock (refcounted so overlapping Drawers don't unlock each other)
     useEffect(() => {
         if (open) {
-            document.body.style.overflow = 'hidden';
+            if (bodyScrollLocks === 0) {
+                savedBodyOverflow = document.body.style.overflow;
+                document.body.style.overflow = 'hidden';
+            }
+            bodyScrollLocks += 1;
             return () => {
-                document.body.style.overflow = '';
+                bodyScrollLocks -= 1;
+                if (bodyScrollLocks === 0) {
+                    document.body.style.overflow = savedBodyOverflow;
+                }
             };
         }
         return undefined;
