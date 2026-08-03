@@ -154,3 +154,6 @@ export type { SkeletonProps, SkeletonVariant, SkeletonButtonProps, SkeletonInput
 
 export { BackTop } from './components/BackTop';
 export type { BackTopProps } from './components/BackTop';
+
+export { Image } from './components/Image';
+export type { ImageProps, ImageColor } from './components/Image';

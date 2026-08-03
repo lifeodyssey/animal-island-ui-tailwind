@@ -6,6 +6,7 @@ import {
     Button,
     Card,
     Drawer,
+    Image,
     Notification,
     Progress,
     Skeleton,
@@ -276,6 +277,52 @@ export const BackTopStable: Story = {
         <div style={{ height: 200, position: 'relative' }}>
             <p>BackTop 组件 (固定定位，仅在页面滚动后显示)</p>
             <BackTop visibilityHeight={0} />
+        </div>
+    ),
+};
+
+// ─── Image ──────────────────────────────────────────────────────────────────
+
+const SAMPLE_SRC = 'https://picsum.photos/seed/animal-island/200/150';
+
+export const ImageStory: Story = {
+    name: 'Image',
+    render: () => (
+        <div style={pageStyle}>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>Default (white frame, preview)</div>
+                <div style={rowStyle}>
+                    <Image src={SAMPLE_SRC} alt="Animal Island scenery" width={200} height={150} />
+                </div>
+            </div>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>Colors</div>
+                <div style={rowStyle}>
+                    <Image src={SAMPLE_SRC} alt="default color" color="default" width={120} height={90} />
+                    <Image src={SAMPLE_SRC} alt="app-pink" color="app-pink" width={120} height={90} />
+                    <Image src={SAMPLE_SRC} alt="purple" color="purple" width={120} height={90} />
+                    <Image src={SAMPLE_SRC} alt="app-teal" color="app-teal" width={120} height={90} />
+                    <Image src={SAMPLE_SRC} alt="app-green" color="app-green" width={120} height={90} />
+                </div>
+            </div>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>No preview</div>
+                <div style={rowStyle}>
+                    <Image src={SAMPLE_SRC} alt="no preview" preview={false} width={160} height={120} />
+                </div>
+            </div>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>Lazy</div>
+                <div style={rowStyle}>
+                    <Image src={SAMPLE_SRC} alt="lazy image" lazy width={160} height={120} />
+                </div>
+            </div>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>Error state</div>
+                <div style={rowStyle}>
+                    <Image src="/this-image-does-not-exist-404.png" alt="broken image" width={160} height={120} />
+                </div>
+            </div>
         </div>
     ),
 };
