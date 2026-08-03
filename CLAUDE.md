@@ -58,6 +58,12 @@ The library exposes 25 components:
 23. Title
 24. Form
 25. Wallet
+26. Tag
+27. Notification
+28. Drawer
+29. Progress
+30. Skeleton
+31. BackTop
 
 ## Implementation Rules
 
