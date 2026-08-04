@@ -1,4 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
+import { existsSync } from 'node:fs';
+
+// Pre-installed browser on claude.ai cloud runners (not present on GitHub Actions or macOS).
+const cloudBrowserPath = '/opt/pw-browsers/chromium';
+const cloudExecutablePath = existsSync(cloudBrowserPath) ? cloudBrowserPath : undefined;
 
 export default defineConfig({
     testDir: './tests',
@@ -41,6 +46,7 @@ export default defineConfig({
                 // Deterministic text rasterization so maxDiffPixels:0 doesn't flap on
                 // subpixel font anti-aliasing (LCD/hinting/GPU jitter on the same machine).
                 launchOptions: {
+                    ...(cloudExecutablePath ? { executablePath: cloudExecutablePath } : {}),
                     args: [
                         '--font-render-hinting=none',
                         '--disable-lcd-text',

@@ -3,7 +3,12 @@ import { playwright } from '@vitest/browser-playwright';
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { existsSync } from 'node:fs';
 import viteConfig from './vite.config';
+
+// Pre-installed browser on claude.ai cloud runners (not present on GitHub Actions or macOS).
+const cloudBrowserPath = '/opt/pw-browsers/chromium';
+const cloudExecutablePath = existsSync(cloudBrowserPath) ? cloudBrowserPath : undefined;
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -47,7 +52,11 @@ export default mergeConfig(
                         name: 'storybook',
                         browser: {
                             enabled: true,
-                            provider: playwright({}),
+                            provider: playwright({
+                                ...(cloudExecutablePath
+                                    ? { launchOptions: { executablePath: cloudExecutablePath } }
+                                    : {}),
+                            }),
                             headless: true,
                             instances: [{ browser: 'chromium' }],
                         },
