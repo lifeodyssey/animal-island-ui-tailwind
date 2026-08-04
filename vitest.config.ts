@@ -47,7 +47,11 @@ export default mergeConfig(
                         name: 'storybook',
                         browser: {
                             enabled: true,
-                            provider: playwright({}),
+                            provider: playwright({
+                                launchOptions: {
+                                    executablePath: '/opt/pw-browsers/chromium',
+                                },
+                            }),
                             headless: true,
                             instances: [{ browser: 'chromium' }],
                         },
