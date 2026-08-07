@@ -4,6 +4,7 @@ const assetsStoryUrl = '/iframe.html?id=regression-parity-display-utilities--ass
 const textStoryUrl = '/iframe.html?id=regression-parity-display-utilities--text-utility-stable&viewMode=story';
 const statusStoryUrl = '/iframe.html?id=regression-parity-display-utilities--status-scene-stable&viewMode=story';
 const weddingStoryUrl = '/iframe.html?id=regression-parity-display-utilities--wedding-invitation-stable&viewMode=story';
+const timeGameStoryUrl = '/iframe.html?id=components-time--game&viewMode=story';
 
 const freezeClock = async (page: Page) => {
     await page.addInitScript(() => {
@@ -159,5 +160,22 @@ test.describe('reference display utility parity', () => {
         const exportButton = page.getByRole('button', { name: '保存为图片' });
         await expect(exportButton).toBeVisible();
         await expect(exportButton).toBeEnabled();
+    });
+
+    test('covers Time game layout (vertical: time / divider / date + weekday in Chinese)', async ({ page }) => {
+        await freezeClock(page);
+        await page.goto(timeGameStoryUrl);
+
+        const root = page.locator('#storybook-root').locator('.animal-time-game').first();
+        await expect(root).toBeVisible();
+        await expect(root).toContainText('13');
+        await expect(root).toContainText('45');
+        await expect(root).toContainText('8月15日');
+        await expect(root).toContainText('四');
+
+        await expect(root.locator('.animal-time-game-time')).toHaveCSS('font-weight', '900');
+        await expect(root.locator('.animal-time-game-colon')).toHaveCSS('font-size', '40px');
+        await expect(root.locator('.animal-time-game-divider')).toHaveCSS('height', '3px');
+        await expect(root.locator('.animal-time-game-weekday')).toHaveCSS('border-radius', '999px');
     });
 });

@@ -169,6 +169,8 @@
   "components-tabs--tab-change",
   "components-tabs--uncontrolled-default-key",
   "components-time--default",
+  "components-time--game",
+  "components-time--hud",
   "components-title--colors",
   "components-title--default",
   "components-title--large",

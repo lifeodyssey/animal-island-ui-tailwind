@@ -9,5 +9,11 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** 默认时钟 / 日期展示：岛民聚集啦！悬停可看到自定义光标效果。 */
+/** Game layout (default): vertical stack — time / divider / date + weekday in Chinese. */
 export const Default: Story = {};
+
+/** Game layout: explicit type="game". */
+export const Game: Story = { args: { type: 'game' } };
+
+/** HUD layout: horizontal — weekday/date on left, clock on right. */
+export const Hud: Story = { args: { type: 'hud' } };
