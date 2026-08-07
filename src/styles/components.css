@@ -253,15 +253,13 @@
     display: inline-flex;
     align-items: center;
     width: 100%;
-    background: var(--animal-bg-color-content);
-    border: 2.5px solid var(--animal-text-color-disabled);
+    background: #fffbe7;
     border-radius: var(--animal-radius-pill);
     box-shadow: var(--animal-shadow-input);
     transition: all var(--animal-motion-duration-base) var(--animal-motion-ease);
   }
 
   .animal-input-wrapper:hover:not(.animal-input-disabled) {
-    border-color: #a89878;
     box-shadow: 0 3px 0 0 #c4b89e;
   }
 
@@ -282,7 +280,6 @@
   .animal-input-large {
     height: var(--animal-height-lg);
     padding: 0 22px;
-    border-width: 3px;
     font-size: var(--animal-font-size-lg);
     box-shadow: 0 4px 0 0 #d4c9b4;
   }
@@ -293,12 +290,10 @@
   }
 
   .animal-input-error {
-    border-color: var(--animal-error-color);
     box-shadow: 0 3px 0 0 var(--animal-error-color-active);
   }
 
   .animal-input-warning {
-    border-color: var(--animal-warning-color);
     box-shadow: 0 3px 0 0 var(--animal-warning-color-active);
   }
 
@@ -306,7 +301,6 @@
     cursor: not-allowed;
     opacity: 0.6;
     background: #ece8dc;
-    border-color: #d4c9b4;
     box-shadow: none;
   }
 
@@ -319,11 +313,12 @@
     min-width: 0;
     flex: 1;
     width: 100%;
+    height: 100%;
     padding: 1px 2px;
     border: none;
     outline: none;
     background: transparent;
-    color: var(--animal-text-color-body);
+    color: #8a7b66;
     font-size: inherit;
     font-family: var(--animal-font-family);
     font-weight: 500;
@@ -1981,6 +1976,84 @@
     .animal-time-clock,
     .animal-time-colon {
       font-size: 32px;
+    }
+  }
+
+  /* ---------- Time game (vertical) ---------- */
+  .animal-time-game {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    width: fit-content;
+    max-width: max-content;
+    animation: animal-fade-up 0.5s ease-out;
+  }
+
+  .animal-time-game-time {
+    display: flex;
+    align-items: center;
+    color: #8b7355;
+    font-weight: 900;
+    font-size: 40px;
+    letter-spacing: 2px;
+  }
+
+  .animal-time-game-colon {
+    position: relative;
+    top: -0.08em;
+    margin: 0 1px;
+    font-size: 40px;
+    color: #8b7355;
+    animation: animal-blink 1s step-end infinite;
+  }
+
+  .animal-time-game-divider {
+    width: calc(100% + 5px);
+    height: 3px;
+    background: rgba(159, 146, 125, 0.35);
+    border-radius: 2px;
+  }
+
+  .animal-time-game-date {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 5px;
+  }
+
+  .animal-time-game-monthday {
+    color: #8b7355;
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: 2px;
+  }
+
+  .animal-time-game-weekday {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+    height: 27px;
+    border-radius: 999px;
+    background: #fffbe7;
+    color: #8b7355;
+    font-weight: 900;
+    font-size: 18px;
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+
+  @media (max-width: 768px) {
+    .animal-time-game-time {
+      font-size: 32px;
+    }
+
+    .animal-time-game-colon {
+      font-size: 32px;
+    }
+
+    .animal-time-game-monthday {
+      font-size: 14px;
     }
   }
 
