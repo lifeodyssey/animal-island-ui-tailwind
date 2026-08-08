@@ -196,7 +196,7 @@ const StatusSceneSection = () => {
         <section data-testid="status-scene-region" style={sectionStyle}>
             <div style={labelStyle}>Time</div>
             <div data-testid="time-region" style={panelStyle}>
-                <Time className="parity-time" />
+                <Time className="parity-time" type="hud" />
             </div>
             <div style={labelStyle}>Phone</div>
             <div data-testid="phone-region" style={{ ...panelStyle, width: 600 }}>
