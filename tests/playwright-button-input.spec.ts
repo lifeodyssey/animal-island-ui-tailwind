@@ -125,8 +125,10 @@ test.describe('reference Button/Input parity', () => {
 
         expect((await smallInput.boundingBox())?.height).toBeLessThan((await middleErrorInput.boundingBox())?.height ?? 0);
         expect((await largeWarningInput.boundingBox())?.height).toBeGreaterThan((await middleErrorInput.boundingBox())?.height ?? 0);
-        await expect(wrapperForInput(middleErrorInput)).toHaveCSS('border-color', 'rgb(224, 90, 90)');
-        await expect(wrapperForInput(largeWarningInput)).toHaveCSS('border-color', 'rgb(245, 195, 28)');
+        // Input is borderless (upstream 3a7cca1); error/warning signal via box-shadow only.
+        // Checks --animal-error-color-active (#c94444) and --animal-warning-color-active (#dba90e).
+        await expect(wrapperForInput(middleErrorInput)).toHaveCSS('box-shadow', /rgb\(201,\s*68,\s*68\)/);
+        await expect(wrapperForInput(largeWarningInput)).toHaveCSS('box-shadow', /rgb\(219,\s*169,\s*14\)/);
         await expect(emailInput).toHaveAttribute('type', 'email');
         await expect(emailInput).toHaveAttribute('name', 'islandEmail');
         await expect(emailInput).toHaveAttribute('required', '');
