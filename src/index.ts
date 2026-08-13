@@ -50,7 +50,7 @@ export { Cursor } from './components/Cursor';
 export type { CursorProps } from './components/Cursor';
 
 export { Time } from './components/Time';
-export type { TimeProps } from './components/Time';
+export type { TimeProps, TimeType } from './components/Time';
 
 export { Phone } from './components/Phone';
 export type { PhoneProps } from './components/Phone';
@@ -157,3 +157,6 @@ export type { BackTopProps } from './components/BackTop';
 
 export { Image } from './components/Image';
 export type { ImageProps, ImageColor } from './components/Image';
+
+export { DatePicker } from './components/DatePicker';
+export type { DatePickerProps, DatePickerSize, DatePickerStatus, DatePickerValue } from './components/DatePicker';
