@@ -65,6 +65,8 @@ export interface InputProps extends Omit<
     onChange?: React.ChangeEventHandler<HTMLInputElement>;
     /** 清除回调 */
     onClear?: () => void;
+    /** 清除按钮的无障碍标签，默认"Clear input" */
+    clearAriaLabel?: string;
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -82,6 +84,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             defaultValue,
             onChange,
             onClear,
+            clearAriaLabel = 'Clear input',
             'aria-invalid': ariaInvalid,
             ...rest
         },
@@ -159,7 +162,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
                     <button
                         type="button"
                         className="animal-input-clear"
-                        aria-label="Clear input"
+                        aria-label={clearAriaLabel}
                         onMouseDown={(e) => e.preventDefault()}
                         onClick={handleClear}
                     >

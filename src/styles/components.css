@@ -1984,6 +1984,84 @@
     }
   }
 
+  /* Time — game type (vertical: time / divider / date + weekday) */
+  .animal-time-game {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    width: fit-content;
+    max-width: max-content;
+    animation: animal-fade-up 0.5s ease-out;
+  }
+
+  .animal-time-game-time {
+    display: flex;
+    align-items: center;
+    color: #8b7355;
+    font-size: 40px;
+    font-weight: 900;
+    letter-spacing: 2px;
+  }
+
+  .animal-time-game-colon {
+    position: relative;
+    top: -0.08em;
+    margin: 0 1px;
+    font-size: 40px;
+    color: #8b7355;
+    animation: animal-blink 1s step-end infinite;
+  }
+
+  .animal-time-game-divider {
+    width: calc(100% + 5px);
+    height: 3px;
+    background: rgba(159, 146, 125, 0.35);
+    border-radius: 2px;
+  }
+
+  .animal-time-game-date {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 5px;
+  }
+
+  .animal-time-game-monthday {
+    color: #8b7355;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 2px;
+  }
+
+  .animal-time-game-weekday {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+    height: 27px;
+    border-radius: 999px;
+    background: #fffbe7;
+    color: #8b7355;
+    font-size: 18px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+
+  @media (max-width: 768px) {
+    .animal-time-game .animal-time-game-time {
+      font-size: 32px;
+    }
+
+    .animal-time-game .animal-time-game-colon {
+      font-size: 32px;
+    }
+
+    .animal-time-game .animal-time-game-monthday {
+      font-size: 14px;
+    }
+  }
+
   .animal-phone-container {
     display: flex;
     align-items: center;
@@ -3081,26 +3159,23 @@
     white-space: nowrap;
   }
 
-  /* Size */
+  /* Size — height 8px arithmetic (24/32/40), vertical centering via inline-flex + align-items: center */
   .animal-tag-small {
     height: 24px;
-    line-height: 24px;
     padding: 0 10px;
     font-size: 12px;
   }
 
   .animal-tag-medium {
-    height: 29px;
-    line-height: 29px;
+    height: 32px;
     padding: 0 12px;
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .animal-tag-large {
-    height: 34px;
-    line-height: 34px;
+    height: 40px;
     padding: 0 16px;
-    font-size: 15px;
+    font-size: 16px;
   }
 
   /* Variant: solid */
@@ -4073,4 +4148,507 @@
   .animal-image-close-mark::after {
     transform: translate(-50%, -50%) rotate(-45deg);
   }
+}
+
+/* ============================================
+   DatePicker
+   ============================================ */
+@layer components {
+  .animal-date-picker {
+    position: relative;
+    display: inline-block;
+    font-family: var(--animal-font-family);
+    vertical-align: middle;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .animal-date-picker-trigger {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 8px;
+    background: #fffbe7;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .animal-date-picker-trigger-small { height: 32px; padding: 0 14px; font-size: 12px; }
+  .animal-date-picker-trigger-middle { height: 40px; padding: 0 18px; font-size: 14px; }
+  .animal-date-picker-trigger-large { height: 48px; padding: 0 22px; font-size: 16px; }
+
+  .animal-date-picker-trigger:hover {
+    box-shadow: 0 3px 0 0 #c4b89e;
+  }
+
+  .animal-date-picker-trigger-open {
+    box-shadow: 0 3px 0 0 #e0b800, 0 0 0 3px rgba(255, 204, 0, 0.15);
+  }
+
+  .animal-date-picker-trigger-error { box-shadow: 0 3px 0 0 #c94444; }
+  .animal-date-picker-trigger-warning { box-shadow: 0 3px 0 0 #dba90e; }
+
+  .animal-date-picker-value {
+    flex: 1;
+    color: #8a7b66;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .animal-date-picker-placeholder {
+    flex: 1;
+    color: #c4b89e;
+    font-weight: 400;
+  }
+
+  .animal-date-picker-calendar-icon {
+    display: flex;
+    align-items: center;
+    color: #a0936e;
+  }
+
+  .animal-date-picker-range-divider {
+    width: 1px;
+    height: 16px;
+    margin: 0 2px;
+    background: #e8dcc8;
+    flex-shrink: 0;
+  }
+
+  .animal-date-picker-clear {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-left: 4px;
+    border: none;
+    background: transparent;
+    border-radius: 50%;
+    color: #c4b89e;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .animal-date-picker-clear:hover {
+    color: #725d42;
+    background: rgba(114, 93, 66, 0.1);
+  }
+
+  .animal-date-picker-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .animal-date-picker-disabled .animal-date-picker-trigger,
+  .animal-date-picker-disabled .animal-date-picker-trigger:hover {
+    background: #ece8dc;
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+
+  .animal-date-picker-disabled .animal-date-picker-value,
+  .animal-date-picker-disabled .animal-date-picker-placeholder {
+    color: #c4b89e;
+  }
+
+  .animal-date-picker-panel {
+    position: absolute;
+    width: 280px;
+    padding: 14px;
+    background: #fffdf7;
+    border: 1.5px solid #e8dcc8;
+    border-radius: 20px;
+    box-shadow: 0 6px 18px rgba(61, 52, 40, 0.12);
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .animal-date-picker-panel-visible { opacity: 1; transform: translateY(0); }
+  .animal-date-picker-panel-closing { opacity: 0; transform: translateY(-6px); }
+  .animal-date-picker-panel-range { width: 600px; }
+
+  .animal-date-picker-range-panels { display: flex; gap: 12px; }
+  .animal-date-picker-range-panel { width: 280px; }
+
+  .animal-date-picker-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .animal-date-picker-header-group { display: flex; gap: 2px; }
+
+  .animal-date-picker-nav-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    color: #a0936e;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .animal-date-picker-nav-btn:hover { background: rgba(114, 93, 66, 0.1); }
+
+  .animal-date-picker-nav-icon { width: 16px; height: auto; display: block; }
+
+  .animal-date-picker-label-btn {
+    padding: 4px 10px;
+    border: none;
+    background: transparent;
+    border-radius: 10px;
+    color: #725d42;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .animal-date-picker-label-btn:hover { background: #e6f9f6; color: #19c8b9; }
+
+  .animal-date-picker-year-label {
+    padding: 4px 10px;
+    color: #725d42;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .animal-date-picker-week-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-bottom: 4px;
+  }
+
+  .animal-date-picker-week-cell {
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    color: #a09080;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  .animal-date-picker-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+  }
+
+  .animal-date-picker-day-cell {
+    width: 32px;
+    height: 32px;
+    justify-self: center;
+    border: none;
+    background: transparent;
+    border-radius: 50%;
+    color: #725d42;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .animal-date-picker-day-cell:hover { background: #e6f9f6; color: #19c8b9; }
+
+  .animal-date-picker-panel-range .animal-date-picker-day-cell:hover { background: #ffd54f; color: #725d42; }
+
+  .animal-date-picker-day-outside { color: #c4b89e; font-weight: 400; }
+
+  .animal-date-picker-day-today {
+    box-shadow: inset 0 0 0 1.5px #19c8b9;
+    color: #19c8b9;
+    font-weight: 700;
+  }
+
+  .animal-date-picker-day-selected,
+  .animal-date-picker-day-selected:hover {
+    background: #19c8b9;
+    color: #fff;
+    font-weight: 700;
+  }
+
+  .animal-date-picker-day-in-range,
+  .animal-date-picker-day-in-range:hover {
+    background: #ffc107;
+    border-radius: 50%;
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .animal-date-picker-day-range-start,
+  .animal-date-picker-day-range-end,
+  .animal-date-picker-day-range-start:hover,
+  .animal-date-picker-day-range-end:hover {
+    background: #ffc107;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    color: #fff;
+    font-weight: 700;
+  }
+
+  .animal-date-picker-day-disabled,
+  .animal-date-picker-day-disabled:hover {
+    background: transparent;
+    color: #d4c9b4;
+    cursor: not-allowed;
+  }
+
+  .animal-date-picker-grid-3x4 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+  }
+
+  .animal-date-picker-month-cell,
+  .animal-date-picker-year-cell {
+    height: 36px;
+    border: none;
+    background: transparent;
+    border-radius: 12px;
+    color: #725d42;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .animal-date-picker-month-cell:hover,
+  .animal-date-picker-year-cell:hover { background: #e6f9f6; color: #19c8b9; }
+
+  .animal-date-picker-month-cell-selected,
+  .animal-date-picker-month-cell-selected:hover,
+  .animal-date-picker-year-cell-selected,
+  .animal-date-picker-year-cell-selected:hover { background: #19c8b9; color: #fff; font-weight: 700; }
+
+  .animal-date-picker-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #f0e8d8;
+  }
+
+  .animal-date-picker-today-btn {
+    padding: 4px 12px;
+    border: none;
+    background: transparent;
+    border-radius: 10px;
+    color: #8a7b66;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .animal-date-picker-today-btn:hover { background: rgba(114, 93, 66, 0.1); color: #725d42; }
+
+  .animal-date-picker-confirm-btn {
+    padding: 6px 16px;
+    border: none;
+    background: rgba(114, 93, 66, 0.1);
+    border-radius: 12px;
+    color: #8a7b66;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .animal-date-picker-confirm-btn:hover { background: #796c5a; color: #fff; }
+}
+
+/* ============================================
+   TimePicker
+   ============================================ */
+@layer components {
+  .animal-time-picker {
+    position: relative;
+    display: inline-block;
+    font-family: var(--animal-font-family);
+    vertical-align: middle;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .animal-time-picker-trigger {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 8px;
+    background: #fffbe7;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .animal-time-picker-trigger-small { height: 32px; padding: 0 14px; font-size: 12px; }
+  .animal-time-picker-trigger-middle { height: 40px; padding: 0 18px; font-size: 14px; }
+  .animal-time-picker-trigger-large { height: 48px; padding: 0 22px; font-size: 16px; }
+
+  .animal-time-picker-trigger:hover { box-shadow: 0 3px 0 0 #c4b89e; }
+
+  .animal-time-picker-trigger-open {
+    box-shadow: 0 3px 0 0 #e0b800, 0 0 0 3px rgba(255, 204, 0, 0.15);
+  }
+
+  .animal-time-picker-trigger-error { box-shadow: 0 3px 0 0 #c94444; }
+  .animal-time-picker-trigger-warning { box-shadow: 0 3px 0 0 #dba90e; }
+
+  .animal-time-picker-value { flex: 1; color: #8a7b66; font-weight: 500; letter-spacing: 0.01em; }
+  .animal-time-picker-placeholder { flex: 1; color: #c4b89e; font-weight: 400; }
+
+  .animal-time-picker-clock-icon { display: flex; align-items: center; color: #a0936e; }
+
+  .animal-time-picker-clear {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-left: 4px;
+    border: none;
+    background: transparent;
+    border-radius: 50%;
+    color: #c4b89e;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .animal-time-picker-clear:hover { color: #725d42; background: rgba(114, 93, 66, 0.1); }
+
+  .animal-time-picker-disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .animal-time-picker-disabled .animal-time-picker-trigger,
+  .animal-time-picker-disabled .animal-time-picker-trigger:hover {
+    background: #ece8dc;
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+
+  .animal-time-picker-disabled .animal-time-picker-value,
+  .animal-time-picker-disabled .animal-time-picker-placeholder { color: #c4b89e; }
+
+  .animal-time-picker-panel {
+    position: absolute;
+    width: 248px;
+    padding: 14px;
+    background: #fffdf7;
+    border: 1.5px solid #e8dcc8;
+    border-radius: 20px;
+    box-shadow: 0 6px 18px rgba(61, 52, 40, 0.12);
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .animal-time-picker-panel-visible { opacity: 1; transform: translateY(0); }
+  .animal-time-picker-panel-no-seconds { width: 172px; }
+  .animal-time-picker-panel-closing { opacity: 0; transform: translateY(-6px); }
+
+  .animal-time-picker-columns { display: flex; gap: 8px; }
+  .animal-time-picker-column { flex: 1; min-width: 0; }
+
+  .animal-time-picker-column-title {
+    margin-bottom: 6px;
+    text-align: center;
+    color: #a09080;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  .animal-time-picker-column-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    max-height: 232px;
+    overflow-y: auto;
+    padding: 2px;
+  }
+
+  .animal-time-picker-option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    height: 28px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    border-radius: 16px;
+    appearance: none;
+    color: #725d42;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .animal-time-picker-option:hover { background: #ffd54f; color: #725d42; }
+
+  .animal-time-picker-option-selected,
+  .animal-time-picker-option-selected:hover { background: #ffb400; color: #fff; font-weight: 700; }
+
+  .animal-time-picker-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #f0e8d8;
+  }
+
+  .animal-time-picker-footer-btn {
+    padding: 6px 14px;
+    border: none;
+    background: transparent;
+    border-radius: 10px;
+    color: #8a7b66;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .animal-time-picker-footer-btn:hover { background: rgba(114, 93, 66, 0.1); color: #725d42; }
+
+  .animal-time-picker-confirm-btn {
+    padding: 6px 16px;
+    border: none;
+    background: rgba(114, 93, 66, 0.1);
+    border-radius: 12px;
+    color: #8a7b66;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .animal-time-picker-confirm-btn:hover { background: #8a7b66; color: #fff; }
 }
