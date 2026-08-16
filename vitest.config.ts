@@ -31,7 +31,14 @@ export default mergeConfig(
                     test: {
                         name: 'unit',
                         environment: 'jsdom',
-                        include: ['src/**/*.unit.test.{ts,tsx}', 'src/components/Form/Form.test.tsx'],
+                        setupFiles: ['src/test/setup.ts'],
+                        include: [
+                            'src/**/*.unit.test.{ts,tsx}',
+                            'src/components/Form/Form.test.tsx',
+                            'src/components/Time/Time.test.tsx',
+                            'src/components/DatePicker/DatePicker.test.tsx',
+                            'src/components/TimePicker/TimePicker.test.tsx',
+                        ],
                     },
                 },
                 {

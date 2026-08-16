@@ -13,8 +13,10 @@
         "isolatedModules": true,
         "baseUrl": ".",
         "paths": {
-            "@/*": ["src/*"]
-        }
+            "@/*": ["src/*"],
+            "@test/*": ["src/test/*"]
+        },
+        "types": ["@testing-library/jest-dom"]
     },
     "include": ["src", "demo"],
     "exclude": ["node_modules", "dist", "demo-dist"]

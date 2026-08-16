@@ -5,6 +5,7 @@ import {
     BackTop,
     Button,
     Card,
+    DatePicker,
     Drawer,
     Image,
     Notification,
@@ -14,6 +15,8 @@ import {
     SkeletonButton,
     SkeletonInput,
     Tag,
+    Time,
+    TimePicker,
 } from '../src';
 
 const meta = {
@@ -326,3 +329,130 @@ export const ImageStory: Story = {
         </div>
     ),
 };
+
+// ─── Time (game type) ────────────────────────────────────────────────────────
+
+export const TimeGameStory: Story = {
+    name: 'Time – game type',
+    render: () => (
+        <div style={pageStyle}>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>game (default)</div>
+                <div style={rowStyle}>
+                    <Time type="game" />
+                </div>
+            </div>
+        </div>
+    ),
+};
+
+// ─── DatePicker ──────────────────────────────────────────────────────────────
+
+export const DatePickerStory: Story = {
+    name: 'DatePicker',
+    render: () => {
+        const [val, setVal] = useState<string | null>('2026-08-10');
+        const [rangeVal, setRangeVal] = useState<[string, string] | null>(['2026-08-10', '2026-08-15']);
+        return (
+            <div style={pageStyle}>
+                <div style={sectionStyle}>
+                    <div style={labelStyle}>Default (controlled)</div>
+                    <div style={rowStyle}>
+                        <DatePicker value={val ?? undefined} onChange={(v) => setVal(v as string | null)} allowClear />
+                    </div>
+                </div>
+                <div style={sectionStyle}>
+                    <div style={labelStyle}>Size variants</div>
+                    <div style={rowStyle}>
+                        <DatePicker size="small" placeholder="small" />
+                        <DatePicker size="middle" placeholder="middle" />
+                        <DatePicker size="large" placeholder="large" />
+                    </div>
+                </div>
+                <div style={sectionStyle}>
+                    <div style={labelStyle}>Status</div>
+                    <div style={rowStyle}>
+                        <DatePicker status="error" defaultValue="2026-08-10" />
+                        <DatePicker status="warning" defaultValue="2026-08-10" />
+                    </div>
+                </div>
+                <div style={sectionStyle}>
+                    <div style={labelStyle}>Disabled</div>
+                    <div style={rowStyle}>
+                        <DatePicker disabled defaultValue="2026-08-10" />
+                    </div>
+                </div>
+                <div style={sectionStyle}>
+                    <div style={labelStyle}>Range</div>
+                    <div style={rowStyle}>
+                        <DatePicker
+                            range
+                            value={rangeVal ?? undefined}
+                            onChange={(v) => setRangeVal(v as [string, string] | null)}
+                            allowClear
+                        />
+                    </div>
+                </div>
+                <div style={sectionStyle}>
+                    <div style={labelStyle}>Month picker</div>
+                    <div style={rowStyle}>
+                        <DatePicker picker="month" defaultValue="2026-08" />
+                    </div>
+                </div>
+            </div>
+        );
+    },
+};
+
+// ─── TimePicker ──────────────────────────────────────────────────────────────
+
+export const TimePickerStory: Story = {
+    name: 'TimePicker',
+    render: () => {
+        const [val, setVal] = useState<string | null>('08:30:00');
+        return (
+            <div style={pageStyle}>
+                <div style={sectionStyle}>
+                    <div style={labelStyle}>Default (controlled)</div>
+                    <div style={rowStyle}>
+                        <TimePicker value={val ?? undefined} onChange={(v) => setVal(v)} allowClear />
+                    </div>
+                </div>
+                <div style={sectionStyle}>
+                    <div style={labelStyle}>Size variants</div>
+                    <div style={rowStyle}>
+                        <TimePicker size="small" placeholder="small" />
+                        <TimePicker size="middle" placeholder="middle" />
+                        <TimePicker size="large" placeholder="large" />
+                    </div>
+                </div>
+                <div style={sectionStyle}>
+                    <div style={labelStyle}>Status</div>
+                    <div style={rowStyle}>
+                        <TimePicker status="error" defaultValue="08:30:00" />
+                        <TimePicker status="warning" defaultValue="08:30:00" />
+                    </div>
+                </div>
+                <div style={sectionStyle}>
+                    <div style={labelStyle}>Disabled</div>
+                    <div style={rowStyle}>
+                        <TimePicker disabled defaultValue="08:30:00" />
+                    </div>
+                </div>
+                <div style={sectionStyle}>
+                    <div style={labelStyle}>Without seconds (HH:mm)</div>
+                    <div style={rowStyle}>
+                        <TimePicker format="HH:mm" defaultValue="08:30:00" />
+                    </div>
+                </div>
+                <div style={sectionStyle}>
+                    <div style={labelStyle}>Step (minuteStep=15)</div>
+                    <div style={rowStyle}>
+                        <TimePicker minuteStep={15} defaultValue="08:30:00" />
+                    </div>
+                </div>
+            </div>
+        );
+    },
+};
+
