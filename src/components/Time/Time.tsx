@@ -7,7 +7,7 @@ export type TimeType = 'hud' | 'game';
 
 export interface TimeProps {
     className?: string;
-    /** 显示风格：hud（左右结构：星期/日期 + 时间）| game（上下结构：时间 / 分割线 / 日期 + 周几），默认 game */
+    /** 显示风格：hud（左右结构：星期/日期 + 时间，原始样式）| game（上下结构：时间 / 分割线 / 日期 + 周几，上游新增），默认 hud */
     type?: TimeType;
 }
 
@@ -16,7 +16,7 @@ const weekdaysCN = ['日', '一', '二', '三', '四', '五', '六'];
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 export const Time = React.forwardRef<HTMLDivElement, TimeProps & React.HTMLAttributes<HTMLDivElement>>(
-    ({ className, type = 'game', ...rest }, ref) => {
+    ({ className, type = 'hud', ...rest }, ref) => {
         const currentTime = useNow();
         const hours = currentTime.getHours().toString().padStart(2, '0');
         const minutes = currentTime.getMinutes().toString().padStart(2, '0');

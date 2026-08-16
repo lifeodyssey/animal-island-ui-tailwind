@@ -21,12 +21,12 @@ describe('Time', () => {
         expect(container.textContent).toContain('30');
     });
 
-    it('默认渲染 game 布局（时间 / 日期 + 周几）', () => {
+    it('默认渲染 hud 布局（星期 + 月日 + 时间）', () => {
         const { container } = render(<Time />);
+        expect(screen.getByText('Monday')).toBeInTheDocument();
+        expect(screen.getByText('Jun 8')).toBeInTheDocument();
         expect(container.textContent).toContain('09');
         expect(container.textContent).toContain('30');
-        expect(screen.getByText('6月8日')).toBeInTheDocument();
-        expect(screen.getByText('一')).toBeInTheDocument();
     });
 
     it('每秒刷新（推进 1s 后状态可能更新）', () => {
