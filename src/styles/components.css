@@ -290,10 +290,12 @@
   }
 
   .animal-input-error {
+    border-color: var(--animal-error-color);
     box-shadow: 0 3px 0 0 var(--animal-error-color-active);
   }
 
   .animal-input-warning {
+    border-color: var(--animal-warning-color);
     box-shadow: 0 3px 0 0 var(--animal-warning-color-active);
   }
 
