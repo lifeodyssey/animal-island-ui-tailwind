@@ -116,7 +116,7 @@ const codeBlockPreStyle: React.CSSProperties = {
 
 export const CodeBlock: React.FC<CodeBlockProps> = ({ code, style, className, copyable = true, onCopy }) => {
     const [copyStatus, setCopyStatus] = useState<CopyStatus>('idle');
-    const resetTimer = useRef<number>();
+    const resetTimer = useRef<number | undefined>(undefined);
 
     useEffect(() => () => window.clearTimeout(resetTimer.current), []);
 
