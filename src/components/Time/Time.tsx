@@ -10,11 +10,11 @@ const weekdaysCN = ['日', '一', '二', '三', '四', '五', '六'];
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 export interface TimeProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
-    /** 显示风格: hud（左右结构）| game（上下结构），默认 game */
+    /** 显示风格: hud（左右结构）| game（上下结构），默认 hud */
     type?: TimeType;
 }
 
-export const Time = React.forwardRef<HTMLDivElement, TimeProps>(({ className, type = 'game', ...rest }, ref) => {
+export const Time = React.forwardRef<HTMLDivElement, TimeProps>(({ className, type = 'hud', ...rest }, ref) => {
     const currentTime = useNow();
 
     const hours = currentTime.getHours().toString().padStart(2, '0');

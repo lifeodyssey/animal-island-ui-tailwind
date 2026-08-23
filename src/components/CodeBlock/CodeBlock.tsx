@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { cn } from '../../utils/cn';
 
 const COLORS = {
     comment: '#6b5e50',
@@ -159,7 +160,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({ code, style, className, co
         <div className="animal-code-block-wrapper" style={wrapperStyle}>
             <pre
                 style={{ ...codeBlockPreStyle, ...(copyButtonSpacing ? { paddingRight: 96 } : null), ...preStyle }}
-                className={className}
+                className={cn('animal-code-block', className)}
             >
                 {highlighted}
             </pre>
