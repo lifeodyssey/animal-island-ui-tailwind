@@ -13,9 +13,10 @@
         "isolatedModules": true,
         "baseUrl": ".",
         "paths": {
-            "@/*": ["src/*"]
+            "@/*": ["src/*"],
+            "@test/*": ["test/*"]
         }
     },
-    "include": ["src", "demo"],
+    "include": ["src", "demo", "test"],
     "exclude": ["node_modules", "dist", "demo-dist"]
 }

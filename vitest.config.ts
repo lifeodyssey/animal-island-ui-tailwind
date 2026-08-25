@@ -7,6 +7,8 @@ import viteConfig from './vite.config';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
+const testAlias = { '@test': path.resolve(dirname, 'test') };
+
 export default mergeConfig(
     viteConfig,
     defineConfig({
@@ -24,14 +26,20 @@ export default mergeConfig(
             },
             projects: [
                 {
-                    // Node/jsdom unit tests for logic that can't be asserted in
-                    // the browser story runner (e.g. spying gsap tween calls
-                    // against the upstream animation spec). Files: *.unit.test.tsx
+                    // Node/jsdom unit tests. Includes *.unit.test.tsx plus
+                    // explicit component test files from upstream sync.
                     extends: true,
+                    resolve: { alias: testAlias },
                     test: {
                         name: 'unit',
                         environment: 'jsdom',
-                        include: ['src/**/*.unit.test.{ts,tsx}', 'src/components/Form/Form.test.tsx'],
+                        setupFiles: ['./test/setup.ts'],
+                        include: [
+                            'src/**/*.unit.test.{ts,tsx}',
+                            'src/components/Form/Form.test.tsx',
+                            'src/components/Time/Time.test.tsx',
+                            'src/components/CodeBlock/CodeBlock.test.tsx',
+                        ],
                     },
                 },
                 {
