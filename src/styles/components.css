@@ -1979,6 +1979,68 @@
     }
   }
 
+  /* Time game type */
+  .animal-time-game {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    width: fit-content;
+    max-width: max-content;
+  }
+  .animal-time-game-clock {
+    display: flex;
+    align-items: center;
+    color: #8b7355;
+    font-weight: 900;
+    font-size: 40px;
+    letter-spacing: 2px;
+  }
+  .animal-time-game-colon {
+    position: relative;
+    top: -0.08em;
+    margin: 0 1px;
+    font-size: 40px;
+    color: #8b7355;
+    animation: animal-blink 1s step-end infinite;
+  }
+  .animal-time-game-divider {
+    width: calc(100% + 5px);
+    height: 3px;
+    background: rgba(159, 146, 125, 0.35);
+    border-radius: 2px;
+  }
+  .animal-time-game-date {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 5px;
+  }
+  .animal-time-game-monthday {
+    color: #8b7355;
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: 2px;
+  }
+  .animal-time-game-weekday {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+    height: 27px;
+    border-radius: 999px;
+    background: #fffbe7;
+    color: #8b7355;
+    font-weight: 900;
+    font-size: 18px;
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+  @media (max-width: 768px) {
+    .animal-time-game .animal-time-game-clock { font-size: 32px; }
+    .animal-time-game .animal-time-game-colon { font-size: 32px; }
+    .animal-time-game .animal-time-game-monthday { font-size: 14px; }
+  }
+
   .animal-phone-container {
     display: flex;
     align-items: center;
