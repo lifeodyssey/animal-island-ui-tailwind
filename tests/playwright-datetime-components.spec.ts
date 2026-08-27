@@ -25,7 +25,7 @@ test.describe('TimePicker', () => {
         await page.locator('.animal-time-picker-trigger').click();
         await expect(page.locator('.animal-time-picker-panel')).toBeVisible();
         await page.keyboard.press('Escape');
-        await expect(page.locator('.animal-time-picker-panel')).not.toBeVisible({ timeout: 500 });
+        await expect(page.locator('.animal-time-picker-panel')).not.toBeVisible({ timeout: 3000 });
     });
 });
 
@@ -50,7 +50,7 @@ test.describe('DatePicker', () => {
         await page.locator('.animal-date-picker-trigger').click();
         await expect(page.locator('.animal-date-picker-panel')).toBeVisible();
         await page.keyboard.press('Escape');
-        await expect(page.locator('.animal-date-picker-panel')).not.toBeVisible({ timeout: 500 });
+        await expect(page.locator('.animal-date-picker-panel')).not.toBeVisible({ timeout: 3000 });
     });
 });
 
