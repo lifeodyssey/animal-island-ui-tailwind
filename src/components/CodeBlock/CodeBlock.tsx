@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { cn } from '../../utils/cn';
 
 const COLORS = {
@@ -15,9 +15,7 @@ const COLORS = {
     default: '#e8d5bc',
 };
 
-// Declarative syntax-highlight pattern table.
-// ORDER IS LOAD-BEARING: patterns are registered top-to-bottom and earlier
-// patterns win on overlap (see the token-merge loop below). Do not reorder.
+// ORDER IS LOAD-BEARING: patterns registered top-to-bottom; earlier patterns win on overlap.
 const HIGHLIGHT_PATTERNS: { regex: RegExp; color: string }[] = [
     { regex: /\/\*[\s\S]*?\*\//g, color: COLORS.comment },
     { regex: /\/\/.*$/gm, color: COLORS.comment },
@@ -46,11 +44,7 @@ const highlightJSX = (code: string): React.ReactNode[] => {
         let match;
         const re = new RegExp(regex.source, regex.flags.includes('g') ? regex.flags : regex.flags + 'g');
         while ((match = re.exec(code)) !== null) {
-            tokens.push({
-                start: match.index,
-                end: match.index + match[0].length,
-                color,
-            });
+            tokens.push({ start: match.index, end: match.index + match[0].length, color });
         }
     };
 
@@ -65,11 +59,9 @@ const highlightJSX = (code: string): React.ReactNode[] => {
 
     for (const token of tokens) {
         if (token.start < pos) continue;
-
         if (token.start > pos) {
             result.push(<span key={`t${pos}`} style={{ color: COLORS.default }}>{code.slice(pos, token.start)}</span>);
         }
-
         result.push(<span key={`s${token.start}`} style={{ color: token.color }}>{code.slice(token.start, token.end)}</span>);
         pos = token.end;
     }
@@ -81,24 +73,69 @@ const highlightJSX = (code: string): React.ReactNode[] => {
     return result;
 };
 
-export interface CodeBlockProps extends React.HTMLAttributes<HTMLPreElement> {
+type CopyStatus = 'idle' | 'copied' | 'error';
+
+const COPY_STATUS_CONTENT: Record<CopyStatus, { text: string; label: string }> = {
+    idle: { text: 'Copy', label: '复制代码' },
+    copied: { text: 'Copied!', label: '已复制' },
+    error: { text: 'Error', label: '复制失败' },
+};
+
+const copyText = (text: string) => navigator.clipboard.writeText(text);
+
+export interface CodeBlockProps {
     code: string;
+    /** 显示复制按钮 */
+    copyable?: boolean;
+    /** 复制成功后的回调 */
+    onCopy?: (code: string) => void;
+    className?: string;
+    style?: React.CSSProperties;
 }
 
-export const CodeBlock = React.forwardRef<HTMLPreElement, CodeBlockProps>(
-    ({ code, style, className, ...rest }, ref) => {
-        const highlighted = React.useMemo(() => highlightJSX(code), [code]);
-        return (
+export const CodeBlock: React.FC<CodeBlockProps> = ({ code, copyable = false, onCopy, style, className }) => {
+    const highlighted = React.useMemo(() => highlightJSX(code), [code]);
+    const [copyStatus, setCopyStatus] = useState<CopyStatus>('idle');
+    const resetTimer = useRef<number | undefined>(undefined);
+
+    const handleCopy = useCallback(async () => {
+        window.clearTimeout(resetTimer.current);
+        try {
+            await copyText(code);
+            setCopyStatus('copied');
+            onCopy?.(code);
+        } catch {
+            setCopyStatus('error');
+        }
+        resetTimer.current = window.setTimeout(() => setCopyStatus('idle'), 2_000);
+    }, [code, onCopy]);
+
+    const buttonContent = COPY_STATUS_CONTENT[copyStatus];
+    const copyButtonSpacing = copyable && style?.padding === undefined && style?.paddingRight === undefined;
+    const { width, minWidth, maxWidth, margin, marginTop, marginRight, marginBottom, marginLeft, ...preStyle } =
+        style ?? {};
+    const wrapperStyle: React.CSSProperties = { width, minWidth, maxWidth, margin, marginTop, marginRight, marginBottom, marginLeft };
+
+    return (
+        <div className="animal-code-block-wrapper" style={wrapperStyle}>
             <pre
-                ref={ref}
-                style={style}
+                style={{ ...(copyButtonSpacing ? { paddingRight: 96 } : null), width: '100%', ...preStyle }}
                 className={cn('animal-code-block', className)}
-                {...rest}
             >
                 {highlighted}
             </pre>
-        );
-    }
-);
+            {copyable && (
+                <button
+                    type="button"
+                    className="animal-code-block-copy"
+                    aria-label={buttonContent.label}
+                    onClick={handleCopy}
+                >
+                    {buttonContent.text}
+                </button>
+            )}
+        </div>
+    );
+};
 
 CodeBlock.displayName = 'CodeBlock';

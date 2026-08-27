@@ -157,3 +157,15 @@ export type { BackTopProps } from './components/BackTop';
 
 export { Image } from './components/Image';
 export type { ImageProps, ImageColor } from './components/Image';
+
+export { Carousel } from './components/Carousel';
+export type { CarouselProps } from './components/Carousel';
+
+export { Countdown } from './components/Countdown';
+export type { CountdownProps, CountdownSize, CountdownVariant } from './components/Countdown';
+
+export { TimePicker } from './components/TimePicker';
+export type { TimePickerProps, TimePickerSize, TimePickerStatus, TimePart } from './components/TimePicker';
+
+export { DatePicker } from './components/DatePicker';
+export type { DatePickerProps, DatePickerSize, DatePickerStatus, DatePickerValue } from './components/DatePicker';
