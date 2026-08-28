@@ -32,6 +32,7 @@ export default mergeConfig(
                         name: 'unit',
                         environment: 'jsdom',
                         include: ['src/**/*.unit.test.{ts,tsx}', 'src/components/Form/Form.test.tsx'],
+                        setupFiles: ['./src/test-unit-setup.ts'],
                     },
                 },
                 {

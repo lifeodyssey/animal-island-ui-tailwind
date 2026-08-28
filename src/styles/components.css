@@ -253,15 +253,13 @@
     display: inline-flex;
     align-items: center;
     width: 100%;
-    background: var(--animal-bg-color-content);
-    border: 2.5px solid var(--animal-text-color-disabled);
+    background: #fffbe7;
     border-radius: var(--animal-radius-pill);
-    box-shadow: var(--animal-shadow-input);
+    box-shadow: 0 3px 0 0 #d4c9b4;
     transition: all var(--animal-motion-duration-base) var(--animal-motion-ease);
   }
 
   .animal-input-wrapper:hover:not(.animal-input-disabled) {
-    border-color: #a89878;
     box-shadow: 0 3px 0 0 #c4b89e;
   }
 
@@ -282,7 +280,7 @@
   .animal-input-large {
     height: var(--animal-height-lg);
     padding: 0 22px;
-    border-width: 3px;
+    border-radius: 50px;
     font-size: var(--animal-font-size-lg);
     box-shadow: 0 4px 0 0 #d4c9b4;
   }
@@ -293,12 +291,18 @@
   }
 
   .animal-input-error {
-    border-color: var(--animal-error-color);
+    box-shadow: 0 3px 0 0 var(--animal-error-color-active);
+  }
+
+  .animal-input-error:hover:not(.animal-input-disabled) {
     box-shadow: 0 3px 0 0 var(--animal-error-color-active);
   }
 
   .animal-input-warning {
-    border-color: var(--animal-warning-color);
+    box-shadow: 0 3px 0 0 var(--animal-warning-color-active);
+  }
+
+  .animal-input-warning:hover:not(.animal-input-disabled) {
     box-shadow: 0 3px 0 0 var(--animal-warning-color-active);
   }
 
@@ -306,7 +310,6 @@
     cursor: not-allowed;
     opacity: 0.6;
     background: #ece8dc;
-    border-color: #d4c9b4;
     box-shadow: none;
   }
 
@@ -319,11 +322,11 @@
     min-width: 0;
     flex: 1;
     width: 100%;
-    padding: 1px 2px;
+    height: 100%;
     border: none;
     outline: none;
     background: transparent;
-    color: var(--animal-text-color-body);
+    color: #8a7b66;
     font-size: inherit;
     font-family: var(--animal-font-family);
     font-weight: 500;
@@ -1984,6 +1987,84 @@
     }
   }
 
+  /* Time — game type (vertical layout) */
+  .animal-time-game {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    width: fit-content;
+    max-width: max-content;
+    animation: animal-fade-up 0.5s ease-out;
+  }
+
+  .animal-time-game-time {
+    display: flex;
+    align-items: center;
+    color: #8b7355;
+    font-weight: 900;
+    font-size: 40px;
+    letter-spacing: 2px;
+  }
+
+  .animal-time-game-colon {
+    position: relative;
+    top: -0.08em;
+    margin: 0 1px;
+    font-size: 40px;
+    color: #8b7355;
+    animation: animal-blink 1s step-end infinite;
+  }
+
+  .animal-time-game-divider {
+    width: calc(100% + 5px);
+    height: 3px;
+    background: rgba(159, 146, 125, 0.35);
+    border-radius: 2px;
+  }
+
+  .animal-time-game-date {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 5px;
+  }
+
+  .animal-time-game-monthday {
+    color: #8b7355;
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: 2px;
+  }
+
+  .animal-time-game-weekday {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+    height: 27px;
+    border-radius: 999px;
+    background: #fffbe7;
+    color: #8b7355;
+    font-weight: 900;
+    font-size: 18px;
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+
+  @media (max-width: 768px) {
+    .animal-time-game-time {
+      font-size: 32px;
+    }
+
+    .animal-time-game-colon {
+      font-size: 32px;
+    }
+
+    .animal-time-game-monthday {
+      font-size: 14px;
+    }
+  }
+
   .animal-phone-container {
     display: flex;
     align-items: center;
@@ -2130,7 +2211,14 @@
     background-image: url("../assets/img/icons/page.svg");
   }
 
+  .animal-code-block-wrapper {
+    position: relative;
+  }
+
   .animal-code-block {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
     padding: 20px 24px;
     overflow: auto;
     border: 1px solid #3d3028;
@@ -2145,6 +2233,192 @@
     white-space: pre;
     -webkit-font-smoothing: auto;
     -moz-osx-font-smoothing: auto;
+  }
+
+  .animal-code-block-copy {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    min-width: 60px;
+    height: 28px;
+    padding: 0 12px;
+    border: 1px solid #4a3828;
+    border-radius: 50px;
+    background: rgba(61, 48, 40, 0.8);
+    color: #c4b89e;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(4px);
+  }
+
+  .animal-code-block-copy:hover {
+    background: rgba(80, 62, 48, 0.9);
+    color: #e8d5bc;
+    border-color: #6b5e50;
+  }
+
+  .animal-code-block-copy:focus-visible {
+    outline: 2px solid #8b7355;
+    outline-offset: 2px;
+  }
+
+  /* Countdown */
+  .animal-countdown {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--animal-spacing-sm, 8px);
+    box-sizing: border-box;
+    width: fit-content;
+    color: var(--animal-text-color, #794f27);
+    font-family: var(--animal-font-family, 'Nunito', 'Noto Sans SC');
+    font-weight: 700;
+    border-radius: 20px;
+    transition: transform var(--animal-motion-duration-base, 0.2s) var(--animal-motion-ease, cubic-bezier(0.4, 0, 0.2, 1));
+  }
+
+  .animal-countdown-default {
+    padding: 12px 18px;
+    background: var(--animal-bg-color, #fff);
+    box-shadow: var(--animal-shadow-sm, 0 2px 4px rgba(61, 52, 40, 0.06));
+  }
+
+  .animal-countdown-island {
+    padding: 13px 20px;
+    background: rgb(247, 243, 223);
+    border: 2px dashed #d4c4a8;
+  }
+
+  .animal-countdown-prefix {
+    color: var(--animal-text-color-secondary, #725d42);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .animal-countdown-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .animal-countdown-unit {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    box-sizing: border-box;
+    padding: 3px 8px;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #fff 0%, #f8f8f0 100%);
+  }
+
+  .animal-countdown-island .animal-countdown-unit {
+    background: linear-gradient(180deg, #fffdf4 0%, #f8f8f0 100%);
+  }
+
+  .animal-countdown-bordered .animal-countdown-unit {
+    border: 1.5px solid #d4c9b4;
+  }
+
+  .animal-countdown-bordered.animal-countdown-island .animal-countdown-unit {
+    border-color: #d4c4a8;
+  }
+
+  .animal-countdown-digit-cell {
+    display: inline-block;
+    overflow: hidden;
+    height: 1.2em;
+  }
+
+  .animal-countdown-digit-strip {
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.35s var(--animal-motion-ease, cubic-bezier(0.4, 0, 0.2, 1));
+    will-change: transform;
+  }
+
+  .animal-countdown-digit-face {
+    display: block;
+    height: 1.2em;
+    color: #8b7355;
+    font-weight: 900;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .animal-countdown-sep {
+    color: #8b7355;
+    font-weight: 700;
+    white-space: pre;
+  }
+
+  .animal-countdown-colon {
+    color: #8b7355;
+    font-weight: 900;
+    white-space: pre;
+    position: relative;
+    top: -0.08em;
+  }
+
+  .animal-countdown-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .animal-countdown-small {
+    min-height: 40px;
+    font-size: 13px;
+  }
+
+  .animal-countdown-small .animal-countdown-digit-cell {
+    font-size: 20px;
+  }
+
+  .animal-countdown-small .animal-countdown-colon {
+    font-size: 20px;
+  }
+
+  .animal-countdown-middle {
+    min-height: 48px;
+    font-size: 14px;
+  }
+
+  .animal-countdown-middle .animal-countdown-digit-cell {
+    font-size: 26px;
+  }
+
+  .animal-countdown-middle .animal-countdown-colon {
+    font-size: 26px;
+  }
+
+  .animal-countdown-large {
+    min-height: 56px;
+    font-size: 16px;
+  }
+
+  .animal-countdown-large .animal-countdown-digit-cell {
+    font-size: 34px;
+  }
+
+  .animal-countdown-large .animal-countdown-colon {
+    font-size: 34px;
+  }
+
+  @media (max-width: 480px) {
+    .animal-countdown {
+      max-width: 100%;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
   }
 
   .animal-loading-wrapper {
@@ -3081,26 +3355,23 @@
     white-space: nowrap;
   }
 
-  /* Size */
+  /* Size — height + inline-flex align-items:center handles centering; no line-height */
   .animal-tag-small {
     height: 24px;
-    line-height: 24px;
     padding: 0 10px;
     font-size: 12px;
   }
 
   .animal-tag-medium {
-    height: 29px;
-    line-height: 29px;
+    height: 32px;
     padding: 0 12px;
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .animal-tag-large {
-    height: 34px;
-    line-height: 34px;
+    height: 40px;
     padding: 0 16px;
-    font-size: 15px;
+    font-size: 16px;
   }
 
   /* Variant: solid */
@@ -4073,4 +4344,560 @@
   .animal-image-close-mark::after {
     transform: translate(-50%, -50%) rotate(-45deg);
   }
+}
+
+@layer components {
+  /* Carousel */
+  .animal-carousel {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    font-family: var(--animal-font-family, 'Nunito', 'Noto Sans SC');
+    border-radius: 20px;
+    outline: none;
+  }
+
+  .animal-carousel:focus-visible {
+    outline: 2px solid var(--animal-primary-color, #19c8b9);
+    outline-offset: 3px;
+  }
+
+  .animal-carousel-viewport {
+    position: relative;
+    overflow: hidden;
+    min-height: 180px;
+    background: rgb(247, 243, 223);
+    border-radius: 20px;
+  }
+
+  .animal-carousel-slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    min-height: 180px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateX(18px);
+    transition:
+      opacity var(--animal-motion-duration-slow, 0.3s) var(--animal-motion-ease, cubic-bezier(0.4, 0, 0.2, 1)),
+      transform var(--animal-motion-duration-slow, 0.3s) var(--animal-motion-ease, cubic-bezier(0.4, 0, 0.2, 1)),
+      visibility var(--animal-motion-duration-slow, 0.3s) var(--animal-motion-ease, cubic-bezier(0.4, 0, 0.2, 1));
+  }
+
+  .animal-carousel-slide-active {
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(0);
+  }
+
+  .animal-carousel-arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: 1.5px solid rgba(121, 79, 39, 0.16);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--animal-text-color, #794f27);
+    cursor: pointer;
+    transform: translateY(-50%);
+    box-shadow: var(--animal-shadow-sm, 0 2px 4px rgba(61, 52, 40, 0.06));
+    transition: all var(--animal-motion-duration-base, 0.2s) var(--animal-motion-ease, cubic-bezier(0.4, 0, 0.2, 1));
+  }
+
+  .animal-carousel-arrow::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 9px;
+    height: 9px;
+    border-top: 3px solid currentColor;
+    border-left: 3px solid currentColor;
+  }
+
+  .animal-carousel-arrow:hover:not(:disabled) {
+    color: var(--animal-primary-color-active, #0ea89c);
+    transform: translateY(calc(-50% - 2px));
+  }
+
+  .animal-carousel-arrow:active:not(:disabled) {
+    transform: translateY(-50%);
+  }
+
+  .animal-carousel-arrow:focus-visible {
+    outline: 2px solid var(--animal-primary-color, #19c8b9);
+    outline-offset: 2px;
+  }
+
+  .animal-carousel-arrow:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .animal-carousel-arrow-prev {
+    left: 14px;
+  }
+
+  .animal-carousel-arrow-prev::before {
+    transform: translate(-35%, -50%) rotate(-45deg);
+  }
+
+  .animal-carousel-arrow-next {
+    right: 14px;
+  }
+
+  .animal-carousel-arrow-next::before {
+    transform: translate(-65%, -50%) rotate(135deg);
+  }
+
+  .animal-carousel-dots {
+    position: absolute;
+    bottom: 14px;
+    left: 50%;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 7px 10px;
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.85);
+    transform: translateX(-50%);
+  }
+
+  .animal-carousel-dot {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    border-radius: 50px;
+    background: transparent;
+    cursor: pointer;
+    transition: all var(--animal-motion-duration-base, 0.2s) var(--animal-motion-ease, cubic-bezier(0.4, 0, 0.2, 1));
+  }
+
+  .animal-carousel-dot::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    border-radius: 50px;
+    background: #d4c9b4;
+    transform: translate(-50%, -50%);
+    transition: all var(--animal-motion-duration-base, 0.2s) var(--animal-motion-ease, cubic-bezier(0.4, 0, 0.2, 1));
+  }
+
+  .animal-carousel-dot:focus-visible {
+    outline: 2px solid var(--animal-primary-color, #19c8b9);
+    outline-offset: 2px;
+  }
+
+  .animal-carousel-dot-active::before {
+    width: 24px;
+    background: var(--animal-primary-color, #19c8b9);
+  }
+
+  .animal-carousel-rotation-control {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 3;
+    min-width: 58px;
+    height: 32px;
+    padding: 0 12px;
+    border: 1.5px solid rgba(121, 79, 39, 0.16);
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--animal-text-color, #794f27);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--animal-motion-duration-base, 0.2s) var(--animal-motion-ease, cubic-bezier(0.4, 0, 0.2, 1));
+  }
+
+  .animal-carousel-rotation-control:hover {
+    color: var(--animal-primary-color-active, #0ea89c);
+    transform: translateY(-1px);
+  }
+
+  .animal-carousel-rotation-control:focus-visible {
+    outline: 2px solid var(--animal-primary-color, #19c8b9);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 480px) {
+    .animal-carousel-arrow {
+      width: 36px;
+      height: 36px;
+    }
+
+    .animal-carousel-arrow-prev {
+      left: 8px;
+    }
+
+    .animal-carousel-arrow-next {
+      right: 8px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animal-carousel-slide,
+    .animal-carousel-arrow,
+    .animal-carousel-dot,
+    .animal-carousel-dot::before,
+    .animal-carousel-rotation-control {
+      transition: none;
+    }
+  }
+}
+
+/* ─── DatePicker ──────────────────────────────────────────── */
+@layer components {
+  .animal-datepicker-wrapper {
+    position: relative;
+    display: inline-block;
+    font-family: var(--animal-font-family, inherit);
+  }
+
+  .animal-datepicker-wrapper-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .animal-datepicker-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 12px;
+    height: 36px;
+    min-width: 160px;
+    background: #fffbe7;
+    border-radius: var(--animal-radius-pill, 999px);
+    box-shadow: 0 3px 0 0 #d4c9b4;
+    cursor: pointer;
+    user-select: none;
+    font-size: 14px;
+    color: #8b7355;
+    position: relative;
+  }
+
+  .animal-datepicker-trigger-small { height: 28px; font-size: 12px; padding: 0 10px; min-width: 130px; }
+  .animal-datepicker-trigger-large { height: 44px; font-size: 16px; padding: 0 16px; min-width: 190px; }
+  .animal-datepicker-trigger-error { box-shadow: 0 3px 0 0 #e87c6b; }
+  .animal-datepicker-trigger-warning { box-shadow: 0 3px 0 0 #e8b96b; }
+  .animal-datepicker-trigger-open { box-shadow: 0 3px 0 0 #19c8b9; }
+
+  .animal-datepicker-value { color: #5c4a32; }
+  .animal-datepicker-placeholder { color: #b0a090; }
+  .animal-datepicker-range-divider { flex: 0 0 auto; width: 20px; text-align: center; color: #b0a090; }
+  .animal-datepicker-range-divider::after { content: '→'; }
+  .animal-datepicker-calendar-icon { margin-left: auto; color: #b0a090; display: flex; align-items: center; }
+  .animal-datepicker-clear {
+    margin-left: auto;
+    background: none;
+    border: none;
+    padding: 0 4px;
+    cursor: pointer;
+    color: #b0a090;
+    font-size: 16px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+  }
+  .animal-datepicker-clear:hover { color: #8b7355; }
+
+  .animal-datepicker-panel {
+    position: absolute;
+    z-index: 1000;
+    background: #fffbe7;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(140, 115, 85, 0.18);
+    padding: 16px;
+    min-width: 280px;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .animal-datepicker-panel-visible { opacity: 1; transform: translateY(0); }
+  .animal-datepicker-panel-closing { opacity: 0; transform: translateY(4px); }
+  .animal-datepicker-panel-range { min-width: 580px; }
+
+  .animal-datepicker-range-panels { display: flex; gap: 24px; }
+  .animal-datepicker-range-panel { flex: 1; }
+
+  .animal-datepicker-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .animal-datepicker-header-group { display: flex; align-items: center; gap: 4px; }
+  .animal-datepicker-nav-btn {
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    color: #8b7355;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .animal-datepicker-nav-btn:hover { background: #f0e8d0; }
+  .animal-datepicker-nav-icon { width: 12px; height: 12px; }
+  .animal-datepicker-year-label { font-size: 14px; font-weight: 600; color: #5c4a32; }
+  .animal-datepicker-label-btn {
+    background: none;
+    border: none;
+    padding: 2px 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: #5c4a32;
+    border-radius: 6px;
+  }
+  .animal-datepicker-label-btn:hover { background: #f0e8d0; }
+
+  .animal-datepicker-week-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-bottom: 4px;
+  }
+  .animal-datepicker-week-cell {
+    text-align: center;
+    font-size: 12px;
+    color: #b0a090;
+    padding: 4px 0;
+  }
+  .animal-datepicker-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+  }
+  .animal-datepicker-grid-3x4 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    padding: 8px 0;
+  }
+  .animal-datepicker-day-cell {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 13px;
+    color: #5c4a32;
+    margin: 0 auto;
+  }
+  .animal-datepicker-day-cell:hover { background: #f0e8d0; }
+  .animal-datepicker-day-outside { color: #c8baa8; }
+  .animal-datepicker-day-today { border: 1.5px solid #19c8b9; }
+  .animal-datepicker-day-selected { background: #19c8b9; color: #fff; }
+  .animal-datepicker-day-selected:hover { background: #15b0a3; }
+  .animal-datepicker-day-range-start { background: #19c8b9; color: #fff; border-radius: 50% 0 0 50%; }
+  .animal-datepicker-day-range-end { background: #19c8b9; color: #fff; border-radius: 0 50% 50% 0; }
+  .animal-datepicker-day-in-range { background: #d4f5f2; border-radius: 0; }
+  .animal-datepicker-day-disabled { color: #c8baa8; cursor: not-allowed; }
+  .animal-datepicker-day-disabled:hover { background: none; }
+
+  .animal-datepicker-month-cell,
+  .animal-datepicker-year-cell {
+    padding: 8px 4px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #5c4a32;
+    text-align: center;
+  }
+  .animal-datepicker-month-cell:hover,
+  .animal-datepicker-year-cell:hover { background: #f0e8d0; }
+  .animal-datepicker-month-selected,
+  .animal-datepicker-year-selected { background: #19c8b9; color: #fff; }
+  .animal-datepicker-month-selected:hover,
+  .animal-datepicker-year-selected:hover { background: #15b0a3; }
+
+  .animal-datepicker-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #e8dcc8;
+  }
+  .animal-datepicker-today-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #19c8b9;
+    font-size: 13px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    margin-right: auto;
+  }
+  .animal-datepicker-today-btn:hover { background: #d4f5f2; }
+  .animal-datepicker-confirm-btn {
+    background: #19c8b9;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    font-size: 13px;
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+  .animal-datepicker-confirm-btn:hover { background: #15b0a3; }
+}
+
+/* ─── TimePicker ──────────────────────────────────────────── */
+@layer components {
+  .animal-timepicker-wrapper {
+    position: relative;
+    display: inline-block;
+    font-family: var(--animal-font-family, inherit);
+  }
+
+  .animal-timepicker-wrapper-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .animal-timepicker-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 12px;
+    height: 36px;
+    min-width: 140px;
+    background: #fffbe7;
+    border-radius: var(--animal-radius-pill, 999px);
+    box-shadow: 0 3px 0 0 #d4c9b4;
+    cursor: pointer;
+    user-select: none;
+    font-size: 14px;
+    color: #8b7355;
+    position: relative;
+  }
+
+  .animal-timepicker-trigger-small { height: 28px; font-size: 12px; padding: 0 10px; min-width: 110px; }
+  .animal-timepicker-trigger-large { height: 44px; font-size: 16px; padding: 0 16px; min-width: 160px; }
+  .animal-timepicker-trigger-error { box-shadow: 0 3px 0 0 #e87c6b; }
+  .animal-timepicker-trigger-warning { box-shadow: 0 3px 0 0 #e8b96b; }
+  .animal-timepicker-trigger-open { box-shadow: 0 3px 0 0 #19c8b9; }
+
+  .animal-timepicker-value { color: #5c4a32; }
+  .animal-timepicker-placeholder { color: #b0a090; }
+  .animal-timepicker-clock-icon { margin-left: auto; color: #b0a090; display: flex; align-items: center; }
+  .animal-timepicker-clear {
+    margin-left: auto;
+    background: none;
+    border: none;
+    padding: 0 4px;
+    cursor: pointer;
+    color: #b0a090;
+    font-size: 16px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+  }
+  .animal-timepicker-clear:hover { color: #8b7355; }
+
+  .animal-timepicker-panel {
+    position: absolute;
+    z-index: 1000;
+    background: #fffbe7;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(140, 115, 85, 0.18);
+    padding: 12px;
+    min-width: 220px;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .animal-timepicker-panel-visible { opacity: 1; transform: translateY(0); }
+  .animal-timepicker-panel-closing { opacity: 0; transform: translateY(4px); }
+  .animal-timepicker-panel-no-seconds { min-width: 160px; }
+
+  .animal-timepicker-columns { display: flex; gap: 0; }
+  .animal-timepicker-column { flex: 1; display: flex; flex-direction: column; }
+  .animal-timepicker-column-title {
+    text-align: center;
+    font-size: 12px;
+    color: #b0a090;
+    padding: 4px 0;
+    font-weight: 600;
+  }
+  .animal-timepicker-column-list {
+    height: 200px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 4px 4px;
+  }
+  .animal-timepicker-column-list::-webkit-scrollbar { display: none; }
+
+  .animal-timepicker-option {
+    width: 100%;
+    padding: 5px 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #5c4a32;
+    text-align: center;
+  }
+  .animal-timepicker-option:hover { background: #f0e8d0; }
+  .animal-timepicker-option-selected { background: #19c8b9; color: #fff; }
+  .animal-timepicker-option-selected:hover { background: #15b0a3; }
+
+  .animal-timepicker-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #e8dcc8;
+  }
+  .animal-timepicker-footer-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #19c8b9;
+    font-size: 13px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    margin-right: auto;
+  }
+  .animal-timepicker-footer-btn:hover { background: #d4f5f2; }
+  .animal-timepicker-confirm-btn {
+    background: #19c8b9;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    font-size: 13px;
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+  .animal-timepicker-confirm-btn:hover { background: #15b0a3; }
 }
