@@ -13,7 +13,9 @@
         "isolatedModules": true,
         "baseUrl": ".",
         "paths": {
-            "@/*": ["src/*"]
+            "@/*": ["src/*"],
+            "@test/utils": ["src/test/utils"],
+            "@test/components": ["src/test/components"]
         }
     },
     "include": ["src", "demo"],

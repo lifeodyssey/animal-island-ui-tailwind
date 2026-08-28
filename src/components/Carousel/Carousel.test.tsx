@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react';
+import { act, cleanup, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { setup } from '@test/utils';
 import { Carousel } from './Carousel';
@@ -7,6 +7,7 @@ const slides = [<div key="1">海滩</div>, <div key="2">广场</div>, <div key="
 
 describe('Carousel', () => {
     afterEach(() => {
+        cleanup();
         vi.useRealTimers();
         vi.restoreAllMocks();
     });
@@ -74,7 +75,7 @@ describe('Carousel', () => {
         let latestTimer: TimerHandler | undefined;
         vi.spyOn(window, 'setInterval').mockImplementation((handler: TimerHandler) => {
             latestTimer = handler;
-            return 1;
+            return 1 as unknown as ReturnType<typeof setInterval>;
         });
         vi.spyOn(window, 'clearInterval').mockImplementation(() => {
             latestTimer = undefined;

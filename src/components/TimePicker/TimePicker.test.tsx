@@ -1,10 +1,12 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { afterEach, describe, it, expect, vi } from 'vitest';
+import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import { TimePicker } from './TimePicker';
 import { setup } from '@test/utils';
 import { ControlledHost } from '@test/components';
 
 const expectPanelClosed = async () => waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+
+afterEach(() => { cleanup(); });
 
 describe('TimePicker', () => {
     describe('rendering', () => {
