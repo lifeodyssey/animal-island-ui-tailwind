@@ -384,6 +384,11 @@
     background: rgba(114, 93, 66, 0.1);
   }
 
+  .animal-input-clear:focus-visible {
+    outline: 2px solid #725d42;
+    outline-offset: 1px;
+  }
+
   .animal-switch {
     position: relative;
     display: inline-flex;
@@ -1917,7 +1922,10 @@
   .animal-time {
     display: inline-flex;
     align-items: center;
+    align-self: flex-start;
     gap: 20px;
+    width: fit-content;
+    max-width: max-content;
     padding: 16px 36px;
     border: 3px solid #d4cfc3;
     border-radius: var(--animal-radius-base);
@@ -1996,6 +2004,9 @@
     align-items: center;
     width: fit-content;
     max-width: max-content;
+    /* Upstream applies this via inline style={{ padding: 50 }} on the
+       game-mode root; kept in the class for an equivalent visual result. */
+    padding: 50px;
     animation: animal-fade-up 0.5s ease-out;
   }
 
@@ -2215,55 +2226,43 @@
 
   .animal-code-block-wrapper {
     position: relative;
+    min-width: 0;
+    margin: 1em 0;
   }
 
-  .animal-code-block {
-    box-sizing: border-box;
-    width: 100%;
-    margin: 0;
-    padding: 20px 24px;
-    overflow: auto;
-    border: 1px solid #3d3028;
-    border-radius: 20px;
-    background: #2b2118;
-    color: #e8d5bc;
-    font-family: "SF Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1.7;
-    tab-size: 4;
-    white-space: pre;
-    -webkit-font-smoothing: auto;
-    -moz-osx-font-smoothing: auto;
-  }
+  /* The pre itself is styled inline in CodeBlock.tsx (codeBlockStyle),
+     mirroring upstream; the `animal-code-block` class is kept on the
+     element purely as a stable testing hook. */
 
   .animal-code-block-copy {
     position: absolute;
     top: 12px;
     right: 12px;
-    min-width: 60px;
-    height: 28px;
+    min-width: 62px;
+    height: 32px;
     padding: 0 12px;
-    border: 1px solid #4a3828;
+    border: 1px solid rgba(232, 213, 188, 0.3);
     border-radius: 50px;
-    background: rgba(61, 48, 40, 0.8);
-    color: #c4b89e;
-    font-family: inherit;
+    background: rgba(61, 48, 40, 0.94);
+    color: #e8d5bc;
+    font-family: var(--animal-font-family, 'Nunito', 'Noto Sans SC');
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    transition: all 0.2s ease;
-    backdrop-filter: blur(4px);
+    transition: all var(--animal-motion-duration-base, 0.2s) var(--animal-motion-ease, cubic-bezier(0.4, 0, 0.2, 1));
   }
 
   .animal-code-block-copy:hover {
-    background: rgba(80, 62, 48, 0.9);
-    color: #e8d5bc;
-    border-color: #6b5e50;
+    background: #4b3b31;
+    transform: translateY(-1px);
+  }
+
+  .animal-code-block-copy:active {
+    transform: translateY(0);
   }
 
   .animal-code-block-copy:focus-visible {
-    outline: 2px solid #8b7355;
+    outline: 2px solid var(--animal-primary-color, #19c8b9);
     outline-offset: 2px;
   }
 
@@ -4568,203 +4567,373 @@
     position: relative;
     display: inline-block;
     font-family: var(--animal-font-family, inherit);
+    vertical-align: middle;
+    user-select: none;
   }
 
   .animal-datepicker-wrapper-disabled {
-    opacity: 0.5;
-    pointer-events: none;
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 
+  .animal-datepicker-wrapper-disabled .animal-datepicker-trigger,
+  .animal-datepicker-wrapper-disabled .animal-datepicker-trigger:hover {
+    background: #ece8dc;
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+
+  .animal-datepicker-wrapper-disabled .animal-datepicker-value,
+  .animal-datepicker-wrapper-disabled .animal-datepicker-placeholder {
+    color: #c4b89e;
+  }
+
+  /* 触发区 —— 视觉对齐 Input：奶油底、胶囊圆角、无边框 */
   .animal-datepicker-trigger {
-    display: inline-flex;
+    display: flex;
+    width: 100%;
     align-items: center;
-    gap: 6px;
-    padding: 0 12px;
-    height: 36px;
-    min-width: 160px;
+    gap: 8px;
     background: #fffbe7;
-    border-radius: var(--animal-radius-pill, 999px);
-    box-shadow: 0 3px 0 0 #d4c9b4;
+    border-radius: 50px;
     cursor: pointer;
-    user-select: none;
-    font-size: 14px;
-    color: #8b7355;
-    position: relative;
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .animal-datepicker-trigger-small { height: 28px; font-size: 12px; padding: 0 10px; min-width: 130px; }
-  .animal-datepicker-trigger-large { height: 44px; font-size: 16px; padding: 0 16px; min-width: 190px; }
-  .animal-datepicker-trigger-error { box-shadow: 0 3px 0 0 #e87c6b; }
-  .animal-datepicker-trigger-warning { box-shadow: 0 3px 0 0 #e8b96b; }
-  .animal-datepicker-trigger-open { box-shadow: 0 3px 0 0 #19c8b9; }
+  .animal-datepicker-trigger-small { height: 32px; padding: 0 14px; font-size: 12px; }
+  .animal-datepicker-trigger-middle { height: 40px; padding: 0 18px; font-size: 14px; }
+  .animal-datepicker-trigger-large { height: 48px; padding: 0 22px; font-size: 16px; }
 
-  .animal-datepicker-value { color: #5c4a32; }
-  .animal-datepicker-placeholder { color: #b0a090; }
-  .animal-datepicker-range-divider { flex: 0 0 auto; width: 20px; text-align: center; color: #b0a090; }
-  .animal-datepicker-range-divider::after { content: '→'; }
-  .animal-datepicker-calendar-icon { margin-left: auto; color: #b0a090; display: flex; align-items: center; }
-  .animal-datepicker-clear {
-    margin-left: auto;
-    background: none;
-    border: none;
-    padding: 0 4px;
-    cursor: pointer;
-    color: #b0a090;
-    font-size: 16px;
-    line-height: 1;
+  .animal-datepicker-trigger:hover { box-shadow: 0 3px 0 0 #c4b89e; }
+
+  .animal-datepicker-trigger-open {
+    box-shadow:
+      0 3px 0 0 #e0b800,
+      0 0 0 3px rgba(255, 204, 0, 0.15);
+  }
+
+  .animal-datepicker-trigger-error { box-shadow: 0 3px 0 0 #c94444; }
+  .animal-datepicker-trigger-warning { box-shadow: 0 3px 0 0 #dba90e; }
+
+  .animal-datepicker-value {
+    flex: 1;
+    color: #8a7b66;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .animal-datepicker-placeholder {
+    flex: 1;
+    color: #c4b89e;
+    font-weight: 400;
+  }
+
+  /* 范围模式触发区分隔线：开始 | 结束 */
+  .animal-datepicker-range-divider {
+    width: 1px;
+    height: 16px;
+    margin: 0 2px;
+    background: #e8dcc8;
+    flex-shrink: 0;
+  }
+
+  .animal-datepicker-calendar-icon {
     display: flex;
     align-items: center;
+    color: #a0936e;
   }
-  .animal-datepicker-clear:hover { color: #8b7355; }
 
+  .animal-datepicker-clear {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-left: 4px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    border-radius: 50%;
+    color: #c4b89e;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .animal-datepicker-clear:hover {
+    color: #725d42;
+    background: rgba(114, 93, 66, 0.1);
+  }
+
+  /* 弹出面板 */
   .animal-datepicker-panel {
     position: absolute;
+    width: 280px;
+    padding: 14px;
+    background: #fffdf7;
+    border: 1.5px solid #e8dcc8;
+    border-radius: 20px;
+    box-shadow: 0 6px 18px rgba(61, 52, 40, 0.12);
     z-index: 1000;
-    background: #fffbe7;
-    border-radius: 16px;
-    box-shadow: 0 4px 24px rgba(140, 115, 85, 0.18);
-    padding: 16px;
-    min-width: 280px;
     opacity: 0;
-    transform: translateY(4px);
-    transition: opacity 0.2s, transform 0.2s;
+    transform: translateY(-6px);
+    transition:
+      opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .animal-datepicker-panel-visible { opacity: 1; transform: translateY(0); }
-  .animal-datepicker-panel-closing { opacity: 0; transform: translateY(4px); }
-  .animal-datepicker-panel-range { min-width: 580px; }
 
-  .animal-datepicker-range-panels { display: flex; gap: 24px; }
-  .animal-datepicker-range-panel { flex: 1; }
+  .animal-datepicker-panel-visible { opacity: 1; transform: translateY(0); }
+
+  /* 退场动效：与入场同款 0.2s 过渡，动画结束后由 closePanel 卸载面板 */
+  .animal-datepicker-panel-closing { opacity: 0; transform: translateY(-6px); }
+
+  /* 范围模式：左右双面板 */
+  .animal-datepicker-panel-range { width: 600px; }
+
+  .animal-datepicker-range-panels { display: flex; gap: 12px; }
+
+  .animal-datepicker-range-panel { width: 280px; }
 
   .animal-datepicker-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
-  .animal-datepicker-header-group { display: flex; align-items: center; gap: 4px; }
+
+  .animal-datepicker-header-group { display: flex; gap: 2px; }
+
   .animal-datepicker-nav-btn {
-    background: none;
-    border: none;
-    padding: 4px;
-    cursor: pointer;
-    color: #8b7355;
-    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  .animal-datepicker-nav-btn:hover { background: #f0e8d0; }
-  .animal-datepicker-nav-icon { width: 12px; height: 12px; }
-  .animal-datepicker-year-label { font-size: 14px; font-weight: 600; color: #5c4a32; }
-  .animal-datepicker-label-btn {
-    background: none;
+    width: 26px;
+    height: 26px;
     border: none;
-    padding: 2px 6px;
+    background: transparent;
+    border-radius: 8px;
+    color: #a0936e;
     cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    color: #5c4a32;
-    border-radius: 6px;
+    transition: all 0.15s;
   }
-  .animal-datepicker-label-btn:hover { background: #f0e8d0; }
 
+  .animal-datepicker-nav-btn:hover { background: rgba(114, 93, 66, 0.1); }
+
+  .animal-datepicker-year-label {
+    padding: 4px 10px;
+    color: #725d42;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .animal-datepicker-label-btn {
+    padding: 4px 10px;
+    border: none;
+    background: transparent;
+    border-radius: 10px;
+    color: #725d42;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .animal-datepicker-label-btn:hover {
+    background: #e6f9f6;
+    color: #19c8b9;
+  }
+
+  /* 星期表头 + 日期网格 */
   .animal-datepicker-week-row {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     margin-bottom: 4px;
   }
+
   .animal-datepicker-week-cell {
+    height: 24px;
+    line-height: 24px;
     text-align: center;
-    font-size: 12px;
-    color: #b0a090;
-    padding: 4px 0;
+    color: #a09080;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
   }
+
   .animal-datepicker-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 2px;
   }
-  .animal-datepicker-grid-3x4 {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
-    padding: 8px 0;
-  }
+
   .animal-datepicker-day-cell {
     width: 32px;
     height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
+    /* 网格轨道约 34.29px 宽，固定 32×32 并居中，保证正圆而非椭圆 */
+    justify-self: center;
     border: none;
-    background: none;
-    cursor: pointer;
+    background: transparent;
+    border-radius: 50%;
+    color: #725d42;
+    font-family: inherit;
     font-size: 13px;
-    color: #5c4a32;
-    margin: 0 auto;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
   }
-  .animal-datepicker-day-cell:hover { background: #f0e8d0; }
-  .animal-datepicker-day-outside { color: #c8baa8; }
-  .animal-datepicker-day-today { border: 1.5px solid #19c8b9; }
-  .animal-datepicker-day-selected { background: #19c8b9; color: #fff; }
-  .animal-datepicker-day-selected:hover { background: #15b0a3; }
-  .animal-datepicker-day-range-start { background: #19c8b9; color: #fff; border-radius: 50% 0 0 50%; }
-  .animal-datepicker-day-range-end { background: #19c8b9; color: #fff; border-radius: 0 50% 50% 0; }
-  .animal-datepicker-day-in-range { background: #d4f5f2; border-radius: 0; }
-  .animal-datepicker-day-disabled { color: #c8baa8; cursor: not-allowed; }
-  .animal-datepicker-day-disabled:hover { background: none; }
+
+  .animal-datepicker-day-cell:hover {
+    background: #e6f9f6;
+    color: #19c8b9;
+  }
+
+  /* 范围模式：日期 hover 与选中同色系（琥珀色系） */
+  .animal-datepicker-panel-range .animal-datepicker-day-cell:hover {
+    background: #ffd54f;
+    color: #725d42;
+  }
+
+  .animal-datepicker-day-outside {
+    color: #c4b89e;
+    font-weight: 400;
+  }
+
+  .animal-datepicker-day-today {
+    box-shadow: inset 0 0 0 1.5px #19c8b9;
+    color: #19c8b9;
+    font-weight: 700;
+  }
+
+  .animal-datepicker-day-selected,
+  .animal-datepicker-day-selected:hover {
+    background: #19c8b9;
+    color: #fff;
+    font-weight: 700;
+  }
+
+  .animal-datepicker-day-selected:hover { background: #3dd4c6; }
+
+  /* 范围模式：选中日期均为浅琥珀色圆（取消色带背景），文字白色 */
+  .animal-datepicker-day-in-range,
+  .animal-datepicker-day-in-range:hover {
+    background: #ffc107;
+    border-radius: 50%;
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .animal-datepicker-day-in-range:hover { background: #e5a200; }
+
+  /* 起止端点：#FFB400 正圆 + 1px 白色描边，文字白色 */
+  .animal-datepicker-day-range-start,
+  .animal-datepicker-day-range-end,
+  .animal-datepicker-day-range-start:hover,
+  .animal-datepicker-day-range-end:hover {
+    background: #ffc107;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    color: #fff;
+    font-weight: 700;
+  }
+
+  .animal-datepicker-day-range-start:hover,
+  .animal-datepicker-day-range-end:hover { background: #ffb400; }
+
+  .animal-datepicker-day-disabled,
+  .animal-datepicker-day-disabled:hover {
+    background: transparent;
+    color: #d4c9b4;
+    cursor: not-allowed;
+  }
+
+  /* 月份 / 年份网格 */
+  .animal-datepicker-grid-3x4 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+  }
 
   .animal-datepicker-month-cell,
   .animal-datepicker-year-cell {
-    padding: 8px 4px;
+    height: 36px;
     border: none;
-    background: none;
-    cursor: pointer;
-    border-radius: 8px;
+    background: transparent;
+    border-radius: 12px;
+    color: #725d42;
+    font-family: inherit;
     font-size: 13px;
-    color: #5c4a32;
-    text-align: center;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
   }
-  .animal-datepicker-month-cell:hover,
-  .animal-datepicker-year-cell:hover { background: #f0e8d0; }
-  .animal-datepicker-month-selected,
-  .animal-datepicker-year-selected { background: #19c8b9; color: #fff; }
-  .animal-datepicker-month-selected:hover,
-  .animal-datepicker-year-selected:hover { background: #15b0a3; }
 
+  .animal-datepicker-month-cell:hover,
+  .animal-datepicker-year-cell:hover {
+    background: #e6f9f6;
+    color: #19c8b9;
+  }
+
+  .animal-datepicker-month-selected,
+  .animal-datepicker-month-selected:hover,
+  .animal-datepicker-year-selected,
+  .animal-datepicker-year-selected:hover {
+    background: #19c8b9;
+    color: #fff;
+    font-weight: 700;
+  }
+
+  .animal-datepicker-month-selected:hover,
+  .animal-datepicker-year-selected:hover { background: #3dd4c6; }
+
+  /* 底部快捷区 */
   .animal-datepicker-footer {
     display: flex;
-    align-items: center;
     justify-content: flex-end;
     gap: 8px;
     margin-top: 10px;
     padding-top: 10px;
-    border-top: 1px solid #e8dcc8;
+    border-top: 1px solid #f0e8d8;
   }
+
   .animal-datepicker-today-btn {
-    background: none;
+    padding: 4px 12px;
     border: none;
-    cursor: pointer;
-    color: #19c8b9;
+    background: transparent;
+    border-radius: 10px;
+    color: #8a7b66;
+    font-family: inherit;
     font-size: 13px;
-    padding: 4px 8px;
-    border-radius: 6px;
-    margin-right: auto;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
   }
-  .animal-datepicker-today-btn:hover { background: #d4f5f2; }
+
+  .animal-datepicker-today-btn:hover {
+    background: rgba(114, 93, 66, 0.1);
+    color: #725d42;
+  }
+
+  /* 底部「确定」按钮 */
   .animal-datepicker-confirm-btn {
-    background: #19c8b9;
+    padding: 6px 16px;
     border: none;
+    background: rgba(114, 93, 66, 0.1);
+    border-radius: 12px;
+    color: #8a7b66;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
     cursor: pointer;
-    color: #fff;
-    font-size: 13px;
-    padding: 4px 14px;
-    border-radius: 999px;
-    font-weight: 600;
+    transition: all 0.15s;
   }
-  .animal-datepicker-confirm-btn:hover { background: #15b0a3; }
+
+  .animal-datepicker-confirm-btn:hover {
+    background: #796c5a;
+    color: #fff;
+  }
 }
 
 /* ─── TimePicker ──────────────────────────────────────────── */
@@ -4773,133 +4942,220 @@
     position: relative;
     display: inline-block;
     font-family: var(--animal-font-family, inherit);
+    vertical-align: middle;
+    user-select: none;
   }
 
   .animal-timepicker-wrapper-disabled {
-    opacity: 0.5;
-    pointer-events: none;
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 
+  .animal-timepicker-wrapper-disabled .animal-timepicker-trigger,
+  .animal-timepicker-wrapper-disabled .animal-timepicker-trigger:hover {
+    background: #ece8dc;
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+
+  .animal-timepicker-wrapper-disabled .animal-timepicker-value,
+  .animal-timepicker-wrapper-disabled .animal-timepicker-placeholder {
+    color: #c4b89e;
+  }
+
+  /* 触发区 —— 视觉对齐 Input：奶油底、胶囊圆角、无边框 */
   .animal-timepicker-trigger {
-    display: inline-flex;
+    display: flex;
+    width: 100%;
     align-items: center;
-    gap: 6px;
-    padding: 0 12px;
-    height: 36px;
-    min-width: 140px;
+    gap: 8px;
     background: #fffbe7;
-    border-radius: var(--animal-radius-pill, 999px);
-    box-shadow: 0 3px 0 0 #d4c9b4;
+    border-radius: 50px;
     cursor: pointer;
-    user-select: none;
-    font-size: 14px;
-    color: #8b7355;
-    position: relative;
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .animal-timepicker-trigger-small { height: 28px; font-size: 12px; padding: 0 10px; min-width: 110px; }
-  .animal-timepicker-trigger-large { height: 44px; font-size: 16px; padding: 0 16px; min-width: 160px; }
-  .animal-timepicker-trigger-error { box-shadow: 0 3px 0 0 #e87c6b; }
-  .animal-timepicker-trigger-warning { box-shadow: 0 3px 0 0 #e8b96b; }
-  .animal-timepicker-trigger-open { box-shadow: 0 3px 0 0 #19c8b9; }
+  .animal-timepicker-trigger-small { height: 32px; padding: 0 14px; font-size: 12px; }
+  .animal-timepicker-trigger-middle { height: 40px; padding: 0 18px; font-size: 14px; }
+  .animal-timepicker-trigger-large { height: 48px; padding: 0 22px; font-size: 16px; }
 
-  .animal-timepicker-value { color: #5c4a32; }
-  .animal-timepicker-placeholder { color: #b0a090; }
-  .animal-timepicker-clock-icon { margin-left: auto; color: #b0a090; display: flex; align-items: center; }
-  .animal-timepicker-clear {
-    margin-left: auto;
-    background: none;
-    border: none;
-    padding: 0 4px;
-    cursor: pointer;
-    color: #b0a090;
-    font-size: 16px;
-    line-height: 1;
+  .animal-timepicker-trigger:hover { box-shadow: 0 3px 0 0 #c4b89e; }
+
+  .animal-timepicker-trigger-open {
+    box-shadow:
+      0 3px 0 0 #e0b800,
+      0 0 0 3px rgba(255, 204, 0, 0.15);
+  }
+
+  .animal-timepicker-trigger-error { box-shadow: 0 3px 0 0 #c94444; }
+  .animal-timepicker-trigger-warning { box-shadow: 0 3px 0 0 #dba90e; }
+
+  .animal-timepicker-value {
+    flex: 1;
+    color: #8a7b66;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .animal-timepicker-placeholder {
+    flex: 1;
+    color: #c4b89e;
+    font-weight: 400;
+  }
+
+  .animal-timepicker-clock-icon {
     display: flex;
     align-items: center;
+    color: #a0936e;
   }
-  .animal-timepicker-clear:hover { color: #8b7355; }
 
+  .animal-timepicker-clear {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-left: 4px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    border-radius: 50%;
+    color: #c4b89e;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .animal-timepicker-clear:hover {
+    color: #725d42;
+    background: rgba(114, 93, 66, 0.1);
+  }
+
+  /* 弹出面板 */
   .animal-timepicker-panel {
     position: absolute;
+    width: 248px;
+    padding: 14px;
+    background: #fffdf7;
+    border: 1.5px solid #e8dcc8;
+    border-radius: 20px;
+    box-shadow: 0 6px 18px rgba(61, 52, 40, 0.12);
     z-index: 1000;
-    background: #fffbe7;
-    border-radius: 16px;
-    box-shadow: 0 4px 24px rgba(140, 115, 85, 0.18);
-    padding: 12px;
-    min-width: 220px;
     opacity: 0;
-    transform: translateY(4px);
-    transition: opacity 0.2s, transform 0.2s;
+    transform: translateY(-6px);
+    transition:
+      opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .animal-timepicker-panel-visible { opacity: 1; transform: translateY(0); }
-  .animal-timepicker-panel-closing { opacity: 0; transform: translateY(4px); }
-  .animal-timepicker-panel-no-seconds { min-width: 160px; }
 
-  .animal-timepicker-columns { display: flex; gap: 0; }
-  .animal-timepicker-column { flex: 1; display: flex; flex-direction: column; }
+  .animal-timepicker-panel-visible { opacity: 1; transform: translateY(0); }
+
+  /* format 不含 ss 时仅时/分两列，宽度相应收窄 */
+  .animal-timepicker-panel-no-seconds { width: 172px; }
+
+  /* 退场动效：与入场同款 0.2s 过渡，动画结束后由 closePanel 卸载面板 */
+  .animal-timepicker-panel-closing { opacity: 0; transform: translateY(-6px); }
+
+  /* 时 / 分 / 秒 三列 */
+  .animal-timepicker-columns { display: flex; gap: 8px; }
+
+  .animal-timepicker-column { flex: 1; min-width: 0; }
+
   .animal-timepicker-column-title {
+    margin-bottom: 6px;
     text-align: center;
-    font-size: 12px;
-    color: #b0a090;
-    padding: 4px 0;
-    font-weight: 600;
+    color: #a09080;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
   }
+
   .animal-timepicker-column-list {
-    height: 200px;
-    overflow-y: auto;
-    scrollbar-width: none;
     display: flex;
     flex-direction: column;
     gap: 2px;
-    padding: 4px 4px;
+    max-height: 232px;
+    overflow-y: auto;
+    padding: 2px;
   }
-  .animal-timepicker-column-list::-webkit-scrollbar { display: none; }
 
   .animal-timepicker-option {
-    width: 100%;
-    padding: 5px 0;
-    border: none;
-    background: none;
-    cursor: pointer;
-    border-radius: 8px;
-    font-size: 13px;
-    color: #5c4a32;
-    text-align: center;
-  }
-  .animal-timepicker-option:hover { background: #f0e8d0; }
-  .animal-timepicker-option-selected { background: #19c8b9; color: #fff; }
-  .animal-timepicker-option-selected:hover { background: #15b0a3; }
-
-  .animal-timepicker-footer {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    gap: 8px;
-    margin-top: 8px;
-    padding-top: 8px;
-    border-top: 1px solid #e8dcc8;
-  }
-  .animal-timepicker-footer-btn {
-    background: none;
+    justify-content: center;
+    /* 关键：禁止 flex 子项被压缩，否则 max-height 容器会把选项压扁（实测被压到约 20px） */
+    flex-shrink: 0;
+    height: 28px;
+    padding: 0;
     border: none;
-    cursor: pointer;
-    color: #19c8b9;
+    background: transparent;
+    border-radius: 16px;
+    appearance: none;
+    color: #725d42;
+    font-family: inherit;
     font-size: 13px;
-    padding: 4px 8px;
-    border-radius: 6px;
-    margin-right: auto;
-  }
-  .animal-timepicker-footer-btn:hover { background: #d4f5f2; }
-  .animal-timepicker-confirm-btn {
-    background: #19c8b9;
-    border: none;
+    font-weight: 500;
     cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .animal-timepicker-option:hover {
+    background: #ffd54f;
+    color: #725d42;
+  }
+
+  .animal-timepicker-option-selected,
+  .animal-timepicker-option-selected:hover {
+    background: #ffb400;
     color: #fff;
-    font-size: 13px;
-    padding: 4px 14px;
-    border-radius: 999px;
-    font-weight: 600;
+    font-weight: 700;
   }
-  .animal-timepicker-confirm-btn:hover { background: #15b0a3; }
+
+  /* 底部：此刻 / 确定 */
+  .animal-timepicker-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #f0e8d8;
+  }
+
+  .animal-timepicker-footer-btn {
+    padding: 6px 14px;
+    border: none;
+    background: transparent;
+    border-radius: 10px;
+    color: #8a7b66;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .animal-timepicker-footer-btn:hover {
+    background: rgba(114, 93, 66, 0.1);
+    color: #725d42;
+  }
+
+  .animal-timepicker-confirm-btn {
+    padding: 6px 16px;
+    border: none;
+    background: rgba(114, 93, 66, 0.1);
+    border-radius: 12px;
+    color: #8a7b66;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .animal-timepicker-confirm-btn:hover {
+    background: #8a7b66;
+    color: #fff;
+  }
 }

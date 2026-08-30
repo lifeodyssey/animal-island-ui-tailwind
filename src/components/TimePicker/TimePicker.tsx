@@ -131,9 +131,17 @@ export const TimePicker: React.FC<TimePickerProps> = ({
         setClosing(false);
         const part = parseTime(valueRef.current) ?? { h: 0, m: 0, s: 0 };
         setPending(part);
-        const itemHeight = 38;
+        // 条距从 DOM 实测：首个选项 offsetHeight + 列表 row-gap。当前样式为 28px + 2px = 30px；
+        // 历史上的常量 38 对应旧样式，已与实际条距不符，写死会导致滚动定位偏移。
+        const measureStride = (list: HTMLDivElement | null): number => {
+            const first = list?.querySelector<HTMLElement>('.animal-timepicker-option');
+            if (!list || !first || first.offsetHeight === 0) return 30;
+            const gap = parseFloat(getComputedStyle(list).rowGap) || 0;
+            return first.offsetHeight + gap;
+        };
         const center = (list: HTMLDivElement | null, unit: number, step: number) => {
             if (!list) return;
+            const itemHeight = measureStride(list);
             const index = Math.floor(unit / Math.max(1, step));
             list.scrollTop = index * itemHeight - list.clientHeight / 2 + itemHeight / 2;
         };

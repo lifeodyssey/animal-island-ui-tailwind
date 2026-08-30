@@ -21,8 +21,9 @@ export const StyleOverride: Story = {
     },
     play: async ({ canvasElement }) => {
         // Upstream applies the user style on top of the base (CodeBlock.tsx:96
-        // `style={{ ...codeBlockStyle, ...style }}`). Our base lives in the
-        // .animal-code-block class and the style prop overrides it inline.
+        // `style={{ ...codeBlockStyle, ...style }}`). Our base is the same
+        // inline codeBlockStyle, and the style prop overrides it inline; the
+        // .animal-code-block class is kept only as a stable selector hook.
         // Either way the contract is: a passed style must win on the <pre>.
         const pre = canvasElement.querySelector('pre.animal-code-block') as HTMLElement | null;
         await expect(pre).not.toBeNull();
