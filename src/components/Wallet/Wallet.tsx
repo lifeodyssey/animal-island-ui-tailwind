@@ -1,6 +1,6 @@
 import React from 'react';
 import { cn } from '../../utils/cn';
-import { Icon } from '../Icon';
+import bagIcon from './bagIcon';
 
 export type WalletSize = 'small' | 'medium' | 'large';
 
@@ -45,7 +45,13 @@ export const Wallet: React.FC<WalletProps> = ({
     return (
         <div className={cn('animal-wallet', SIZE_CLASS[size], className)} style={style}>
             <div className="animal-wallet-bag-slot" aria-hidden="true">
-                {icon ?? <Icon item={22} size="80%" />}
+                {icon ?? (
+                    <img
+                        src={bagIcon}
+                        alt=""
+                        style={{ width: '80%', height: '80%', objectFit: 'contain' }}
+                    />
+                )}
             </div>
             <div className="animal-wallet-pill">
                 <span className="animal-wallet-value">{formatValue(value, thousandSeparator)}</span>

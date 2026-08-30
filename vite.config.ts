@@ -112,6 +112,8 @@ export default defineConfig({
     resolve: {
         alias: {
             '@': resolve(__dirname, 'src'),
+            '@test/utils': resolve(__dirname, 'src/test/utils'),
+            '@test/components': resolve(__dirname, 'src/test/components'),
         },
     },
     build: {
