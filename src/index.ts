@@ -116,6 +116,9 @@ export type { LoadingProps } from './components/Loading';
 export { Table } from './components/Table';
 export type { TableProps, TableColumn } from './components/Table';
 
+export { Pagination } from './components/Pagination';
+export type { PaginationProps, PaginationVariant } from './components/Pagination';
+
 export { WeddingInvitation, WeddingInvitationExportButton } from './components/WeddingInvitation';
 export type {
     WeddingInvitationProps,

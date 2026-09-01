@@ -45,6 +45,11 @@
   to { opacity: 1; }
 }
 
+@keyframes animal-pagination-size-list-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 @keyframes animal-cursor-slide-in {
   0% { opacity: 0; transform: translateY(-50%) translateX(-20px) rotate(-15deg); }
   60% { opacity: 1; transform: translateY(-50%) translateX(5px) rotate(5deg); }
