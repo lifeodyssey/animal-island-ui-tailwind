@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { cn } from '../../utils/cn';
+import { Pagination, type PaginationProps } from '../Pagination';
 
 type TableRecord = Record<string, unknown>;
 
@@ -27,6 +28,8 @@ export interface TableProps<T extends TableRecord = TableRecord> extends React.H
         x?: number | string;
         y?: number | string;
     };
+    /** Pass an object to enable client-side pagination; false or omit to disable */
+    pagination?: false | Omit<PaginationProps, 'total'>;
 }
 
 const TableInner = <T extends TableRecord>(
@@ -41,12 +44,21 @@ const TableInner = <T extends TableRecord>(
         loading = false,
         emptyText = '暂无数据',
         scroll,
+        pagination,
         className,
         style,
         ...rest
     }: TableProps<T>,
     ref: React.ForwardedRef<HTMLDivElement>,
 ) => {
+    const paginated = pagination !== false && pagination !== undefined;
+    const [innerPage, setInnerPage] = useState(() => (paginated ? ((pagination as PaginationProps).defaultCurrent ?? 1) : 1));
+    const [innerPageSize, setInnerPageSize] = useState(() => (paginated ? ((pagination as PaginationProps).defaultPageSize ?? 10) : 10));
+    const pageSize = paginated ? ((pagination as PaginationProps).pageSize ?? innerPageSize) : dataSource.length;
+    const pageCount = Math.max(1, Math.ceil(dataSource.length / Math.max(1, pageSize)));
+    const currentPage = paginated ? Math.min((pagination as PaginationProps).current ?? innerPage, pageCount) : 1;
+    const pageData = paginated ? dataSource.slice((currentPage - 1) * pageSize, currentPage * pageSize) : dataSource;
+
     const getRowKey = (record: T, index: number): string => {
         if (typeof rowKey === 'function') {
             return rowKey(record);
@@ -144,7 +156,7 @@ const TableInner = <T extends TableRecord>(
                             </td>
                         </tr>
                     ) : (
-                        dataSource.map((record, index) => (
+                        pageData.map((record, index) => (
                             <tr
                                 key={getRowKey(record, index)}
                                 className={getRowClassName(record, index)}
@@ -184,6 +196,22 @@ const TableInner = <T extends TableRecord>(
                             />
                         </svg>
                     </div>
+                </div>
+            )}
+            {paginated && (
+                <div className="animal-table-pagination-wrapper">
+                    <Pagination
+                        {...(pagination as PaginationProps)}
+                        total={dataSource.length}
+                        current={currentPage}
+                        pageSize={pageSize}
+                        onChange={(page, size) => {
+                            const pag = pagination as PaginationProps;
+                            if (pag.current === undefined) setInnerPage(page);
+                            if (pag.pageSize === undefined) setInnerPageSize(size);
+                            pag.onChange?.(page, size);
+                        }}
+                    />
                 </div>
             )}
         </div>
