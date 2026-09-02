@@ -120,6 +120,7 @@ export const Disabled: Story = {
 // Controlled — current page driven externally
 // ---------------------------------------------------------------------------
 export const Controlled: Story = {
+    args: { total: 100 },
     render: () => {
         const [page, setPage] = useState(1);
         return (
