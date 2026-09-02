@@ -66,8 +66,8 @@
   --animal-height-base: 45px;
   --animal-height-lg: 48px;
   --animal-table-stripe-bg: rgba(248, 248, 240, 0.6);
-  --animal-table-hover-stripe-start: rgba(25, 200, 185, 0.62);
-  --animal-table-hover-stripe-end: rgba(14, 196, 182, 0.62);
+  --animal-table-hover-stripe-start: rgba(25, 200, 185, 0.5);
+  --animal-table-hover-stripe-end: rgba(14, 196, 182, 0.5);
   --animal-table-hover-text: var(--animal-text-color);
   --animal-table-overlay-bg: rgba(247, 243, 223, 0.8);
   --animal-primary-color-tab-active: #0cc0b5;

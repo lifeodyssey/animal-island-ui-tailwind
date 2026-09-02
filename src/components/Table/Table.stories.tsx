@@ -396,3 +396,43 @@ export const LoadingEmpty: Story = {
         emptyText: '集合啦！数据加载中……',
     },
 };
+
+// ---------------------------------------------------------------------------
+// Built-in client-side pagination
+// ---------------------------------------------------------------------------
+
+const manyIslanders: Islander[] = Array.from({ length: 25 }, (_, i) => ({
+    key: String(i + 1),
+    name: `岛民${i + 1}`,
+    species: ['猫咪', '松鼠', '熊', '狗狗', '兔子'][i % 5],
+    personality: ['正常', '活泼', '懒散', '开朗', '傲娇'][i % 5],
+    catchphrase: ['喵～', '噢耶', '呼噜噜', '汪汪', '跳跳'][i % 5],
+    stars: (i % 5) + 1,
+}));
+
+export const WithPagination: Story = {
+    args: {
+        columns: baseColumns,
+        dataSource: manyIslanders,
+        rowKey: 'key',
+        pagination: { defaultPageSize: 5 },
+    },
+};
+
+export const WithPaginationSizeChanger: Story = {
+    args: {
+        columns: baseColumns,
+        dataSource: manyIslanders,
+        rowKey: 'key',
+        pagination: { defaultPageSize: 5, showSizeChanger: true, pageSizeOptions: [5, 10, 25] },
+    },
+};
+
+export const WithPaginationQuickJumper: Story = {
+    args: {
+        columns: baseColumns,
+        dataSource: manyIslanders,
+        rowKey: 'key',
+        pagination: { defaultPageSize: 5, showQuickJumper: true, showTotal: true },
+    },
+};
