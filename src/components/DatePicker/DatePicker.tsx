@@ -216,7 +216,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
         setRangeEnd(null);
         setHoverDate(null);
         setPendingDate(null);
-    }, [open, range]);
+    }, [open, range, picker]);
 
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
