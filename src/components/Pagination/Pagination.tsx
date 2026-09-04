@@ -124,7 +124,7 @@ const SizeChanger: React.FC<{
                 onClick={() => setOpen((v) => !v)}
             >
                 <span>{value} 条/页</span>
-                <span className="animal-pagination-size-caret">
+                <span className="animal-pagination-caret">
                     <CaretDown />
                 </span>
             </button>
