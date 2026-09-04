@@ -1,4 +1,8 @@
+import * as fs from 'fs';
 import { defineConfig, devices } from '@playwright/test';
+
+const CLOUD_CHROMIUM = '/opt/pw-browsers/chromium';
+const executablePath = fs.existsSync(CLOUD_CHROMIUM) ? CLOUD_CHROMIUM : undefined;
 
 export default defineConfig({
     testDir: './tests',
@@ -41,7 +45,7 @@ export default defineConfig({
                 // Deterministic text rasterization so maxDiffPixels:0 doesn't flap on
                 // subpixel font anti-aliasing (LCD/hinting/GPU jitter on the same machine).
                 launchOptions: {
-                    executablePath: '/opt/pw-browsers/chromium',
+                    executablePath,
                     args: [
                         '--font-render-hinting=none',
                         '--disable-lcd-text',
