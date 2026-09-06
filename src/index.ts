@@ -169,3 +169,6 @@ export type { DatePickerProps, DatePickerSize, DatePickerStatus, DatePickerValue
 
 export { TimePicker } from './components/TimePicker';
 export type { TimePickerProps, TimePickerSize, TimePickerStatus, TimePart } from './components/TimePicker';
+
+export { Pagination } from './components/Pagination';
+export type { PaginationProps, PaginationVariant } from './components/Pagination';
