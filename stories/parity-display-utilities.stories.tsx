@@ -251,7 +251,7 @@ export const AssetsParity: Story = {
             await expect(canvas.getByText(icon.label)).toBeVisible();
         }
         await waitFor(() => {
-            const icons = canvas.getByTestId('icon-grid').querySelectorAll('span[class*="icon"]');
+            const icons = canvas.getByTestId('icon-grid').querySelectorAll('[class*="icon"]');
             expect(icons.length).toBe(ICON_LIST.length);
         });
     },
