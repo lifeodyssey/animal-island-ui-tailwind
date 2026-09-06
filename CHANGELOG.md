@@ -5,6 +5,29 @@ All notable changes to `animal-island-ui-tailwind` are documented here.
 This project follows a lightweight Keep a Changelog style and uses semantic
 versioning for npm releases.
 
+## 1.8.0 - 2026-09-06
+
+Syncs upstream `guokaigdg/animal-island-ui` 1.8.0 (commits `1f1f9b78..8ec5951d`).
+
+### Added
+
+- `Pagination` component: page navigation with prev/next and page-number items,
+  size changer (`showSizeChanger` / `pageSizeOptions` / `onShowSizeChange`),
+  quick jumper (`showQuickJumper`), `showTotal`, `disabled`, and `orange`/`teal`
+  variants. Exported with `PaginationProps` and `PaginationVariant` types.
+- `Table` gains a `pagination` prop for client-side pagination backed by
+  `Pagination` (pass `false` or an omitted-total `PaginationProps` object).
+
+### Fixed
+
+- `Select` hover cursor pseudo-element positioning (`left: -12px` → `-22px`).
+- `DatePicker` effect now responds to `picker` prop changes (dependency array).
+
+### Changed
+
+- `Table` row hover: dropped the `scale(1.01)` / `clip-path` transition in favor
+  of rounded corners, and softened the hover gradient opacity (0.62 → 0.5).
+
 ## 1.1.0 - 2026-06-21
 
 Syncs the upstream feature set up to `guokaigdg/animal-island-ui` 1.0.16,
