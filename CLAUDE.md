@@ -65,6 +65,7 @@ The library exposes 32 components:
 30. Skeleton
 31. BackTop
 32. Image
+33. Background
 
 ## Implementation Rules
 

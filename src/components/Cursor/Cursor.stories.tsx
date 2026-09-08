@@ -40,3 +40,14 @@ export const ForceAllFalse: Story = {
         </Cursor>
     ),
 };
+
+/** type="raindrop"：蓝色雨滴光标，悬停区域可看到效果。 */
+export const Raindrop: Story = {
+    args: { type: 'raindrop', forceAll: true },
+    render: (args) => (
+        <Cursor {...args} style={{ padding: '2rem', border: '2px dashed #2e86ab', borderRadius: '12px', display: 'inline-block' }}>
+            <p style={{ color: '#2e86ab', marginBottom: '0.75rem', fontWeight: 600 }}>🌧 雨滴光标</p>
+            <p style={{ color: '#6b4f3a', fontSize: '0.9rem' }}>悬停此区域查看蓝色雨滴光标效果</p>
+        </Cursor>
+    ),
+};
