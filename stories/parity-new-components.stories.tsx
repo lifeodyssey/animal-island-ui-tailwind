@@ -3,8 +3,10 @@ import type { CSSProperties } from 'react';
 import { useState } from 'react';
 import {
     BackTop,
+    Background,
     Button,
     Card,
+    Cursor,
     Drawer,
     Image,
     Notification,
@@ -323,6 +325,71 @@ export const ImageStory: Story = {
                     <Image src="/this-image-does-not-exist-404.png" alt="broken image" width={160} height={120} />
                 </div>
             </div>
+        </div>
+    ),
+};
+
+// ─── Background ─────────────────────────────────────────────────────────────
+
+export const BackgroundDots: Story = {
+    name: 'Background (dots)',
+    render: () => (
+        <Background
+            data-testid="background-dots"
+            style={{ width: 360, height: 200, borderRadius: 16 }}
+        >
+            <div style={{ padding: 24, fontFamily: 'var(--animal-font-family)', color: '#4a3728', fontWeight: 700 }}>
+                Dots background
+            </div>
+        </Background>
+    ),
+};
+
+export const BackgroundSprinkles: Story = {
+    name: 'Background (sprinkles)',
+    render: () => (
+        <Background
+            type="sprinkles"
+            data-testid="background-sprinkles"
+            style={{ width: 360, height: 200, borderRadius: 16 }}
+        >
+            <div style={{ padding: 24, fontFamily: 'var(--animal-font-family)', color: '#4a3728', fontWeight: 700 }}>
+                Sprinkles background
+            </div>
+        </Background>
+    ),
+};
+
+export const BackgroundStable: Story = {
+    name: 'Background (stable)',
+    render: () => (
+        <div style={{ display: 'flex', gap: 16 }}>
+            <Background style={{ width: 200, height: 120, borderRadius: 12 }} />
+            <Background type="sprinkles" style={{ width: 200, height: 120, borderRadius: 12 }} />
+        </div>
+    ),
+};
+
+// ─── Cursor raindrop ─────────────────────────────────────────────────────────
+
+export const CursorRaindrop: Story = {
+    name: 'Cursor (raindrop)',
+    render: () => (
+        <div style={{ display: 'flex', gap: 16 }}>
+            <Cursor
+                type="raindrop"
+                data-testid="cursor-raindrop"
+                style={{ padding: 32, background: '#e8f7ff', borderRadius: 12, fontFamily: 'var(--animal-font-family)' }}
+            >
+                Raindrop cursor area
+            </Cursor>
+            <Cursor
+                type="default"
+                data-testid="cursor-default"
+                style={{ padding: 32, background: '#fdf3e3', borderRadius: 12, fontFamily: 'var(--animal-font-family)' }}
+            >
+                Default cursor area
+            </Cursor>
         </div>
     ),
 };
