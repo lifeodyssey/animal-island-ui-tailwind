@@ -47,7 +47,7 @@ export { Collapse } from './components/Collapse';
 export type { CollapseProps } from './components/Collapse';
 
 export { Cursor } from './components/Cursor';
-export type { CursorProps } from './components/Cursor';
+export type { CursorProps, CursorType } from './components/Cursor';
 
 export { Time } from './components/Time';
 export type { TimeProps, TimeType } from './components/Time';
@@ -172,3 +172,6 @@ export type { TimePickerProps, TimePickerSize, TimePickerStatus, TimePart } from
 
 export { Pagination } from './components/Pagination';
 export type { PaginationProps, PaginationVariant } from './components/Pagination';
+
+export { Background } from './components/Background';
+export type { BackgroundProps, BackgroundType } from './components/Background';

@@ -5,6 +5,13 @@ All notable changes to `animal-island-ui-tailwind` are documented here.
 This project follows a lightweight Keep a Changelog style and uses semantic
 versioning for npm releases.
 
+## Unreleased
+
+- Add the upstream Background component with dots and sprinkles patterns.
+- Add `Cursor type="raindrop"`, preserving the redrawn default glove and
+  semantic cursors in scoped mode (`forceAll={false}`).
+- Sync upstream through `42fee8ac` while retaining the approved replacement artwork.
+
 ## 1.9.0 - 2026-09-09
 
 This release aligns the version number with upstream `guokaigdg/animal-island-ui`
