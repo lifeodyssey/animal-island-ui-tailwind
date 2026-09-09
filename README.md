@@ -34,6 +34,20 @@
 
 视觉设计来自 [guokaigdg/animal-island-ui](https://github.com/guokaigdg/animal-island-ui)，内部实现用 Tailwind CSS v4 和 Radix UI 重写，以 `animal-island-ui-tailwind` 的包名独立发布到 npm。
 
+## 1.10.0 新增功能
+
+新增 `Background` 背景组件（`dots` 圆点和 `sprinkles` 糖针图案），以及
+`Cursor type="raindrop"` 雨滴光标。`forceAll={false}` 保留子元素的按钮、
+文本输入和禁用光标；默认光标继续使用重绘的手套素材。
+
+```tsx
+import { Background, Cursor } from 'animal-island-ui-tailwind';
+
+<Background type="sprinkles">
+    <Cursor type="raindrop" forceAll={false}>岛上的新一天</Cursor>
+</Background>
+```
+
 ## 1.9.0 升级提示
 
 本次保留全部现有组件，替换旧素材并重绘 Loading。`Icon.item`、`ITEM_LIST`、`ITEM_COUNT` 已删除；`icon-miles` 改为 `icon-travel`，`icon-critterpedia` 改为 `icon-encyclopedia`。虽然版本号按上游对齐为 1.9.0，升级前仍需处理这些不兼容变化。详见 [Changelog](CHANGELOG.md#190---2026-09-09)。

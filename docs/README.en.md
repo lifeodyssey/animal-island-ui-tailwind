@@ -34,6 +34,21 @@ A React component library with Animal Crossing visual styling. Cream-colored bac
 
 The visual design is inspired by [guokaigdg/animal-island-ui](https://github.com/guokaigdg/animal-island-ui). The internals have been completely rewritten using Tailwind CSS v4 and Radix UI, and the library is published independently as `animal-island-ui-tailwind` on npm.
 
+## New in 1.10.0
+
+Use `Background` for `dots` or `sprinkles` patterns and `Cursor type="raindrop"`
+for the new droplet cursor. With `forceAll={false}`, descendants retain their
+button, text-input and disabled cursors. The default cursor keeps the redrawn
+glove artwork.
+
+```tsx
+import { Background, Cursor } from 'animal-island-ui-tailwind';
+
+<Background type="sprinkles">
+    <Cursor type="raindrop" forceAll={false}>A new day on the island</Cursor>
+</Background>
+```
+
 ## Upgrading to 1.9.0
 
 All existing components remain available with replacement artwork, including a redrawn Loading scene. `Icon.item`, `ITEM_LIST` and `ITEM_COUNT` were removed; rename `icon-miles` to `icon-travel` and `icon-critterpedia` to `icon-encyclopedia`. The version aligns with upstream, but this minor release includes breaking changes. See the [changelog](../CHANGELOG.md#190---2026-09-09).
