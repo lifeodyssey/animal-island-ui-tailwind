@@ -1,13 +1,24 @@
 import React from 'react';
 import { cn } from '../../utils/cn';
-import bagIcon from './bagIcon';
+import pouchImage from './assets/pouch.png';
+
+const BagIcon: React.FC = () => (
+    <img
+        src={pouchImage}
+        alt=""
+        width={256}
+        height={256}
+        draggable={false}
+        style={{ width: '88%', height: '88%', objectFit: 'contain' }}
+    />
+);
 
 export type WalletSize = 'small' | 'medium' | 'large';
 
 export interface WalletProps {
     /** 金额数值，数字会按千分位格式化；字符串则原样展示 */
     value?: number | string;
-    /** 自定义货币图标，默认使用动森风格钱袋 */
+    /** 自定义货币图标，默认使用红绳星形钱袋 */
     icon?: React.ReactNode;
     /** 尺寸预设 */
     size?: WalletSize;
@@ -45,13 +56,7 @@ export const Wallet: React.FC<WalletProps> = ({
     return (
         <div className={cn('animal-wallet', SIZE_CLASS[size], className)} style={style}>
             <div className="animal-wallet-bag-slot" aria-hidden="true">
-                {icon ?? (
-                    <img
-                        src={bagIcon}
-                        alt=""
-                        style={{ width: '80%', height: '80%', objectFit: 'contain' }}
-                    />
-                )}
+                {icon ?? <BagIcon />}
             </div>
             <div className="animal-wallet-pill">
                 <span className="animal-wallet-value">{formatValue(value, thousandSeparator)}</span>

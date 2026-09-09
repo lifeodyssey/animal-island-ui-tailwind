@@ -78,7 +78,7 @@ test.describe('reference display utility visual parity', () => {
         await disableMotion(page);
         await expect(page.getByTestId('time-region')).toContainText('13:45');
         await expect(page.getByTestId('phone-region')).toContainText('1:45PM');
-        await expect(page.getByTestId('loading-region').locator('svg.illustration')).toBeVisible();
+        await expect(page.getByTestId('loading-region').locator('.animal-loading-artwork')).toBeVisible();
 
         await expect(page.getByTestId('time-region')).toHaveScreenshot('time-region.png', {
             animations: 'disabled',

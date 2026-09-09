@@ -51,6 +51,30 @@
   100% { opacity: 1; transform: translateY(-50%) translateX(0) rotate(0deg); }
 }
 
+@keyframes animal-loading-float {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-6px) rotate(1.5deg); }
+}
+
+@keyframes animal-loading-water {
+  0%, 100% { transform: scaleX(1); }
+  50% { transform: scaleX(0.9); }
+}
+
+@keyframes animal-loading-fish {
+  0%, 12% { opacity: 0; transform: translate(0, 5px) rotate(-40deg); }
+  15% { opacity: 1; transform: translate(3px, -8px) rotate(-35deg); }
+  25% { opacity: 1; transform: translate(22px, -44px) rotate(-5deg); }
+  35% { opacity: 1; transform: translate(43px, -24px) rotate(40deg); }
+  42%, 100% { opacity: 0; transform: translate(55px, 5px) rotate(65deg); }
+}
+
+@keyframes animal-loading-ripple {
+  0%, 12% { opacity: 0; transform: scale(0.5); }
+  16% { opacity: 0.9; transform: scale(0.7); }
+  28%, 100% { opacity: 0; transform: scale(1.5); }
+}
+
 @keyframes animal-leaf-wiggle {
   0%, 100% { transform: rotate(0deg); }
   25% { transform: rotate(-10deg); }

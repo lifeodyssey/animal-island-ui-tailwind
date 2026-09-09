@@ -18,7 +18,7 @@ const ALL_SIZES: WalletSize[] = ['small', 'medium', 'large'];
 
 export const Sizes: Story = {
     render: () => (
-        <div style={{ display: 'flex', gap: 32, alignItems: 'flex-end' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 32, alignItems: 'flex-end' }}>
             {ALL_SIZES.map((size, i) => (
                 <div key={size} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
                     <Wallet size={size} value={[1280, 12800, 128000][i]} />
@@ -43,4 +43,25 @@ export const StringValue: Story = {
 
 export const CustomIcon: Story = {
     args: { value: 9999, icon: <span style={{ fontSize: 32 }}>💰</span> },
+};
+
+export const ArtworkSurfaces: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'The red-cord star pouch at all three sizes on white, cream, and dark green surfaces.',
+            },
+        },
+    },
+    render: () => (
+        <div style={{ display: 'grid', gap: 24 }}>
+            {['#ffffff', '#fff9ed', '#344b43'].map((background) => (
+                <div key={background} style={{ background, padding: 32, display: 'flex', flexWrap: 'wrap', gap: 32, alignItems: 'flex-end' }}>
+                    {ALL_SIZES.map((size, i) => (
+                        <Wallet key={size} size={size} value={[1280, 12800, 128000][i]} />
+                    ))}
+                </div>
+            ))}
+        </div>
+    ),
 };

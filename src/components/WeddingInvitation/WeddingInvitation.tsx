@@ -1,8 +1,7 @@
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
-import iconMap from '../../assets/img/icons/icon-map.svg';
+import { Map as MapIcon } from 'lucide-react';
+import coupleImage from './assets/couple.png';
 import { cn } from '../../utils/cn';
-import brideAndGroomImg from './img/brideandgroom.png';
-import weddingTitleImg from './img/wedding.png';
 import { injectWeddingFonts, prepareWeddingFontsForExport } from './fonts';
 
 export interface WeddingInvitationProps {
@@ -115,6 +114,10 @@ const DownloadIcon: React.FC = () => (
     </svg>
 );
 
+const CoupleIllustration: React.FC = () => (
+    <img src={coupleImage} width={640} height={800} alt="bride and groom" draggable={false} />
+);
+
 const NOTCH_RADIUS = 14;
 const LOTTERY_HEIGHT = 160;
 
@@ -127,6 +130,34 @@ const renderNodeToCanvas = async (node: HTMLElement, scale: number, fontCssText:
     canvas.height = Math.ceil(height * scale);
 
     const clonedNode = node.cloneNode(true) as HTMLElement;
+    // A foreignObject snapshot cannot inherit document CSS or load external images.
+    const originals = [node, ...node.querySelectorAll('*')];
+    const clones = [clonedNode, ...clonedNode.querySelectorAll('*')];
+    await Promise.all(originals.map(async (original, index) => {
+        const clone = clones[index] as HTMLElement | SVGElement;
+        const computed = getComputedStyle(original);
+        for (const property of Array.from(computed)) {
+            clone.style.setProperty(property, computed.getPropertyValue(property));
+        }
+        if (original instanceof HTMLImageElement && clone instanceof HTMLImageElement) {
+            await original.decode();
+            const response = await fetch(original.currentSrc || original.src);
+            if (!response.ok) throw new Error('failed to load invitation artwork for export');
+            const blob = await response.blob();
+            clone.src = await new Promise<string>((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result as string);
+                reader.onerror = () => reject(new Error('failed to embed invitation artwork'));
+                reader.readAsDataURL(blob);
+            });
+            clone.removeAttribute('srcset');
+        }
+    }));
+    // The clone is the snapshot root, so discard offsets from the page layout.
+    clonedNode.style.margin = '0';
+    clonedNode.style.position = 'relative';
+    clonedNode.style.inset = 'auto';
+    clonedNode.style.transform = 'none';
     const fontStyleEl = document.createElement('style');
     fontStyleEl.textContent = fontCssText;
     clonedNode.insertBefore(fontStyleEl, clonedNode.firstChild);
@@ -136,26 +167,22 @@ const renderNodeToCanvas = async (node: HTMLElement, scale: number, fontCssText:
 <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
   <foreignObject width="100%" height="100%">${serialized}</foreignObject>
 </svg>`;
-    const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
+    // Chromium taints canvases drawn from blob-backed SVG foreignObjects.
+    const url = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 
-    try {
-        const image = await new Promise<HTMLImageElement>((resolve, reject) => {
-            const img = new Image();
-            img.onload = () => resolve(img);
-            img.onerror = () => reject(new Error('failed to render invitation SVG snapshot'));
-            img.src = url;
-        });
-        const context = canvas.getContext('2d');
-        if (!context) {
-            throw new Error('failed to get canvas context');
-        }
-        context.setTransform(scale, 0, 0, scale, 0, 0);
-        context.drawImage(image, 0, 0, width, height);
-        return canvas;
-    } finally {
-        URL.revokeObjectURL(url);
+    const image = await new Promise<HTMLImageElement>((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => reject(new Error('failed to render invitation SVG snapshot'));
+        img.src = url;
+    });
+    const context = canvas.getContext('2d');
+    if (!context) {
+        throw new Error('failed to get canvas context');
     }
+    context.setTransform(scale, 0, 0, scale, 0, 0);
+    context.drawImage(image, 0, 0, width, height);
+    return canvas;
 };
 
 const exportNodeAsPng = async (node: HTMLElement, filename: string, scale = 2): Promise<void> => {
@@ -215,9 +242,9 @@ export const WeddingInvitation = forwardRef<WeddingInvitationRef, WeddingInvitat
             weekday = '星期六',
             time = '10:00 AM',
             venue = '彩虹岛 · 樱花广场',
-            address = '动物之森 · 无人岛 · K.K. 演奏台前',
+            address = '无人岛 · 音乐厅前',
             title = 'Wedding Invitation',
-            subtitle = <img src={weddingTitleImg} alt="集合啦 婚礼森友会" />,
+            subtitle = '我们结婚啦',
             message = '哎呀，恭喜恭喜！我们要在小岛上举办婚礼啦~ 诚挚邀请您一同前来见证这个被花瓣和音符包围的日子！',
             showLotteryNumber = true,
             lotteryNumber = '0001',
@@ -281,7 +308,7 @@ export const WeddingInvitation = forwardRef<WeddingInvitationRef, WeddingInvitat
                 <div className="animal-wedding-title-zh">{subtitle}</div>
 
                 <div className="animal-wedding-couple-image">
-                    <img src={brideAndGroomImg} alt="bride and groom" />
+                    <CoupleIllustration />
                 </div>
 
                 <div className="animal-wedding-couple-row">
@@ -308,7 +335,7 @@ export const WeddingInvitation = forwardRef<WeddingInvitationRef, WeddingInvitat
 
                 <div className="animal-wedding-venue-card">
                     <span className="animal-wedding-venue-icon">
-                        <img src={iconMap} alt="venue" width={26} height={26} />
+                        <MapIcon size={26} aria-hidden="true" />
                     </span>
                     <div className="animal-wedding-venue-text">
                         <div className="animal-wedding-venue-name">{venue}</div>

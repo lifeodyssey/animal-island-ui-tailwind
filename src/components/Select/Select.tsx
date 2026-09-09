@@ -88,6 +88,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                             position="popper"
                             side="bottom"
                             sideOffset={6}
+                            collisionPadding={{ left: 30, right: 10, top: 10, bottom: 10 }}
                             avoidCollisions
                         >
                             <RadixSelect.Viewport className="animal-select-viewport">

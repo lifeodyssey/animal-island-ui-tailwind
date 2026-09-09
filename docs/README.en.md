@@ -1,7 +1,7 @@
 # Animal Island UI Tailwind
 
 <div align="center">
-    <img src="img/readme-home.png" alt="animal-island-ui-tailwind" style="border-radius: 12px; width: 40%; display: block; margin: 0 auto;" />
+    <img src="../src/components/Loading/assets/island.png" alt="animal-island-ui-tailwind" style="border-radius: 12px; width: 140px; display: block; margin: 0 auto;" />
 </div>
 
 <div align="center">
@@ -33,6 +33,10 @@
 A React component library with Animal Crossing visual styling. Cream-colored backgrounds, rounded cards, 3D button shadows, hand-drawn fonts — if you want your interface to feel like a cozy island getaway, this is it.
 
 The visual design is inspired by [guokaigdg/animal-island-ui](https://github.com/guokaigdg/animal-island-ui). The internals have been completely rewritten using Tailwind CSS v4 and Radix UI, and the library is published independently as `animal-island-ui-tailwind` on npm.
+
+## Upgrading to 1.9.0
+
+All existing components remain available with replacement artwork, including a redrawn Loading scene. `Icon.item`, `ITEM_LIST` and `ITEM_COUNT` were removed; rename `icon-miles` to `icon-travel` and `icon-critterpedia` to `icon-encyclopedia`. The version aligns with upstream, but this minor release includes breaking changes. See the [changelog](../CHANGELOG.md#190---2026-09-09).
 
 ## Stack
 

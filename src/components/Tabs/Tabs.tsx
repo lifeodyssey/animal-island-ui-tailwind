@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import * as RadixTabs from '@radix-ui/react-tabs';
+import leafImage from './assets/leaf.png';
 import { cn } from '../../utils/cn';
-import leafIcon from '../../assets/img/icons/icon-leaf.png';
 
 export interface TabItem {
     key: string;
@@ -91,8 +91,10 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
                                 <span className="animal-tab-label">{item.label}</span>
                                 {isActive && (
                                     <img
-                                        src={leafIcon}
+                                        src={leafImage}
                                         alt=""
+                                        aria-hidden="true"
+                                        draggable={false}
                                         className={cn(
                                             'animal-tab-leaf',
                                             !leafAnimation && 'animal-tab-leaf-static'

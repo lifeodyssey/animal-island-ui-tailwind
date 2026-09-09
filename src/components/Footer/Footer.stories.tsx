@@ -17,10 +17,62 @@ export const Sea: Story = {
     },
 };
 
+export const SeaSurfaces: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'Compare the sea decoration at its natural 80px height on white, cream, and green page surfaces.',
+            },
+        },
+    },
+    render: () => (
+        <div style={{ display: 'grid', gap: 24 }}>
+            {['#ffffff', '#fff9ed', '#e8f0e9'].map((background) => (
+                <div key={background} style={{ background, paddingTop: 24 }}>
+                    <Footer type="sea" aria-hidden="true" />
+                </div>
+            ))}
+        </div>
+    ),
+};
+
+export const SeaWithoutRepeat: Story = {
+    args: {
+        type: 'sea',
+        seamless: false,
+    },
+};
+
 export const Tree: Story = {
     args: {
         type: 'tree',
-        children: '🌳 集合啦！动物森友会 · 树林脚注',
+        children: '🌳 欢迎来到动物岛 · 树林脚注',
+    },
+};
+
+export const TreeSurfaces: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'Compare the forest decoration at its natural 80px height. Windows and fruit cutouts reveal the page surface.',
+            },
+        },
+    },
+    render: () => (
+        <div style={{ display: 'grid', gap: 24 }}>
+            {['#ffffff', '#fff9ed', '#e8f0e9'].map((background) => (
+                <div key={background} style={{ background, paddingTop: 24 }}>
+                    <Footer type="tree" aria-hidden="true" />
+                </div>
+            ))}
+        </div>
+    ),
+};
+
+export const TreeWithoutRepeat: Story = {
+    args: {
+        type: 'tree',
+        seamless: false,
     },
 };
 

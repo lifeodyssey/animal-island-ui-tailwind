@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { cn } from '../../utils/cn';
-import base64 from './back-top.base64?raw';
+
+import helperImage from './assets/helper.png';
 
 export interface BackTopProps {
     target?: () => HTMLElement | Window;
@@ -86,11 +87,10 @@ export const BackTop: React.FC<BackTopProps> = ({
                 }
             }}
         >
-            <img
-                className="animal-backtop-img"
-                src={`data:image/png;base64,${base64.trim()}`}
-                alt="返回顶部"
-            />
+            <span className="animal-backtop-artwork" aria-hidden="true">
+                <span className="animal-backtop-bubble">回到<br />顶部</span>
+                <img className="animal-backtop-img" src={helperImage} alt="" draggable={false} />
+            </span>
         </div>
     );
 };

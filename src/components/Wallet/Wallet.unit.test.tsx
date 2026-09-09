@@ -5,7 +5,8 @@ import { Wallet } from './Wallet';
 /**
  * Wallet guardrail. Source of truth: upstream Wallet @6689394 — a bell pouch
  * pill that formats numbers with a thousand separator (strings pass through),
- * with small/medium/large size presets and a default item-022 pouch icon.
+ * with small/medium/large size presets. The original item-022 asset has been
+ * replaced with the selected generated PNG; provenance lives in docs/artwork.
  */
 describe('Wallet', () => {
     const valueText = (c: HTMLElement) =>

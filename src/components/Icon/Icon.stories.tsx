@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Icon, ICON_LIST, ITEM_LIST, ITEM_COUNT } from './Icon';
+import { Icon, ICON_LIST } from './Icon';
 
 const meta = {
     component: Icon,
@@ -38,7 +38,7 @@ export const SizeNumeric: Story = {
                     key={px}
                     style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}
                 >
-                    <Icon name="icon-miles" size={px} />
+                    <Icon name="icon-encyclopedia" size={px} />
                     <span style={{ fontSize: 12 }}>{px}px</span>
                 </div>
             ))}
@@ -66,11 +66,11 @@ export const Bounce: Story = {
     render: () => (
         <div style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-                <Icon name="icon-helicopter" size={40} bounce />
+                <Icon name="icon-design" size={40} bounce />
                 <span style={{ fontSize: 12 }}>弹弹弹 bounce=true</span>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-                <Icon name="icon-helicopter" size={40} />
+                <Icon name="icon-design" size={40} />
                 <span style={{ fontSize: 12 }}>静止 bounce=false</span>
             </div>
         </div>
@@ -85,17 +85,18 @@ export const AccessibleLabel: Story = {
     },
 };
 
-export const Items: Story = {
-    name: `Item glyphs (${ITEM_COUNT})`,
+export const ArtworkSurfaces: Story = {
     render: () => (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, maxWidth: 640 }}>
-            {ITEM_LIST.slice(0, 48).map((id) => (
-                <div
-                    key={id}
-                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}
-                >
-                    <Icon item={id} size={40} />
-                    <span style={{ fontSize: 11 }}>{id}</span>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {['#ffffff', '#fff9ed', '#344b43'].map((background) => (
+                <div key={background} style={{ background, borderRadius: 16, padding: 20, display: 'flex', flexWrap: 'wrap', gap: 20 }}>
+                    {(['icon-camera', 'icon-travel', 'icon-encyclopedia', 'icon-diy', 'icon-design', 'icon-map', 'icon-passport', 'icon-helicopter', 'icon-chat'] as const).map((name) => (
+                        <div key={name} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+                            <Icon name={name} size={48} aria-label={name} />
+                            <Icon name={name} size={32} />
+                            <Icon name={name} size={24} />
+                        </div>
+                    ))}
                 </div>
             ))}
         </div>

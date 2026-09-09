@@ -393,3 +393,14 @@ export const CursorRaindrop: Story = {
         </div>
     ),
 };
+
+export const CursorRaindropScoped: Story = {
+    render: () => (
+        <Cursor type="raindrop" forceAll={false} data-testid="cursor-scoped">
+            <span>Ordinary text</span>
+            <button>Action</button>
+            <input aria-label="Name" type="text" />
+            <button disabled>Unavailable</button>
+        </Cursor>
+    ),
+};

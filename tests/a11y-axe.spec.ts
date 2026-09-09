@@ -8,6 +8,8 @@ import AxeBuilder from '@axe-core/playwright';
 // "Story not found" page — a green-but-empty a11y gate. Prefer no-play
 // "*-stable"/"*-parity" stories so axe sees a settled DOM.
 const stories = [
+    { name: 'Background', url: '/iframe.html?id=regression-parity-new-components--background-stable&viewMode=story' },
+    { name: 'Raindrop Cursor', url: '/iframe.html?id=regression-parity-new-components--cursor-raindrop-scoped&viewMode=story' },
     { name: 'Button & Input', url: '/iframe.html?id=regression-parity-button-input--button-input-parity&viewMode=story' },
     { name: 'Controls', url: '/iframe.html?id=regression-parity-controls--controls-playwright-parity&viewMode=story' },
     { name: 'Display / Assets', url: '/iframe.html?id=regression-parity-display-utilities--assets-parity&viewMode=story' },

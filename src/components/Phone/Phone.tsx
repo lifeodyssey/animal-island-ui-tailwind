@@ -1,4 +1,6 @@
 import React from 'react';
+import { Wifi, MapPin, FileText } from 'lucide-react';
+import { getArtworkStyle, type ArtworkName } from '../Icon/artwork';
 import { cn } from '../../utils/cn';
 import { useNow } from '../../utils/useNow';
 
@@ -6,25 +8,22 @@ export interface PhoneProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 interface App {
     id: string;
-    iconClass: string;
+    artwork: ArtworkName;
     color: string;
     offset?: boolean;
     hasNewMessage?: boolean;
-    iconWidth?: number;
 }
 
-// App icon colors match the upstream NookPhone palette — kept as inline
-// styles to preserve 1:1 visual parity with the original implementation.
 const apps: App[] = [
-    { id: 'camera', iconClass: 'animal-icon-camera', color: '#B77DEE', hasNewMessage: true },
-    { id: 'app', iconClass: 'animal-icon-miles', color: '#889DF0', offset: true },
-    { id: 'critterpedia', iconClass: 'animal-icon-critterpedia', color: '#F7CD67', iconWidth: 105 },
-    { id: 'diy', iconClass: 'animal-icon-diy', color: '#E59266' },
-    { id: 'shopping', iconClass: 'animal-icon-design', color: '#F8A6B2' },
-    { id: 'variant', iconClass: 'animal-icon-map', color: '#82D5BB', hasNewMessage: true, iconWidth: 90 },
-    { id: 'design', iconClass: 'animal-icon-variant', color: '#8AC68A', iconWidth: 80 },
-    { id: 'map', iconClass: 'animal-icon-helicopter', color: '#FC736D' },
-    { id: 'chat', iconClass: 'animal-icon-chat', color: '#D1DA49' },
+    { id: 'camera', artwork: 'camera', color: '#B77DEE', hasNewMessage: true },
+    { id: 'app', artwork: 'travel', color: '#889DF0', offset: true },
+    { id: 'critterpedia', artwork: 'encyclopedia', color: '#F7CD67' },
+    { id: 'diy', artwork: 'diy', color: '#E59266' },
+    { id: 'shopping', artwork: 'design', color: '#F8A6B2' },
+    { id: 'variant', artwork: 'map', color: '#82D5BB', hasNewMessage: true },
+    { id: 'design', artwork: 'passport', color: '#8AC68A' },
+    { id: 'map', artwork: 'helicopter', color: '#FC736D' },
+    { id: 'chat', artwork: 'chat', color: '#D1DA49' },
 ];
 
 export const Phone = React.forwardRef<HTMLDivElement, PhoneProps>(({ className, ...rest }, ref) => {
@@ -46,9 +45,9 @@ export const Phone = React.forwardRef<HTMLDivElement, PhoneProps>(({ className, 
                 <div className="animal-phone-screen">
                     <div className="animal-phone-date">
                         <div className="animal-phone-status">
-                            <span className="animal-icon animal-phone-wifi" />
+                            <Wifi className="animal-phone-wifi" aria-hidden="true" />
                             <div>{displayHours}<span className="animal-time-colon">:</span>{displayMinutes}{ampm}</div>
-                            <span className="animal-icon animal-phone-location" />
+                            <MapPin className="animal-phone-location" aria-hidden="true" />
                         </div>
                         <div className="animal-phone-welcome">Welcome!</div>
                     </div>
@@ -61,18 +60,15 @@ export const Phone = React.forwardRef<HTMLDivElement, PhoneProps>(({ className, 
                             >
                                 {app.hasNewMessage && <span className="animal-phone-badge" />}
                                 <span
-                                    className={cn(
-                                        'animal-phone-app-icon',
-                                        app.iconClass,
-                                        app.offset && 'animal-phone-app-icon-offset',
-                                    )}
-                                    style={app.iconWidth ? { width: app.iconWidth } : undefined}
+                                    className="animal-phone-app-icon"
+                                    style={{ ...getArtworkStyle(app.artwork), width: 112, height: 112 }}
+                                    aria-hidden="true"
                                 />
                             </div>
                         ))}
                     </div>
                     <div className="animal-phone-page">
-                        <span className="animal-icon animal-phone-page-icon" />
+                        <FileText className="animal-phone-page-icon" aria-hidden="true" />
                     </div>
                 </div>
             </div>

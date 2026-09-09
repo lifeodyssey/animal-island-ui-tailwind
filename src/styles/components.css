@@ -1,12 +1,9 @@
 @layer components {
-  /* Base: custom cursor on container and all descendants.
-     The data URI is a base64 fallback for environments (e.g. Windows Tauri) where
-     file-scheme PNG url() cursors fail to resolve. */
+  /* Shared 48px glove cursor; hotspot is the raised fingertip. */
   .animal-cursor,
   .animal-cursor * {
     cursor:
-      url("../assets/img/cursor/cursor-icon.png") 4 0,
-      url(data:image/png;base64,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) 4 0,
+      url('../components/Cursor/assets/glove.png') 8 5,
       auto !important;
   }
 
@@ -1342,7 +1339,9 @@
   }
 
   .animal-select-viewport {
-    overflow: visible;
+    /* Reserve space inside Radix's scrolling viewport for the outside glove. */
+    margin-left: -30px;
+    padding-left: 30px;
   }
 
   .animal-select-item {
@@ -1377,11 +1376,12 @@
   .animal-select-item:hover::before {
     content: "";
     position: absolute;
-    left: -22px;
+    left: -29px;
     top: 50%;
-    width: 35px;
-    height: 35px;
-    background: url("../assets/img/cursor/select-cursor.svg") center / contain no-repeat;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    background: url('../components/Select/assets/selection-glove.png') center / contain no-repeat;
     animation: animal-cursor-slide-in 0.5s ease-out forwards;
   }
 
@@ -1845,13 +1845,29 @@
   .animal-divider {
     width: 100%;
     height: 12px;
-    background: url("../assets/img/dividers/divider-line-brown.svg") center / contain no-repeat;
+    background: url('../components/Divider/assets/triangles-brown.svg') center / min(260px, 100%) 12px no-repeat;
   }
 
-  .animal-divider-line-teal { background-image: url("../assets/img/dividers/divider-line-teal.svg"); }
-  .animal-divider-line-white { background-image: url("../assets/img/dividers/divider-line-white.png"); }
-  .animal-divider-line-yellow { background-image: url("../assets/img/dividers/divider-line-yellow.svg"); }
-  .animal-divider-wave-yellow { background-image: url("../assets/img/dividers/wave-yellow.svg"); }
+  .animal-divider-line-teal {
+    background-image: url('../components/Divider/assets/triangles-teal.svg');
+  }
+
+  .animal-divider-line-white {
+    background-image: url('../components/Divider/assets/triangles-white.svg');
+    background-size: 680px 12px;
+  }
+
+  .animal-divider-line-yellow {
+    background-image: url('../components/Divider/assets/triangles-yellow.svg');
+  }
+
+  /* Independently drawn wave; a centered band keeps the surrounding whitespace. */
+  .animal-divider-wave-yellow {
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22450%22%20height%3D%2212%22%20viewBox%3D%220%200%20450%2012%22%3E%3Cpath%20d%3D%22M0%206%20C5%200%2010%200%2015%206%20C20%2012%2025%2012%2030%206%20C35%200%2040%200%2045%206%20C50%2012%2055%2012%2060%206%20C65%200%2070%200%2075%206%20C80%2012%2085%2012%2090%206%20C95%200%20100%200%20105%206%20C110%2012%20115%2012%20120%206%20C125%200%20130%200%20135%206%20C140%2012%20145%2012%20150%206%20C155%200%20160%200%20165%206%20C170%2012%20175%2012%20180%206%20C185%200%20190%200%20195%206%20C200%2012%20205%2012%20210%206%20C215%200%20220%200%20225%206%20C230%2012%20235%2012%20240%206%20C245%200%20250%200%20255%206%20C260%2012%20265%2012%20270%206%20C275%200%20280%200%20285%206%20C290%2012%20295%2012%20300%206%20C305%200%20310%200%20315%206%20C320%2012%20325%2012%20330%206%20C335%200%20340%200%20345%206%20C350%2012%20355%2012%20360%206%20C365%200%20370%200%20375%206%20C380%2012%20385%2012%20390%206%20C395%200%20400%200%20405%206%20C410%2012%20415%2012%20420%206%20C425%200%20430%200%20435%206%20C440%2012%20445%2012%20450%206%22%20fill%3D%22none%22%20stroke%3D%22%23f0d85b%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E");
+    background-position: center;
+    background-size: min(450px, 100%) 12px;
+    background-repeat: no-repeat;
+  }
 
   .animal-divider-dashed-brown,
   .animal-divider-dashed-teal,
@@ -1882,13 +1898,12 @@
   .animal-footer {
     width: 100%;
     height: 80px;
-    background: url("../assets/img/footer/footer-sea.svg") center / contain no-repeat;
+    position: relative;
+    background: url('../components/Footer/assets/sea.svg') left bottom / auto 100% no-repeat;
   }
 
   .animal-footer-tree {
-    background-image: url("../assets/img/footer/footer-tree.webp");
-    background-position: bottom center;
-    background-size: cover;
+    background-image: url('../components/Footer/assets/tree.svg');
   }
 
   .animal-footer.animal-footer-seamless {
@@ -1899,6 +1914,8 @@
 
   .animal-icon {
     display: inline-block;
+    flex-shrink: 0;
+    vertical-align: middle;
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
@@ -1907,17 +1924,6 @@
   .animal-icon-bounce:hover {
     animation: animal-icon-bounce 0.3s ease-in-out forwards;
   }
-
-  .animal-icon-miles { background-image: url("../assets/img/icons/icon-miles.svg"); }
-  .animal-icon-camera { background-image: url("../assets/img/icons/icon-camera.svg"); }
-  .animal-icon-chat { background-image: url("../assets/img/icons/icon-chat.svg"); }
-  .animal-icon-critterpedia { background-image: url("../assets/img/icons/icon-critterpedia.svg"); }
-  .animal-icon-design { background-image: url("../assets/img/icons/icon-design.svg"); }
-  .animal-icon-diy { background-image: url("../assets/img/icons/icon-diy.svg"); }
-  .animal-icon-helicopter { background-image: url("../assets/img/icons/icon-helicopter.svg"); }
-  .animal-icon-map { background-image: url("../assets/img/icons/icon-map.svg"); }
-  .animal-icon-shopping { background-image: url("../assets/img/icons/icon-shopping.svg"); }
-  .animal-icon-variant { background-image: url("../assets/img/icons/icon-variant.svg"); }
 
   .animal-time {
     display: inline-flex;
@@ -2177,11 +2183,6 @@
 
   .animal-phone-app-icon {
     display: block;
-    width: 100%;
-    height: 100%;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 70% auto;
   }
 
   .animal-phone-app-icon-offset {
@@ -2207,21 +2208,19 @@
   }
 
   .animal-phone-wifi {
-    width: 79px;
-    height: 29px;
-    background-image: url("../assets/img/icons/wifi.svg");
+    width: 30px;
+    height: 30px;
   }
 
   .animal-phone-location {
-    width: 36px;
-    height: 36px;
-    background-image: url("../assets/img/icons/location.svg");
+    width: 34px;
+    height: 34px;
   }
 
   .animal-phone-page-icon {
-    width: 65px;
-    height: 32px;
-    background-image: url("../assets/img/icons/page.svg");
+    width: 34px;
+    height: 34px;
+    color: #8a7a5c;
   }
 
   .animal-code-block-wrapper {
@@ -2441,10 +2440,79 @@
     --mask-r: 0px;
   }
 
-  .animal-loading-container .illustration {
-    max-width: 180px;
-    width: 100%;
-    max-height: 200px;
+  .animal-loading-artwork {
+    position: relative;
+    flex: 0 0 180px;
+    width: 180px;
+    height: 200px;
+  }
+
+  .animal-loading-island {
+    position: absolute;
+    z-index: 2;
+    left: 30px;
+    bottom: 24px;
+    width: 132px;
+    height: auto;
+    transform-origin: 55% 95%;
+    animation: animal-loading-float 2.8s ease-in-out infinite;
+  }
+
+  .animal-loading-water {
+    position: absolute;
+    display: block;
+    border-radius: 50%;
+    animation: animal-loading-water 2.8s ease-in-out infinite;
+  }
+
+  .animal-loading-water-back {
+    right: 4px;
+    bottom: 8px;
+    width: 136px;
+    height: 28px;
+    background: #16b4cf;
+  }
+
+  .animal-loading-water-front {
+    z-index: 3;
+    right: 0;
+    bottom: 22px;
+    width: 148px;
+    height: 12px;
+    background: #abe7ec;
+    animation-delay: -1.4s;
+  }
+
+  .animal-loading-ripple {
+    position: absolute;
+    left: 8px;
+    bottom: 25px;
+    width: 26px;
+    height: 6px;
+    border: 2px solid #81ddeb;
+    border-radius: 50%;
+    animation: animal-loading-ripple 7s ease-out infinite;
+  }
+
+  .animal-loading-fish {
+    position: absolute;
+    z-index: 1;
+    left: 5px;
+    bottom: 28px;
+    width: 24px;
+    height: auto;
+    opacity: 0;
+    animation: animal-loading-fish 7s linear infinite;
+  }
+
+  .animal-loading-container[data-active="false"] .animal-loading-artwork * {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animal-loading-artwork * {
+      animation: none;
+    }
   }
 
   .animal-loading-closing {
@@ -2809,12 +2877,12 @@
   .animal-pagination-size-option:hover::before {
     content: "";
     position: absolute;
-    left: -22px;
+    left: -29px;
     top: 50%;
     transform: translateY(-50%);
-    width: 35px;
-    height: 35px;
-    background: url("../assets/img/cursor/select-cursor.svg") no-repeat center / contain;
+    width: 30px;
+    height: 30px;
+    background: url('../components/Select/assets/selection-glove.png') center / contain no-repeat;
     animation: animal-cursor-slide-in 0.5s ease-out forwards;
   }
 
@@ -3034,13 +3102,6 @@
     margin-bottom: 20px;
   }
 
-  .animal-wedding-title-zh img {
-    display: block;
-    margin: 0 auto;
-    max-width: 80%;
-    height: auto;
-  }
-
   .animal-wedding-couple-image {
     margin: 0 auto 12px;
   }
@@ -3048,9 +3109,11 @@
   .animal-wedding-couple-image img {
     display: block;
     margin: 0 auto;
-    max-width: 70%;
-    height: auto;
-    filter: drop-shadow(0 3px 4px rgba(61, 52, 40, 0.18));
+    max-width: 85%;
+    width: auto;
+    height: 250px;
+    object-fit: contain;
+    filter: drop-shadow(0 3px 4px rgba(61, 52, 40, 0.12));
   }
 
   .animal-wedding-couple-row {
@@ -4421,12 +4484,47 @@
     transform: translateY(0);
   }
 
+  .animal-backtop-artwork {
+    position: relative;
+    display: block;
+    width: 128px;
+    height: 110px;
+  }
+
+  .animal-backtop-bubble {
+    position: absolute;
+    left: 0;
+    top: 10px;
+    display: grid;
+    place-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #fffdf4;
+    color: #84745b;
+    font: bold 12px / 1.3 system-ui;
+    text-align: center;
+    box-shadow: 0 2px 8px #725d4226;
+  }
+
+  .animal-backtop-bubble::after {
+    content: "";
+    position: absolute;
+    right: -4px;
+    bottom: 9px;
+    border: 6px solid transparent;
+    border-left-color: #fffdf4;
+    transform: rotate(18deg);
+  }
+
   .animal-backtop-img {
-    width: 120px;
-    height: 120px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 105px;
+    height: 105px;
     display: block;
     object-fit: contain;
-    filter: drop-shadow(0 4px 10px rgba(91, 78, 30, 0.22));
     transition: filter 0.25s ease;
   }
 
@@ -4438,6 +4536,18 @@
     .animal-backtop {
       bottom: 24px;
       right: 16px;
+    }
+
+    .animal-backtop-artwork {
+      width: 98px;
+      height: 84px;
+    }
+
+    .animal-backtop-bubble {
+      top: 8px;
+      width: 40px;
+      height: 40px;
+      font-size: 10px;
     }
 
     .animal-backtop-img {
@@ -5465,7 +5575,7 @@
      our fork keeps the PNG asset for the default cursor.
      ============================================================ */
   .animal-cursor--raindrop,
-  .animal-cursor--raindrop * {
+  .animal-cursor--raindrop:not(.animal-cursor--scoped) * {
     cursor:
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M16 6s-9 12-9 16a9 9 0 0 0 18 0c0-4-9-16-9-16z' fill='%2374ccff' stroke='%232e86ab' stroke-width='1.5'/%3E%3Cellipse cx='12.5' cy='19' rx='2' ry='3.2' fill='%23dff4ff' transform='rotate(-18 12.5 19)'/%3E%3C/svg%3E")
           16 6,

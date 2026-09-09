@@ -37,7 +37,7 @@ test.describe('reference Tabs parity', () => {
         await expect(page.getByTestId('tabs-default-active-matrix')).toContainText('蝴蝶、瓢虫、蜻蜓');
         const shadowOffActive = tabByName(page.getByTestId('tabs-shadow-off-matrix'), /鱼类/).first();
         await expect(shadowOffActive).toHaveCSS('box-shadow', 'none');
-        await expect(page.getByTestId('tabs-leaf-static-matrix').locator('img').first()).toHaveCSS('animation-name', 'none');
+        await expect(page.getByTestId('tabs-leaf-static-matrix').locator('.animal-tab-leaf').first()).toHaveCSS('animation-name', 'none');
 
         await expect(page.getByTestId('tabs-matrix-selected-label')).toHaveText('selected: fish');
         await tabByName(page.getByTestId('tabs-controlled-matrix'), /博物馆/).click();

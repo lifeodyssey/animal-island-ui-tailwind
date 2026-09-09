@@ -1,0 +1,18 @@
+{
+  "ok": true,
+  "input": "/Users/lumimamini/.codex/generated_images/01a07a47-d674-7643-ba1d-70d7236bfbd8/exec-284cf683-18ae-4f0a-8fd3-8b51b9923643.png",
+  "output": "/private/tmp/animal-loading-concept/island-clean.png",
+  "background_rgb": [
+    255,
+    0,
+    255
+  ],
+  "threshold": 80.0,
+  "feather_threshold": 200.0,
+  "trimmed": true,
+  "padding": 10,
+  "width": 1048,
+  "height": 1298,
+  "transparent_pixels": 936337,
+  "opaque_pixels": 636622
+}

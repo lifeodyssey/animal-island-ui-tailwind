@@ -7,7 +7,7 @@ export interface CursorProps extends React.HTMLAttributes<HTMLDivElement> {
     /** 子元素 */
     children?: React.ReactNode;
     /**
-     * Cursor style. `'default'` = arrow pointer; `'raindrop'` = blue teardrop.
+     * Cursor style. `'default'` = glove pointer; `'raindrop'` = blue teardrop.
      */
     type?: CursorType;
     /**
