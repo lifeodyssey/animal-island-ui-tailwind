@@ -412,29 +412,33 @@ const [activeKey, setActiveKey] = useState('tab1');
 
 ```ts
 type IconName =
-  | 'icon-miles' | 'icon-camera' | 'icon-chat' | 'icon-critterpedia'
-  | 'icon-design' | 'icon-diy'    | 'icon-helicopter'
-  | 'icon-map'   | 'icon-shopping' | 'icon-variant';
+  | 'icon-left' | 'icon-right' | 'location' | 'page' | 'wifi'
+  | 'icon-shopping' | 'icon-chat' | 'icon-variant' | 'icon-encyclopedia'
+  | 'icon-design' | 'icon-map' | 'icon-diy' | 'icon-camera'
+  | 'icon-travel' | 'icon-passport' | 'icon-helicopter';
 
-interface IconProps {
-  name: IconName;                // REQUIRED — one of the 10 built-in SVG icons
-  size?: number | string;        // default 24 — applied to width & height
-  className?: string;
-  style?: React.CSSProperties;
-  bounce?: boolean;              // default false — adds hover bounce animation
+interface IconProps extends Omit<React.HTMLAttributes<HTMLElement>, 'color'> {
+  name?: IconName;               // choose one source: name, icon or src
+  icon?: LucideIcon;             // import a component from lucide-react
+  src?: string;                 // URL of your own licensed image
+  size?: number | string;        // default 24
+  color?: string;                // vectors only
+  strokeWidth?: number | string; // vectors only; default 2
+  bounce?: boolean;              // default false
 }
-
-// Runtime catalogue for dynamic rendering / pickers (length = 10):
-declare const ICON_LIST: { name: IconName; label: string }[];
+declare const ICON_LIST: { name: IconName; label: string }[]; // 16 names
 ```
 
 ```tsx
 <Icon name="icon-camera" size={32} />
-<Icon name="icon-chat" bounce />
-{ICON_LIST.map(({ name, label }) => <Icon key={name} name={name} />)}
+<Icon name="icon-chat" bounce aria-label="Chat" />
+<Icon icon={Heart} color="#e78479" />
+<Icon src={myLicensedImageUrl} size={32} />
 ```
 
-> Icons are rendered as `<span>` with a background-image SVG. Use `size` (number=px, string=any CSS length) — do NOT wrap in a sized div.
+Named artwork and custom images render as a background on a `<span>`; utility and custom Lucide icons render `<svg>`. The ref is `HTMLElement`. Use `.animal-icon` for shared styling. Icons are decorative unless given an accessible name. `icon-variant` shares the passport artwork.
+
+1.9.0 migration: `item`, `ITEM_LIST` and `ITEM_COUNT` are removed. Rename `icon-miles` to `icon-travel`, and `icon-critterpedia` to `icon-encyclopedia`.
 
 ---
 
@@ -589,7 +593,7 @@ interface LoadingProps {
 <Loading active={isLoading} />
 ```
 
-> Decorative island loading scene with built-in SVG and motion script assets. `active={false}` plays the closing mask transition and then hides the container.
+> Decorative island loading scene using replacement PNG artwork and CSS motion, with reduced-motion support. Provide a parent with an explicit height. `active={false}` plays the closing mask transition and then hides the container.
 
 ---
 
@@ -659,7 +663,7 @@ Follow these strictly; violations are bugs:
 7. **Card `color`** must be one of the 13 listed `CardColor` values. Do not pass hex codes. `type` is `'default' | 'title' | 'dashed'` — no other values.
 8. **Divider / Footer / Phone / Time / Cursor** are primarily decorative. Prefer `className` or a wrapper for custom layout; do not invent component-specific color/size props.
 9. **Typewriter emits no wrapper element.** Do not rely on a DOM node to style it — style the children instead.
-10. **Icon `name` must be one of the 10 `IconName` values.** Do not pass arbitrary strings, URLs, or React nodes — only the built-in catalogue is supported.
+10. **Icon sources are `name`, `icon` or `src`.** Use one of the 16 `IconName` values, a Lucide component, or an image URL respectively. The old `item` catalog is removed.
 11. **Select is controlled-only.** `options`, `value`, `onChange` are ALL required. Never omit `onChange` or pass `defaultValue`.
 12. **Checkbox `size`** is `'small' | 'middle' | 'large'` (aligned with Button/Input — NOT with Switch). `options` is required; values can be `string | number`. No indeterminate state.
 13. **CodeBlock** only highlights JSX/TS — do not pass Python/SQL/shell expecting language-specific coloring. There is no `language` prop.

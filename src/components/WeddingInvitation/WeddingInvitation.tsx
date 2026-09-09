@@ -1,5 +1,6 @@
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import { Map as MapIcon } from 'lucide-react';
+import coupleImage from './assets/couple.png';
 import { cn } from '../../utils/cn';
 import { injectWeddingFonts, prepareWeddingFontsForExport } from './fonts';
 
@@ -113,54 +114,8 @@ const DownloadIcon: React.FC = () => (
     </svg>
 );
 
-/** 原创新人插画：扁平小猫新郎 + 小兔新娘（内联 SVG，非素材文件） */
 const CoupleIllustration: React.FC = () => (
-    <svg viewBox="0 0 320 210" role="img" aria-label="bride and groom">
-        <ellipse cx="160" cy="190" rx="140" ry="16" fill="#e6f2d4" />
-        <path d="M150 38c-5-7-15-5-15 3 0 7 8 11 15 16 7-5 15-9 15-16 0-8-10-10-15-3z" fill="#fc736d" opacity="0.85" />
-        <path d="M188 22c-4-5-11-4-11 2 0 5 6 8 11 12 5-4 11-7 11-12 0-6-7-7-11-2z" fill="#f8a6b2" opacity="0.9" />
-        {/* 新郎（小猫） */}
-        <g stroke="#725d42" strokeWidth="2.5" strokeLinejoin="round">
-            <path d="M74 198c0-30 14-48 36-48s36 18 36 48z" fill="#59473a" />
-            <path d="M110 148l-12-8v16zM110 148l12-8v16z" fill="#fc736d" strokeLinejoin="round" />
-            <circle cx="110" cy="146" r="4" fill="#e5564c" />
-            <path d="M88 82l-8-24 24 12zM132 82l8-24-24 12z" fill="#f2c288" />
-            <circle cx="110" cy="104" r="34" fill="#f2c288" />
-        </g>
-        <g fill="none" stroke="#725d42" strokeWidth="2.2" strokeLinecap="round">
-            <path d="M96 104q6-7 12 0M116 104q6-7 12 0" />
-            <path d="M110 112v4m0 0q-4 4-8 2m8-2q4 4 8 2" />
-            <path d="M78 100l-14-3M79 108l-14 1M142 100l14-3M141 108l14 1" strokeWidth="1.6" />
-        </g>
-        <path d="M106 108l4-3 4 3-4 3z" fill="#e5564c" />
-        {/* 新娘（小兔） */}
-        <g stroke="#725d42" strokeWidth="2.5" strokeLinejoin="round">
-            <ellipse cx="196" cy="56" rx="9" ry="26" fill="#fff3e0" transform="rotate(-8 196 56)" />
-            <ellipse cx="224" cy="56" rx="9" ry="26" fill="#fff3e0" transform="rotate(8 224 56)" />
-            <path d="M164 198c0-28 16-46 46-46s46 18 46 46z" fill="#fff7ec" />
-            <path d="M176 80c-4-8 2-16 10-16h48c8 0 14 8 10 16l-4 6h-60z" fill="#ffffff" opacity="0.85" />
-            <circle cx="210" cy="102" r="30" fill="#fff3e0" />
-        </g>
-        <ellipse cx="193" cy="60" rx="4" ry="16" fill="#f8c9d4" transform="rotate(-8 193 60)" />
-        <ellipse cx="227" cy="60" rx="4" ry="16" fill="#f8c9d4" transform="rotate(8 227 60)" />
-        <path d="M176 84c-10 26-8 44 0 58 4 4 10 2 12-2-8-22-6-40 0-56z" fill="#ffffff" opacity="0.7" />
-        <g fill="none" stroke="#725d42" strokeWidth="2.2" strokeLinecap="round">
-            <path d="M196 102q5-6 10 0M214 102q5-6 10 0" />
-            <path d="M210 110v3m0 0q-3 3-7 1m7-1q3 3 7 1" />
-        </g>
-        <circle cx="192" cy="112" r="5" fill="#f8a6b2" opacity="0.55" />
-        <circle cx="228" cy="112" r="5" fill="#f8a6b2" opacity="0.55" />
-        <circle cx="210" cy="108" r="3" fill="#f0a0ae" />
-        {/* 捧花 */}
-        <g stroke="#57a05c" strokeWidth="2" strokeLinecap="round">
-            <path d="M186 168l-6 14M196 170v16M206 168l6 14" fill="none" />
-        </g>
-        <g stroke="#725d42" strokeWidth="1.4">
-            <circle cx="184" cy="162" r="7" fill="#f8a6b2" />
-            <circle cx="196" cy="156" r="8" fill="#f7cd67" />
-            <circle cx="208" cy="162" r="7" fill="#b77dee" />
-        </g>
-    </svg>
+    <img src={coupleImage} width={640} height={800} alt="bride and groom" draggable={false} />
 );
 
 const NOTCH_RADIUS = 14;
@@ -175,6 +130,34 @@ const renderNodeToCanvas = async (node: HTMLElement, scale: number, fontCssText:
     canvas.height = Math.ceil(height * scale);
 
     const clonedNode = node.cloneNode(true) as HTMLElement;
+    // A foreignObject snapshot cannot inherit document CSS or load external images.
+    const originals = [node, ...node.querySelectorAll('*')];
+    const clones = [clonedNode, ...clonedNode.querySelectorAll('*')];
+    await Promise.all(originals.map(async (original, index) => {
+        const clone = clones[index] as HTMLElement | SVGElement;
+        const computed = getComputedStyle(original);
+        for (const property of Array.from(computed)) {
+            clone.style.setProperty(property, computed.getPropertyValue(property));
+        }
+        if (original instanceof HTMLImageElement && clone instanceof HTMLImageElement) {
+            await original.decode();
+            const response = await fetch(original.currentSrc || original.src);
+            if (!response.ok) throw new Error('failed to load invitation artwork for export');
+            const blob = await response.blob();
+            clone.src = await new Promise<string>((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result as string);
+                reader.onerror = () => reject(new Error('failed to embed invitation artwork'));
+                reader.readAsDataURL(blob);
+            });
+            clone.removeAttribute('srcset');
+        }
+    }));
+    // The clone is the snapshot root, so discard offsets from the page layout.
+    clonedNode.style.margin = '0';
+    clonedNode.style.position = 'relative';
+    clonedNode.style.inset = 'auto';
+    clonedNode.style.transform = 'none';
     const fontStyleEl = document.createElement('style');
     fontStyleEl.textContent = fontCssText;
     clonedNode.insertBefore(fontStyleEl, clonedNode.firstChild);
@@ -184,26 +167,22 @@ const renderNodeToCanvas = async (node: HTMLElement, scale: number, fontCssText:
 <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
   <foreignObject width="100%" height="100%">${serialized}</foreignObject>
 </svg>`;
-    const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
+    // Chromium taints canvases drawn from blob-backed SVG foreignObjects.
+    const url = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 
-    try {
-        const image = await new Promise<HTMLImageElement>((resolve, reject) => {
-            const img = new Image();
-            img.onload = () => resolve(img);
-            img.onerror = () => reject(new Error('failed to render invitation SVG snapshot'));
-            img.src = url;
-        });
-        const context = canvas.getContext('2d');
-        if (!context) {
-            throw new Error('failed to get canvas context');
-        }
-        context.setTransform(scale, 0, 0, scale, 0, 0);
-        context.drawImage(image, 0, 0, width, height);
-        return canvas;
-    } finally {
-        URL.revokeObjectURL(url);
+    const image = await new Promise<HTMLImageElement>((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => reject(new Error('failed to render invitation SVG snapshot'));
+        img.src = url;
+    });
+    const context = canvas.getContext('2d');
+    if (!context) {
+        throw new Error('failed to get canvas context');
     }
+    context.setTransform(scale, 0, 0, scale, 0, 0);
+    context.drawImage(image, 0, 0, width, height);
+    return canvas;
 };
 
 const exportNodeAsPng = async (node: HTMLElement, filename: string, scale = 2): Promise<void> => {

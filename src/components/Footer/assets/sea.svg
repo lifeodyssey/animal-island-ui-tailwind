@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="552" height="80" viewBox="0 0 552 80">
+  <title>Sea footer: sailboat, coral, fish, waves and message bottles</title>
+  <defs>
+    <g id="fish" fill="currentColor">
+      <path d="M4 2.5 0 .5.7 8 4 5.9C7 10 13.4 8.9 16 4.5 13.5.1 7-.8 4 2.5Z"/>
+      <circle cx="13.6" cy="3.8" r=".45" fill="#725d42"/>
+    </g>
+    <g id="ripple" fill="none" stroke="#39b3c7" stroke-width="1.1" stroke-linecap="round">
+      <path d="M0 2Q2.3 0 4.6 2T9.2 2T13.8 2"/>
+      <path d="M2.3 5Q4.6 3 6.9 5T11.5 5T16.1 5"/>
+    </g>
+    <g id="bird" fill="#7a684c">
+      <path d="M0 5C.4.4 4.3-.7 7.5 3.1 10.5-2.5 14.7-1.2 17 2.6 12.9.1 10.6 2 8.3 5.1 4.8 2.1 2.6 1.8 0 5Z"/>
+    </g>
+    <g id="bottle">
+      <path d="M3 2H8V6Q11 7 11 10V20Q11 22 9 22H2Q0 22 0 20V10Q0 7 3 6Z" fill="#a9e2e8"/>
+      <path d="M3.8 6.3H7.2V8Q9.2 8.5 9.2 10.4V19.8Q9.2 20.4 8.6 20.4H2.4Q1.8 20.4 1.8 19.8V10.4Q1.8 8.5 3.8 8Z" fill="#f7fcf8"/>
+      <path d="M4 11H7V19H4Z" fill="#86d3df"/>
+      <path d="M4.5 11.3Q6.5 10 7.6 11.5V17.6Q6.4 16.7 4.5 17.4Z" fill="#fff4d9"/>
+      <path d="M4.5 11.3Q6 10.2 7.6 11.5" fill="none" stroke="#ad9570" stroke-width="1.2" stroke-linecap="round"/>
+      <rect x="2.3" y="-.8" width="6.4" height="3.5" rx=".65" fill="#7a684c"/>
+      <path d="M2.7 4H8.3" fill="none" stroke="#39b3c7" stroke-width="1.4" stroke-linecap="round"/>
+    </g>
+    <g id="coral" fill="#7a684c" stroke="#7a684c" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M11 23Q12.4 20 11.6 15L15 15Q14.4 22 17 25H9Z" stroke="none"/>
+      <g fill="none" stroke-width="2.1">
+        <path d="M13 22Q9 11 15 2M12 14Q4 14 2 8M7 13 7 6M12 10Q18 12 23 6M19 10 19 3M13 6 10 2M13 18Q22 21 27 13M23 19 23 14M11 20Q5 23 2 19"/>
+      </g>
+      <g stroke="none">
+        <circle cx="15" cy="2" r="1.5"/><circle cx="2" cy="8" r="1.5"/>
+        <circle cx="7" cy="6" r="1.35"/><circle cx="23" cy="6" r="1.5"/>
+        <circle cx="19" cy="3" r="1.4"/><circle cx="10" cy="2" r="1.3"/>
+        <circle cx="27" cy="13" r="1.4"/><circle cx="23" cy="14" r="1.2"/>
+        <circle cx="2" cy="19" r="1.35"/>
+      </g>
+    </g>
+  </defs>
+  <!-- 23 complete waves meet with matching height and tangent at both edges. -->
+  <path d="M0 42 C3 42 3 40 6 40S9 42 12 42S15 44 18 44S21 42 24 42 C27 42 27 40 30 40S33 42 36 42S39 44 42 44S45 42 48 42 C51 42 51 40 54 40S57 42 60 42S63 44 66 44S69 42 72 42 C75 42 75 40 78 40S81 42 84 42S87 44 90 44S93 42 96 42 C99 42 99 40 102 40S105 42 108 42S111 44 114 44S117 42 120 42 C123 42 123 40 126 40S129 42 132 42S135 44 138 44S141 42 144 42 C147 42 147 40 150 40S153 42 156 42S159 44 162 44S165 42 168 42 C171 42 171 40 174 40S177 42 180 42S183 44 186 44S189 42 192 42 C195 42 195 40 198 40S201 42 204 42S207 44 210 44S213 42 216 42 C219 42 219 40 222 40S225 42 228 42S231 44 234 44S237 42 240 42 C243 42 243 40 246 40S249 42 252 42S255 44 258 44S261 42 264 42 C267 42 267 40 270 40S273 42 276 42S279 44 282 44S285 42 288 42 C291 42 291 40 294 40S297 42 300 42S303 44 306 44S309 42 312 42 C315 42 315 40 318 40S321 42 324 42S327 44 330 44S333 42 336 42 C339 42 339 40 342 40S345 42 348 42S351 44 354 44S357 42 360 42 C363 42 363 40 366 40S369 42 372 42S375 44 378 44S381 42 384 42 C387 42 387 40 390 40S393 42 396 42S399 44 402 44S405 42 408 42 C411 42 411 40 414 40S417 42 420 42S423 44 426 44S429 42 432 42 C435 42 435 40 438 40S441 42 444 42S447 44 450 44S453 42 456 42 C459 42 459 40 462 40S465 42 468 42S471 44 474 44S477 42 480 42 C483 42 483 40 486 40S489 42 492 42S495 44 498 44S501 42 504 42 C507 42 507 40 510 40S513 42 516 42S519 44 522 44S525 42 528 42 C531 42 531 40 534 40S537 42 540 42S543 44 546 44S549 42 552 42V80H0Z" fill="#86d3df"/>
+  <use href="#bird" transform="translate(146 4)"/>
+  <use href="#bird" transform="translate(420 4) scale(.75)"/>
+  <use href="#bird" transform="translate(437 11) scale(.55)"/>
+  <g>
+    <path d="M208.5 13 196.5 36.5 209.5 37.5Z" fill="#f1ead8"/>
+    <path d="M210 9Q221 21 228.7 32.5 220.5 36 211 36.5Z" fill="#fa7483"/>
+    <path d="M209.5 10 211 39" fill="none" stroke="#7a684c" stroke-width="1.05" stroke-linecap="round"/>
+    <path d="M194.5 39Q211 42 230 36.8 228.4 43.8 223.7 46.4 219 45.2 216 47.4 211.8 48.8 207.6 46.5 199.8 46 194.5 39Z" fill="#fa7483"/>
+  </g>
+  <use href="#bottle" transform="translate(50 29) rotate(-24 5.5 11)"/>
+  <use href="#bottle" transform="translate(443 32) rotate(26 5.5 11)"/>
+  <use href="#coral" transform="translate(126 33) rotate(10 13 13) scale(.93)"/>
+  <use href="#coral" transform="translate(345 40) rotate(16 13 13)"/>
+  <g color="#078c9f">
+    <use href="#fish" transform="translate(19 54)"/>
+    <use href="#fish" transform="translate(66 59) scale(.62)"/>
+    <use href="#fish" transform="translate(170 57)"/>
+    <use href="#fish" transform="translate(210 58) scale(.55)"/>
+    <use href="#fish" transform="translate(309 33) scale(-.85 .85)"/>
+    <use href="#fish" transform="translate(290 58) scale(.65)"/>
+    <use href="#fish" transform="translate(314 51) scale(.8)"/>
+    <use href="#fish" transform="translate(410 55) scale(1.12)"/>
+    <use href="#fish" transform="translate(506 60) scale(-.8 .8)"/>
+  </g>
+  <g color="#fa7483">
+    <use href="#fish" transform="translate(98 55) scale(.9)"/>
+    <use href="#fish" transform="translate(263 53) scale(.82)"/>
+    <use href="#fish" transform="translate(468 64) scale(.88)"/>
+    <use href="#fish" transform="translate(526 48) scale(.91)"/>
+  </g>
+  <use href="#ripple" transform="translate(3 53) scale(.8)"/>
+  <use href="#ripple" transform="translate(50 52) scale(.8)"/>
+  <use href="#ripple" transform="translate(83 45)"/>
+  <use href="#ripple" transform="translate(154 56) scale(.68)"/>
+  <use href="#ripple" transform="translate(231 51)"/>
+  <use href="#ripple" transform="translate(280 45) scale(.8)"/>
+  <use href="#ripple" transform="translate(377 55)"/>
+  <use href="#ripple" transform="translate(442 59) scale(.9)"/>
+  <use href="#ripple" transform="translate(473 45) scale(.8)"/>
+</svg>

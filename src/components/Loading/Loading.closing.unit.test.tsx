@@ -8,26 +8,8 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
  * the closing class, resets --mask-r, and restores display:flex. Browser
  * story coverage was only "hidden within 1500ms"; this pins the mechanism.
  *
- * gsap is mocked (the idle-tween effect must run without a real animation
- * engine); jsdom getBoundingClientRect() returns 0 → finalR=50, duration=0.1.
+ * jsdom getBoundingClientRect() returns 0 → finalR=50, duration=0.1.
  */
-vi.mock('gsap', () => {
-    const noop = () => ({});
-    const gsap = {
-        to: vi.fn(noop),
-        fromTo: vi.fn(noop),
-        set: vi.fn(noop),
-        context: vi.fn((fn: () => void) => {
-            fn();
-            return { revert: vi.fn() };
-        }),
-        registerPlugin: vi.fn(),
-        globalTimeline: { pause: vi.fn() },
-    };
-    return { gsap, default: gsap };
-});
-vi.mock('gsap/MotionPathPlugin', () => ({ MotionPathPlugin: {} }));
-
 import { render, act, cleanup } from '@testing-library/react';
 import { Loading } from './Loading';
 

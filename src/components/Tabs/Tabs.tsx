@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import * as RadixTabs from '@radix-ui/react-tabs';
+import leafImage from './assets/leaf.png';
 import { cn } from '../../utils/cn';
 
 export interface TabItem {
@@ -89,29 +90,16 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
                                 </span>
                                 <span className="animal-tab-label">{item.label}</span>
                                 {isActive && (
-                                    <svg
-                                        viewBox="0 0 24 24"
+                                    <img
+                                        src={leafImage}
+                                        alt=""
                                         aria-hidden="true"
+                                        draggable={false}
                                         className={cn(
                                             'animal-tab-leaf',
                                             !leafAnimation && 'animal-tab-leaf-static'
                                         )}
-                                    >
-                                        {/* 原创叶子：椭圆叶片 + 中脉，非素材文件 */}
-                                        <path
-                                            d="M12 3C7.5 7 5.5 11 5.5 14.5A6.5 6.5 0 0 0 18.5 14.5C18.5 11 16.5 7 12 3z"
-                                            fill="#7bc47f"
-                                            stroke="#57a05c"
-                                            strokeWidth="1.5"
-                                            strokeLinejoin="round"
-                                        />
-                                        <path
-                                            d="M12 6.5v12"
-                                            stroke="#57a05c"
-                                            strokeWidth="1.5"
-                                            strokeLinecap="round"
-                                        />
-                                    </svg>
+                                    />
                                 )}
                             </RadixTabs.Trigger>
                         );

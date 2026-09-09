@@ -67,11 +67,11 @@ test.describe('reference display utility parity', () => {
         }
         await expect(
             page.getByTestId('footer-matrix').locator('.animal-footer-tree:not(.animal-footer-seamless)'),
-        ).toHaveCSS('background-size', 'cover');
+        ).toHaveCSS('background-size', 'auto 100%');
 
         const iconGrid = page.getByTestId('icon-grid');
-        await expect(iconGrid.locator('span[class*="icon"]')).toHaveCount(10);
-        await expect(page.getByText('NookMiles')).toBeVisible();
+        await expect(iconGrid.locator('.animal-icon')).toHaveCount(16);
+        await expect(page.getByText('Travel', { exact: true })).toBeVisible();
         const sizeIcons = page.getByTestId('icon-size-row').locator('span[class*="icon"]');
         await expect(sizeIcons).toHaveCount(3);
         await expect(sizeIcons.nth(0)).toHaveCSS('width', '24px');
@@ -90,8 +90,8 @@ test.describe('reference display utility parity', () => {
         await expect(codeBlock.locator('span')).toHaveCount(72);
         await expect(codeBlock.locator('span').filter({ hasText: 'React' }).first()).toHaveCSS('color', 'rgb(224, 108, 117)');
 
-        await expect(page.getByTestId('cursor-force-button')).toHaveCSS('cursor', /cursor-icon/);
-        await expect(page.getByTestId('cursor-scoped-region')).toHaveCSS('cursor', /cursor-icon/);
+        await expect(page.getByTestId('cursor-force-button')).toHaveCSS('cursor', /url\(/);
+        await expect(page.getByTestId('cursor-scoped-region')).toHaveCSS('cursor', /url\(/);
         await expect(page.getByTestId('cursor-scoped-button')).toHaveCSS('cursor', 'pointer');
         await expect(page.getByTestId('cursor-scoped-input')).toHaveCSS('cursor', 'text');
         await expect(page.getByTestId('cursor-scoped-disabled')).toHaveCSS('cursor', 'not-allowed');
@@ -120,7 +120,7 @@ test.describe('reference display utility parity', () => {
         await expect(phone.locator('.animal-phone, div[class*="phone-"]:not([class*="phoneContainer"]):not(.animal-phone-container)').first()).toHaveCSS('width', '527px');
 
         const loading = page.getByTestId('loading-region');
-        await expect(loading.locator('svg.illustration')).toBeVisible();
+        await expect(loading.locator('.animal-loading-artwork')).toBeVisible();
         await expect(loading.locator('[class*="container"], .animal-loading-container').first()).toHaveCSS('background-color', 'rgb(0, 0, 0)');
         await page.getByRole('button', { name: 'Hide loading' }).click();
         await expect(loading.locator('.parity-loading')).toBeHidden({ timeout: 1500 });

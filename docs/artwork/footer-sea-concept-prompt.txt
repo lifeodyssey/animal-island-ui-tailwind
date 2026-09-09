@@ -1,0 +1,21 @@
+Create a new original decorative sea footer asset for a cute React component library.
+
+REFERENCE USE: The first reference is a screenshot of the OLD footer that the user loves. Look only at the TOP SEA STRIP (ignore the green forest row and all text). It establishes the intended tiny scale, cheerful compact density, flat graphic character, and the beloved subject matter. The second reference is our previous REJECTED draft: too generic, stiff, icon-library-like. Do NOT reuse its shorebirds, shells, life rings, rays, jellyfish, shrimp, or its orderly icon rows.
+
+USER'S CORE REQUIREMENT: Include ALL FIVE of these: a little SAILBOAT, branching CORAL, small FISH, playful WAVES, and a corked MESSAGE BOTTLE. These familiar seaside things are essential to the charm. Draw fresh original silhouettes and a new arrangement rather than tracing the reference.
+
+Art direction: adorable, sprightly, tiny flat decorative shapes. The charm should come from chubby proportions, slight tilts, a rhythm of big/small and close/far, confident simple color silhouettes. Not realism, not editorial stationery, not line icons, not expensive 3D rendering. Cheerfully naive but expertly composed. Completely flat solid color like clean SVG. No gradients, no textures, no noise, no shaded areas, no highlights, no drop shadows, no outlines around every shape. No huge eyes or smiling faces stamped on everything.
+
+Motif designs:
+- One SMALL coral-pink sailboat with a plump rounded curved hull and a short mast. An asymmetric large rounded triangular pink sail and a smaller cream sail, slightly tilted as it bobs. No realistic boat detailing. Short, friendly, buoyant.
+- Two little corked sea-glass message bottles, one leaning left near the waterline, the other leaning right, each with a very simple white rolled-paper rectangle and tiny warm-brown cork. Bottles partly submerged. Chunky silhouettes, not realistic glass. Bottles substantially smaller than boat.
+- Two compact clumps of branching warm-brown/teal CORAL underwater, with rounded stubby branch tips, asymmetric forks, just 5–7 branches each, no realistic anatomy. This is unmistakably branched coral, NOT three-leaf kelp.
+- Around 10–12 very small plump fish in mixed sizes: round or bean-shaped body with a tiny triangle tail. Mostly deep teal, 2–3 coral pink, some swimming left and some right, pairs and single fish, no aligned rows. Eyes optional single tiny cream dot, no detailed fins.
+- Several shallow turquoise wavy lines, made from 2–3 connected soft arcs, interspersed among fish with confident simple stroke width. Water itself is bright clear pastel cyan with a small regular shallow scalloped top edge.
+- Optional two minimal warm-brown curved seabird marks in the white space above the water, very small. No detailed standing birds, no star sparkles, no whale tail or logos.
+
+Composition: a horizontal repeatable graphic ribbon. Place the little sailboat around one-third of the width. Bottles around one-tenth and three-quarters of width. Corals underwater at different depths. Fish and short waves interleave in a bouncy irregular-but-balanced pattern. Avoid rigid rows and equal spacing. Give the upper white area a few small interruptions from sails and bottle tops. Keep tall objects short: this needs to read at a total height of 80px. Match left/right water colors and waterline height and wave phase, leave edges free of clipped motifs.
+
+Palette: white background, bright pastel cyan water close to #86D3DF, deep teal #078C9F, medium turquoise #39B3C7, lively coral pink #FA7483, warm brown #7A684C for corks and coral. Solid uniform fills ONLY. Keep a few accents lively, majority simple teal/cyan.
+
+Output ONLY the finished artwork, no page mockup or board, no text, no labels, no green forest. Prefer extremely wide 6:1 canvas if supported. If output must be landscape 2:1, keep the TOP 65% completely blank pure white and confine all art to the BOTTOM 35%, with the water filling only the bottom 22%. In either case it is a shallow decorative ribbon, never a full coastal landscape.

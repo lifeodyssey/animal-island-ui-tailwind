@@ -1,0 +1,18 @@
+{
+  "ok": true,
+  "input": "/Users/lumimamini/.codex/generated_images/01a07a47-d674-7643-ba1d-70d7236bfbd8/exec-c9bea0a5-d008-47ce-86f3-0d00ec6d235a.png",
+  "output": "/private/tmp/animal-loading-concept/fish-clean.png",
+  "background_rgb": [
+    255,
+    0,
+    255
+  ],
+  "threshold": 80.0,
+  "feather_threshold": 200.0,
+  "trimmed": true,
+  "padding": 10,
+  "width": 1222,
+  "height": 628,
+  "transparent_pixels": 1147208,
+  "opaque_pixels": 425656
+}

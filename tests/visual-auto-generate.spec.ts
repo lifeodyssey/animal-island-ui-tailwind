@@ -9,16 +9,7 @@ const storyIds: string[] = JSON.parse(
     readFileSync(new URL('./story-ids.json', import.meta.url), 'utf8')
 );
 
-// The only stories with no stable frame: the Loading island runs an infinite GSAP
-// timeline (irreducible animation per the design). Every other animated story
-// (Typewriter typing-out, Cursor, Loading toggle) settles and IS pinned. Tracked
-// explicitly here — no silent cap.
-const DENYLIST = new Set<string>([
-    'components-loading--active',
-    'components-loading--inactive',
-]);
-
-const isAnimated = (_id: string) => false;
+// Loading now uses CSS motion, so disableMotion can freeze every story.
 
 // Freeze Date so clock/time-based stories (Time) render deterministically.
 const FREEZE_CLOCK = `(() => {
@@ -35,9 +26,7 @@ const FREEZE_CLOCK = `(() => {
 
 test.describe('auto visual parity (per story)', () => {
     for (const id of storyIds) {
-        const skip = DENYLIST.has(id) || isAnimated(id);
-        // eslint-disable-next-line playwright/no-skipped-test
-        (skip ? test.skip : test)(`story ${id}`, async ({ page }) => {
+        test(`story ${id}`, async ({ page }) => {
             await page.addInitScript(FREEZE_CLOCK);
             await page.goto(`/iframe.html?id=${id}&viewMode=story`);
             await disableMotion(page);

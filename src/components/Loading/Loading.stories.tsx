@@ -13,11 +13,25 @@ type Story = StoryObj<typeof meta>;
 /** 默认状态：岛屿场景全屏展示（active=true）*/
 export const Active: Story = {
     args: { active: true },
+    render: (args) => <div style={{ height: 360 }}><Loading {...args} /></div>,
 };
 
 /** active=false：触发遮罩消散过渡动画 */
 export const Inactive: Story = {
     args: { active: false },
+    render: (args) => <div style={{ height: 360 }}><Loading {...args} /></div>,
+};
+
+export const ArtworkSurfaces: Story = {
+    render: () => (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
+            {['#000000', '#f7f3df', '#234b40'].map((background) => (
+                <div key={background} style={{ width: 260, height: 260, borderRadius: 20, overflow: 'hidden' }}>
+                    <Loading style={{ background }} />
+                </div>
+            ))}
+        </div>
+    ),
 };
 
 /**

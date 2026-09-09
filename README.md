@@ -1,7 +1,7 @@
 # Animal Island UI Tailwind
 
 <div align="center">
-    <img src="docs/img/readme-home.png" alt="animal-island-ui-tailwind" style="border-radius: 12px; width: 40%; display: block; margin: 0 auto;" />
+    <img src="src/components/Loading/assets/island.png" alt="animal-island-ui-tailwind" style="border-radius: 12px; width: 140px; display: block; margin: 0 auto;" />
 </div>
 
 <div align="center">
@@ -33,6 +33,10 @@
 动物森友会风格的 React 组件库。奶油色背景、圆润的卡片、3D 按钮阴影、手写体字体，适合给界面加一层无人岛的质感。
 
 视觉设计来自 [guokaigdg/animal-island-ui](https://github.com/guokaigdg/animal-island-ui)，内部实现用 Tailwind CSS v4 和 Radix UI 重写，以 `animal-island-ui-tailwind` 的包名独立发布到 npm。
+
+## 1.9.0 升级提示
+
+本次保留全部现有组件，替换旧素材并重绘 Loading。`Icon.item`、`ITEM_LIST`、`ITEM_COUNT` 已删除；`icon-miles` 改为 `icon-travel`，`icon-critterpedia` 改为 `icon-encyclopedia`。虽然版本号按上游对齐为 1.9.0，升级前仍需处理这些不兼容变化。详见 [Changelog](CHANGELOG.md#190---2026-09-09)。
 
 ## 技术栈
 

@@ -84,3 +84,21 @@ export const AccessibleLabel: Story = {
         'aria-label': '集合啦商店',
     },
 };
+
+export const ArtworkSurfaces: Story = {
+    render: () => (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {['#ffffff', '#fff9ed', '#344b43'].map((background) => (
+                <div key={background} style={{ background, borderRadius: 16, padding: 20, display: 'flex', flexWrap: 'wrap', gap: 20 }}>
+                    {(['icon-camera', 'icon-travel', 'icon-encyclopedia', 'icon-diy', 'icon-design', 'icon-map', 'icon-passport', 'icon-helicopter', 'icon-chat'] as const).map((name) => (
+                        <div key={name} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+                            <Icon name={name} size={48} aria-label={name} />
+                            <Icon name={name} size={32} />
+                            <Icon name={name} size={24} />
+                        </div>
+                    ))}
+                </div>
+            ))}
+        </div>
+    ),
+};

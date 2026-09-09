@@ -1,24 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { cn } from '../../utils/cn';
 
-// 原创徽章图形：奶油底、糖霜描边、上箭头 + 云朵装饰（代码生成，非素材文件）
-const badgeSvg = encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">
-  <circle cx="120" cy="120" r="112" fill="#fdf3e3" stroke="#c9a06c" stroke-width="8"/>
-  <circle cx="120" cy="120" r="96" fill="#fffaf0"/>
-  <g stroke="#8fce8f" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M120 92 L86 124"/>
-    <path d="M120 92 L154 124"/>
-  </g>
-  <path d="M120 92 L120 150" stroke="#5cae72" stroke-width="14" fill="none" stroke-linecap="round"/>
-  <g fill="#aee3f5">
-    <ellipse cx="62" cy="74" rx="20" ry="9"/>
-    <ellipse cx="176" cy="70" rx="16" ry="7"/>
-  </g>
-  <circle cx="188" cy="168" r="6" fill="#f9d9a9"/>
-  <circle cx="48" cy="170" r="5" fill="#f9d9a9"/>
-</svg>`
-);
+import helperImage from './assets/helper.png';
 
 export interface BackTopProps {
     target?: () => HTMLElement | Window;
@@ -104,11 +87,10 @@ export const BackTop: React.FC<BackTopProps> = ({
                 }
             }}
         >
-            <img
-                className="animal-backtop-img"
-                src={`data:image/svg+xml,${badgeSvg}`}
-                alt="返回顶部"
-            />
+            <span className="animal-backtop-artwork" aria-hidden="true">
+                <span className="animal-backtop-bubble">回到<br />顶部</span>
+                <img className="animal-backtop-img" src={helperImage} alt="" draggable={false} />
+            </span>
         </div>
     );
 };

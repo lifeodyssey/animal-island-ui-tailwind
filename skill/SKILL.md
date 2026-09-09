@@ -40,7 +40,7 @@ animal-island-ui-tailwind 是 `animal-island-ui` 的 Tailwind CSS v4 + Radix UI 
 | `Collapse` | 手风琴（CSS Grid，无 JS 过渡） | ✓ | |
 | `Select` | 下拉选择器（受控） | ✓ | |
 | `Checkbox` | 多选框组，水平/垂直，3 种尺寸 | ✓ | |
-| `Icon` | SVG 图标库（10 个） | | ✓ |
+| `Icon` | 图标库（16 个命名图标，支持 Lucide / 自有图片） | | ✓ |
 | `Time` | HUD 实时时钟 | | ✓ |
 | `Phone` | NookPhone 3×3 应用网格 | | ✓ |
 | `Footer` | 底部装饰图（`sea`/`tree`） | | ✓ |
@@ -798,7 +798,7 @@ padding: 12px 20px; gap: 12px;
 | map          | iconHelicopter   | `#FC736D` |  |  |
 | chat         | iconChat         | `#D1DA49` |  |  |
 
-每个 iconClass 都绑定一个 `background-image: url('./img/icon-*.svg')`，`iconApp` 特殊使用 `background-size: 100% auto`（其他是 `70% auto`）。可用图标资源：`icon-miles/camera/chat/critterpedia/design/diy/helicopter/map/shopping/variant.svg`，以及状态图标 `wifi.svg` / `location.svg` / `page.svg`。
+1.9.0 使用重新绘制的九宫格 PNG 图集。应用图标通过 `<Icon name="icon-camera" />` 等公开 API 渲染；旅行使用 `icon-travel`，图鉴使用 `icon-encyclopedia`，护照使用 `icon-passport`。不要引用旧版 `img/icon-*.svg`；状态图标使用 `wifi` / `location` / `page` 命名的 Lucide 图标。
 
 **小红点（新消息）：**
 ```css
@@ -812,9 +812,9 @@ padding: 12px 20px; gap: 12px;
 
 **底部状态图标：**
 ```css
-.iconWifi     { width: 79px; height: 29px;  background: url('./img/wifi.svg') center/contain no-repeat; }
-.iconLocation { width: 36px; height: 36px;  background: url('./img/location.svg') center/contain no-repeat; }
-.iconPage     { width: 65px; height: 32px;  background: url('./img/page.svg') center/contain no-repeat; }
+.iconWifi     { width: 79px; height: 29px;  /* Render the matching Icon component inside this region. */ }
+.iconLocation { width: 36px; height: 36px;  /* Render the matching Icon component inside this region. */ }
+.iconPage     { width: 65px; height: 32px;  /* Render the matching Icon component inside this region. */ }
 .pageIndicator{ display: flex; justify-content: center; align-items: center;
                 margin-top: 74px; }
 ```
@@ -826,65 +826,24 @@ padding: 12px 20px; gap: 12px;
 ### Footer
 
 ```tsx
-<Footer />              // 默认：森林（tree，高 60px）
-<Footer type="sea" />   // 海浪（高 80px）
+<Footer /> // tree; both variants are 80px high
+<Footer type="sea" seamless />
 ```
 
-```css
-.animal-footer { width: 100%; height: 80px;
-                 background: url('./img/footer-sea.svg') center/contain no-repeat; }
-.animal-footer-tree { background-image: url('./img/footer-tree.webp');
-                      height: 60px;
-                      background-size: cover;
-                      background-position: bottom center; }
-```
-
-- `sea`：SVG 海浪插画，`viewBox="0 0 1440 186"`，多色（珊瑚 `#EC7175`、海蓝 `#327A93`、浅蓝 `#98D2E3`、深青 `#008077` 等）。
-- `tree`：webp 森林剪影，置于页面最底部。
-
----
+1.9.0 使用重绘的透明 SVG 海景与树林。两者高度均为 80px，以 `background-size: auto 100%` 显示。`seamless` 使用横向平铺，关闭时居中显示单块。图片由包构建处理，不要引用旧版 `footer-tree.webp`。
 
 ### Divider
 
-```tsx
-<Divider type="line-brown" />  // 默认
-<Divider type="line-teal" />
-<Divider type="line-white" />
-<Divider type="line-yellow" />
-<Divider type="wave-yellow" />
-```
-
-```css
-.animal-divider { width: 100%; height: 12px;
-                  background: url('./img/divider-line-brown.svg') center/contain no-repeat; }
-.animal-divider-line-teal { background-image: url('./img/divider-line-teal.svg'); }
-.animal-divider-line-white { background-image: url('./img/divider-line-white.png'); }
-.animal-divider-line-yellow { background-image: url('./img/divider-line-yellow.svg'); }
-.animal-divider-wave-yellow { background-image: url('./img/wave-yellow.svg'); }
-```
-
-默认 SVG 色值参考：`#D8D0C3`（米褐），`viewBox="0 0 297 14"`。
-
----
+`line-brown/teal/white/yellow` 使用重新设计的三角形条带；`wave-yellow` 是黄色曲线；虚线类型保留 CSS 虚线。高度为 12px。直接使用 `<Divider type="wave-yellow" />` 等公开 API，不要依赖旧版图片路径。
 
 ### Cursor
 
 ```tsx
-<Cursor>
-  <App />   {/* 此范围内所有元素变为游戏手指光标 */}
-</Cursor>
+<Cursor><App /></Cursor>
+<Cursor forceAll={false}><App /></Cursor>
 ```
 
-样式文件为 **普通 CSS**（非 module）：
-```css
-.animal-cursor,
-.animal-cursor * {
-  cursor: url('./cursor-icon.png') 4 0, auto !important;
-}
-```
-
-- `cursor-icon.png` 热点坐标 `(4, 0)`
-- 使用 `!important` 覆盖默认光标；`className` 直接挂在根 `<div>` 上，类名固定为 `animal-cursor`
+1.9.0 的透明手套为 48px PNG，指尖热点 `(8, 5)`，由 `.animal-cursor` CSS 引用包内资源。默认强制覆盖内部光标；scoped 模式保留按钮、文本输入和禁用控件的语义光标。不要引用旧版 `cursor-icon.png`。
 
 ---
 
@@ -1049,7 +1008,7 @@ Props：
 | `className` | `string` | — | 合并到 `.animal-loading-container` |
 | `style` | `CSSProperties` | — | 合并到 `.animal-loading-container` |
 
-视觉要点：内置 SVG 岛屿插画，容器类名为 `.animal-loading-wrapper` / `.animal-loading-container`，关闭态通过 `--mask-r` 与 `@property --mask-r` 做圆形遮罩扩散；动画脚本作为 raw asset 进入 bundle，发布时随库一并打包。
+视觉要点：1.9.0 使用重绘的透明 PNG 小岛和小鱼，配合 CSS 漂浮、水波和跳跃动画；支持减少动态效果。容器类名为 `.animal-loading-wrapper` / `.animal-loading-container`，关闭态仍通过 `--mask-r` 做圆形遮罩扩散。父容器须有明确高度。旧 SVG 场景和 GSAP 动画表已移除。
 
 ---
 

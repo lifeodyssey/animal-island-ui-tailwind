@@ -1,19 +1,6 @@
 import React from 'react';
-import {
-    BookOpen,
-    Camera,
-    Coins,
-    Hammer,
-    Helicopter,
-    Map,
-    MapPin,
-    MessageCircle,
-    Palette,
-    Shuffle,
-    Wifi,
-    FileText,
-    type LucideIcon,
-} from 'lucide-react';
+import { Wifi, MapPin, FileText } from 'lucide-react';
+import { getArtworkStyle, type ArtworkName } from '../Icon/artwork';
 import { cn } from '../../utils/cn';
 import { useNow } from '../../utils/useNow';
 
@@ -21,26 +8,22 @@ export interface PhoneProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 interface App {
     id: string;
-    Icon: LucideIcon;
+    artwork: ArtworkName;
     color: string;
     offset?: boolean;
     hasNewMessage?: boolean;
-    iconSize?: number;
 }
 
-// App icon colors match the upstream NookPhone palette — kept as inline
-// styles to preserve 1:1 visual parity with the original implementation.
-// Glyphs are lucide-react vectors (original art), not bundled bitmaps.
 const apps: App[] = [
-    { id: 'camera', Icon: Camera, color: '#B77DEE', hasNewMessage: true },
-    { id: 'app', Icon: Coins, color: '#889DF0', offset: true },
-    { id: 'critterpedia', Icon: BookOpen, color: '#F7CD67', iconSize: 84 },
-    { id: 'diy', Icon: Hammer, color: '#E59266' },
-    { id: 'shopping', Icon: Palette, color: '#F8A6B2' },
-    { id: 'variant', Icon: Map, color: '#82D5BB', hasNewMessage: true, iconSize: 80 },
-    { id: 'design', Icon: Shuffle, color: '#8AC68A', iconSize: 72 },
-    { id: 'map', Icon: Helicopter, color: '#FC736D' },
-    { id: 'chat', Icon: MessageCircle, color: '#D1DA49' },
+    { id: 'camera', artwork: 'camera', color: '#B77DEE', hasNewMessage: true },
+    { id: 'app', artwork: 'travel', color: '#889DF0', offset: true },
+    { id: 'critterpedia', artwork: 'encyclopedia', color: '#F7CD67' },
+    { id: 'diy', artwork: 'diy', color: '#E59266' },
+    { id: 'shopping', artwork: 'design', color: '#F8A6B2' },
+    { id: 'variant', artwork: 'map', color: '#82D5BB', hasNewMessage: true },
+    { id: 'design', artwork: 'passport', color: '#8AC68A' },
+    { id: 'map', artwork: 'helicopter', color: '#FC736D' },
+    { id: 'chat', artwork: 'chat', color: '#D1DA49' },
 ];
 
 export const Phone = React.forwardRef<HTMLDivElement, PhoneProps>(({ className, ...rest }, ref) => {
@@ -76,13 +59,9 @@ export const Phone = React.forwardRef<HTMLDivElement, PhoneProps>(({ className, 
                                 style={{ backgroundColor: app.color }}
                             >
                                 {app.hasNewMessage && <span className="animal-phone-badge" />}
-                                <app.Icon
-                                    className={cn(
-                                        'animal-phone-app-icon',
-                                        app.offset && 'animal-phone-app-icon-offset',
-                                    )}
-                                    size={app.iconSize ?? 76}
-                                    strokeWidth={1.8}
+                                <span
+                                    className="animal-phone-app-icon"
+                                    style={{ ...getArtworkStyle(app.artwork), width: 112, height: 112 }}
                                     aria-hidden="true"
                                 />
                             </div>

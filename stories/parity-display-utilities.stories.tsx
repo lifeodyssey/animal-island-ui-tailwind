@@ -290,7 +290,7 @@ export const StatusSceneParity: Story = {
         await expect(canvas.getByTestId('time-region')).toHaveTextContent(/Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday/);
         await expect(canvas.getByTestId('phone-region')).toHaveTextContent('Welcome!');
         await expect(canvas.getByTestId('phone-region').querySelectorAll('div[style*="background-color"]').length).toBe(9);
-        await expect(canvas.getByTestId('loading-region').querySelector('svg.illustration')).toBeInTheDocument();
+        await expect(canvas.getByTestId('loading-region').querySelector('.animal-loading-artwork')).toBeInTheDocument();
         await userEvent.click(canvas.getByRole('button', { name: 'Hide loading' }));
         await waitFor(() => expect(canvas.getByTestId('loading-region').querySelector('.parity-loading')).not.toBeVisible(), {
             timeout: 1200,
