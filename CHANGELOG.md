@@ -5,6 +5,54 @@ All notable changes to `animal-island-ui-tailwind` are documented here.
 This project follows a lightweight Keep a Changelog style and uses semantic
 versioning for npm releases.
 
+## 1.9.0 - 2026-09-09
+
+This release aligns the version number with upstream `guokaigdg/animal-island-ui`
+1.9.0 and completes this fork's artwork replacement pass following upstream's
+DMCA remediation. Existing components remain available, including Phone, Wallet,
+WeddingInvitation, Time and Loading. This is not a full port of subsequent
+upstream features such as Background or the raindrop cursor.
+
+### Breaking changes and migration
+
+- Removed the 488-image game item catalog, `Icon.item`, `ITEM_LIST` and
+  `ITEM_COUNT`. Supply your own licensed image with `<Icon src={url} />`, or
+  use a built-in named icon or a Lucide component with `<Icon icon={Heart} />`.
+- Rename `icon-miles` to `icon-travel` and `icon-critterpedia` to
+  `icon-encyclopedia`. `icon-variant` now uses the passport illustration.
+- Icon rendering uses a mix of raster artwork and SVG utility glyphs. Its ref
+  is `HTMLElement`; consumers must not assume an `<img>` node. `color` and
+  `strokeWidth` affect vector icons only. Use `.animal-icon` for shared styling.
+- The minor version number is intentionally aligned with upstream despite
+  these API removals; review the migration notes before upgrading from 1.8.0.
+
+### Artwork and components
+
+- Replaced Footer sea/tree scenes, Wallet pouch, WeddingInvitation couple,
+  Divider waves and triangle strips, Phone app icons, and named Icon artwork.
+- Redrew BackTop's helper, Tabs' leaf, the pointer cursor and the glove used in
+  Select and Pagination menus. Utility glyphs use `lucide-react`.
+- Replaced Loading's old SVG island scene with new palm/island and fish images,
+  CSS floating/water/jump animations, reduced-motion support and a labeled
+  loading status. The existing close/reopen behavior is preserved.
+- Retained warm colors, rounded proportions, transparency and the approved
+  visual compositions. Generated-art prompts and processing records are in
+  `docs/artwork`. Reference-based generation is not a claim of legal clearance.
+
+### Fixes and verification
+
+- WeddingInvitation PNG export now includes the styled, embedded artwork.
+- Select reserves space for the hover glove inside its scrolling viewport and
+  at the browser edge, preventing clipping.
+- Verified transparent artwork, responsive sizing, actual image decoding,
+  keyboard interactions and Loading close/reopen behavior; refreshed local
+  visual baselines for the approved designs.
+- Release automation now includes unit tests and publishes this detailed
+  changelog section as the GitHub Release body.
+
+The current package assets have been replaced or removed; existing repository
+history has not been rewritten.
+
 ## 1.8.0 - 2026-09-06
 
 Syncs upstream `guokaigdg/animal-island-ui` 1.8.0 (commits `1f1f9b78..8ec5951d`).

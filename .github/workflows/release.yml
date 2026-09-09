@@ -45,7 +45,7 @@ jobs:
         run: npm run build
 
       - name: Run tests
-        run: npm run test:migration && npm run test-storybook && npm run test:playwright && npm run test:a11y
+        run: npm run test:migration && npm run test:unit && npm run test-storybook && npm run test:playwright && npm run test:a11y
 
       - name: Build Storybook
         run: npm run build:storybook
@@ -53,16 +53,19 @@ jobs:
       - name: Verify npm package contents
         run: npm pack --dry-run
 
-      - name: Publish to npm
-        run: npm publish --access public
-
       - name: Extract version from tag
         id: version
         run: echo "tag=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
+
+      - name: Prepare release notes
+        run: node scripts/release-notes.mjs "$GITHUB_REF_NAME" "$RUNNER_TEMP/release-notes.md"
+
+      - name: Publish to npm
+        run: npm publish --access public
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version.outputs.tag }}
           name: ${{ steps.version.outputs.tag }}
-          generate_release_notes: true
+          body_path: ${{ runner.temp }}/release-notes.md
