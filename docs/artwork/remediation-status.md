@@ -29,4 +29,6 @@ CHANGELOG.md documents the redraws, retained components, export and menu-clippin
 
 Initial local checks encountered disk exhaustion and load-related timeouts; the task's disposable cache/build outputs were cleaned and affected checks were rerun successfully. Visual baseline refresh retried two development-server navigation interruptions; the final comparison run is the release gate.
 
-`tests/compare-capture.spec.ts` remains intentionally untracked. No unrelated files or public git history were rewritten.
+`tests/compare-capture.spec.ts` remains intentionally untracked. No unrelated files or existing commit history were rewritten.
+
+The first cloud attempt stopped before publication on a BackTop test that queried a visible role after the button had hidden. The assertion was corrected to test hidden state; three local repeats passed. npm and GitHub Release both returned 404 for 1.9.0 before recovery. The freshly created failed candidate tag was retained under a local recovery reference and updated with an exact remote lease; the original commit remains in main history.

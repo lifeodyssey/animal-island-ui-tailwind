@@ -20,7 +20,7 @@ test('BackTop artwork stays inside desktop and mobile viewports and returns its 
         if (width === 390) await button.press('Enter');
         else await button.click();
         await expect.poll(() => area.evaluate((el) => el.scrollTop)).toBe(0);
-        await expect(button).not.toHaveClass(/animal-backtop-visible/);
+        await expect(button).toBeHidden();
     }
 });
 
