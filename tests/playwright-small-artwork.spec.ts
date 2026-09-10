@@ -12,7 +12,8 @@ test('BackTop artwork stays inside desktop and mobile viewports and returns its 
             await el.decode();
             return [el.naturalWidth, el.naturalHeight];
         });
-        expect(dimensions).toEqual([320, 320]);
+        // rocket.svg (viewBox 0 0 48 48, no explicit width/height) → Chromium reports 150×150 for a square SVG
+        expect(dimensions).toEqual([150, 150]);
         const box = await button.boundingBox();
         expect(box!.x).toBeGreaterThanOrEqual(0);
         expect(box!.x + box!.width).toBeLessThanOrEqual(width);

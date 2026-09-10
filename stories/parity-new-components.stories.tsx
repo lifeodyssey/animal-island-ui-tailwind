@@ -285,7 +285,8 @@ export const BackTopStable: Story = {
 
 // ─── Image ──────────────────────────────────────────────────────────────────
 
-const SAMPLE_SRC = 'https://picsum.photos/seed/animal-island/200/150';
+// Tiny 1×1 transparent PNG as a self-contained local data URI — avoids network dependency in tests
+const SAMPLE_SRC = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
 
 export const ImageStory: Story = {
     name: 'Image',
@@ -298,13 +299,13 @@ export const ImageStory: Story = {
                 </div>
             </div>
             <div style={sectionStyle}>
-                <div style={labelStyle}>Colors</div>
+                <div style={labelStyle}>Colors (bordered variant)</div>
                 <div style={rowStyle}>
-                    <Image src={SAMPLE_SRC} alt="default color" color="default" width={120} height={90} />
-                    <Image src={SAMPLE_SRC} alt="app-pink" color="app-pink" width={120} height={90} />
-                    <Image src={SAMPLE_SRC} alt="purple" color="purple" width={120} height={90} />
-                    <Image src={SAMPLE_SRC} alt="app-teal" color="app-teal" width={120} height={90} />
-                    <Image src={SAMPLE_SRC} alt="app-green" color="app-green" width={120} height={90} />
+                    <Image src={SAMPLE_SRC} alt="default color" color="default" variant="bordered" width={120} height={90} />
+                    <Image src={SAMPLE_SRC} alt="app-pink" color="app-pink" variant="bordered" width={120} height={90} />
+                    <Image src={SAMPLE_SRC} alt="purple" color="purple" variant="bordered" width={120} height={90} />
+                    <Image src={SAMPLE_SRC} alt="app-teal" color="app-teal" variant="bordered" width={120} height={90} />
+                    <Image src={SAMPLE_SRC} alt="app-green" color="app-green" variant="bordered" width={120} height={90} />
                 </div>
             </div>
             <div style={sectionStyle}>

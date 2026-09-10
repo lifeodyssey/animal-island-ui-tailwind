@@ -4445,23 +4445,24 @@
 @layer components {
   .animal-backtop {
     position: fixed;
-    bottom: 48px;
-    right: 32px;
+    bottom: 32px;
+    right: 24px;
     z-index: 1000;
     cursor: pointer;
+    border: none;
+    outline: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+    user-select: none;
     transition:
       opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
       transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
       visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 0;
     visibility: hidden;
-    transform: translateY(12px);
-    user-select: none;
-    border: none;
-    outline: none;
-    background: none;
-    padding: 0;
-    line-height: 1;
+    transform: translateY(10px);
   }
 
   .animal-backtop:hover {
@@ -4473,9 +4474,9 @@
   }
 
   .animal-backtop:focus-visible {
-    outline: 2px solid #ffcc00;
-    outline-offset: 4px;
-    border-radius: 50%;
+    outline: 2px solid #19c8b9;
+    outline-offset: 2px;
+    border-radius: 16px;
   }
 
   .animal-backtop-visible {
@@ -4484,76 +4485,16 @@
     transform: translateY(0);
   }
 
-  .animal-backtop-artwork {
-    position: relative;
-    display: block;
-    width: 128px;
-    height: 110px;
-  }
-
-  .animal-backtop-bubble {
-    position: absolute;
-    left: 0;
-    top: 10px;
-    display: grid;
-    place-content: center;
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    background: #fffdf4;
-    color: #84745b;
-    font: bold 12px / 1.3 system-ui;
-    text-align: center;
-    box-shadow: 0 2px 8px #725d4226;
-  }
-
-  .animal-backtop-bubble::after {
-    content: "";
-    position: absolute;
-    right: -4px;
-    bottom: 9px;
-    border: 6px solid transparent;
-    border-left-color: #fffdf4;
-    transform: rotate(18deg);
-  }
-
   .animal-backtop-img {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    width: 105px;
-    height: 105px;
+    width: 64px;
+    height: 64px;
     display: block;
-    object-fit: contain;
-    transition: filter 0.25s ease;
+    filter: drop-shadow(0 4px 10px rgba(91, 78, 30, 0.22));
+    transition: filter 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .animal-backtop:hover .animal-backtop-img {
     filter: drop-shadow(0 4px 14px rgba(91, 78, 30, 0.32));
-  }
-
-  @media (max-width: 768px) {
-    .animal-backtop {
-      bottom: 24px;
-      right: 16px;
-    }
-
-    .animal-backtop-artwork {
-      width: 98px;
-      height: 84px;
-    }
-
-    .animal-backtop-bubble {
-      top: 8px;
-      width: 40px;
-      height: 40px;
-      font-size: 10px;
-    }
-
-    .animal-backtop-img {
-      width: 80px;
-      height: 80px;
-    }
   }
 
   /* ─── Image ─────────────────────────────────────────────────────────────── */
@@ -4574,6 +4515,18 @@
     vertical-align: middle;
     flex-shrink: 0;
     transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* default: card-style, large shadow + large border-radius, no border/padding/background */
+  .animal-image-variant-default {
+    border: none;
+    padding: 0;
+    background: transparent;
+    border-radius: 12px;
+    box-shadow:
+      0 13px 27px -5px rgba(50, 50, 93, 0.25),
+      0 8px 16px -8px rgba(0, 0, 0, 0.3),
+      0 -6px 16px -6px rgba(0, 0, 0, 0.03);
   }
 
   .animal-image-img {
