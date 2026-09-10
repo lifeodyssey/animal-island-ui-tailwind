@@ -125,9 +125,9 @@ const IconSection = () => (
             ))}
         </div>
         <div data-testid="icon-size-row" style={rowStyle}>
-            <Icon name="icon-camera" size={24} />
-            <Icon name="icon-camera" size={40} />
-            <Icon name="icon-camera" size="56px" bounce className="parity-icon-bounce" style={{ backgroundColor: '#fff9e3', borderRadius: 12 }} />
+            <Icon name="Camera" size={24} />
+            <Icon name="Camera" size={40} />
+            <Icon name="Camera" size="56px" bounce className="parity-icon-bounce" style={{ backgroundColor: '#fff9e3', borderRadius: 12 }} />
         </div>
     </section>
 );

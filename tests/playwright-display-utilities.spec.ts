@@ -70,9 +70,9 @@ test.describe('reference display utility parity', () => {
         ).toHaveCSS('background-size', 'auto 100%');
 
         const iconGrid = page.getByTestId('icon-grid');
-        await expect(iconGrid.locator('.animal-icon')).toHaveCount(16);
-        await expect(page.getByText('Travel', { exact: true })).toBeVisible();
-        const sizeIcons = page.getByTestId('icon-size-row').locator('span[class*="icon"]');
+        await expect(iconGrid.locator('.animal-icon')).toHaveCount(101);
+        await expect(page.getByText('Heart', { exact: true })).toBeVisible();
+        const sizeIcons = page.getByTestId('icon-size-row').locator('.animal-icon');
         await expect(sizeIcons).toHaveCount(3);
         await expect(sizeIcons.nth(0)).toHaveCSS('width', '24px');
         await expect(sizeIcons.nth(1)).toHaveCSS('width', '40px');
