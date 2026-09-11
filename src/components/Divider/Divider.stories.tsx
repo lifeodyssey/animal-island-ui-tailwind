@@ -10,30 +10,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    args: { type: 'line-brown' },
-};
-
-export const LineTeal: Story = {
-    args: { type: 'line-teal' },
-};
-
-export const LineWhite: Story = {
-    args: { type: 'line-white' },
-    decorators: [
-        (Story) => (
-            <div style={{ background: '#b5e0b5', padding: '16px' }}>
-                <Story />
-            </div>
-        ),
-    ],
-};
-
-export const LineYellow: Story = {
-    args: { type: 'line-yellow' },
-};
-
-export const WaveYellow: Story = {
-    args: { type: 'wave-yellow' },
+    args: { type: 'dashed-brown' },
 };
 
 export const DashedBrown: Story = {
@@ -60,11 +37,6 @@ export const DashedYellow: Story = {
 };
 
 const ALL_TYPES: DividerType[] = [
-    'line-brown',
-    'line-teal',
-    'line-white',
-    'line-yellow',
-    'wave-yellow',
     'dashed-brown',
     'dashed-teal',
     'dashed-white',
@@ -116,7 +88,7 @@ export const CustomWidth: Story = {
                 <p style={{ marginBottom: 8, fontSize: 12, color: '#7a6652' }}>
                     宽度 25% — 岛民聚会
                 </p>
-                <Divider type="line-brown" style={{ width: '25%' }} />
+                <Divider type="dashed-brown" style={{ width: '25%' }} />
             </div>
             <div>
                 <p style={{ marginBottom: 8, fontSize: 12, color: '#7a6652' }}>
@@ -128,13 +100,13 @@ export const CustomWidth: Story = {
                 <p style={{ marginBottom: 8, fontSize: 12, color: '#7a6652' }}>
                     宽度 75% — 大头菜行情
                 </p>
-                <Divider type="wave-yellow" style={{ width: '75%' }} />
+                <Divider type="dashed-yellow" style={{ width: '75%' }} />
             </div>
             <div>
                 <p style={{ marginBottom: 8, fontSize: 12, color: '#7a6652' }}>
                     宽度 100% — 全岛公告
                 </p>
-                <Divider type="line-teal" style={{ width: '100%' }} />
+                <Divider type="dashed-white" style={{ width: '100%' }} />
             </div>
         </div>
     ),

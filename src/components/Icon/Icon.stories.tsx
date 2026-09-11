@@ -1,29 +1,30 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Icon, ICON_LIST, ITEM_LIST, ITEM_COUNT } from './Icon';
+import { HeartIcon } from './src';
+import { Icon, ICON_LIST } from './Icon';
 
 const meta = {
     component: Icon,
     tags: ['ai-generated'],
-    args: { name: 'icon-map' },
+    args: { name: 'Heart' },
 } satisfies Meta<typeof Icon>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    args: { name: 'icon-map' },
+    args: { name: 'Heart' },
 };
 
 export const AllIcons: Story = {
     render: () => (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24, alignItems: 'center' }}>
-            {ICON_LIST.map(({ name, label }) => (
+            {ICON_LIST.map(({ name }) => (
                 <div
                     key={name}
                     style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}
                 >
                     <Icon name={name} size={32} />
-                    <span style={{ fontSize: 12 }}>{label}</span>
+                    <span style={{ fontSize: 11 }}>{name}</span>
                 </div>
             ))}
         </div>
@@ -38,7 +39,7 @@ export const SizeNumeric: Story = {
                     key={px}
                     style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}
                 >
-                    <Icon name="icon-miles" size={px} />
+                    <Icon name="Flower" size={px} />
                     <span style={{ fontSize: 12 }}>{px}px</span>
                 </div>
             ))}
@@ -54,7 +55,7 @@ export const SizeString: Story = {
                     key={s}
                     style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}
                 >
-                    <Icon name="icon-camera" size={s} />
+                    <Icon name="Star" size={s} />
                     <span style={{ fontSize: 12 }}>{s}</span>
                 </div>
             ))}
@@ -66,12 +67,12 @@ export const Bounce: Story = {
     render: () => (
         <div style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-                <Icon name="icon-helicopter" size={40} bounce />
-                <span style={{ fontSize: 12 }}>弹弹弹 bounce=true</span>
+                <Icon name="Rocket" size={40} bounce />
+                <span style={{ fontSize: 12 }}>bounce=true</span>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-                <Icon name="icon-helicopter" size={40} />
-                <span style={{ fontSize: 12 }}>静止 bounce=false</span>
+                <Icon name="Rocket" size={40} />
+                <span style={{ fontSize: 12 }}>bounce=false</span>
             </div>
         </div>
     ),
@@ -79,25 +80,23 @@ export const Bounce: Story = {
 
 export const AccessibleLabel: Story = {
     args: {
-        name: 'icon-shopping',
+        name: 'Star',
         size: 36,
-        'aria-label': '集合啦商店',
+        'aria-label': 'Favourite',
     },
 };
 
-export const Items: Story = {
-    name: `Item glyphs (${ITEM_COUNT})`,
+export const CustomComponent: Story = {
     render: () => (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, maxWidth: 640 }}>
-            {ITEM_LIST.slice(0, 48).map((id) => (
-                <div
-                    key={id}
-                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}
-                >
-                    <Icon item={id} size={40} />
-                    <span style={{ fontSize: 11 }}>{id}</span>
-                </div>
-            ))}
+        <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+            <Icon icon={HeartIcon} size={48} />
+            <Icon icon={HeartIcon} size={48} color="red" strokeWidth={2} />
         </div>
+    ),
+};
+
+export const CustomSrc: Story = {
+    render: () => (
+        <Icon src="https://example.com/icon.png" size={40} aria-label="Custom icon" />
     ),
 };

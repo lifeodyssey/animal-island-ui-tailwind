@@ -38,10 +38,10 @@ export { Card } from './components/Card';
 export type { CardProps, CardType, CardColor, CardPattern } from './components/Card';
 
 export { Title } from './components/Title';
-export type { TitleProps, TitleSize, TitleColor } from './components/Title';
+export type { TitleProps, TitleSize, TitleColor, TitleVariant } from './components/Title';
 
 export { Footer } from './components/Footer';
-export type { FooterProps, FooterType } from './components/Footer';
+export type { FooterProps } from './components/Footer';
 
 export { Collapse } from './components/Collapse';
 export type { CollapseProps } from './components/Collapse';
@@ -61,8 +61,8 @@ export type { DividerProps, DividerType } from './components/Divider';
 export { Typewriter } from './components/Typewriter';
 export type { TypewriterProps } from './components/Typewriter';
 
-export { Icon, ICON_LIST, ITEM_LIST, ITEM_COUNT } from './components/Icon';
-export type { IconProps, IconName } from './components/Icon';
+export { Icon, ICON_LIST } from './components/Icon';
+export type { IconProps, IconName, IconComponent } from './components/Icon';
 
 export { Wallet } from './components/Wallet';
 export type { WalletProps, WalletSize } from './components/Wallet';

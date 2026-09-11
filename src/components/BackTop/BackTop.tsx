@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { cn } from '../../utils/cn';
-import base64 from './back-top.base64?raw';
+import rocketIcon from './rocket.svg?url';
 
 export interface BackTopProps {
     target?: () => HTMLElement | Window;
@@ -88,7 +88,7 @@ export const BackTop: React.FC<BackTopProps> = ({
         >
             <img
                 className="animal-backtop-img"
-                src={`data:image/png;base64,${base64.trim()}`}
+                src={rocketIcon}
                 alt="返回顶部"
             />
         </div>

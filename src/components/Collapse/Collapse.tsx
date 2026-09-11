@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import * as RadixAccordion from '@radix-ui/react-accordion';
 import { cn } from '../../utils/cn';
+import { Icon } from '../Icon';
 
 const COLLAPSE_ITEM_VALUE = 'item';
 
@@ -76,12 +77,7 @@ export const Collapse = React.forwardRef<HTMLDivElement, CollapseProps>(
                             </span>
                             <span className="animal-collapse-title">{question}</span>
                             <span className="animal-collapse-leaf">
-                                <svg viewBox="0 0 24 24" width="20" height="20">
-                                    <path
-                                        fill="currentColor"
-                                        d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"
-                                    />
-                                </svg>
+                                <Icon name="Fish" size={20} color="currentColor" />
                             </span>
                         </RadixAccordion.Trigger>
                     </RadixAccordion.Header>

@@ -27,7 +27,10 @@ export interface ImageProps extends Omit<
     alt?: string;
     width?: number | string;
     height?: number | string;
+    /** Background color (Card pattern palette, no pattern). Only applies when variant='bordered'. */
     color?: ImageColor;
+    /** Frame type: 'default' large shadow+large radius; 'bordered' soft shadow+small radius. */
+    variant?: 'default' | 'bordered';
     lazy?: boolean;
     preview?: boolean;
     onLoad?: (e: React.SyntheticEvent<HTMLImageElement>) => void;
@@ -40,6 +43,7 @@ export const Image: React.FC<ImageProps> = ({
     width,
     height,
     color = 'white',
+    variant = 'default',
     lazy = false,
     preview = true,
     className,
@@ -117,7 +121,7 @@ export const Image: React.FC<ImageProps> = ({
                 role="img"
                 aria-label={alt || '图片加载失败'}
             >
-                <Icon name="icon-camera" size={32} />
+                <Icon name="Camera" size={32} />
                 <span>图片加载失败</span>
             </span>
         );
@@ -125,7 +129,8 @@ export const Image: React.FC<ImageProps> = ({
 
     const frameCls = cn(
         'animal-image',
-        color !== 'white' && `animal-image-${color}`,
+        variant === 'default' && 'animal-image-variant-default',
+        variant === 'bordered' && color !== 'white' && `animal-image-${color}`,
         loaded && 'animal-image-loaded',
         preview && 'animal-image-preview',
         className
