@@ -232,13 +232,14 @@
   .animal-btn-loading {
     cursor: default;
     pointer-events: none;
-    color: #fff;
-    border: 4px solid #4de2da;
-    background-color: #0ec4b6;
-    background-image: repeating-linear-gradient(-45deg, #0ec4b6, #0ec4b6 10px, #01b0a7 10px, #01b0a7 20px);
-    background-size: 28.28px 28.28px;
     box-shadow: none;
-    animation: animal-btn-loading 1s linear infinite;
+    background: #0ec4b6;
+    border: 4px solid #4de2da;
+    color: #fff;
+  }
+
+  .animal-btn-loading-icon {
+    animation: animal-btn-spin 2.5s linear infinite;
   }
 
   .animal-btn-icon {
