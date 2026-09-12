@@ -19,7 +19,7 @@ test('single-icon footer renders icons in a cycle', async ({ page }) => {
     await page.goto('/iframe.html?id=components-footer--single-icon&viewMode=story');
     const footer = page.locator('.animal-footer');
     await expect(footer).toBeVisible();
-    const cycle = footer.locator('.animal-footer-cycle');
+    const cycle = footer.locator('.animal-footer-cycle').first();
     await expect(cycle).toBeVisible();
     const icons = footer.locator('.animal-icon');
     const count = await icons.count();

@@ -1849,17 +1849,28 @@
     background: linear-gradient(to right, #c4b89e 50%, transparent 50%) center / 12px 2px repeat-x;
   }
 
+  .animal-divider-line-brown {
+    background-image: url('../components/Divider/assets/triangles-brown.svg');
+    background-repeat: no-repeat;
+    background-size: auto 12px;
+  }
+
   .animal-divider-line-teal {
     background-image: url('../components/Divider/assets/triangles-teal.svg');
+    background-repeat: no-repeat;
+    background-size: auto 12px;
   }
 
   .animal-divider-line-white {
     background-image: url('../components/Divider/assets/triangles-white.svg');
+    background-repeat: no-repeat;
     background-size: 680px 12px;
   }
 
   .animal-divider-line-yellow {
     background-image: url('../components/Divider/assets/triangles-yellow.svg');
+    background-repeat: no-repeat;
+    background-size: auto 12px;
   }
 
   /* Independently drawn wave; a centered band keeps the surrounding whitespace. */
