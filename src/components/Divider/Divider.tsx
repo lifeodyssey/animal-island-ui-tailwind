@@ -4,6 +4,11 @@ import { cva } from 'class-variance-authority';
 import { cn } from '../../utils/cn';
 
 export type DividerType =
+    | 'line-brown'
+    | 'line-teal'
+    | 'line-white'
+    | 'line-yellow'
+    | 'wave-yellow'
     | 'dashed-brown'
     | 'dashed-teal'
     | 'dashed-white'
@@ -12,6 +17,11 @@ export type DividerType =
 const dividerVariants = cva('animal-divider', {
     variants: {
         type: {
+            'line-brown': 'animal-divider-line-brown',
+            'line-teal': 'animal-divider-line-teal',
+            'line-white': 'animal-divider-line-white',
+            'line-yellow': 'animal-divider-line-yellow',
+            'wave-yellow': 'animal-divider-wave-yellow',
             'dashed-brown': '',
             'dashed-teal': 'animal-divider-dashed-teal',
             'dashed-white': 'animal-divider-dashed-white',
