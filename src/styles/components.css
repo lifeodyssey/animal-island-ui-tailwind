@@ -3556,6 +3556,104 @@
     --rt: #fff;
   }
 
+  /* ============================================================
+     Title — Layer variant (双层纸)
+     Back layer shifts up-left to peek behind front face.
+     ============================================================ */
+  .animal-title-layer {
+    --rf: #27d039;
+    --rb: #20992a;
+    --rk: #115017;
+    --rt: #fff;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    height: 2.1em;
+    transition: transform 0.2s ease;
+  }
+
+  .animal-title-layer::before {
+    content: '';
+    position: absolute;
+    left: -0.26em;
+    top: -0.3em;
+    right: 0.65em;
+    bottom: 0;
+    background: var(--rb);
+    border-radius: 0.35em;
+    z-index: 0;
+  }
+
+  .animal-title-layer-front {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.1em;
+    padding: 0 1.55em;
+    border-radius: 0.35em;
+    color: var(--rt);
+    background: var(--rf);
+    box-shadow: 0 0.1em 0.16em rgba(0, 0, 0, 0.08);
+    letter-spacing: 0.04em;
+    font-weight: 900;
+    white-space: nowrap;
+    text-shadow: 0 0.05em 0.1em rgba(0, 0, 0, 0.12);
+  }
+
+  .animal-title-layer:hover {
+    transform: scale(1.06);
+  }
+
+  /* ============================================================
+     Title — Tab variant (折角便签)
+     135° gradient clips bottom-right corner + a dark fold triangle.
+     ============================================================ */
+  .animal-title-tab {
+    --rf: #27d039;
+    --rb: #20992a;
+    --rk: #115017;
+    --rt: #fff;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 2em;
+    padding: 0 1.5em;
+    border-radius: 0.32em;
+    color: var(--rt);
+    background: linear-gradient(135deg, transparent 0.9em, var(--rf) 0.9em);
+    filter: drop-shadow(0 0.1em 0.16em rgba(0, 0, 0, 0.08));
+    transition: transform 0.2s ease;
+  }
+
+  .animal-title-tab::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 0 0.9em 0.9em;
+    border-color: transparent transparent var(--rk) transparent;
+  }
+
+  .animal-title-tab-text {
+    position: relative;
+    z-index: 2;
+    margin-left: 0.4em;
+    letter-spacing: 0.04em;
+    font-weight: 900;
+    white-space: nowrap;
+    text-shadow: 0 0.05em 0.1em rgba(0, 0, 0, 0.12);
+  }
+
+  .animal-title-tab:hover {
+    transform: scale(1.06);
+  }
+
   /* Wallet — Animal Crossing bell pouch. Size vars are scoped to the component
      (matching upstream) so size variants only re-declare the five vars. */
   .animal-wallet {
