@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Icon, ICON_LIST } from './Icon';
+import { Icon, ICON_LIST, type IconName } from './Icon';
 
 const meta = {
     component: Icon,
@@ -83,6 +83,36 @@ export const AccessibleLabel: Story = {
         size: 36,
         'aria-label': '集合啦商店',
     },
+};
+
+const ARTWORK_ICON_NAMES: Array<{ name: IconName; ariaLabel: string }> = [
+    { name: 'Camera', ariaLabel: 'icon-camera' },
+    { name: 'Airplane', ariaLabel: '' },
+    { name: 'Book', ariaLabel: '' },
+    { name: 'Pencil', ariaLabel: '' },
+    { name: 'Edit', ariaLabel: '' },
+    { name: 'Map', ariaLabel: '' },
+    { name: 'Globe', ariaLabel: '' },
+    { name: 'Rocket', ariaLabel: '' },
+    { name: 'Chat', ariaLabel: '' },
+];
+
+export const ArtworkSurfaces: Story = {
+    render: () => (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {(['#ffffff', '#fff9ed', '#344b43'] as const).map((background) => (
+                <div key={background} style={{ background, borderRadius: 16, padding: 20, display: 'flex', flexWrap: 'wrap', gap: 20 }}>
+                    {ARTWORK_ICON_NAMES.map(({ name, ariaLabel }) => (
+                        <div key={name} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+                            <Icon name={name} size={48} {...(ariaLabel ? { 'aria-label': ariaLabel } : {})} />
+                            <Icon name={name} size={32} />
+                            <Icon name={name} size={24} />
+                        </div>
+                    ))}
+                </div>
+            ))}
+        </div>
+    ),
 };
 
 export const ColorAndStroke: Story = {
