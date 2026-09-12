@@ -1,17 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Icon, ICON_LIST } from './Icon';
+import { Icon, ICON_LIST, type IconName } from './Icon';
 
 const meta = {
     component: Icon,
     tags: ['ai-generated'],
-    args: { name: 'icon-map' },
+    args: { name: 'Heart' },
 } satisfies Meta<typeof Icon>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    args: { name: 'icon-map' },
+    args: { name: 'Heart' },
 };
 
 export const AllIcons: Story = {
@@ -38,7 +38,7 @@ export const SizeNumeric: Story = {
                     key={px}
                     style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}
                 >
-                    <Icon name="icon-encyclopedia" size={px} />
+                    <Icon name="Flower" size={px} />
                     <span style={{ fontSize: 12 }}>{px}px</span>
                 </div>
             ))}
@@ -54,7 +54,7 @@ export const SizeString: Story = {
                     key={s}
                     style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}
                 >
-                    <Icon name="icon-camera" size={s} />
+                    <Icon name="Camera" size={s} />
                     <span style={{ fontSize: 12 }}>{s}</span>
                 </div>
             ))}
@@ -66,11 +66,11 @@ export const Bounce: Story = {
     render: () => (
         <div style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-                <Icon name="icon-design" size={40} bounce />
+                <Icon name="Star" size={40} bounce />
                 <span style={{ fontSize: 12 }}>弹弹弹 bounce=true</span>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-                <Icon name="icon-design" size={40} />
+                <Icon name="Star" size={40} />
                 <span style={{ fontSize: 12 }}>静止 bounce=false</span>
             </div>
         </div>
@@ -79,26 +79,48 @@ export const Bounce: Story = {
 
 export const AccessibleLabel: Story = {
     args: {
-        name: 'icon-shopping',
+        name: 'ShoppingBag',
         size: 36,
         'aria-label': '集合啦商店',
     },
 };
 
+const ARTWORK_ICON_NAMES: Array<{ name: IconName; ariaLabel: string }> = [
+    { name: 'Camera', ariaLabel: 'icon-camera' },
+    { name: 'Airplane', ariaLabel: '' },
+    { name: 'Book', ariaLabel: '' },
+    { name: 'Pencil', ariaLabel: '' },
+    { name: 'Edit', ariaLabel: '' },
+    { name: 'Map', ariaLabel: '' },
+    { name: 'Globe', ariaLabel: '' },
+    { name: 'Rocket', ariaLabel: '' },
+    { name: 'Chat', ariaLabel: '' },
+];
+
 export const ArtworkSurfaces: Story = {
     render: () => (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            {['#ffffff', '#fff9ed', '#344b43'].map((background) => (
+            {(['#ffffff', '#fff9ed', '#344b43'] as const).map((background) => (
                 <div key={background} style={{ background, borderRadius: 16, padding: 20, display: 'flex', flexWrap: 'wrap', gap: 20 }}>
-                    {(['icon-camera', 'icon-travel', 'icon-encyclopedia', 'icon-diy', 'icon-design', 'icon-map', 'icon-passport', 'icon-helicopter', 'icon-chat'] as const).map((name) => (
+                    {ARTWORK_ICON_NAMES.map(({ name, ariaLabel }) => (
                         <div key={name} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-                            <Icon name={name} size={48} aria-label={name} />
+                            <Icon name={name} size={48} {...(ariaLabel ? { 'aria-label': ariaLabel } : {})} />
                             <Icon name={name} size={32} />
                             <Icon name={name} size={24} />
                         </div>
                     ))}
                 </div>
             ))}
+        </div>
+    ),
+};
+
+export const ColorAndStroke: Story = {
+    render: () => (
+        <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
+            <Icon name="Heart" size={40} color="#e05a5a" strokeWidth={2} />
+            <Icon name="Leaf" size={40} color="#588157" strokeWidth={2} />
+            <Icon name="Sun" size={40} color="#E9C46A" strokeWidth={2} />
         </div>
     ),
 };

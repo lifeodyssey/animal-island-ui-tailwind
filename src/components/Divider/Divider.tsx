@@ -14,13 +14,10 @@ export type DividerType =
     | 'dashed-white'
     | 'dashed-yellow';
 
-// Variant → stable animal-* class literal (byte-identical to the previous lookup,
-// so the rendered class list — and pixels — do not change). line-brown is the
-// default and adds no modifier class.
 const dividerVariants = cva('animal-divider', {
     variants: {
         type: {
-            'line-brown': '',
+            'line-brown': 'animal-divider-line-brown',
             'line-teal': 'animal-divider-line-teal',
             'line-white': 'animal-divider-line-white',
             'line-yellow': 'animal-divider-line-yellow',
@@ -31,7 +28,7 @@ const dividerVariants = cva('animal-divider', {
             'dashed-yellow': 'animal-divider-dashed-yellow',
         },
     },
-    defaultVariants: { type: 'line-brown' },
+    defaultVariants: { type: 'dashed-brown' },
 });
 
 export interface DividerProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -40,7 +37,7 @@ export interface DividerProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const Divider = React.forwardRef<HTMLDivElement, DividerProps>(
-    ({ type = 'line-brown', className, ...rest }, ref) => {
+    ({ type = 'dashed-brown', className, ...rest }, ref) => {
         return (
             <Separator.Root
                 ref={ref}
