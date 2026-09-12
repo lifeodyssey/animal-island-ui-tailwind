@@ -22,7 +22,7 @@ const dividerVariants = cva('animal-divider', {
             'line-white': 'animal-divider-line-white',
             'line-yellow': 'animal-divider-line-yellow',
             'wave-yellow': 'animal-divider-wave-yellow',
-            'dashed-brown': '',
+            'dashed-brown': 'animal-divider-dashed-brown',
             'dashed-teal': 'animal-divider-dashed-teal',
             'dashed-white': 'animal-divider-dashed-white',
             'dashed-yellow': 'animal-divider-dashed-yellow',
