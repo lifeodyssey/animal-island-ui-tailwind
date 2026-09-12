@@ -4656,6 +4656,72 @@
   .animal-image-close-mark::after {
     transform: translate(-50%, -50%) rotate(-45deg);
   }
+
+  /* variant=default: large card shadow, no inner padding, bigger radius */
+  .animal-image-variant-default {
+    border: none;
+    padding: 0;
+    background: transparent;
+    border-radius: 12px;
+    box-shadow:
+      0 13px 27px -5px rgba(50, 50, 93, 0.25),
+      0 8px 16px -8px rgba(0, 0, 0, 0.3),
+      0 -6px 16px -6px rgba(0, 0, 0, 0.03);
+  }
+
+  /* variant=stamp: perforated stamp with halftone dot overlay
+     Perforation: 4 mask-image strips, one per edge, each punching half-circles
+     (hole radius 5px, pitch 16px). The 4 strips intersect to give all-sides
+     perforations without distorting on arbitrary aspect ratios. */
+  .animal-image-variant-stamp {
+    border: none;
+    padding: 14px;
+    background: #fbfaf5;
+    border-radius: 0;
+    box-shadow: none;
+    -webkit-mask-image:
+      radial-gradient(circle 5px at 50% 0, transparent 96%, #000),
+      radial-gradient(circle 5px at 50% 100%, transparent 96%, #000),
+      radial-gradient(circle 5px at 0 50%, transparent 96%, #000),
+      radial-gradient(circle 5px at 100% 50%, transparent 96%, #000);
+    -webkit-mask-position: 50% 0, 50% 100%, 0 50%, 100% 50%;
+    -webkit-mask-size: 16px 100%, 16px 100%, 100% 16px, 100% 16px;
+    -webkit-mask-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+    -webkit-mask-composite: source-in, source-in, source-in;
+    mask-image:
+      radial-gradient(circle 5px at 50% 0, transparent 96%, #000),
+      radial-gradient(circle 5px at 50% 100%, transparent 96%, #000),
+      radial-gradient(circle 5px at 0 50%, transparent 96%, #000),
+      radial-gradient(circle 5px at 100% 50%, transparent 96%, #000);
+    mask-position: 50% 0, 50% 100%, 0 50%, 100% 50%;
+    mask-size: 16px 100%, 16px 100%, 100% 16px, 100% 16px;
+    mask-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+    mask-composite: intersect, intersect, intersect;
+  }
+
+  .animal-image-variant-stamp::after {
+    content: '';
+    position: absolute;
+    inset: 14px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.13;
+    background-image: radial-gradient(circle, rgba(18, 18, 28, 0.6) 0.6px, transparent 0.75px);
+    background-size: 4px 4px;
+  }
+
+  /* Year badge: printed top-right on stamp photo */
+  .animal-image-stamp-year {
+    position: absolute;
+    right: 19px;
+    top: 18px;
+    z-index: 2;
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    color: rgba(255, 255, 255, 0.88);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+    pointer-events: none;
+  }
 }
 
 @layer components {

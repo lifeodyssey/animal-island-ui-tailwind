@@ -27,7 +27,12 @@ export interface ImageProps extends Omit<
     alt?: string;
     width?: number | string;
     height?: number | string;
+    /** Background colour (only applied for variant='bordered'). Default: white. */
     color?: ImageColor;
+    /** Frame style: 'default' large card shadow, 'bordered' soft border, 'stamp' perforated stamp. Default: 'default'. */
+    variant?: 'default' | 'bordered' | 'stamp';
+    /** Year printed in the stamp corner (only shown when variant='stamp'). */
+    stampYear?: string;
     lazy?: boolean;
     preview?: boolean;
     onLoad?: (e: React.SyntheticEvent<HTMLImageElement>) => void;
@@ -40,6 +45,8 @@ export const Image: React.FC<ImageProps> = ({
     width,
     height,
     color = 'white',
+    variant = 'default',
+    stampYear,
     lazy = false,
     preview = true,
     className,
@@ -109,7 +116,7 @@ export const Image: React.FC<ImageProps> = ({
             <span
                 className={cn(
                     'animal-image',
-                    color !== 'white' && `animal-image-${color}`,
+                    variant === 'bordered' && color !== 'white' && `animal-image-${color}`,
                     'animal-image-error',
                     className
                 )}
@@ -125,7 +132,9 @@ export const Image: React.FC<ImageProps> = ({
 
     const frameCls = cn(
         'animal-image',
-        color !== 'white' && `animal-image-${color}`,
+        variant === 'default' && 'animal-image-variant-default',
+        variant === 'stamp' && 'animal-image-variant-stamp',
+        variant === 'bordered' && color !== 'white' && `animal-image-${color}`,
         loaded && 'animal-image-loaded',
         preview && 'animal-image-preview',
         className
@@ -144,11 +153,16 @@ export const Image: React.FC<ImageProps> = ({
         />
     );
 
+    const stampExtra = variant === 'stamp' && stampYear && (
+        <span className="animal-image-stamp-year">{stampYear}</span>
+    );
+
     if (preview) {
         return (
             <>
                 <button type="button" className={frameCls} style={frameStyle} onClick={openPreview}>
                     {content}
+                    {stampExtra}
                 </button>
                 {typeof document !== 'undefined' && createPortal(
                     previewOpen ? (
@@ -185,6 +199,7 @@ export const Image: React.FC<ImageProps> = ({
     return (
         <span className={frameCls} style={frameStyle}>
             {content}
+            {stampExtra}
         </span>
     );
 };
