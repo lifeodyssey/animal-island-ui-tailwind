@@ -5471,19 +5471,123 @@
   }
 
   /* ============================================================
-     Background — decorative pattern backgrounds (no external assets)
-     dots: two-layer offset polka-dot grid (green palette)
-     sprinkles: cylindrical candy sprinkles via inline SVG tiles
+     Background — decorative pattern wallpapers (no external assets)
+     default: cream polka dots (matches Card pattern-default)
+     grid: 24px hairline grid
+     dots-dark-green / dots (compat): green two-layer offset dots
+     sprinkles: cylindrical candy rods via inline SVG tiles
+     dots-*: 12 pastel dot colours matching Card pattern-* series
      ============================================================ */
   .animal-background {
     position: relative;
     width: 100%;
     min-height: 100%;
-    /* default type=dots: two offset dot layers + solid base */
+    /* type=default: cream two-layer offset dots */
+    background:
+      radial-gradient(circle, rgba(196, 184, 158, 0.15) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(196, 184, 158, 0.1) 1px, transparent 1px) 7px 7px / 14px 14px,
+      rgb(247, 243, 223);
+  }
+
+  .animal-background--grid {
+    background-color: rgb(247, 243, 223);
+    background-image:
+      linear-gradient(#c4b89e 1px, transparent 1px),
+      linear-gradient(90deg, #c4b89e 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* dots-dark-green: deep green two-layer offset dots; --dots kept for backward compat */
+  .animal-background--dots-dark-green,
+  .animal-background--dots {
     background:
       radial-gradient(circle, rgba(90, 160, 90, 0.22) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
       radial-gradient(circle, rgba(140, 200, 140, 0.15) 1px, transparent 1px) 7px 7px / 14px 14px,
       #bfe3bf;
+  }
+
+  .animal-background--dots-pink {
+    background:
+      radial-gradient(circle, rgba(248, 166, 178, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(255, 200, 210, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #fde4e8;
+  }
+
+  .animal-background--dots-purple {
+    background:
+      radial-gradient(circle, rgba(183, 125, 238, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(220, 180, 255, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #f0e8ff;
+  }
+
+  .animal-background--dots-blue {
+    background:
+      radial-gradient(circle, rgba(136, 157, 240, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(180, 195, 255, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #e8edff;
+  }
+
+  .animal-background--dots-yellow {
+    background:
+      radial-gradient(circle, rgba(247, 205, 103, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(255, 230, 160, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #fff8e0;
+  }
+
+  .animal-background--dots-orange {
+    background:
+      radial-gradient(circle, rgba(229, 146, 102, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(255, 190, 150, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #fff0e8;
+  }
+
+  .animal-background--dots-teal {
+    background:
+      radial-gradient(circle, rgba(130, 213, 187, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(170, 235, 210, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #e8faf5;
+  }
+
+  .animal-background--dots-green {
+    background:
+      radial-gradient(circle, rgba(138, 198, 138, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(180, 220, 180, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #e8f5e8;
+  }
+
+  .animal-background--dots-red {
+    background:
+      radial-gradient(circle, rgba(252, 115, 109, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(255, 160, 155, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #ffe8e8;
+  }
+
+  .animal-background--dots-lime-green {
+    background:
+      radial-gradient(circle, rgba(209, 218, 73, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(230, 240, 130, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #f5f8e0;
+  }
+
+  .animal-background--dots-yellow-green {
+    background:
+      radial-gradient(circle, rgba(236, 223, 82, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(255, 245, 140, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #fffde8;
+  }
+
+  .animal-background--dots-brown {
+    background:
+      radial-gradient(circle, rgba(154, 131, 90, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(190, 165, 120, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #f5f0e0;
+  }
+
+  .animal-background--dots-warm-peach-pink {
+    background:
+      radial-gradient(circle, rgba(225, 140, 111, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(255, 185, 160, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #fff0e8;
   }
 
   /* sprinkles: cylindrical candy rods — bottom colour + vertical highlight gradient
