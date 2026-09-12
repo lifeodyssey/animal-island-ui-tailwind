@@ -25,14 +25,10 @@ export const SingleIcon: Story = {
     },
 };
 
-export const OnSurfaces: Story = {
+export const OnCream: Story = {
     render: () => (
-        <div style={{ display: 'grid', gap: 24 }}>
-            {(['#ffffff', '#fff9ed', '#e8f0e9'] as const).map((background) => (
-                <div key={background} style={{ background, paddingTop: 24, paddingBottom: 8 }}>
-                    <Footer size={24} />
-                </div>
-            ))}
+        <div style={{ background: '#fff9ed', paddingTop: 24, paddingBottom: 8 }}>
+            <Footer size={24} />
         </div>
     ),
 };
