@@ -251,7 +251,7 @@
     display: inline-flex;
     align-items: center;
     width: 100%;
-    background: #fffbe7;
+    background: rgb(250, 248, 243);
     border-radius: var(--animal-radius-pill);
     box-shadow: 0 3px 0 0 #d4c9b4;
     transition: all var(--animal-motion-duration-base) var(--animal-motion-ease);
@@ -2535,7 +2535,8 @@
 
   .animal-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     background: var(--animal-bg-color-content);
   }
 
@@ -2598,19 +2599,12 @@
   }
 
   .animal-table-row-striped {
-    background: var(--animal-table-stripe-bg);
+    background: rgba(248, 248, 240, 0.6);
   }
 
   .animal-table-row:hover,
   .animal-table-row-striped:hover {
-    background-image: repeating-linear-gradient(
-      -45deg,
-      var(--animal-table-hover-stripe-start),
-      var(--animal-table-hover-stripe-start) 10px,
-      var(--animal-table-hover-stripe-end) 10px,
-      var(--animal-table-hover-stripe-end) 20px
-    );
-    background-size: 28.28px 28.28px;
+    background-color: #d6f0ea;
     border-radius: 30px;
   }
 
