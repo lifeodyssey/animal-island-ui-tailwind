@@ -1896,21 +1896,19 @@
     background: linear-gradient(to right, #f5d04a 50%, transparent 50%) center / 12px 2px repeat-x;
   }
 
+  /* Footer — icon-chain divider strip, fills container width */
   .animal-footer {
+    display: flex;
+    flex-wrap: nowrap;
     width: 100%;
-    height: 80px;
-    position: relative;
-    background: url('../components/Footer/assets/sea.svg') left bottom / auto 100% no-repeat;
+    overflow: hidden;
+    align-items: flex-start;
   }
 
-  .animal-footer-tree {
-    background-image: url('../components/Footer/assets/tree.svg');
-  }
-
-  .animal-footer.animal-footer-seamless {
-    background-repeat: repeat-x;
-    background-size: auto 100%;
-    background-position: left bottom;
+  .animal-footer-cycle {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: flex-start;
   }
 
   .animal-icon {

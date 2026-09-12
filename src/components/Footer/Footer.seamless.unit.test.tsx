@@ -2,29 +2,23 @@ import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/react';
 import { Footer } from './Footer';
 
-/**
- * Footer seamless prop guardrail. Source of truth: upstream Footer.tsx +
- * footer.module.less `.seamless` rule (guokaigdg/animal-island-ui @18e7007) —
- * the `seamless` prop toggles repeat-x horizontal tiling through a dedicated
- * class. Upstream keys it off the CSS-module `styles.seamless`; this fork uses
- * the stable `animal-footer-seamless` class name.
- */
-describe('Footer seamless', () => {
-    it('seamless 为 true 时添加 animal-footer-seamless 类', () => {
-        const { container } = render(<Footer seamless />);
-        const root = container.firstChild as HTMLElement;
-        expect(root.classList.contains('animal-footer-seamless')).toBe(true);
-    });
-
-    it('默认添加 seamless 类（上游默认值 true，@4eacb262）', () => {
+describe('Footer icon-chain', () => {
+    it('renders root with animal-footer class', () => {
         const { container } = render(<Footer />);
         const root = container.firstChild as HTMLElement;
-        expect(root.classList.contains('animal-footer-seamless')).toBe(true);
+        expect(root).toHaveClass('animal-footer');
     });
 
-    it('seamless 为 false 时不添加 seamless 类', () => {
-        const { container } = render(<Footer seamless={false} />);
+    it('renders at least one cycle div', () => {
+        const { container } = render(<Footer />);
+        const cycles = container.querySelectorAll('.animal-footer-cycle');
+        expect(cycles.length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('accepts size and custom className', () => {
+        const { container } = render(<Footer size={32} className="my-footer" />);
         const root = container.firstChild as HTMLElement;
-        expect(root.classList.contains('animal-footer-seamless')).toBe(false);
+        expect(root).toHaveClass('animal-footer');
+        expect(root).toHaveClass('my-footer');
     });
 });
