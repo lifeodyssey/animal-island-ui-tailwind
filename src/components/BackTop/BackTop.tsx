@@ -1,14 +1,20 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { cn } from '../../utils/cn';
 
-import helperImage from './assets/helper.png';
+import rocketIcon from './rocket.svg';
 
 export interface BackTopProps {
+    /** 滚动容器，默认 window */
     target?: () => HTMLElement | Window;
+    /** 滚动多少 px 后显示，默认 400 */
     visibilityHeight?: number;
+    /** 点击回到顶部后的回调 */
     onClick?: React.MouseEventHandler<HTMLDivElement>;
+    /** 自定义类名 */
     className?: string;
+    /** 自定义样式 */
     style?: React.CSSProperties;
+    /** 滚动动画时长(ms)，默认 300 */
     duration?: number;
 }
 
@@ -87,10 +93,7 @@ export const BackTop: React.FC<BackTopProps> = ({
                 }
             }}
         >
-            <span className="animal-backtop-artwork" aria-hidden="true">
-                <span className="animal-backtop-bubble">回到<br />顶部</span>
-                <img className="animal-backtop-img" src={helperImage} alt="" draggable={false} />
-            </span>
+            <img className="animal-backtop-img" src={rocketIcon} alt="" draggable={false} />
         </div>
     );
 };
