@@ -41,7 +41,7 @@ export { Title } from './components/Title';
 export type { TitleProps, TitleSize, TitleColor } from './components/Title';
 
 export { Footer } from './components/Footer';
-export type { FooterProps, FooterType } from './components/Footer';
+export type { FooterProps } from './components/Footer';
 
 export { Collapse } from './components/Collapse';
 export type { CollapseProps } from './components/Collapse';

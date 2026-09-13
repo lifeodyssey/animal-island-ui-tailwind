@@ -9,66 +9,40 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-    args: { type: 'line-brown' },
+export const DashedBrown: Story = {
+    args: { type: 'dashed-brown' },
 };
 
-export const LineTeal: Story = {
-    args: { type: 'line-teal' },
+export const Thin: Story = {
+    args: { type: 'thin' },
 };
 
-export const LineWhite: Story = {
-    args: { type: 'line-white' },
-    decorators: [
-        (Story) => (
-            <div style={{ background: '#b5e0b5', padding: '16px' }}>
-                <Story />
-            </div>
-        ),
-    ],
-};
-
-export const LineYellow: Story = {
-    args: { type: 'line-yellow' },
+export const Hairline: Story = {
+    args: { type: 'hairline' },
 };
 
 export const WaveYellow: Story = {
     args: { type: 'wave-yellow' },
 };
 
-export const DashedBrown: Story = {
-    args: { type: 'dashed-brown' },
+export const Squiggle: Story = {
+    args: { type: 'squiggle' },
 };
 
-export const DashedTeal: Story = {
-    args: { type: 'dashed-teal' },
+export const WithIcon: Story = {
+    args: { icon: 'Heart', iconSize: 20, iconGap: 8 },
 };
 
-export const DashedWhite: Story = {
-    args: { type: 'dashed-white' },
-    decorators: [
-        (Story) => (
-            <div style={{ background: '#b5e0b5', padding: '16px' }}>
-                <Story />
-            </div>
-        ),
-    ],
-};
-
-export const DashedYellow: Story = {
-    args: { type: 'dashed-yellow' },
+export const WithIconLarge: Story = {
+    args: { icon: 'Star', iconSize: 32, iconGap: 12 },
 };
 
 const ALL_TYPES: DividerType[] = [
-    'line-brown',
-    'line-teal',
-    'line-white',
-    'line-yellow',
-    'wave-yellow',
     'dashed-brown',
-    'dashed-teal',
-    'dashed-white',
-    'dashed-yellow',
+    'thin',
+    'hairline',
+    'wave-yellow',
+    'squiggle',
 ];
 
 export const AllTypes: Story = {
@@ -116,13 +90,13 @@ export const CustomWidth: Story = {
                 <p style={{ marginBottom: 8, fontSize: 12, color: '#7a6652' }}>
                     宽度 25% — 岛民聚会
                 </p>
-                <Divider type="line-brown" style={{ width: '25%' }} />
+                <Divider type="dashed-brown" style={{ width: '25%' }} />
             </div>
             <div>
                 <p style={{ marginBottom: 8, fontSize: 12, color: '#7a6652' }}>
                     宽度 50% — 喵喵的摊位
                 </p>
-                <Divider type="dashed-teal" style={{ width: '50%' }} />
+                <Divider type="thin" style={{ width: '50%' }} />
             </div>
             <div>
                 <p style={{ marginBottom: 8, fontSize: 12, color: '#7a6652' }}>
@@ -134,7 +108,7 @@ export const CustomWidth: Story = {
                 <p style={{ marginBottom: 8, fontSize: 12, color: '#7a6652' }}>
                     宽度 100% — 全岛公告
                 </p>
-                <Divider type="line-teal" style={{ width: '100%' }} />
+                <Divider type="hairline" style={{ width: '100%' }} />
             </div>
         </div>
     ),

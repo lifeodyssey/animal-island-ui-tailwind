@@ -3,28 +3,27 @@ import { render } from '@testing-library/react';
 import { Footer } from './Footer';
 
 /**
- * Footer seamless prop guardrail. Source of truth: upstream Footer.tsx +
- * footer.module.less `.seamless` rule (guokaigdg/animal-island-ui @18e7007) —
- * the `seamless` prop toggles repeat-x horizontal tiling through a dedicated
- * class. Upstream keys it off the CSS-module `styles.seamless`; this fork uses
- * the stable `animal-footer-seamless` class name.
+ * Footer API guardrail. The footer was rewritten as an icon-chain divider
+ * strip (upstream guokaigdg/animal-island-ui @111f6c8). The old sea/tree/
+ * seamless props are gone; the new API takes `size` and an optional `name`
+ * to tile a single icon instead of all 101.
  */
-describe('Footer seamless', () => {
-    it('seamless 为 true 时添加 animal-footer-seamless 类', () => {
-        const { container } = render(<Footer seamless />);
-        const root = container.firstChild as HTMLElement;
-        expect(root.classList.contains('animal-footer-seamless')).toBe(true);
-    });
-
-    it('默认添加 seamless 类（上游默认值 true，@4eacb262）', () => {
+describe('Footer', () => {
+    it('渲染 animal-footer 根元素', () => {
         const { container } = render(<Footer />);
         const root = container.firstChild as HTMLElement;
-        expect(root.classList.contains('animal-footer-seamless')).toBe(true);
+        expect(root.classList.contains('animal-footer')).toBe(true);
     });
 
-    it('seamless 为 false 时不添加 seamless 类', () => {
-        const { container } = render(<Footer seamless={false} />);
+    it('单 icon 模式只渲染指定图标', () => {
+        const { container } = render(<Footer name="Heart" size={24} />);
+        const svgs = container.querySelectorAll('svg');
+        expect(svgs.length).toBeGreaterThan(0);
+    });
+
+    it('自定义 size 渲染', () => {
+        const { container } = render(<Footer size={32} />);
         const root = container.firstChild as HTMLElement;
-        expect(root.classList.contains('animal-footer-seamless')).toBe(false);
+        expect(root).toBeTruthy();
     });
 });

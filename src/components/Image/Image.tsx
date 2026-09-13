@@ -28,6 +28,10 @@ export interface ImageProps extends Omit<
     width?: number | string;
     height?: number | string;
     color?: ImageColor;
+    /** Frame type: 'default' card shadow+large radius, 'bordered' soft border+small radius, 'stamp' postage-stamp perforations */
+    variant?: 'default' | 'bordered' | 'stamp';
+    /** Stamp year label (variant='stamp' only), printed top-right on the photo */
+    stampYear?: string;
     lazy?: boolean;
     preview?: boolean;
     onLoad?: (e: React.SyntheticEvent<HTMLImageElement>) => void;
@@ -40,6 +44,8 @@ export const Image: React.FC<ImageProps> = ({
     width,
     height,
     color = 'white',
+    variant = 'default',
+    stampYear,
     lazy = false,
     preview = true,
     className,
@@ -117,7 +123,7 @@ export const Image: React.FC<ImageProps> = ({
                 role="img"
                 aria-label={alt || '图片加载失败'}
             >
-                <Icon name="icon-camera" size={32} />
+                <Icon name="Image" size={32} />
                 <span>图片加载失败</span>
             </span>
         );
@@ -125,7 +131,9 @@ export const Image: React.FC<ImageProps> = ({
 
     const frameCls = cn(
         'animal-image',
-        color !== 'white' && `animal-image-${color}`,
+        variant === 'default' && 'animal-image-variant-default',
+        variant === 'stamp' && 'animal-image-variant-stamp',
+        variant === 'bordered' && color !== 'white' && `animal-image-${color}`,
         loaded && 'animal-image-loaded',
         preview && 'animal-image-preview',
         className
@@ -144,11 +152,16 @@ export const Image: React.FC<ImageProps> = ({
         />
     );
 
+    const stampExtra = variant === 'stamp' && stampYear && (
+        <span className="animal-image-stamp-year">{stampYear}</span>
+    );
+
     if (preview) {
         return (
             <>
                 <button type="button" className={frameCls} style={frameStyle} onClick={openPreview}>
                     {content}
+                    {stampExtra}
                 </button>
                 {typeof document !== 'undefined' && createPortal(
                     previewOpen ? (
@@ -185,6 +198,7 @@ export const Image: React.FC<ImageProps> = ({
     return (
         <span className={frameCls} style={frameStyle}>
             {content}
+            {stampExtra}
         </span>
     );
 };
