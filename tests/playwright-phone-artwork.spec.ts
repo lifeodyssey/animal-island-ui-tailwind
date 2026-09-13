@@ -26,9 +26,9 @@ test('phone artwork decodes with transparency while clock and badges remain visi
 });
 
 test('colored icons render on three surfaces at small sizes with accessible names', async ({ page }) => {
-    await page.goto('/iframe.html?id=components-icon--artwork-surfaces&viewMode=story');
+    await page.goto('/iframe.html?id=components-icon--icon-showcase&viewMode=story');
     await expect(page.locator('.animal-icon')).toHaveCount(81);
-    await expect(page.getByRole('img', { name: 'icon-camera', exact: true })).toHaveCount(3);
+    await expect(page.getByRole('img', { name: 'Camera', exact: true })).toHaveCount(3);
     for (const icon of await page.locator('.animal-icon').all()) {
         await expect(icon).toBeVisible();
         await expect(icon).toHaveCSS('background-repeat', 'no-repeat');

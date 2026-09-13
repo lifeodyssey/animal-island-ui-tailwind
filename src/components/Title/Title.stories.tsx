@@ -10,19 +10,19 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    args: { children: '标题' },
+    args: { children: '标题', variant: 'ribbon' },
 };
 
 export const Small: Story = {
-    args: { size: 'small', children: 'Small Title' },
+    args: { size: 'small', children: 'small', variant: 'ribbon' },
 };
 
 export const Middle: Story = {
-    args: { size: 'middle', children: 'Middle Title' },
+    args: { size: 'middle', children: 'middle', variant: 'ribbon' },
 };
 
 export const Large: Story = {
-    args: { size: 'large', children: 'Large Title' },
+    args: { size: 'large', children: 'large', variant: 'ribbon' },
 };
 
 const ALL_COLORS: TitleColor[] = [
@@ -46,7 +46,7 @@ export const Colors: Story = {
     render: () => (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'center' }}>
             {ALL_COLORS.map((color) => (
-                <Title key={color} color={color} size="middle">
+                <Title key={color} color={color} size="middle" variant="ribbon">
                     {color}
                 </Title>
             ))}

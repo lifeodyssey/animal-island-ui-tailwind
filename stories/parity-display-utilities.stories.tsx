@@ -66,17 +66,12 @@ const panelStyle = {
 } satisfies CSSProperties;
 
 const dividerTypes = [
-    'line-brown',
-    'line-teal',
-    'line-white',
-    'line-yellow',
-    'wave-yellow',
     'dashed-brown',
-    'dashed-teal',
-    'dashed-white',
-    'dashed-yellow',
+    'thin',
+    'hairline',
+    'wave-yellow',
+    'squiggle',
 ] as const;
-const footerTypes = ['sea', 'tree'] as const;
 
 const codeSample = `import React, { useState } from 'react';
 
@@ -96,19 +91,18 @@ const DividerFooterSection = () => (
                     <Divider type={type} className={`parity-divider-${type}`} />
                 </div>
             ))}
-            <Divider type="line-teal" className="parity-divider-custom" style={{ width: 220 }} />
+            <Divider type="thin" className="parity-divider-custom" style={{ width: 220 }} />
         </div>
         <div style={labelStyle}>Footer variants</div>
         <div data-testid="footer-matrix" style={{ ...panelStyle, display: 'grid', gridTemplateColumns: '1fr', gap: 16 }}>
-            {footerTypes.flatMap((type) => [
-                { type, seamless: false, label: type },
-                { type, seamless: true, label: `${type} seamless` },
-            ]).map(({ type, seamless, label }) => (
-                <div key={label}>
-                    <div style={{ color: '#725d42', fontSize: 13, fontWeight: 700, marginBottom: 8 }}>{label}</div>
-                    <Footer type={type} seamless={seamless} className={`parity-footer-${type}${seamless ? '-seamless' : ''}`} style={{ width: 520 }} />
-                </div>
-            ))}
+            <div>
+                <div style={{ color: '#725d42', fontSize: 13, fontWeight: 700, marginBottom: 8 }}>all icons</div>
+                <Footer className="parity-footer-all" style={{ width: 520 }} />
+            </div>
+            <div>
+                <div style={{ color: '#725d42', fontSize: 13, fontWeight: 700, marginBottom: 8 }}>single icon</div>
+                <Footer name="Heart" className="parity-footer-single" style={{ width: 520 }} />
+            </div>
         </div>
     </section>
 );
@@ -125,9 +119,9 @@ const IconSection = () => (
             ))}
         </div>
         <div data-testid="icon-size-row" style={rowStyle}>
-            <Icon name="icon-camera" size={24} />
-            <Icon name="icon-camera" size={40} />
-            <Icon name="icon-camera" size="56px" bounce className="parity-icon-bounce" style={{ backgroundColor: '#fff9e3', borderRadius: 12 }} />
+            <Icon name="Camera" size={24} />
+            <Icon name="Camera" size={40} />
+            <Icon name="Camera" size="56px" bounce className="parity-icon-bounce" style={{ backgroundColor: '#fff9e3', borderRadius: 12 }} />
         </div>
     </section>
 );
@@ -242,10 +236,10 @@ export const AssetsParity: Story = {
     ),
     play: async ({ canvas }) => {
         await waitFor(() => {
-            expect(canvas.getByTestId('divider-matrix').querySelectorAll('div[class*="divider"]').length).toBeGreaterThanOrEqual(10);
+            expect(canvas.getByTestId('divider-matrix').querySelectorAll('div[class*="divider"]').length).toBeGreaterThanOrEqual(5);
         });
         await waitFor(() => {
-            expect(canvas.getByTestId('footer-matrix').querySelectorAll('div[class*="footer"]').length).toBeGreaterThanOrEqual(4);
+            expect(canvas.getByTestId('footer-matrix').querySelectorAll('div[class*="footer"]').length).toBeGreaterThanOrEqual(2);
         });
         for (const icon of ICON_LIST) {
             await expect(canvas.getByText(icon.label)).toBeVisible();

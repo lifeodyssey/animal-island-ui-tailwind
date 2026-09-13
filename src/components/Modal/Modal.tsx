@@ -28,9 +28,13 @@ const visuallyHiddenStyle: React.CSSProperties = {
     border: 0,
 };
 
+export type ModalVariant = 'default' | 'game';
+
 export interface ModalProps {
     /** 是否可见 */
     open: boolean;
+    /** 弹窗类型: default 常规圆角矩形, game 异形自然外框。默认 default */
+    variant?: ModalVariant;
     /** 标题 */
     title?: React.ReactNode;
     /** 宽度 */
@@ -58,6 +62,7 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
     (
         {
             open,
+            variant = 'default',
             title,
             width = 520,
             maskClosable = true,
@@ -73,6 +78,7 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
         ref
     ) => {
         const clipId = useSafeId('modal-clip');
+        const isGame = variant === 'game';
         const [playKey, setPlayKey] = useState(0);
         useEffect(() => {
             if (open) setPlayKey((k) => k + 1);
@@ -110,15 +116,15 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
                         <RadixDialog.Overlay className="animal-modal-overlay" style={maskStyle} />
                         <RadixDialog.Content
                             ref={ref}
-                            className={cn('animal-modal', className)}
+                            className={cn('animal-modal', isGame && 'animal-modal-game', className)}
                             style={{ width }}
                             onPointerDownOutside={handleOutsideInteraction}
                             onInteractOutside={handleOutsideInteraction}
                         >
-                            <ClipDef id={clipId} />
+                            {isGame && <ClipDef id={clipId} />}
                             <div
-                                className="animal-modal-clipped"
-                                style={{ clipPath: `url(#${clipId})` }}
+                                className={cn('animal-modal-clipped', isGame && 'animal-modal-game-clipped')}
+                                style={isGame ? { clipPath: `url(#${clipId})` } : undefined}
                             >
                                 {title ? (
                                     <>
