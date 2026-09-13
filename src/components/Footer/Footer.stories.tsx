@@ -31,7 +31,7 @@ export const AllSurfaces: Story = {
         <div style={{ display: 'grid', gap: 24 }}>
             {['#ffffff', '#fff9ed', '#e8f0e9'].map((background) => (
                 <div key={background} style={{ background, paddingTop: 24 }}>
-                    <Footer size={24} aria-hidden="true" />
+                    <Footer size={24} name="Heart" aria-hidden="true" />
                 </div>
             ))}
         </div>
