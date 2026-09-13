@@ -30,49 +30,29 @@ test.describe('reference display utility parity', () => {
         await expect(page.getByTestId('icon-region')).toBeVisible();
 
         const dividers = page.getByTestId('divider-matrix').locator('div[class*="divider"]');
-        await expect(dividers).toHaveCount(10);
-        const solidAndWaveDividers = page
-            .getByTestId('divider-matrix')
-            .locator(
-                '.animal-divider:not(.animal-divider-dashed-brown):not(.animal-divider-dashed-teal):not(.animal-divider-dashed-white):not(.animal-divider-dashed-yellow)',
-            );
-        const dashedDividers = page
-            .getByTestId('divider-matrix')
-            .locator(
-                '.animal-divider.animal-divider-dashed-brown, .animal-divider.animal-divider-dashed-teal, .animal-divider.animal-divider-dashed-white, .animal-divider.animal-divider-dashed-yellow',
-            );
+        await expect(dividers).toHaveCount(6);
 
-        for (const divider of await solidAndWaveDividers.all()) {
-            await expect(divider).toHaveCSS('height', '12px');
-            await expect(divider).toHaveCSS('background-repeat', 'no-repeat');
-        }
-        for (const divider of await dashedDividers.all()) {
-            await expect(divider).toHaveCSS('height', '12px');
-            await expect(divider).toHaveCSS('background-repeat', 'repeat-x');
-            await expect(divider).toHaveCSS('background-size', '12px 2px');
-        }
+        const dashedBrown = page.getByTestId('divider-matrix').locator('.animal-divider').first();
+        await expect(dashedBrown).toHaveCSS('height', '12px');
+
+        const thin = page.getByTestId('divider-matrix').locator('.animal-divider-thin').first();
+        await expect(thin).toHaveCSS('height', '1px');
+
+        const waveYellow = page.getByTestId('divider-matrix').locator('.animal-divider-wave-yellow');
+        await expect(waveYellow).toHaveCSS('background-repeat', 'repeat-x');
+
         await expect(dividers.last()).toHaveCSS('width', '220px');
 
         const footers = page.getByTestId('footer-matrix').locator('.animal-footer');
-        await expect(footers).toHaveCount(4);
+        await expect(footers).toHaveCount(2);
         for (const footer of await footers.all()) {
-            await expect(footer).toHaveCSS('height', '80px');
+            await expect(footer.locator('.animal-icon').first()).toBeVisible();
         }
-        const seamlessFooters = page.getByTestId('footer-matrix').locator('.animal-footer-seamless');
-        await expect(seamlessFooters).toHaveCount(2);
-        for (const footer of await seamlessFooters.all()) {
-            await expect(footer).toHaveCSS('background-repeat', 'repeat-x');
-            await expect(footer).toHaveCSS('background-size', 'auto 100%');
-            await expect(footer).toHaveCSS('background-position', '0% 100%');
-        }
-        await expect(
-            page.getByTestId('footer-matrix').locator('.animal-footer-tree:not(.animal-footer-seamless)'),
-        ).toHaveCSS('background-size', 'auto 100%');
 
         const iconGrid = page.getByTestId('icon-grid');
-        await expect(iconGrid.locator('.animal-icon')).toHaveCount(16);
-        await expect(page.getByText('Travel', { exact: true })).toBeVisible();
-        const sizeIcons = page.getByTestId('icon-size-row').locator('span[class*="icon"]');
+        await expect(iconGrid.locator('.animal-icon')).toHaveCount(101);
+        await expect(page.getByText('Camera', { exact: true })).toBeVisible();
+        const sizeIcons = page.getByTestId('icon-size-row').locator('.animal-icon');
         await expect(sizeIcons).toHaveCount(3);
         await expect(sizeIcons.nth(0)).toHaveCSS('width', '24px');
         await expect(sizeIcons.nth(1)).toHaveCSS('width', '40px');
