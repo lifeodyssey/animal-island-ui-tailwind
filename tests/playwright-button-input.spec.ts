@@ -32,8 +32,8 @@ test.describe('reference Button/Input parity', () => {
         await expect(page.getByRole('button', { name: 'Text Danger', exact: true })).toBeVisible();
         await expect(page.getByRole('button', { name: 'Link Danger', exact: true })).toBeVisible();
 
-        await expect(defaultButton).toHaveCSS('border-color', 'rgb(170, 166, 157)');
-        await expect(dashedButton).toHaveCSS('border-color', 'rgb(170, 166, 157)');
+        await expect(defaultButton).toHaveCSS('border-color', 'rgb(220, 216, 209)');
+        await expect(dashedButton).toHaveCSS('border-color', 'rgb(220, 216, 209)');
 
         for (const name of ['Small', 'Middle', 'Large']) {
             await expect(page.getByRole('button', { name, exact: true })).toHaveCSS(

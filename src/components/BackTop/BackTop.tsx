@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { cn } from '../../utils/cn';
-import rocketIcon from './rocket.svg';
+import helperIcon from './assets/helper.png';
 
 export interface BackTopProps {
     target?: () => HTMLElement | Window;
@@ -86,7 +86,7 @@ export const BackTop: React.FC<BackTopProps> = ({
                 }
             }}
         >
-            <img className="animal-backtop-img" src={rocketIcon} alt="返回顶部" />
+            <img className="animal-backtop-img" src={helperIcon} alt="返回顶部" />
         </div>
     );
 };
