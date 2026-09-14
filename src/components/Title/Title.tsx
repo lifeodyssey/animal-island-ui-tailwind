@@ -28,7 +28,7 @@ export interface TitleProps {
     size?: TitleSize;
     /** 配色，与 Card 同名色板 */
     color?: TitleColor;
-    /** 标题样式：layer 双层纸（默认）/ ribbon 飘带 / tab 折角便签 */
+    /** 标题样式：ribbon 飘带（默认）/ layer 双层纸 / tab 折角便签 */
     variant?: TitleVariant;
     /** 自定义类名 */
     className?: string;
@@ -151,7 +151,7 @@ export const Title: React.FC<TitleProps> = ({
     children,
     size = 'middle',
     color = 'default',
-    variant = 'layer',
+    variant = 'ribbon',
     className,
     style,
 }) => {

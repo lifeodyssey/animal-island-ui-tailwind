@@ -102,3 +102,21 @@ export const AnimalTheme: Story = {
         </div>
     ),
 };
+
+export const ArtworkSurfaces: Story = {
+    render: () => (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {(['#ffffff', '#fff9ed', '#344b43'] as const).map((background) => (
+                <div key={background} style={{ background, borderRadius: 16, padding: 20, display: 'flex', flexWrap: 'wrap', gap: 20 }}>
+                    {(['Camera', 'Chat', 'Map', 'Bird', 'Bee', 'Bell', 'Book', 'Butterfly', 'Bear'] as const).map((name) => (
+                        <div key={name} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+                            <Icon name={name} size={48} aria-label={name === 'Camera' ? 'icon-camera' : undefined} />
+                            <Icon name={name} size={32} />
+                            <Icon name={name} size={24} />
+                        </div>
+                    ))}
+                </div>
+            ))}
+        </div>
+    ),
+};
