@@ -2,8 +2,9 @@
    class names rather than Tailwind animate-* utilities, so @keyframes do not
    need to be inside @theme. Collapse keyframes remain in @layer components
    where they are consumed. */
-@keyframes animal-btn-loading {
-  to { background-position: -28.28px 0; }
+@keyframes animal-btn-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
 }
 
 @keyframes animal-spin {

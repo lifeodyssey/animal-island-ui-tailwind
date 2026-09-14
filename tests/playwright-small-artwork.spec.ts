@@ -12,7 +12,7 @@ test('BackTop artwork stays inside desktop and mobile viewports and returns its 
             await el.decode();
             return [el.naturalWidth, el.naturalHeight];
         });
-        expect(dimensions).toEqual([320, 320]);
+        expect(dimensions).toEqual([150, 150]);
         const box = await button.boundingBox();
         expect(box!.x).toBeGreaterThanOrEqual(0);
         expect(box!.x + box!.width).toBeLessThanOrEqual(width);

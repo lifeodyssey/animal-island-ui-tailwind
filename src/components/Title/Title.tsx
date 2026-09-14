@@ -19,6 +19,8 @@ export type TitleColor =
     | 'brown'
     | 'warm-peach-pink';
 
+export type TitleVariant = 'ribbon' | 'layer' | 'tab';
+
 export interface TitleProps {
     /** 标题内容 */
     children: React.ReactNode;
@@ -26,6 +28,8 @@ export interface TitleProps {
     size?: TitleSize;
     /** 配色，与 Card 同名色板 */
     color?: TitleColor;
+    /** 标题样式：ribbon 飘带（默认）/ layer 双层纸 / tab 折角便签 */
+    variant?: TitleVariant;
     /** 自定义类名 */
     className?: string;
     /** 自定义样式 */
@@ -41,6 +45,22 @@ const SIZE_MAP: Record<TitleSize, number> = {
     middle: 20,
     large: 28,
 };
+
+const colorVariants = {
+    default: '',
+    'app-pink': 'animal-title-app-pink',
+    purple: 'animal-title-purple',
+    'app-blue': 'animal-title-app-blue',
+    'app-yellow': 'animal-title-app-yellow',
+    'app-orange': 'animal-title-app-orange',
+    'app-teal': 'animal-title-app-teal',
+    'app-green': 'animal-title-app-green',
+    'app-red': 'animal-title-app-red',
+    'lime-green': 'animal-title-lime-green',
+    'yellow-green': 'animal-title-yellow-green',
+    brown: 'animal-title-brown',
+    'warm-peach-pink': 'animal-title-warm-peach-pink',
+} as const;
 
 // color variant only overrides the --rf/--rb/--rk/--rt CSS vars on the ribbon;
 // byte-identical class output (default adds no modifier).
@@ -92,18 +112,55 @@ const Ribbon: React.FC<{ children: React.ReactNode; fontSize: number; color: Tit
     </span>
 );
 
+const Layer: React.FC<{ children: React.ReactNode; fontSize: number; color: TitleColor }> = ({
+    children,
+    fontSize,
+    color,
+}) => (
+    <span
+        className={cn('animal-title-layer', color !== 'default' && colorVariants[color])}
+        style={{ fontSize: `${fontSize}px` }}
+    >
+        <span className="animal-title-layer-front">{children}</span>
+    </span>
+);
+
+const Tab: React.FC<{ children: React.ReactNode; fontSize: number; color: TitleColor }> = ({
+    children,
+    fontSize,
+    color,
+}) => (
+    <span
+        className={cn('animal-title-tab', color !== 'default' && colorVariants[color])}
+        style={{ fontSize: `${fontSize}px` }}
+    >
+        <span className="animal-title-tab-text">{children}</span>
+    </span>
+);
+
+const VARIANT_MAP: Record<
+    TitleVariant,
+    React.FC<{ children: React.ReactNode; fontSize: number; color: TitleColor }>
+> = {
+    ribbon: Ribbon,
+    layer: Layer,
+    tab: Tab,
+};
+
 export const Title: React.FC<TitleProps> = ({
     children,
     size = 'middle',
     color = 'default',
+    variant = 'ribbon',
     className,
     style,
 }) => {
+    const Body = VARIANT_MAP[variant];
     return (
         <span className={cn('animal-title', className)} style={style}>
-            <Ribbon fontSize={SIZE_MAP[size]} color={color}>
+            <Body fontSize={SIZE_MAP[size]} color={color}>
                 {children}
-            </Ribbon>
+            </Body>
         </span>
     );
 };

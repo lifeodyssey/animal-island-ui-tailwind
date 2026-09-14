@@ -8,16 +8,20 @@ describe('Background', () => {
         expect(container.firstChild).toHaveClass('animal-background');
     });
 
-    it('default type=dots has no extra modifier class', () => {
+    it('default type=default applies animal-background-default class', () => {
         const { container } = render(<Background />);
         const root = container.firstChild as HTMLElement;
-        expect(root).toHaveClass('animal-background');
-        expect(root).not.toHaveClass('animal-background--sprinkles');
+        expect(root).toHaveClass('animal-background-default');
     });
 
-    it('type=sprinkles applies sprinkles class', () => {
+    it('type=sprinkles applies animal-background-sprinkles class', () => {
         const { container } = render(<Background type="sprinkles" />);
-        expect(container.firstChild).toHaveClass('animal-background--sprinkles');
+        expect(container.firstChild).toHaveClass('animal-background-sprinkles');
+    });
+
+    it('type=dots-pink applies animal-background-dots-pink class', () => {
+        const { container } = render(<Background type="dots-pink" />);
+        expect(container.firstChild).toHaveClass('animal-background-dots-pink');
     });
 
     it('renders children above background', () => {

@@ -1,5 +1,5 @@
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
-import { Map as MapIcon } from 'lucide-react';
+import { MapIcon } from '../Icon/src';
 import coupleImage from './assets/couple.png';
 import { cn } from '../../utils/cn';
 import { injectWeddingFonts, prepareWeddingFontsForExport } from './fonts';
@@ -335,7 +335,7 @@ export const WeddingInvitation = forwardRef<WeddingInvitationRef, WeddingInvitat
 
                 <div className="animal-wedding-venue-card">
                     <span className="animal-wedding-venue-icon">
-                        <MapIcon size={26} aria-hidden="true" />
+                        <MapIcon width={26} height={26} aria-hidden={true} />
                     </span>
                     <div className="animal-wedding-venue-text">
                         <div className="animal-wedding-venue-name">{venue}</div>

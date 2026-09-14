@@ -232,13 +232,14 @@
   .animal-btn-loading {
     cursor: default;
     pointer-events: none;
-    color: #fff;
-    border: 4px solid #4de2da;
-    background-color: #0ec4b6;
-    background-image: repeating-linear-gradient(-45deg, #0ec4b6, #0ec4b6 10px, #01b0a7 10px, #01b0a7 20px);
-    background-size: 28.28px 28.28px;
     box-shadow: none;
-    animation: animal-btn-loading 1s linear infinite;
+    background: #0ec4b6;
+    border: 4px solid #4de2da;
+    color: #fff;
+  }
+
+  .animal-btn-loading-icon {
+    animation: animal-btn-spin 2.5s linear infinite;
   }
 
   .animal-btn-icon {
@@ -250,7 +251,7 @@
     display: inline-flex;
     align-items: center;
     width: 100%;
-    background: #fffbe7;
+    background: rgb(250, 248, 243);
     border-radius: var(--animal-radius-pill);
     box-shadow: 0 3px 0 0 #d4c9b4;
     transition: all var(--animal-motion-duration-base) var(--animal-motion-ease);
@@ -325,7 +326,7 @@
     border: none;
     outline: none;
     background: transparent;
-    color: #8a7b66;
+    color: #794f3f;
     font-size: inherit;
     font-family: var(--animal-font-family);
     font-weight: 500;
@@ -1800,12 +1801,25 @@
     width: 100%;
     height: 100%;
     padding: 48px 48px 32px;
+    border-radius: var(--animal-border-radius-lg);
+    box-shadow: var(--animal-shadow-lg);
     overflow: hidden;
     display: flex;
     flex-direction: column;
     background: var(--animal-bg-color-content);
     color: rgb(128, 115, 89);
     font-family: var(--animal-font-family);
+  }
+
+  .animal-modal-game {
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .animal-modal-game-clipped {
+    border-radius: 0;
+    box-shadow: none;
+    padding: 48px 48px 32px;
   }
 
   .animal-modal-header {
@@ -1842,74 +1856,84 @@
     gap: 12px;
   }
 
+  /* Divider: default type=dashed-brown */
   .animal-divider {
     width: 100%;
     height: 12px;
-    background: url('../components/Divider/assets/triangles-brown.svg') center / min(260px, 100%) 12px no-repeat;
-  }
-
-  .animal-divider-line-teal {
-    background-image: url('../components/Divider/assets/triangles-teal.svg');
-  }
-
-  .animal-divider-line-white {
-    background-image: url('../components/Divider/assets/triangles-white.svg');
-    background-size: 680px 12px;
-  }
-
-  .animal-divider-line-yellow {
-    background-image: url('../components/Divider/assets/triangles-yellow.svg');
-  }
-
-  /* Independently drawn wave; a centered band keeps the surrounding whitespace. */
-  .animal-divider-wave-yellow {
-    background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22450%22%20height%3D%2212%22%20viewBox%3D%220%200%20450%2012%22%3E%3Cpath%20d%3D%22M0%206%20C5%200%2010%200%2015%206%20C20%2012%2025%2012%2030%206%20C35%200%2040%200%2045%206%20C50%2012%2055%2012%2060%206%20C65%200%2070%200%2075%206%20C80%2012%2085%2012%2090%206%20C95%200%20100%200%20105%206%20C110%2012%20115%2012%20120%206%20C125%200%20130%200%20135%206%20C140%2012%20145%2012%20150%206%20C155%200%20160%200%20165%206%20C170%2012%20175%2012%20180%206%20C185%200%20190%200%20195%206%20C200%2012%20205%2012%20210%206%20C215%200%20220%200%20225%206%20C230%2012%20235%2012%20240%206%20C245%200%20250%200%20255%206%20C260%2012%20265%2012%20270%206%20C275%200%20280%200%20285%206%20C290%2012%20295%2012%20300%206%20C305%200%20310%200%20315%206%20C320%2012%20325%2012%20330%206%20C335%200%20340%200%20345%206%20C350%2012%20355%2012%20360%206%20C365%200%20370%200%20375%206%20C380%2012%20385%2012%20390%206%20C395%200%20400%200%20405%206%20C410%2012%20415%2012%20420%206%20C425%200%20430%200%20435%206%20C440%2012%20445%2012%20450%206%22%20fill%3D%22none%22%20stroke%3D%22%23f0d85b%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E");
-    background-position: center;
-    background-size: min(450px, 100%) 12px;
-    background-repeat: no-repeat;
-  }
-
-  .animal-divider-dashed-brown,
-  .animal-divider-dashed-teal,
-  .animal-divider-dashed-white,
-  .animal-divider-dashed-yellow {
-    background-image: none;
-    background-repeat: repeat-x;
-    background-position: center;
-    background-size: 12px 2px;
-  }
-
-  .animal-divider-dashed-brown {
     background: linear-gradient(to right, #c4b89e 50%, transparent 50%) center / 12px 2px repeat-x;
   }
 
-  .animal-divider-dashed-teal {
-    background: linear-gradient(to right, #19c8b9 50%, transparent 50%) center / 12px 2px repeat-x;
+  /* thin — 1px solid line */
+  .animal-divider-thin {
+    height: 1px;
+    background: #e8dec7;
   }
 
-  .animal-divider-dashed-white {
-    background: linear-gradient(to right, #ffffff 50%, transparent 50%) center / 12px 2px repeat-x;
+  /* hairline — 1px dense dashed line (6px pitch) */
+  .animal-divider-hairline {
+    height: 1px;
+    background: linear-gradient(to right, #d5c3a2 50%, transparent 50%) center / 6px 1px repeat-x;
   }
 
-  .animal-divider-dashed-yellow {
-    background: linear-gradient(to right, #f5d04a 50%, transparent 50%) center / 12px 2px repeat-x;
+  /* wave-yellow — yellow sine wave (inline SVG, 40px cycle, round linecap) */
+  .animal-divider-wave-yellow {
+    height: 14px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 14' preserveAspectRatio='none'%3E%3Cpath d='M0 7 Q10 0 20 7 T40 7' fill='none' stroke='%23f5d04a' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: repeat-x;
+    background-size: 40px 14px;
+    background-position: center;
+  }
+
+  /* squiggle — teal sine wave (inline SVG, 120px, seamless) */
+  .animal-divider-squiggle {
+    height: 10px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 10'%3E%3Cpath d='M0 2.5 C 30 2.5, 30 7.5, 60 7.5 C 90 7.5, 90 2.5, 120 2.5' fill='none' stroke='%2319c8b9' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: repeat-x;
+    background-size: 120px 10px;
+    background-position: center;
+  }
+
+  /* icon-connected divider */
+  .animal-divider-icon {
+    display: flex;
+    width: 100%;
+    overflow: hidden;
+    align-items: center;
+    min-height: 20px;
+  }
+
+  .animal-divider-icon-cycle {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+  }
+
+  .animal-divider-icon-gap {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .animal-divider-icon-line {
+    flex: 0 0 auto;
+    width: 4px;
+    height: 2px;
+    background: #c4b89e;
   }
 
   .animal-footer {
+    display: flex;
+    flex-wrap: nowrap;
     width: 100%;
-    height: 80px;
-    position: relative;
-    background: url('../components/Footer/assets/sea.svg') left bottom / auto 100% no-repeat;
+    overflow: hidden;
+    align-items: flex-start;
   }
 
-  .animal-footer-tree {
-    background-image: url('../components/Footer/assets/tree.svg');
-  }
-
-  .animal-footer.animal-footer-seamless {
-    background-repeat: repeat-x;
-    background-size: auto 100%;
-    background-position: left bottom;
+  .animal-footer-cycle {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: flex-start;
   }
 
   .animal-icon {
@@ -1962,20 +1986,19 @@
   }
 
   .animal-time-clock {
-    display: flex;
-    align-items: center;
     color: #8b7355;
-    font-size: 48px;
+    font-size: 44px;
     font-weight: 900;
-    letter-spacing: 2px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 1px;
+    line-height: 1;
+    white-space: nowrap;
   }
 
   .animal-time-colon {
-    position: relative;
-    top: -0.08em;
-    margin: 0 1px;
-    color: #8b7355;
-    font-size: 48px;
+    display: inline-block;
+    margin: 0 2px;
+    transform: translateY(-0.11em);
     animation: animal-blink 1s step-end infinite;
   }
 
@@ -2602,14 +2625,7 @@
 
   .animal-table-row:hover,
   .animal-table-row-striped:hover {
-    background-image: repeating-linear-gradient(
-      -45deg,
-      var(--animal-table-hover-stripe-start),
-      var(--animal-table-hover-stripe-start) 10px,
-      var(--animal-table-hover-stripe-end) 10px,
-      var(--animal-table-hover-stripe-end) 20px
-    );
-    background-size: 28.28px 28.28px;
+    background-color: #d6f0ea;
     border-radius: 30px;
   }
 
@@ -3561,6 +3577,100 @@
     --rt: #fff;
   }
 
+  /* Title: Layer variant */
+  .animal-title-layer {
+    --rf: #27d039;
+    --rb: #20992a;
+    --rk: #115017;
+    --rt: #fff;
+
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    height: 2.1em;
+    transition: transform 0.2s ease;
+  }
+
+  .animal-title-layer::before {
+    content: '';
+    position: absolute;
+    left: -0.26em;
+    top: -0.3em;
+    right: 0.65em;
+    bottom: 0;
+    background: var(--rb);
+    border-radius: 0.35em;
+    z-index: 0;
+  }
+
+  .animal-title-layer-front {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.1em;
+    padding: 0 1.55em;
+    border-radius: 0.35em;
+    color: var(--rt);
+    background: var(--rf);
+    box-shadow: 0 0.1em 0.16em rgba(0, 0, 0, 0.08);
+    letter-spacing: 0.04em;
+    font-weight: 900;
+    white-space: nowrap;
+    text-shadow: 0 0.05em 0.1em rgba(0, 0, 0, 0.12);
+  }
+
+  .animal-title-layer:hover {
+    transform: scale(1.06);
+  }
+
+  /* Title: Tab variant */
+  .animal-title-tab {
+    --rf: #27d039;
+    --rb: #20992a;
+    --rk: #115017;
+    --rt: #fff;
+
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 2em;
+    padding: 0 1.5em;
+    border-radius: 0.32em;
+    color: var(--rt);
+    background: linear-gradient(135deg, transparent 0.9em, var(--rf) 0.9em);
+    filter: drop-shadow(0 0.1em 0.16em rgba(0, 0, 0, 0.08));
+    transition: transform 0.2s ease;
+  }
+
+  .animal-title-tab::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 0 0.9em 0.9em;
+    border-color: transparent transparent var(--rk) transparent;
+  }
+
+  .animal-title-tab-text {
+    position: relative;
+    z-index: 2;
+    margin-left: 0.4em;
+    letter-spacing: 0.04em;
+    font-weight: 900;
+    white-space: nowrap;
+    text-shadow: 0 0.05em 0.1em rgba(0, 0, 0, 0.12);
+  }
+
+  .animal-title-tab:hover {
+    transform: scale(1.06);
+  }
+
   /* Wallet — Animal Crossing bell pouch. Size vars are scoped to the component
      (matching upstream) so size variants only re-declare the five vars. */
   .animal-wallet {
@@ -4285,24 +4395,25 @@
     flex: 1 1 auto;
     width: 100%;
     min-width: 80px;
-    background: #f8f8f0;
-    border: 2px solid #e8dcc8;
+    background:
+      radial-gradient(circle, rgba(196, 184, 158, 0.15) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(196, 184, 158, 0.1) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #f8f8f0;
     box-shadow: inset 0 2px 4px rgba(114, 93, 66, 0.08);
     overflow: hidden;
     border-radius: 999px;
   }
 
   .animal-progress-track-small {
-    height: 12px;
-    border-width: 1.5px;
+    height: 14px;
   }
 
   .animal-progress-track-middle {
-    height: 20px;
+    height: 24px;
   }
 
   .animal-progress-track-large {
-    height: 28px;
+    height: 32px;
   }
 
   /* Fill */
@@ -4313,16 +4424,7 @@
     bottom: 0;
     width: 0;
     border-radius: 999px;
-    background: #0ec4b6;
-    background-image: repeating-linear-gradient(
-      -45deg,
-      #0ec4b6 0,
-      #0ec4b6 10px,
-      #01b0a7 10px,
-      #01b0a7 20px
-    );
-    background-size: 28.28px 28.28px;
-    animation: animal-progress-stripe 1s linear infinite;
+    background-color: #0ec4b6;
     transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
     display: flex;
@@ -4445,23 +4547,24 @@
 @layer components {
   .animal-backtop {
     position: fixed;
-    bottom: 48px;
-    right: 32px;
+    bottom: 32px;
+    right: 24px;
     z-index: 1000;
     cursor: pointer;
+    border: none;
+    outline: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+    user-select: none;
     transition:
       opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
       transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
       visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 0;
     visibility: hidden;
-    transform: translateY(12px);
-    user-select: none;
-    border: none;
-    outline: none;
-    background: none;
-    padding: 0;
-    line-height: 1;
+    transform: translateY(10px);
   }
 
   .animal-backtop:hover {
@@ -4473,9 +4576,9 @@
   }
 
   .animal-backtop:focus-visible {
-    outline: 2px solid #ffcc00;
-    outline-offset: 4px;
-    border-radius: 50%;
+    outline: 2px solid #19c8b9;
+    outline-offset: 2px;
+    border-radius: 16px;
   }
 
   .animal-backtop-visible {
@@ -4484,76 +4587,16 @@
     transform: translateY(0);
   }
 
-  .animal-backtop-artwork {
-    position: relative;
-    display: block;
-    width: 128px;
-    height: 110px;
-  }
-
-  .animal-backtop-bubble {
-    position: absolute;
-    left: 0;
-    top: 10px;
-    display: grid;
-    place-content: center;
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    background: #fffdf4;
-    color: #84745b;
-    font: bold 12px / 1.3 system-ui;
-    text-align: center;
-    box-shadow: 0 2px 8px #725d4226;
-  }
-
-  .animal-backtop-bubble::after {
-    content: "";
-    position: absolute;
-    right: -4px;
-    bottom: 9px;
-    border: 6px solid transparent;
-    border-left-color: #fffdf4;
-    transform: rotate(18deg);
-  }
-
   .animal-backtop-img {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    width: 105px;
-    height: 105px;
+    width: 64px;
+    height: 64px;
     display: block;
-    object-fit: contain;
-    transition: filter 0.25s ease;
+    filter: drop-shadow(0 4px 10px rgba(91, 78, 30, 0.22));
+    transition: filter 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .animal-backtop:hover .animal-backtop-img {
     filter: drop-shadow(0 4px 14px rgba(91, 78, 30, 0.32));
-  }
-
-  @media (max-width: 768px) {
-    .animal-backtop {
-      bottom: 24px;
-      right: 16px;
-    }
-
-    .animal-backtop-artwork {
-      width: 98px;
-      height: 84px;
-    }
-
-    .animal-backtop-bubble {
-      top: 8px;
-      width: 40px;
-      height: 40px;
-      font-size: 10px;
-    }
-
-    .animal-backtop-img {
-      width: 80px;
-      height: 80px;
-    }
   }
 
   /* ─── Image ─────────────────────────────────────────────────────────────── */
@@ -4595,6 +4638,72 @@
     color: #c4b89e;
     font-size: 13px;
     font-weight: 500;
+  }
+
+  /* Frame variants */
+  .animal-image-variant-default {
+    border: none;
+    padding: 0;
+    background: transparent;
+    border-radius: 12px;
+    box-shadow:
+      0 13px 27px -5px rgba(50, 50, 93, 0.25),
+      0 8px 16px -8px rgba(0, 0, 0, 0.3),
+      0 -6px 16px -6px rgba(0, 0, 0, 0.03);
+  }
+
+  /* stamp: postage-stamp with perforated edges */
+  .animal-image-variant-stamp {
+    border: none;
+    padding: 14px;
+    background: #fbfaf5;
+    border-radius: 0;
+    box-shadow: none;
+    -webkit-mask-image:
+      radial-gradient(circle 5px at 50% 0, transparent 96%, #000),
+      radial-gradient(circle 5px at 50% 100%, transparent 96%, #000),
+      radial-gradient(circle 5px at 0 50%, transparent 96%, #000),
+      radial-gradient(circle 5px at 100% 50%, transparent 96%, #000);
+    -webkit-mask-position: 50% 0, 50% 100%, 0 50%, 100% 50%;
+    -webkit-mask-size: 16px 100%, 16px 100%, 100% 16px, 100% 16px;
+    -webkit-mask-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+    -webkit-mask-composite: source-in, source-in, source-in, source-in;
+    mask-image:
+      radial-gradient(circle 5px at 50% 0, transparent 96%, #000),
+      radial-gradient(circle 5px at 50% 100%, transparent 96%, #000),
+      radial-gradient(circle 5px at 0 50%, transparent 96%, #000),
+      radial-gradient(circle 5px at 100% 50%, transparent 96%, #000);
+    mask-position: 50% 0, 50% 100%, 0 50%, 100% 50%;
+    mask-size: 16px 100%, 16px 100%, 100% 16px, 100% 16px;
+    mask-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+    mask-composite: intersect;
+  }
+
+  .animal-image-variant-stamp .animal-image-img {
+    filter: saturate(0.93) contrast(1.03);
+  }
+
+  .animal-image-variant-stamp::after {
+    content: '';
+    position: absolute;
+    inset: 14px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.13;
+    background-image: radial-gradient(circle, rgba(18, 18, 28, 0.6) 0.6px, transparent 0.75px);
+    background-size: 4px 4px;
+  }
+
+  .animal-image-stamp-year {
+    position: absolute;
+    right: 19px;
+    top: 18px;
+    z-index: 2;
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    color: rgba(255, 255, 255, 0.88);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+    pointer-events: none;
   }
 
   /* Color variants */
@@ -5543,18 +5652,128 @@
     position: relative;
     width: 100%;
     min-height: 100%;
-    /* default type=dots: two offset dot layers + solid base */
+  }
+
+  /* scene types: background image provided via inline style, CSS supplies base color */
+  .animal-background-sweet-corner,
+  .animal-background-coffee-break {
+    background-color: #fdf3e3;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  .animal-background-grid {
+    background-color: rgb(247, 243, 223);
+    background-image:
+      linear-gradient(#c4b89e 1px, transparent 1px),
+      linear-gradient(90deg, #c4b89e 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .animal-background-default {
+    background:
+      radial-gradient(circle, rgba(196, 184, 158, 0.15) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(196, 184, 158, 0.1) 1px, transparent 1px) 7px 7px / 14px 14px,
+      rgb(247, 243, 223);
+  }
+
+  .animal-background-dots-dark-green {
     background:
       radial-gradient(circle, rgba(90, 160, 90, 0.22) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
       radial-gradient(circle, rgba(140, 200, 140, 0.15) 1px, transparent 1px) 7px 7px / 14px 14px,
       #bfe3bf;
   }
 
+  .animal-background-dots-pink {
+    background:
+      radial-gradient(circle, rgba(248, 166, 178, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(255, 200, 210, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #fde4e8;
+  }
+
+  .animal-background-dots-purple {
+    background:
+      radial-gradient(circle, rgba(183, 125, 238, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(220, 180, 255, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #f0e8ff;
+  }
+
+  .animal-background-dots-blue {
+    background:
+      radial-gradient(circle, rgba(136, 157, 240, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(180, 195, 255, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #e8edff;
+  }
+
+  .animal-background-dots-yellow {
+    background:
+      radial-gradient(circle, rgba(247, 205, 103, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(255, 230, 160, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #fff8e0;
+  }
+
+  .animal-background-dots-orange {
+    background:
+      radial-gradient(circle, rgba(229, 146, 102, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(255, 190, 150, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #fff0e8;
+  }
+
+  .animal-background-dots-teal {
+    background:
+      radial-gradient(circle, rgba(130, 213, 187, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(170, 235, 210, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #e8faf5;
+  }
+
+  .animal-background-dots-green {
+    background:
+      radial-gradient(circle, rgba(138, 198, 138, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(180, 220, 180, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #e8f5e8;
+  }
+
+  .animal-background-dots-red {
+    background:
+      radial-gradient(circle, rgba(252, 115, 109, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(255, 160, 155, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #ffe8e8;
+  }
+
+  .animal-background-dots-lime-green {
+    background:
+      radial-gradient(circle, rgba(209, 218, 73, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(230, 240, 130, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #f5f8e0;
+  }
+
+  .animal-background-dots-yellow-green {
+    background:
+      radial-gradient(circle, rgba(236, 223, 82, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(255, 245, 140, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #fffde8;
+  }
+
+  .animal-background-dots-brown {
+    background:
+      radial-gradient(circle, rgba(154, 131, 90, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(190, 165, 120, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #f5f0e0;
+  }
+
+  .animal-background-dots-warm-peach-pink {
+    background:
+      radial-gradient(circle, rgba(225, 140, 111, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(255, 185, 160, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #fff0e8;
+  }
+
   /* sprinkles: cylindrical candy rods — bottom colour + vertical highlight gradient
      overlaid (id=s), three mutually-prime tiles (190×170 / 230×195 / 255×215, 6 rods each,
      fixed pseudo-random positions and angles), LCM repeat ≈ 220000×280000 px — visually
      indistinguishable from random scatter; SVG encoded in CSS, zero external files */
-  .animal-background--sprinkles {
+  .animal-background-sprinkles {
     background:
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='190' height='170'%3E%3Cdefs%3E%3ClinearGradient id='s' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff' stop-opacity='.55'/%3E%3Cstop offset='.45' stop-color='%23fff' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='.25'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg transform='translate(18 26) rotate(24)'%3E%3Crect width='17' height='4.6' rx='2.3' fill='%23f8a6b2'/%3E%3Crect width='17' height='4.6' rx='2.3' fill='url(%23s)'/%3E%3C/g%3E%3Cg transform='translate(120 32) rotate(-38)'%3E%3Crect width='15' height='4.4' rx='2.2' fill='%23f5d04a'/%3E%3Crect width='15' height='4.4' rx='2.2' fill='url(%23s)'/%3E%3C/g%3E%3Cg transform='translate(72 76) rotate(76)'%3E%3Crect width='14' height='4.2' rx='2.1' fill='%238ecae6'/%3E%3Crect width='14' height='4.2' rx='2.1' fill='url(%23s)'/%3E%3C/g%3E%3Cg transform='translate(148 108) rotate(12)'%3E%3Crect width='18' height='4.8' rx='2.4' fill='%2395d5b2'/%3E%3Crect width='18' height='4.8' rx='2.4' fill='url(%23s)'/%3E%3C/g%3E%3Cg transform='translate(30 128) rotate(-55)'%3E%3Crect width='15' height='4.4' rx='2.2' fill='%23f4a261'/%3E%3Crect width='15' height='4.4' rx='2.2' fill='url(%23s)'/%3E%3C/g%3E%3Cg transform='translate(104 148) rotate(100)'%3E%3Crect width='13' height='4.2' rx='2.1' fill='%23c9a7f5'/%3E%3Crect width='13' height='4.2' rx='2.1' fill='url(%23s)'/%3E%3C/g%3E%3C/svg%3E")
           0 0 / 190px 170px,
