@@ -1,5 +1,5 @@
 import React from 'react';
-import { Wifi, MapPin, FileText } from 'lucide-react';
+import { WifiIcon, LocationIcon, FileIcon } from '../Icon/src';
 import { getArtworkStyle, type ArtworkName } from '../Icon/artwork';
 import { cn } from '../../utils/cn';
 import { useNow } from '../../utils/useNow';
@@ -45,9 +45,9 @@ export const Phone = React.forwardRef<HTMLDivElement, PhoneProps>(({ className, 
                 <div className="animal-phone-screen">
                     <div className="animal-phone-date">
                         <div className="animal-phone-status">
-                            <Wifi className="animal-phone-wifi" aria-hidden="true" />
+                            <WifiIcon className="animal-phone-wifi" aria-hidden={true} />
                             <div>{displayHours}<span className="animal-time-colon">:</span>{displayMinutes}{ampm}</div>
-                            <MapPin className="animal-phone-location" aria-hidden="true" />
+                            <LocationIcon className="animal-phone-location" aria-hidden={true} />
                         </div>
                         <div className="animal-phone-welcome">Welcome!</div>
                     </div>
@@ -68,7 +68,7 @@ export const Phone = React.forwardRef<HTMLDivElement, PhoneProps>(({ className, 
                         ))}
                     </div>
                     <div className="animal-phone-page">
-                        <FileText className="animal-phone-page-icon" aria-hidden="true" />
+                        <FileIcon className="animal-phone-page-icon" aria-hidden={true} />
                     </div>
                 </div>
             </div>

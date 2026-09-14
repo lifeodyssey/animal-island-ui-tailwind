@@ -1,59 +1,25 @@
 import React from 'react';
-import { ChevronLeft, ChevronRight, FileText, MapPin, ShoppingCart, Wifi, type LucideIcon } from 'lucide-react';
-import { getArtworkStyle, type ArtworkName } from './artwork';
+import * as NAIVE from './src';
+import type { IconName, IconComponent } from './src/types';
 import { cn } from '../../utils/cn';
 
-export type IconName =
-    | 'icon-left'
-    | 'icon-right'
-    | 'location'
-    | 'page'
-    | 'wifi'
-    | 'icon-shopping'
-    | 'icon-chat'
-    | 'icon-variant'
-    | 'icon-encyclopedia'
-    | 'icon-design'
-    | 'icon-map'
-    | 'icon-diy'
-    | 'icon-camera'
-    | 'icon-travel'
-    | 'icon-passport'
-    | 'icon-helicopter';
-
-const BUILTIN_ICONS: Partial<Record<IconName, LucideIcon>> = {
-    'icon-left': ChevronLeft,
-    'icon-right': ChevronRight,
-    location: MapPin,
-    page: FileText,
-    wifi: Wifi,
-    'icon-shopping': ShoppingCart,
-};
-
-const NAMED_ARTWORK: Partial<Record<IconName, ArtworkName>> = {
-    'icon-camera': 'camera',
-    'icon-travel': 'travel',
-    'icon-encyclopedia': 'encyclopedia',
-    'icon-diy': 'diy',
-    'icon-design': 'design',
-    'icon-map': 'map',
-    'icon-variant': 'passport',
-    'icon-passport': 'passport',
-    'icon-helicopter': 'helicopter',
-    'icon-chat': 'chat',
-};
+const ICONS: Record<IconName, IconComponent> = Object.fromEntries(
+    Object.entries(NAIVE)
+        .filter(([, value]) => typeof value === 'function')
+        .map(([cmpName, value]) => [cmpName.replace(/Icon$/, ''), value])
+) as Record<IconName, IconComponent>;
 
 export interface IconProps extends Omit<React.HTMLAttributes<HTMLElement>, 'color'> {
-    /** Built-in colored artwork or utility vector icon. Mutually exclusive with `icon` / `src`. */
+    /** 内置可爱图标名（共 101 个，如 Heart / Flower）。与 icon / src 三选一 */
     name?: IconName;
-    /** Any lucide-react icon component (e.g. `import { Heart } from 'lucide-react'`). Mutually exclusive with `name` / `src`. */
-    icon?: LucideIcon;
-    /** Custom icon resource URL, for colored bitmaps and other non-vector cases. Mutually exclusive with `name` / `icon`. */
+    /** 内置图标组件（如 import { HeartIcon } from 'animal-island-ui-tailwind'）。优先级高于 name */
+    icon?: IconComponent;
+    /** 自定义图标资源 URL，用于彩色位图等非矢量场景。与 name / icon 三选一 */
     src?: string;
     size?: number | string;
-    /** Stroke color in lucide mode; defaults to currentColor. */
+    /** 描边颜色，默认继承 currentColor */
     color?: string;
-    /** Stroke width in lucide mode; defaults to 2. */
+    /** 描边粗细，默认 3.5（相对 48x48 画布） */
     strokeWidth?: number | string;
     bounce?: boolean;
 }
@@ -77,27 +43,26 @@ export const Icon = React.forwardRef<HTMLElement, IconProps>(
         },
         ref
     ) => {
-        // Icons are decorative by default; allow consumers to opt-in to an accessible name.
         const labeled = Boolean(ariaLabel || ariaLabelledBy);
         const ariaHidden = ariaHiddenProp ?? (labeled ? undefined : true);
-        const cls = cn('animal-icon', name && `animal-${name}`, bounce && 'animal-icon-bounce', className);
+        const cls = cn('animal-icon', bounce && 'animal-icon-bounce', className);
 
-        const artwork = !icon && name ? NAMED_ARTWORK[name] : undefined;
-        const LucideCmp = icon ?? (name ? BUILTIN_ICONS[name] : undefined);
+        const IconCmp = icon ?? (name ? ICONS[name] : undefined);
 
-        if (LucideCmp) {
+        if (IconCmp) {
+            const passthrough: Record<string, unknown> = { ...(rest as object) };
+            if (color !== undefined) passthrough.stroke = color;
+            if (strokeWidth !== undefined) passthrough.strokeWidth = strokeWidth;
             return (
-                <LucideCmp
+                <IconCmp
                     ref={ref as React.Ref<SVGSVGElement>}
                     className={cls}
-                    color={color}
-                    strokeWidth={strokeWidth}
                     style={{ width: size, height: size, ...style }}
                     aria-hidden={ariaHidden}
                     role={labeled ? 'img' : undefined}
                     aria-label={ariaLabel}
                     aria-labelledby={ariaLabelledBy}
-                    {...(rest as React.SVGProps<SVGSVGElement>)}
+                    {...(passthrough as React.SVGProps<SVGSVGElement>)}
                 />
             );
         }
@@ -113,7 +78,7 @@ export const Icon = React.forwardRef<HTMLElement, IconProps>(
                 style={{
                     width: size,
                     height: size,
-                    ...(artwork ? getArtworkStyle(artwork) : src ? { backgroundImage: `url(${src})` } : null),
+                    ...(src ? { backgroundImage: `url(${src})` } : null),
                     ...style,
                 }}
                 {...rest}
@@ -124,21 +89,9 @@ export const Icon = React.forwardRef<HTMLElement, IconProps>(
 
 Icon.displayName = 'Icon';
 
-export const ICON_LIST: { name: IconName; label: string }[] = [
-    { name: 'icon-left', label: 'Left' },
-    { name: 'icon-right', label: 'Right' },
-    { name: 'location', label: 'Location' },
-    { name: 'page', label: 'Page' },
-    { name: 'wifi', label: 'WiFi' },
-    { name: 'icon-shopping', label: 'Shopping' },
-    { name: 'icon-chat', label: 'Chat' },
-    { name: 'icon-variant', label: 'Variant' },
-    { name: 'icon-encyclopedia', label: 'Encyclopedia' },
-    { name: 'icon-design', label: 'Design' },
-    { name: 'icon-map', label: 'Map' },
-    { name: 'icon-diy', label: 'DIY' },
-    { name: 'icon-camera', label: 'Camera' },
-    { name: 'icon-travel', label: 'Travel' },
-    { name: 'icon-passport', label: 'Passport' },
-    { name: 'icon-helicopter', label: 'Helicopter' },
-];
+export type { IconName, IconComponent } from './src/types';
+
+export const ICON_LIST = (Object.entries(ICONS) as Array<[IconName, IconComponent]>).map(([name]) => ({
+    name,
+    label: name,
+})) as ReadonlyArray<{ name: IconName; label: string }>;

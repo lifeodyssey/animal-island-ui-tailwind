@@ -38,10 +38,10 @@ export { Card } from './components/Card';
 export type { CardProps, CardType, CardColor, CardPattern } from './components/Card';
 
 export { Title } from './components/Title';
-export type { TitleProps, TitleSize, TitleColor } from './components/Title';
+export type { TitleProps, TitleSize, TitleColor, TitleVariant } from './components/Title';
 
 export { Footer } from './components/Footer';
-export type { FooterProps, FooterType } from './components/Footer';
+export type { FooterProps } from './components/Footer';
 
 export { Collapse } from './components/Collapse';
 export type { CollapseProps } from './components/Collapse';
@@ -56,13 +56,13 @@ export { Phone } from './components/Phone';
 export type { PhoneProps } from './components/Phone';
 
 export { Divider } from './components/Divider';
-export type { DividerProps, DividerType } from './components/Divider';
+export type { DividerProps, DividerType, DividerIconName } from './components/Divider';
 
 export { Typewriter } from './components/Typewriter';
 export type { TypewriterProps } from './components/Typewriter';
 
 export { Icon, ICON_LIST } from './components/Icon';
-export type { IconProps, IconName } from './components/Icon';
+export type { IconProps, IconName, IconComponent } from './components/Icon';
 
 export { Wallet } from './components/Wallet';
 export type { WalletProps, WalletSize } from './components/Wallet';
@@ -147,7 +147,7 @@ export { Drawer } from './components/Drawer';
 export type { DrawerProps, DrawerPlacement } from './components/Drawer';
 
 export { Progress } from './components/Progress';
-export type { ProgressProps, ProgressSize, ProgressInfoPosition } from './components/Progress';
+export type { ProgressProps, ProgressSize, ProgressInfoPosition, ProgressVariant } from './components/Progress';
 
 export { Skeleton, SkeletonButton, SkeletonInput, SkeletonAvatar } from './components/Skeleton';
 export type { SkeletonProps, SkeletonVariant, SkeletonButtonProps, SkeletonInputProps, SkeletonAvatarProps } from './components/Skeleton';

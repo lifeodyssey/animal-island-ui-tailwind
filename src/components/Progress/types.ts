@@ -4,9 +4,13 @@ export type ProgressSize = 'small' | 'middle' | 'large';
 
 export type ProgressInfoPosition = 'inside' | 'right' | 'top';
 
+export type ProgressVariant = 'sweet-corner' | 'forest-grove' | 'starry-camp' | 'coffee-break';
+
 export interface ProgressProps {
     percent: number;
     size?: ProgressSize;
+    /** fill 背景场景图（默认 sweet-corner） */
+    variant?: ProgressVariant;
     showInfo?: boolean;
     infoPosition?: ProgressInfoPosition;
     infoFormat?: (percent: number) => React.ReactNode;
