@@ -285,7 +285,8 @@ export const BackTopStable: Story = {
 
 // ─── Image ──────────────────────────────────────────────────────────────────
 
-const SAMPLE_SRC = 'https://picsum.photos/seed/animal-island/200/150';
+// Tiny inline test image — avoids external network dependency in CI
+const SAMPLE_SRC = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFUlEQVR42mNk+M9Qz0AEYBxVSF+FAAX3CBG4AwN8AAAAAElFTkSuQmCC';
 
 export const ImageStory: Story = {
     name: 'Image',
