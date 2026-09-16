@@ -134,7 +134,7 @@ export const Image: React.FC<ImageProps> = ({
         'animal-image',
         variant === 'default' && 'animal-image-variant-default',
         variant === 'stamp' && 'animal-image-variant-stamp',
-        variant === 'bordered' && color !== 'white' && `animal-image-${color}`,
+        color !== 'white' && `animal-image-${color}`,
         loaded && 'animal-image-loaded',
         preview && 'animal-image-preview',
         className
