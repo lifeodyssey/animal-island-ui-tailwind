@@ -84,7 +84,7 @@ export const Divider: React.FC<DividerProps> = ({
     return (
         <div
             role="separator"
-            className={cn('animal-divider', type !== 'dashed-brown' && `animal-divider-${type}`, className)}
+            className={cn('animal-divider', `animal-divider-${type}`, className)}
             style={style}
         />
     );
