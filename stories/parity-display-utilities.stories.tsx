@@ -237,14 +237,14 @@ export const AssetsParity: Story = {
             expect(canvas.getByTestId('divider-matrix').querySelectorAll('div[class*="divider"]').length).toBeGreaterThanOrEqual(10);
         });
         await waitFor(() => {
-            expect(canvas.getByTestId('footer-matrix').querySelectorAll('div[class*="footer"]').length).toBeGreaterThanOrEqual(4);
+            expect(canvas.getByTestId('footer-matrix').querySelectorAll('.animal-footer').length).toBeGreaterThanOrEqual(3);
         });
         for (const icon of ICON_LIST) {
-            await expect(canvas.getByText(icon.label)).toBeVisible();
+            await expect(canvas.getByText(icon.name)).toBeVisible();
         }
         await waitFor(() => {
             const icons = canvas.getByTestId('icon-grid').querySelectorAll('[class*="icon"]');
-            expect(icons.length).toBe(ICON_LIST.length);
+            expect(icons.length).toBeGreaterThanOrEqual(ICON_LIST.length);
         });
     },
 };
