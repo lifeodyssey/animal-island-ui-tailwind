@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-const defaultStoryUrl = '/iframe.html?id=components-title--default&viewMode=story';
+const defaultStoryUrl = '/iframe.html?id=components-title--ribbon&viewMode=story';
 const colorsStoryUrl = '/iframe.html?id=components-title--colors&viewMode=story';
 
 const sizeStories = [

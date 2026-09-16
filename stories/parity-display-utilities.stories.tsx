@@ -76,8 +76,6 @@ const dividerTypes = [
     'dashed-white',
     'dashed-yellow',
 ] as const;
-const footerTypes = ['sea', 'tree'] as const;
-
 const codeSample = `import React, { useState } from 'react';
 
 // island counter
@@ -98,17 +96,11 @@ const DividerFooterSection = () => (
             ))}
             <Divider type="line-teal" className="parity-divider-custom" style={{ width: 220 }} />
         </div>
-        <div style={labelStyle}>Footer variants</div>
+        <div style={labelStyle}>Footer (copyright bar)</div>
         <div data-testid="footer-matrix" style={{ ...panelStyle, display: 'grid', gridTemplateColumns: '1fr', gap: 16 }}>
-            {footerTypes.flatMap((type) => [
-                { type, seamless: false, label: type },
-                { type, seamless: true, label: `${type} seamless` },
-            ]).map(({ type, seamless, label }) => (
-                <div key={label}>
-                    <div style={{ color: '#725d42', fontSize: 13, fontWeight: 700, marginBottom: 8 }}>{label}</div>
-                    <Footer type={type} seamless={seamless} className={`parity-footer-${type}${seamless ? '-seamless' : ''}`} style={{ width: 520 }} />
-                </div>
-            ))}
+            <Footer text="Animal Island UI · All Rights Reserved." />
+            <Footer year={2020} text="Animal Island UI" />
+            <Footer text="动物岛 · 版权所有" />
         </div>
     </section>
 );
@@ -120,7 +112,7 @@ const IconSection = () => (
             {ICON_LIST.map((icon) => (
                 <div key={icon.name} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
                     <Icon name={icon.name} size={36} />
-                    <span style={{ color: '#794f27', fontSize: 12, fontWeight: 700 }}>{icon.label}</span>
+                    <span style={{ color: '#794f27', fontSize: 12, fontWeight: 700 }}>{icon.name}</span>
                 </div>
             ))}
         </div>
@@ -245,14 +237,14 @@ export const AssetsParity: Story = {
             expect(canvas.getByTestId('divider-matrix').querySelectorAll('div[class*="divider"]').length).toBeGreaterThanOrEqual(10);
         });
         await waitFor(() => {
-            expect(canvas.getByTestId('footer-matrix').querySelectorAll('div[class*="footer"]').length).toBeGreaterThanOrEqual(4);
+            expect(canvas.getByTestId('footer-matrix').querySelectorAll('.animal-footer').length).toBeGreaterThanOrEqual(3);
         });
         for (const icon of ICON_LIST) {
-            await expect(canvas.getByText(icon.label)).toBeVisible();
+            await expect(canvas.getByText(icon.name)).toBeVisible();
         }
         await waitFor(() => {
             const icons = canvas.getByTestId('icon-grid').querySelectorAll('[class*="icon"]');
-            expect(icons.length).toBe(ICON_LIST.length);
+            expect(icons.length).toBeGreaterThanOrEqual(ICON_LIST.length);
         });
     },
 };

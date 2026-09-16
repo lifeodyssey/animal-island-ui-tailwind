@@ -41,7 +41,7 @@ export { Title } from './components/Title';
 export type { TitleProps, TitleSize, TitleColor } from './components/Title';
 
 export { Footer } from './components/Footer';
-export type { FooterProps, FooterType } from './components/Footer';
+export type { FooterProps } from './components/Footer';
 
 export { Collapse } from './components/Collapse';
 export type { CollapseProps } from './components/Collapse';
@@ -62,7 +62,9 @@ export { Typewriter } from './components/Typewriter';
 export type { TypewriterProps } from './components/Typewriter';
 
 export { Icon, ICON_LIST } from './components/Icon';
-export type { IconProps, IconName } from './components/Icon';
+export type { IconProps, IconName, SvgIconName, IconComponent } from './components/Icon';
+// Re-export individual SVG icon components for direct use
+export * from './components/Icon/src';
 
 export { Wallet } from './components/Wallet';
 export type { WalletProps, WalletSize } from './components/Wallet';

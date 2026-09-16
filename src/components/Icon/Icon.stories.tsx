@@ -17,13 +17,13 @@ export const Default: Story = {
 export const AllIcons: Story = {
     render: () => (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24, alignItems: 'center' }}>
-            {ICON_LIST.map(({ name, label }) => (
+            {ICON_LIST.map(({ name }) => (
                 <div
                     key={name}
                     style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}
                 >
                     <Icon name={name} size={32} />
-                    <span style={{ fontSize: 12 }}>{label}</span>
+                    <span style={{ fontSize: 12 }}>{name}</span>
                 </div>
             ))}
         </div>

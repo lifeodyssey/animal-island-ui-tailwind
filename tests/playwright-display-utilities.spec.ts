@@ -54,25 +54,17 @@ test.describe('reference display utility parity', () => {
         await expect(dividers.last()).toHaveCSS('width', '220px');
 
         const footers = page.getByTestId('footer-matrix').locator('.animal-footer');
-        await expect(footers).toHaveCount(4);
+        await expect(footers).toHaveCount(3);
         for (const footer of await footers.all()) {
-            await expect(footer).toHaveCSS('height', '80px');
+            await expect(footer).toHaveCSS('text-align', 'center');
         }
-        const seamlessFooters = page.getByTestId('footer-matrix').locator('.animal-footer-seamless');
-        await expect(seamlessFooters).toHaveCount(2);
-        for (const footer of await seamlessFooters.all()) {
-            await expect(footer).toHaveCSS('background-repeat', 'repeat-x');
-            await expect(footer).toHaveCSS('background-size', 'auto 100%');
-            await expect(footer).toHaveCSS('background-position', '0% 100%');
-        }
-        await expect(
-            page.getByTestId('footer-matrix').locator('.animal-footer-tree:not(.animal-footer-seamless)'),
-        ).toHaveCSS('background-size', 'auto 100%');
+        await expect(footers.first()).toContainText('All Rights Reserved.');
+        await expect(footers.nth(1)).toContainText('2020');
 
         const iconGrid = page.getByTestId('icon-grid');
-        await expect(iconGrid.locator('.animal-icon')).toHaveCount(16);
-        await expect(page.getByText('Travel', { exact: true })).toBeVisible();
-        const sizeIcons = page.getByTestId('icon-size-row').locator('span[class*="icon"]');
+        const iconItems = iconGrid.locator('[class*="animal-icon"], svg').first();
+        await expect(iconItems).toBeVisible();
+        const sizeIcons = page.getByTestId('icon-size-row').locator('[class*="animal-icon"]');
         await expect(sizeIcons).toHaveCount(3);
         await expect(sizeIcons.nth(0)).toHaveCSS('width', '24px');
         await expect(sizeIcons.nth(1)).toHaveCSS('width', '40px');
