@@ -62,7 +62,7 @@ test.describe('Image', () => {
     test('error state shows camera icon placeholder', async ({ page }) => {
         await page.goto(imageUrl);
         await page.waitForLoadState('networkidle');
-        const errorFrame = page.locator('.animal-image-error');
+        const errorFrame = page.locator('.animal-image-error').first();
         await expect(errorFrame).toBeVisible({ timeout: 5000 });
     });
 });

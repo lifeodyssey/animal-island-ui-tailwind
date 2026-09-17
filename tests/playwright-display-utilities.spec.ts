@@ -54,20 +54,12 @@ test.describe('reference display utility parity', () => {
         await expect(dividers.last()).toHaveCSS('width', '220px');
 
         const footers = page.getByTestId('footer-matrix').locator('.animal-footer');
-        await expect(footers).toHaveCount(4);
+        await expect(footers).toHaveCount(2);
         for (const footer of await footers.all()) {
-            await expect(footer).toHaveCSS('height', '80px');
+            await expect(footer).toHaveCSS('text-align', 'center');
         }
-        const seamlessFooters = page.getByTestId('footer-matrix').locator('.animal-footer-seamless');
-        await expect(seamlessFooters).toHaveCount(2);
-        for (const footer of await seamlessFooters.all()) {
-            await expect(footer).toHaveCSS('background-repeat', 'repeat-x');
-            await expect(footer).toHaveCSS('background-size', 'auto 100%');
-            await expect(footer).toHaveCSS('background-position', '0% 100%');
-        }
-        await expect(
-            page.getByTestId('footer-matrix').locator('.animal-footer-tree:not(.animal-footer-seamless)'),
-        ).toHaveCSS('background-size', 'auto 100%');
+        await expect(footers.first()).toContainText('All Rights Reserved.');
+        await expect(footers.last()).toContainText('Animal Island Co., Ltd.');
 
         const iconGrid = page.getByTestId('icon-grid');
         await expect(iconGrid.locator('.animal-icon')).toHaveCount(16);

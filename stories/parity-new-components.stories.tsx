@@ -285,7 +285,8 @@ export const BackTopStable: Story = {
 
 // ─── Image ──────────────────────────────────────────────────────────────────
 
-const SAMPLE_SRC = 'https://picsum.photos/seed/animal-island/200/150';
+// Inline SVG data-URI — no network required, loads instantly in any environment
+const SAMPLE_SRC = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150'%3E%3Crect width='100%25' height='100%25' fill='%23a8d5c2'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='18' fill='%23fff'%3EIsland%3C/text%3E%3C/svg%3E";
 
 export const ImageStory: Story = {
     name: 'Image',
@@ -298,13 +299,13 @@ export const ImageStory: Story = {
                 </div>
             </div>
             <div style={sectionStyle}>
-                <div style={labelStyle}>Colors</div>
+                <div style={labelStyle}>Colors (bordered variant)</div>
                 <div style={rowStyle}>
-                    <Image src={SAMPLE_SRC} alt="default color" color="default" width={120} height={90} />
-                    <Image src={SAMPLE_SRC} alt="app-pink" color="app-pink" width={120} height={90} />
-                    <Image src={SAMPLE_SRC} alt="purple" color="purple" width={120} height={90} />
-                    <Image src={SAMPLE_SRC} alt="app-teal" color="app-teal" width={120} height={90} />
-                    <Image src={SAMPLE_SRC} alt="app-green" color="app-green" width={120} height={90} />
+                    <Image src={SAMPLE_SRC} alt="default color" variant="bordered" color="default" width={120} height={90} />
+                    <Image src={SAMPLE_SRC} alt="app-pink" variant="bordered" color="app-pink" width={120} height={90} />
+                    <Image src={SAMPLE_SRC} alt="purple" variant="bordered" color="purple" width={120} height={90} />
+                    <Image src={SAMPLE_SRC} alt="app-teal" variant="bordered" color="app-teal" width={120} height={90} />
+                    <Image src={SAMPLE_SRC} alt="app-green" variant="bordered" color="app-green" width={120} height={90} />
                 </div>
             </div>
             <div style={sectionStyle}>
