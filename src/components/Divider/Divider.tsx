@@ -51,9 +51,21 @@ export interface DividerProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const Divider = React.forwardRef<HTMLDivElement, DividerProps>(
     ({ type = 'line-brown', icon, iconSize = 24, iconGap = 8, className, ...rest }, ref) => {
-        const containerRef = useRef<HTMLDivElement>(null);
+        const containerRef = useRef<HTMLDivElement | null>(null);
         const [cycles, setCycles] = useState(1);
         const cycleWidth = iconSize + iconGap;
+
+        const setRefs = React.useCallback(
+            (el: HTMLDivElement | null) => {
+                containerRef.current = el;
+                if (typeof ref === 'function') {
+                    ref(el);
+                } else if (ref) {
+                    ref.current = el;
+                }
+            },
+            [ref]
+        );
 
         useEffect(() => {
             if (!icon) return undefined;
@@ -74,7 +86,7 @@ export const Divider = React.forwardRef<HTMLDivElement, DividerProps>(
         if (icon) {
             return (
                 <div
-                    ref={ref}
+                    ref={setRefs}
                     className={cn('animal-divider-icon-strip', className)}
                     aria-hidden="true"
                     {...rest}

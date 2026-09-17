@@ -1802,7 +1802,7 @@
     width: 100%;
     height: 100%;
     padding: 40px 35px 25px;
-    background: rgb(247, 243, 223);
+    background: var(--animal-bg-color-content);
     color: rgb(128, 115, 89);
     font-family: var(--animal-font-family);
     display: flex;
@@ -4471,7 +4471,7 @@
 
   /* scene-image fill: remove striped animation, let inline backgroundImage show */
   .animal-progress-fill-scene {
-    background: #f8f8f0;
+    background: var(--animal-bg-color);
     background-image: none;
     animation: none;
   }
@@ -4619,7 +4619,7 @@
   }
 
   .animal-backtop:focus-visible {
-    outline: 2px solid #19c8b9;
+    outline: 2px solid var(--animal-primary-color, #19c8b9);
     outline-offset: 2px;
     border-radius: 16px;
   }
@@ -5711,12 +5711,12 @@
     background:
       radial-gradient(circle, rgba(196, 184, 158, 0.15) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
       radial-gradient(circle, rgba(196, 184, 158, 0.1) 1px, transparent 1px) 7px 7px / 14px 14px,
-      rgb(247, 243, 223);
+      var(--animal-bg-color-content);
   }
 
   /* grid */
   .animal-background--grid {
-    background-color: rgb(247, 243, 223);
+    background-color: var(--animal-bg-color-content);
     background-image:
       linear-gradient(#c4b89e 1px, transparent 1px),
       linear-gradient(90deg, #c4b89e 1px, transparent 1px);
