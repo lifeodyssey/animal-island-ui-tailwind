@@ -3,6 +3,35 @@ import { cva } from 'class-variance-authority';
 import { cn } from '../../utils/cn';
 import type { ComponentSize } from '../../utils/types';
 
+const DonutIcon: React.FC<{ size?: number; color?: string; className?: string }> = ({
+    size = 28,
+    color = 'currentColor',
+    className,
+}) => (
+    <svg
+        viewBox="0 0 48 48"
+        xmlns="http://www.w3.org/2000/svg"
+        width={size}
+        height={size}
+        fill="none"
+        stroke={color}
+        strokeWidth={3.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={className}
+        aria-hidden
+    >
+        <circle cx="24" cy="24" r="15" fill="#F4A6A4" />
+        <circle cx="24" cy="24" r="6" fill="#FFFFFF" />
+        <rect x="17" y="13" width="4.5" height="1.8" rx="0.9" transform="rotate(25 19 14)" fill="#E9C46A" />
+        <rect x="27" y="12" width="4.5" height="1.8" rx="0.9" transform="rotate(-20 29 13)" fill="#2A9D8F" />
+        <rect x="32" y="19" width="4.5" height="1.8" rx="0.9" transform="rotate(45 34 20)" fill="#264653" />
+        <rect x="13" y="22" width="4.5" height="1.8" rx="0.9" transform="rotate(-35 15 23)" fill="#E9C46A" />
+        <rect x="30" y="30" width="4.5" height="1.8" rx="0.9" transform="rotate(15 32 31)" fill="#2A9D8F" />
+        <rect x="17" y="31" width="4.5" height="1.8" rx="0.9" transform="rotate(60 19 32)" fill="#264653" />
+    </svg>
+);
+
 export type ButtonType = 'primary' | 'default' | 'dashed' | 'text' | 'link';
 export type ButtonSize = ComponentSize;
 export type ButtonHTMLType = 'submit' | 'reset' | 'button';
@@ -102,8 +131,12 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                 aria-disabled={loading ? true : ariaDisabled}
                 onClick={handleClick}
             >
-                {icon && !loading && (
-                    <span className="animal-btn-icon">{icon}</span>
+                {loading ? (
+                    <span className="animal-btn-icon" aria-hidden>
+                        <DonutIcon size={28} color="currentColor" className="animal-btn-loading-icon" />
+                    </span>
+                ) : (
+                    icon && <span className="animal-btn-icon">{icon}</span>
                 )}
                 {children && <span>{children}</span>}
             </button>

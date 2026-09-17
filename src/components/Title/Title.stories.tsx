@@ -1,5 +1,6 @@
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Title, type TitleColor } from './Title';
+import { Title, type TitleColor, type TitleVariant } from './Title';
 
 const meta = {
     component: Title,
@@ -10,7 +11,26 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    args: { children: '标题' },
+    args: { children: '标题', variant: 'layer' },
+};
+
+export const Ribbon: Story = {
+    args: { children: '标题', variant: 'ribbon' },
+};
+
+export const Tab: Story = {
+    args: { children: '标题', variant: 'tab' },
+};
+
+export const Variants: Story = {
+    args: { children: 'Title' },
+    render: () => (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24, alignItems: 'center' }}>
+            {(['layer', 'ribbon', 'tab'] as TitleVariant[]).map((variant) => (
+                <Title key={variant} variant={variant} size="middle">{variant}</Title>
+            ))}
+        </div>
+    ),
 };
 
 export const Small: Story = {

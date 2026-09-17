@@ -19,6 +19,8 @@ export type TitleColor =
     | 'brown'
     | 'warm-peach-pink';
 
+export type TitleVariant = 'ribbon' | 'layer' | 'tab';
+
 export interface TitleProps {
     /** 标题内容 */
     children: React.ReactNode;
@@ -26,6 +28,8 @@ export interface TitleProps {
     size?: TitleSize;
     /** 配色，与 Card 同名色板 */
     color?: TitleColor;
+    /** 标题样式：layer 双层纸（默认）/ ribbon 飘带 / tab 折角便签 */
+    variant?: TitleVariant;
     /** 自定义类名 */
     className?: string;
     /** 自定义样式 */
@@ -65,16 +69,7 @@ const ribbonVariants = cva('animal-title-ribbon', {
     defaultVariants: { color: 'default' },
 });
 
-/**
- * Ribbon（飘带）— 上游六层结构的移植：
- *   - back  左右燕尾（clip-path）
- *   - fold  左右折角阴影三角（border 三角）
- *   - front 正面主体
- *   - text  文字层
- * 颜色由 .animal-title-ribbon 上的 --rf/--rb/--rk/--rt 四个 CSS 变量统一控制，
- * color variant 类只负责覆盖这四个变量（参考上游 title.module.less）。
- */
-const Ribbon: React.FC<{ children: React.ReactNode; fontSize: number; color: TitleColor }> = ({
+const Ribbon: React.FC<{ children: React.ReactNode; fontSize: number; color?: TitleColor }> = ({
     children,
     fontSize,
     color,
@@ -92,18 +87,55 @@ const Ribbon: React.FC<{ children: React.ReactNode; fontSize: number; color: Tit
     </span>
 );
 
+const Layer: React.FC<{ children: React.ReactNode; fontSize: number; color?: TitleColor }> = ({
+    children,
+    fontSize,
+    color,
+}) => (
+    <span
+        className={cn('animal-title-layer', color && color !== 'default' && `animal-title-${color}`)}
+        style={{ fontSize: `${fontSize}px` }}
+    >
+        <span className="animal-title-layer-front">{children}</span>
+    </span>
+);
+
+const Tab: React.FC<{ children: React.ReactNode; fontSize: number; color?: TitleColor }> = ({
+    children,
+    fontSize,
+    color,
+}) => (
+    <span
+        className={cn('animal-title-tab', color && color !== 'default' && `animal-title-${color}`)}
+        style={{ fontSize: `${fontSize}px` }}
+    >
+        <span className="animal-title-tab-text">{children}</span>
+    </span>
+);
+
+const VARIANT_MAP: Record<
+    TitleVariant,
+    React.FC<{ children: React.ReactNode; fontSize: number; color?: TitleColor }>
+> = {
+    ribbon: Ribbon,
+    layer: Layer,
+    tab: Tab,
+};
+
 export const Title: React.FC<TitleProps> = ({
     children,
     size = 'middle',
     color = 'default',
+    variant = 'layer',
     className,
     style,
 }) => {
+    const Body = VARIANT_MAP[variant];
     return (
         <span className={cn('animal-title', className)} style={style}>
-            <Ribbon fontSize={SIZE_MAP[size]} color={color}>
+            <Body fontSize={SIZE_MAP[size]} color={color}>
                 {children}
-            </Ribbon>
+            </Body>
         </span>
     );
 };

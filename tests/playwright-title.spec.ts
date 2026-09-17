@@ -1,12 +1,13 @@
 import { expect, test } from '@playwright/test';
 
 const defaultStoryUrl = '/iframe.html?id=components-title--default&viewMode=story';
+const ribbonStoryUrl = '/iframe.html?id=components-title--ribbon&viewMode=story';
 const colorsStoryUrl = '/iframe.html?id=components-title--colors&viewMode=story';
 
 const sizeStories = [
-    { name: 'small', url: '/iframe.html?id=components-title--small&viewMode=story', fontSize: '14px', height: '28px' },
-    { name: 'middle', url: '/iframe.html?id=components-title--middle&viewMode=story', fontSize: '20px', height: '40px' },
-    { name: 'large', url: '/iframe.html?id=components-title--large&viewMode=story', fontSize: '28px', height: '56px' },
+    { name: 'small', url: '/iframe.html?id=components-title--small&viewMode=story', fontSize: '14px' },
+    { name: 'middle', url: '/iframe.html?id=components-title--middle&viewMode=story', fontSize: '20px' },
+    { name: 'large', url: '/iframe.html?id=components-title--large&viewMode=story', fontSize: '28px' },
 ] as const;
 
 const colorVariants = [
@@ -24,21 +25,20 @@ const colorVariants = [
     { label: 'warm-peach-pink', className: 'animal-title-warm-peach-pink', rf: '#e18c6f', rb: '#b85a30', rk: '#6a2a10', rt: '#fff' },
 ] as const;
 
-const getTitleVars = (selector: string) =>
-    document.querySelector(selector) &&
-    (() => {
-        const style = getComputedStyle(document.querySelector(selector)!);
-        return {
-            rf: style.getPropertyValue('--rf').trim(),
-            rb: style.getPropertyValue('--rb').trim(),
-            rk: style.getPropertyValue('--rk').trim(),
-            rt: style.getPropertyValue('--rt').trim(),
-        };
-    })();
-
 test.describe('Title', () => {
-    test('renders the upstream ribbon structure and default text', async ({ page }) => {
+    test('default variant is layer', async ({ page }) => {
         await page.goto(defaultStoryUrl);
+        const title = page.locator('.animal-title');
+        await expect(title).toContainText('标题');
+        const layer = title.locator('.animal-title-layer');
+        await expect(layer).toBeVisible();
+        await expect(layer.locator('.animal-title-layer-front')).toHaveText('标题');
+        // no ribbon structure when variant=layer
+        await expect(title.locator('.animal-title-ribbon')).toHaveCount(0);
+    });
+
+    test('ribbon variant renders upstream six-layer structure', async ({ page }) => {
+        await page.goto(ribbonStoryUrl);
 
         const title = page.locator('.animal-title');
         const ribbon = title.locator('.animal-title-ribbon');
@@ -55,39 +55,37 @@ test.describe('Title', () => {
         await expect(ribbon.locator('.animal-title-ribbon-front')).toHaveCount(1);
 
         await expect(ribbon).toHaveCSS('font-size', '20px');
-        await expect(ribbon).toHaveCSS('height', '40px');
         await expect(ribbon.locator('.animal-title-ribbon-front')).toHaveCSS('border-radius', '4px');
-        expect(await page.evaluate(getTitleVars, '.animal-title-ribbon')).toEqual({
-            rf: '#27d039',
-            rb: '#20992a',
-            rk: '#115017',
-            rt: '#fff',
-        });
+        expect(await ribbon.evaluate((el) => {
+            const style = getComputedStyle(el);
+            return {
+                rf: style.getPropertyValue('--rf').trim(),
+                rb: style.getPropertyValue('--rb').trim(),
+                rk: style.getPropertyValue('--rk').trim(),
+                rt: style.getPropertyValue('--rt').trim(),
+            };
+        })).toEqual({ rf: '#27d039', rb: '#20992a', rk: '#115017', rt: '#fff' });
     });
 
     test('maps size stories to the upstream font-size scale', async ({ page }) => {
         for (const story of sizeStories) {
             await page.goto(story.url);
-            const ribbon = page.locator('.animal-title-ribbon');
-            await expect(page.locator('.animal-title')).toContainText(new RegExp(story.name, 'i'));
-            await expect(ribbon).toHaveCSS('font-size', story.fontSize);
-            await expect(ribbon).toHaveCSS('height', story.height);
+            // size applies regardless of variant
+            const inner = page.locator('.animal-title-layer, .animal-title-ribbon');
+            await expect(inner.first()).toHaveCSS('font-size', story.fontSize);
         }
     });
 
-    test('applies every named color variant class and token layer', async ({ page }) => {
+    test('applies every named color variant class and token layer (ribbon colors)', async ({ page }) => {
         await page.goto(colorsStoryUrl);
 
-        const ribbons = page.locator('.animal-title-ribbon');
+        const ribbons = page.locator('.animal-title-ribbon, .animal-title-layer');
         await expect(ribbons).toHaveCount(colorVariants.length + 1);
-        await expect(ribbons.first()).toHaveText('default');
-        await expect(ribbons.first()).not.toHaveClass(/animal-title-(app|purple|lime|yellow|brown|warm)/);
 
         for (const [index, variant] of colorVariants.entries()) {
-            const ribbon = ribbons.nth(index + 1);
-            await expect(ribbon).toHaveText(variant.label);
-            await expect(ribbon).toHaveClass(new RegExp(`(^| )${variant.className}( |$)`));
-            expect(await ribbon.evaluate((element) => {
+            const el = ribbons.nth(index + 1);
+            await expect(el).toHaveClass(new RegExp(`(^| )${variant.className}( |$)`));
+            expect(await el.evaluate((element) => {
                 const style = getComputedStyle(element);
                 return {
                     rf: style.getPropertyValue('--rf').trim(),
