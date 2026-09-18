@@ -34,8 +34,9 @@ test.describe('reference display utility parity', () => {
         const solidAndWaveDividers = page
             .getByTestId('divider-matrix')
             .locator(
-                '.animal-divider:not(.animal-divider-dashed-brown):not(.animal-divider-dashed-teal):not(.animal-divider-dashed-white):not(.animal-divider-dashed-yellow)',
+                '.animal-divider:not(.animal-divider-dashed-brown):not(.animal-divider-dashed-teal):not(.animal-divider-dashed-white):not(.animal-divider-dashed-yellow):not(.animal-divider-wave-yellow)',
             );
+        const waveDivider = page.getByTestId('divider-matrix').locator('.animal-divider-wave-yellow');
         const dashedDividers = page
             .getByTestId('divider-matrix')
             .locator(
@@ -46,6 +47,10 @@ test.describe('reference display utility parity', () => {
             await expect(divider).toHaveCSS('height', '12px');
             await expect(divider).toHaveCSS('background-repeat', 'no-repeat');
         }
+        // wave-yellow tiles full-width like upstream (40px period, 14px tall)
+        await expect(waveDivider).toHaveCSS('height', '14px');
+        await expect(waveDivider).toHaveCSS('background-repeat', 'repeat-x');
+        await expect(waveDivider).toHaveCSS('background-size', '40px 14px');
         for (const divider of await dashedDividers.all()) {
             await expect(divider).toHaveCSS('height', '12px');
             await expect(divider).toHaveCSS('background-repeat', 'repeat-x');

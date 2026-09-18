@@ -1549,7 +1549,7 @@
 
   .animal-collapse-leaf {
     color: var(--animal-primary-color);
-    opacity: 0.5;
+    opacity: 1;
     transition: all var(--animal-motion-duration-base) var(--animal-motion-ease);
   }
 
@@ -1872,12 +1872,13 @@
     background-image: url('../components/Divider/assets/triangles-yellow.svg');
   }
 
-  /* Independently drawn wave; a centered band keeps the surrounding whitespace. */
+  /* wave-yellow — 黄色波浪线（内联 SVG data-URI，40px 周期平铺，round 线帽） */
   .animal-divider-wave-yellow {
-    background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22450%22%20height%3D%2212%22%20viewBox%3D%220%200%20450%2012%22%3E%3Cpath%20d%3D%22M0%206%20C5%200%2010%200%2015%206%20C20%2012%2025%2012%2030%206%20C35%200%2040%200%2045%206%20C50%2012%2055%2012%2060%206%20C65%200%2070%200%2075%206%20C80%2012%2085%2012%2090%206%20C95%200%20100%200%20105%206%20C110%2012%20115%2012%20120%206%20C125%200%20130%200%20135%206%20C140%2012%20145%2012%20150%206%20C155%200%20160%200%20165%206%20C170%2012%20175%2012%20180%206%20C185%200%20190%200%20195%206%20C200%2012%20205%2012%20210%206%20C215%200%20220%200%20225%206%20C230%2012%20235%2012%20240%206%20C245%200%20250%200%20255%206%20C260%2012%20265%2012%20270%206%20C275%200%20280%200%20285%206%20C290%2012%20295%2012%20300%206%20C305%200%20310%200%20315%206%20C320%2012%20325%2012%20330%206%20C335%200%20340%200%20345%206%20C350%2012%20355%2012%20360%206%20C365%200%20370%200%20375%206%20C380%2012%20385%2012%20390%206%20C395%200%20400%200%20405%206%20C410%2012%20415%2012%20420%206%20C425%200%20430%200%20435%206%20C440%2012%20445%2012%20450%206%22%20fill%3D%22none%22%20stroke%3D%22%23f0d85b%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E");
+    height: 14px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 14' preserveAspectRatio='none'%3E%3Cpath d='M0 7 Q10 0 20 7 T40 7' fill='none' stroke='%23f5d04a' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: repeat-x;
+    background-size: 40px 14px;
     background-position: center;
-    background-size: min(450px, 100%) 12px;
-    background-repeat: no-repeat;
   }
 
   .animal-divider-dashed-brown,

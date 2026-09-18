@@ -68,10 +68,15 @@ export const Image: React.FC<ImageProps> = ({
     const lastFocusedRef = useRef<HTMLElement | null>(null);
     const dialogLabelId = useId();
 
-    useEffect(() => {
+    // Reset load state during render (not in an effect) so an instantly-loading
+    // image — e.g. a data-URI src — can't have its onLoad swallowed by a
+    // post-mount reset.
+    const [prevSrc, setPrevSrc] = useState(src);
+    if (prevSrc !== src) {
+        setPrevSrc(src);
         setFailed(false);
         setLoaded(false);
-    }, [src]);
+    }
 
     const handleLoad = useCallback(
         (e: React.SyntheticEvent<HTMLImageElement>) => {
