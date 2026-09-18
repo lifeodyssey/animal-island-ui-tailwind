@@ -14,7 +14,7 @@ export interface ProgressProps {
     percent: number;
     size?: ProgressSize;
     showInfo?: boolean;
-    /** @deprecated Use `variant` to set a scene image fill instead */
+    /** @deprecated `infoPosition` controls label placement (inside / right / top). Use `variant` for scene-image fill; the two props are independent. */
     infoPosition?: ProgressInfoPosition;
     /** Scene image to use as fill background. When set, replaces the striped fill. */
     variant?: ProgressVariant;

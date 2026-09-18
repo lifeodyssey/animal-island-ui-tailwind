@@ -53,7 +53,9 @@ export const Divider = React.forwardRef<HTMLDivElement, DividerProps>(
     ({ type = 'line-brown', icon, iconSize = 24, iconGap = 8, className, ...rest }, ref) => {
         const containerRef = useRef<HTMLDivElement | null>(null);
         const [cycles, setCycles] = useState(1);
-        const cycleWidth = iconSize + iconGap;
+        const safeIconSize = Number.isFinite(iconSize) && iconSize > 0 ? iconSize : 24;
+        const safeIconGap = Number.isFinite(iconGap) && iconGap >= 0 ? iconGap : 8;
+        const cycleWidth = safeIconSize + safeIconGap;
 
         const setRefs = React.useCallback(
             (el: HTMLDivElement | null) => {
@@ -72,7 +74,7 @@ export const Divider = React.forwardRef<HTMLDivElement, DividerProps>(
             const el = containerRef.current;
             if (!el) return undefined;
             const update = () => {
-                setCycles(Math.max(1, Math.floor(el.clientWidth / cycleWidth)));
+                setCycles(Math.max(1, Math.ceil((el.clientWidth + safeIconGap) / cycleWidth)));
             };
             update();
             if (typeof ResizeObserver !== 'undefined') {
@@ -97,7 +99,9 @@ export const Divider = React.forwardRef<HTMLDivElement, DividerProps>(
                             className="animal-divider-icon-cycle"
                             {...(c > 0 ? { 'aria-hidden': true } : {})}
                         >
-                            {icon}
+                            <span className="animal-divider-icon" style={{ width: safeIconSize, height: safeIconSize }}>
+                                {icon}
+                            </span>
                             {c < cycles - 1 && (
                                 <span className="animal-divider-icon-gap" style={{ width: iconGap }}>
                                     <span className="animal-divider-icon-line" />
