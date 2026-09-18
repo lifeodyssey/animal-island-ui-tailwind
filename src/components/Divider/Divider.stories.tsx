@@ -36,6 +36,54 @@ export const WaveYellow: Story = {
     args: { type: 'wave-yellow' },
 };
 
+export const Thin: Story = {
+    args: { type: 'thin' },
+};
+
+export const Hairline: Story = {
+    args: { type: 'hairline' },
+};
+
+export const Squiggle: Story = {
+    args: { type: 'squiggle' },
+};
+
+const fishIcon = (
+    <svg
+        viewBox="0 0 48 48"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="none"
+        aria-hidden
+    >
+        <path d="M6 24 C 8 14 22 10 30 14 C 38 18 38 30 30 34 C 22 38 8 34 6 24 Z" fill="#2A9D8F" />
+        <path d="M30 24 L42 14 L42 34 Z" fill="#E76F51" />
+        <circle cx="14" cy="22" r="2" fill="#FFFFFF" />
+        <circle cx="14" cy="22" r="1" fill="#2A2A2A" />
+    </svg>
+);
+
+/** 图标 + 连接线循环拼接，按容器宽度自动铺满整行。 */
+export const IconStrip: Story = {
+    render: () => (
+        <div style={{ padding: '24px', background: '#f5f0e8' }}>
+            <div style={{ marginBottom: 24 }}>
+                <p style={{ marginBottom: 8, fontSize: 12, color: '#7a6652' }}>默认（24px 图标 + 8px 连接线）</p>
+                <Divider icon={fishIcon} />
+            </div>
+            <div style={{ marginBottom: 24 }}>
+                <p style={{ marginBottom: 8, fontSize: 12, color: '#7a6652' }}>大图标长连接线（32px + 16px）</p>
+                <Divider icon={fishIcon} iconSize={32} iconGap={16} />
+            </div>
+            <div style={{ width: '50%' }}>
+                <p style={{ marginBottom: 8, fontSize: 12, color: '#7a6652' }}>50% 宽度容器</p>
+                <Divider icon={fishIcon} />
+            </div>
+        </div>
+    ),
+};
+
 export const DashedBrown: Story = {
     args: { type: 'dashed-brown' },
 };
@@ -69,6 +117,9 @@ const ALL_TYPES: DividerType[] = [
     'dashed-teal',
     'dashed-white',
     'dashed-yellow',
+    'thin',
+    'hairline',
+    'squiggle',
 ];
 
 export const AllTypes: Story = {

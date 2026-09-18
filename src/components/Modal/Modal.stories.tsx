@@ -34,6 +34,28 @@ export const Basic: Story = {
     },
 };
 
+/** game 变体：SVG 有机形状裁切（blob 外形），default 变体为圆角矩形。 */
+export const GameVariant: Story = {
+    render: () => {
+        const [open, setOpen] = useState(false);
+        return (
+            <>
+                <Button type="primary" onClick={() => setOpen(true)}>
+                    异形 Modal
+                </Button>
+                <Modal
+                    variant="game"
+                    open={open}
+                    onClose={() => setOpen(false)}
+                    onOk={() => setOpen(false)}
+                >
+                    钓到石头了！竟然连这种都能钓起来…
+                </Modal>
+            </>
+        );
+    },
+};
+
 /** open=false 时对话框不渲染，页面显示一个「已关闭」提示。 */
 export const Closed: Story = {
     render: () => (
