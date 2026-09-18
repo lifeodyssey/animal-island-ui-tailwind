@@ -76,8 +76,19 @@ test.describe('reference display utility parity', () => {
         await expect(sizeIcons.nth(2)).toHaveCSS('width', '56px');
     });
 
-    test('covers CodeBlock, Cursor, and Typewriter behavior', async ({ page }) => {
-        await page.goto(textStoryUrl);
+    test('icon divider tiles icon cycles across the container', async ({ page }) => {
+        await page.goto('/iframe.html?id=components-divider--icon-strip&viewMode=story');
+        const strips = page.locator('.animal-divider-icon-strip');
+        await expect(strips).toHaveCount(3);
+        // The strip must measure its width and repeat the icon — a single
+        // rendered cycle means the ResizeObserver wiring is broken.
+        const firstStripCycles = strips.first().locator('.animal-divider-icon-cycle');
+        await expect(firstStripCycles.nth(1)).toBeAttached();
+        expect(await firstStripCycles.count()).toBeGreaterThan(3);
+        expect(await strips.nth(2).locator('.animal-divider-icon-cycle').count()).toBeGreaterThan(1);
+    });
+
+    test('covers CodeBlock, Cursor, and Typewriter behavior', async ({ page }) => {        await page.goto(textStoryUrl);
         await expect(page.getByTestId('code-cursor-typewriter-region')).toBeVisible();
 
         const codeBlock = page.getByTestId('code-block-region').locator('pre');
