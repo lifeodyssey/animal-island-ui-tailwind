@@ -28,9 +28,13 @@ const visuallyHiddenStyle: React.CSSProperties = {
     border: 0,
 };
 
+export type ModalVariant = 'default' | 'game';
+
 export interface ModalProps {
     /** 是否可见 */
     open: boolean;
+    /** Modal type: default = regular rounded rectangle, game = organic blob shape. Default: default */
+    variant?: ModalVariant;
     /** 标题 */
     title?: React.ReactNode;
     /** 宽度 */
@@ -58,6 +62,7 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
     (
         {
             open,
+            variant = 'default',
             title,
             width = 520,
             maskClosable = true,
@@ -110,15 +115,15 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
                         <RadixDialog.Overlay className="animal-modal-overlay" style={maskStyle} />
                         <RadixDialog.Content
                             ref={ref}
-                            className={cn('animal-modal', className)}
+                            className={cn('animal-modal', variant === 'game' && 'animal-modal-game', className)}
                             style={{ width }}
                             onPointerDownOutside={handleOutsideInteraction}
                             onInteractOutside={handleOutsideInteraction}
                         >
-                            <ClipDef id={clipId} />
+                            {variant === 'game' && <ClipDef id={clipId} />}
                             <div
-                                className="animal-modal-clipped"
-                                style={{ clipPath: `url(#${clipId})` }}
+                                className={cn('animal-modal-clipped', variant === 'game' && 'animal-modal-game-clipped')}
+                                style={variant === 'game' ? { clipPath: `url(#${clipId})` } : undefined}
                             >
                                 {title ? (
                                     <>

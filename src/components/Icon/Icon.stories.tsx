@@ -4,14 +4,14 @@ import { Icon, ICON_LIST } from './Icon';
 const meta = {
     component: Icon,
     tags: ['ai-generated'],
-    args: { name: 'icon-map' },
+    args: { name: 'Flower' },
 } satisfies Meta<typeof Icon>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    args: { name: 'icon-map' },
+    args: { name: 'Flower' },
 };
 
 export const AllIcons: Story = {
@@ -38,7 +38,7 @@ export const SizeNumeric: Story = {
                     key={px}
                     style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}
                 >
-                    <Icon name="icon-encyclopedia" size={px} />
+                    <Icon name="Heart" size={px} />
                     <span style={{ fontSize: 12 }}>{px}px</span>
                 </div>
             ))}
@@ -54,7 +54,7 @@ export const SizeString: Story = {
                     key={s}
                     style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}
                 >
-                    <Icon name="icon-camera" size={s} />
+                    <Icon name="Camera" size={s} />
                     <span style={{ fontSize: 12 }}>{s}</span>
                 </div>
             ))}
@@ -66,12 +66,12 @@ export const Bounce: Story = {
     render: () => (
         <div style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-                <Icon name="icon-design" size={40} bounce />
-                <span style={{ fontSize: 12 }}>弹弹弹 bounce=true</span>
+                <Icon name="Star" size={40} bounce />
+                <span style={{ fontSize: 12 }}>bounce=true (hover)</span>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-                <Icon name="icon-design" size={40} />
-                <span style={{ fontSize: 12 }}>静止 bounce=false</span>
+                <Icon name="Star" size={40} />
+                <span style={{ fontSize: 12 }}>bounce=false</span>
             </div>
         </div>
     ),
@@ -79,18 +79,18 @@ export const Bounce: Story = {
 
 export const AccessibleLabel: Story = {
     args: {
-        name: 'icon-shopping',
+        name: 'Cart',
         size: 36,
-        'aria-label': '集合啦商店',
+        'aria-label': 'Shopping cart',
     },
 };
 
-export const ArtworkSurfaces: Story = {
+export const Showcase: Story = {
     render: () => (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             {['#ffffff', '#fff9ed', '#344b43'].map((background) => (
                 <div key={background} style={{ background, borderRadius: 16, padding: 20, display: 'flex', flexWrap: 'wrap', gap: 20 }}>
-                    {(['icon-camera', 'icon-travel', 'icon-encyclopedia', 'icon-diy', 'icon-design', 'icon-map', 'icon-passport', 'icon-helicopter', 'icon-chat'] as const).map((name) => (
+                    {(['Heart', 'Flower', 'Star', 'Cat', 'Dog', 'Rabbit', 'Bee', 'Mushroom'] as const).map((name) => (
                         <div key={name} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
                             <Icon name={name} size={48} aria-label={name} />
                             <Icon name={name} size={32} />

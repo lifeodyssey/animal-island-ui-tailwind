@@ -19,6 +19,8 @@ export type ImageColor =
     | 'brown'
     | 'warm-peach-pink';
 
+export type ImageVariant = 'default' | 'bordered' | 'stamp';
+
 export interface ImageProps extends Omit<
     React.ImgHTMLAttributes<HTMLImageElement>,
     'src' | 'alt' | 'width' | 'height' | 'onLoad' | 'onError'
@@ -27,7 +29,12 @@ export interface ImageProps extends Omit<
     alt?: string;
     width?: number | string;
     height?: number | string;
+    /** 背景颜色（仅 variant='bordered' 时生效） */
     color?: ImageColor;
+    /** 相框类型：'default' 卡片大阴影+大圆角（默认），'bordered' 边框柔和阴影+小圆角，'stamp' 邮票齿孔边框 */
+    variant?: ImageVariant;
+    /** 邮票发行年份，印在右上角照片上（仅 variant='stamp'） */
+    stampYear?: string;
     lazy?: boolean;
     preview?: boolean;
     onLoad?: (e: React.SyntheticEvent<HTMLImageElement>) => void;
@@ -40,6 +47,8 @@ export const Image: React.FC<ImageProps> = ({
     width,
     height,
     color = 'white',
+    variant = 'default',
+    stampYear,
     lazy = false,
     preview = true,
     className,
@@ -104,12 +113,17 @@ export const Image: React.FC<ImageProps> = ({
         setPreviewOpen(true);
     };
 
+    const stampExtra = variant === 'stamp' && stampYear
+        ? <span className="animal-image-stamp-year">{stampYear}</span>
+        : null;
+
     if (failed) {
         return (
             <span
                 className={cn(
                     'animal-image',
-                    color !== 'white' && `animal-image-${color}`,
+                    variant !== 'bordered' && `animal-image-variant-${variant}`,
+                    variant === 'bordered' && color !== 'white' && `animal-image-${color}`,
                     'animal-image-error',
                     className
                 )}
@@ -117,7 +131,7 @@ export const Image: React.FC<ImageProps> = ({
                 role="img"
                 aria-label={alt || '图片加载失败'}
             >
-                <Icon name="icon-camera" size={32} />
+                <Icon name="Camera" size={32} />
                 <span>图片加载失败</span>
             </span>
         );
@@ -125,7 +139,8 @@ export const Image: React.FC<ImageProps> = ({
 
     const frameCls = cn(
         'animal-image',
-        color !== 'white' && `animal-image-${color}`,
+        variant !== 'bordered' && `animal-image-variant-${variant}`,
+        variant === 'bordered' && color !== 'white' && `animal-image-${color}`,
         loaded && 'animal-image-loaded',
         preview && 'animal-image-preview',
         className
@@ -149,6 +164,7 @@ export const Image: React.FC<ImageProps> = ({
             <>
                 <button type="button" className={frameCls} style={frameStyle} onClick={openPreview}>
                     {content}
+                    {stampExtra}
                 </button>
                 {typeof document !== 'undefined' && createPortal(
                     previewOpen ? (
@@ -185,6 +201,7 @@ export const Image: React.FC<ImageProps> = ({
     return (
         <span className={frameCls} style={frameStyle}>
             {content}
+            {stampExtra}
         </span>
     );
 };

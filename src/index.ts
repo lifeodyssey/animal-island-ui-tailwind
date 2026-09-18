@@ -41,7 +41,7 @@ export { Title } from './components/Title';
 export type { TitleProps, TitleSize, TitleColor } from './components/Title';
 
 export { Footer } from './components/Footer';
-export type { FooterProps, FooterType } from './components/Footer';
+export type { FooterProps } from './components/Footer';
 
 export { Collapse } from './components/Collapse';
 export type { CollapseProps } from './components/Collapse';
@@ -62,7 +62,8 @@ export { Typewriter } from './components/Typewriter';
 export type { TypewriterProps } from './components/Typewriter';
 
 export { Icon, ICON_LIST } from './components/Icon';
-export type { IconProps, IconName } from './components/Icon';
+export type { IconProps, IconName, IconComponent } from './components/Icon';
+export * from './components/Icon/src';
 
 export { Wallet } from './components/Wallet';
 export type { WalletProps, WalletSize } from './components/Wallet';
@@ -147,7 +148,7 @@ export { Drawer } from './components/Drawer';
 export type { DrawerProps, DrawerPlacement } from './components/Drawer';
 
 export { Progress } from './components/Progress';
-export type { ProgressProps, ProgressSize, ProgressInfoPosition } from './components/Progress';
+export type { ProgressProps, ProgressSize, ProgressVariant } from './components/Progress';
 
 export { Skeleton, SkeletonButton, SkeletonInput, SkeletonAvatar } from './components/Skeleton';
 export type { SkeletonProps, SkeletonVariant, SkeletonButtonProps, SkeletonInputProps, SkeletonAvatarProps } from './components/Skeleton';
@@ -156,7 +157,7 @@ export { BackTop } from './components/BackTop';
 export type { BackTopProps } from './components/BackTop';
 
 export { Image } from './components/Image';
-export type { ImageProps, ImageColor } from './components/Image';
+export type { ImageProps, ImageColor, ImageVariant } from './components/Image';
 
 export { Countdown } from './components/Countdown';
 export type { CountdownProps, CountdownSize, CountdownVariant } from './components/Countdown';

@@ -1,5 +1,7 @@
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Divider, type DividerType } from './Divider';
+import { Icon } from '../Icon';
 
 const meta = {
     component: Divider,
@@ -10,65 +12,31 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    args: { type: 'line-brown' },
+    args: { type: 'dashed-brown' },
 };
 
-export const LineTeal: Story = {
-    args: { type: 'line-teal' },
+export const Thin: Story = {
+    args: { type: 'thin' },
 };
 
-export const LineWhite: Story = {
-    args: { type: 'line-white' },
-    decorators: [
-        (Story) => (
-            <div style={{ background: '#b5e0b5', padding: '16px' }}>
-                <Story />
-            </div>
-        ),
-    ],
-};
-
-export const LineYellow: Story = {
-    args: { type: 'line-yellow' },
+export const Hairline: Story = {
+    args: { type: 'hairline' },
 };
 
 export const WaveYellow: Story = {
     args: { type: 'wave-yellow' },
 };
 
-export const DashedBrown: Story = {
-    args: { type: 'dashed-brown' },
-};
-
-export const DashedTeal: Story = {
-    args: { type: 'dashed-teal' },
-};
-
-export const DashedWhite: Story = {
-    args: { type: 'dashed-white' },
-    decorators: [
-        (Story) => (
-            <div style={{ background: '#b5e0b5', padding: '16px' }}>
-                <Story />
-            </div>
-        ),
-    ],
-};
-
-export const DashedYellow: Story = {
-    args: { type: 'dashed-yellow' },
+export const Squiggle: Story = {
+    args: { type: 'squiggle' },
 };
 
 const ALL_TYPES: DividerType[] = [
-    'line-brown',
-    'line-teal',
-    'line-white',
-    'line-yellow',
-    'wave-yellow',
     'dashed-brown',
-    'dashed-teal',
-    'dashed-white',
-    'dashed-yellow',
+    'thin',
+    'hairline',
+    'wave-yellow',
+    'squiggle',
 ];
 
 export const AllTypes: Story = {
@@ -101,6 +69,17 @@ export const AllTypes: Story = {
     ),
 };
 
+export const WithIcon: Story = {
+    render: () => (
+        <div style={{ padding: '24px', background: '#f5f0e8' }}>
+            <p style={{ marginBottom: 8, fontSize: 12, color: '#7a6652' }}>
+                icon divider — Fish 循环铺满
+            </p>
+            <Divider icon={<Icon name="Fish" size={20} color="#5b8c5a" />} iconSize={20} iconGap={8} />
+        </div>
+    ),
+};
+
 export const CustomWidth: Story = {
     render: () => (
         <div
@@ -114,15 +93,9 @@ export const CustomWidth: Story = {
         >
             <div>
                 <p style={{ marginBottom: 8, fontSize: 12, color: '#7a6652' }}>
-                    宽度 25% — 岛民聚会
-                </p>
-                <Divider type="line-brown" style={{ width: '25%' }} />
-            </div>
-            <div>
-                <p style={{ marginBottom: 8, fontSize: 12, color: '#7a6652' }}>
                     宽度 50% — 喵喵的摊位
                 </p>
-                <Divider type="dashed-teal" style={{ width: '50%' }} />
+                <Divider type="dashed-brown" style={{ width: '50%' }} />
             </div>
             <div>
                 <p style={{ marginBottom: 8, fontSize: 12, color: '#7a6652' }}>
@@ -134,7 +107,7 @@ export const CustomWidth: Story = {
                 <p style={{ marginBottom: 8, fontSize: 12, color: '#7a6652' }}>
                     宽度 100% — 全岛公告
                 </p>
-                <Divider type="line-teal" style={{ width: '100%' }} />
+                <Divider type="squiggle" style={{ width: '100%' }} />
             </div>
         </div>
     ),

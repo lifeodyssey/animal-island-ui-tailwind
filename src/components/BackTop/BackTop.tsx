@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { cn } from '../../utils/cn';
-
-import helperImage from './assets/helper.png';
+import rocketIcon from './rocket.svg';
 
 export interface BackTopProps {
     target?: () => HTMLElement | Window;
@@ -87,10 +86,7 @@ export const BackTop: React.FC<BackTopProps> = ({
                 }
             }}
         >
-            <span className="animal-backtop-artwork" aria-hidden="true">
-                <span className="animal-backtop-bubble">回到<br />顶部</span>
-                <img className="animal-backtop-img" src={helperImage} alt="" draggable={false} />
-            </span>
+            <img className="animal-backtop-img" src={rocketIcon} alt="" draggable={false} />
         </div>
     );
 };

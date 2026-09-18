@@ -2,6 +2,7 @@ import React from 'react';
 import { cva } from 'class-variance-authority';
 import { cn } from '../../utils/cn';
 import type { ComponentSize } from '../../utils/types';
+import { Icon } from '../Icon';
 
 export type ButtonType = 'primary' | 'default' | 'dashed' | 'text' | 'link';
 export type ButtonSize = ComponentSize;
@@ -102,8 +103,12 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                 aria-disabled={loading ? true : ariaDisabled}
                 onClick={handleClick}
             >
-                {icon && !loading && (
-                    <span className="animal-btn-icon">{icon}</span>
+                {loading ? (
+                    <span className="animal-btn-icon" aria-hidden>
+                        <Icon name="Donut" size={28} color="currentColor" className="animal-btn-loading-icon" />
+                    </span>
+                ) : (
+                    icon && <span className="animal-btn-icon">{icon}</span>
                 )}
                 {children && <span>{children}</span>}
             </button>
