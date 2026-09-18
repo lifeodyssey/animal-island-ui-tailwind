@@ -29,50 +29,35 @@ test.describe('reference display utility parity', () => {
         await expect(page.getByTestId('divider-footer-region')).toBeVisible();
         await expect(page.getByTestId('icon-region')).toBeVisible();
 
+        // 5 divider types + 1 extra thin = 6 total
         const dividers = page.getByTestId('divider-matrix').locator('div[class*="divider"]');
-        await expect(dividers).toHaveCount(10);
-        const solidAndWaveDividers = page
-            .getByTestId('divider-matrix')
-            .locator(
-                '.animal-divider:not(.animal-divider-dashed-brown):not(.animal-divider-dashed-teal):not(.animal-divider-dashed-white):not(.animal-divider-dashed-yellow)',
-            );
-        const dashedDividers = page
-            .getByTestId('divider-matrix')
-            .locator(
-                '.animal-divider.animal-divider-dashed-brown, .animal-divider.animal-divider-dashed-teal, .animal-divider.animal-divider-dashed-white, .animal-divider.animal-divider-dashed-yellow',
-            );
-
-        for (const divider of await solidAndWaveDividers.all()) {
-            await expect(divider).toHaveCSS('height', '12px');
-            await expect(divider).toHaveCSS('background-repeat', 'no-repeat');
-        }
-        for (const divider of await dashedDividers.all()) {
-            await expect(divider).toHaveCSS('height', '12px');
-            await expect(divider).toHaveCSS('background-repeat', 'repeat-x');
-            await expect(divider).toHaveCSS('background-size', '12px 2px');
-        }
+        await expect(dividers).toHaveCount(6);
+        // dashed-brown (base): 12px with repeat-x gradient
+        const dashedBrown = page.getByTestId('divider-matrix').locator('.animal-divider').first();
+        await expect(dashedBrown).toHaveCSS('height', '12px');
+        // thin: 1px solid
+        const thin = page.getByTestId('divider-matrix').locator('.animal-divider-thin').first();
+        await expect(thin).toHaveCSS('height', '1px');
+        // wave-yellow: 14px repeat-x
+        const waveYellow = page.getByTestId('divider-matrix').locator('.animal-divider-wave-yellow');
+        await expect(waveYellow).toHaveCSS('height', '14px');
+        await expect(waveYellow).toHaveCSS('background-repeat', 'repeat-x');
+        // squiggle: 10px repeat-x
+        const squiggle = page.getByTestId('divider-matrix').locator('.animal-divider-squiggle');
+        await expect(squiggle).toHaveCSS('height', '10px');
+        await expect(squiggle).toHaveCSS('background-repeat', 'repeat-x');
         await expect(dividers.last()).toHaveCSS('width', '220px');
 
+        // Footer is now a copyright bar with 3 parity instances
         const footers = page.getByTestId('footer-matrix').locator('.animal-footer');
-        await expect(footers).toHaveCount(4);
-        for (const footer of await footers.all()) {
-            await expect(footer).toHaveCSS('height', '80px');
-        }
-        const seamlessFooters = page.getByTestId('footer-matrix').locator('.animal-footer-seamless');
-        await expect(seamlessFooters).toHaveCount(2);
-        for (const footer of await seamlessFooters.all()) {
-            await expect(footer).toHaveCSS('background-repeat', 'repeat-x');
-            await expect(footer).toHaveCSS('background-size', 'auto 100%');
-            await expect(footer).toHaveCSS('background-position', '0% 100%');
-        }
-        await expect(
-            page.getByTestId('footer-matrix').locator('.animal-footer-tree:not(.animal-footer-seamless)'),
-        ).toHaveCSS('background-size', 'auto 100%');
+        await expect(footers).toHaveCount(3);
+        await expect(footers.first()).toContainText('All Rights Reserved.');
 
+        // Icon grid now renders 101 SVG icons (ICON_LIST expanded upstream)
         const iconGrid = page.getByTestId('icon-grid');
-        await expect(iconGrid.locator('.animal-icon')).toHaveCount(16);
-        await expect(page.getByText('Travel', { exact: true })).toBeVisible();
-        const sizeIcons = page.getByTestId('icon-size-row').locator('span[class*="icon"]');
+        await expect(iconGrid.locator('.animal-icon')).toHaveCount(101);
+        await expect(page.getByText('Camera', { exact: true })).toBeVisible();
+        const sizeIcons = page.getByTestId('icon-size-row').locator('[class*="animal-icon"]');
         await expect(sizeIcons).toHaveCount(3);
         await expect(sizeIcons.nth(0)).toHaveCSS('width', '24px');
         await expect(sizeIcons.nth(1)).toHaveCSS('width', '40px');

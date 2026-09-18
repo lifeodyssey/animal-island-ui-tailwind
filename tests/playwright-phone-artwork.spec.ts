@@ -25,13 +25,14 @@ test('phone artwork decodes with transparency while clock and badges remain visi
     for (const icon of await icons.all()) await expect(icon).toBeVisible();
 });
 
-test('colored icons render on three surfaces at small sizes with accessible names', async ({ page }) => {
-    await page.goto('/iframe.html?id=components-icon--artwork-surfaces&viewMode=story');
-    await expect(page.locator('.animal-icon')).toHaveCount(81);
-    await expect(page.getByRole('img', { name: 'icon-camera', exact: true })).toHaveCount(3);
+test('svg icons render on three surfaces at multiple sizes with accessible names', async ({ page }) => {
+    // Showcase story: 8 icons × 3 backgrounds × 3 sizes = 72 animal-icon elements
+    await page.goto('/iframe.html?id=components-icon--showcase&viewMode=story');
+    await expect(page.locator('.animal-icon')).toHaveCount(72);
+    // size-48 icons have aria-label set, one per background surface
+    await expect(page.getByRole('img', { name: 'Heart', exact: true })).toHaveCount(3);
     for (const icon of await page.locator('.animal-icon').all()) {
         await expect(icon).toBeVisible();
-        await expect(icon).toHaveCSS('background-repeat', 'no-repeat');
     }
     await page.setViewportSize({ width: 390, height: 900 });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

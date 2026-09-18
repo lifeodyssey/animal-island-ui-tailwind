@@ -298,13 +298,13 @@ export const ImageStory: Story = {
                 </div>
             </div>
             <div style={sectionStyle}>
-                <div style={labelStyle}>Colors</div>
+                <div style={labelStyle}>Colors (variant=bordered)</div>
                 <div style={rowStyle}>
-                    <Image src={SAMPLE_SRC} alt="default color" color="default" width={120} height={90} />
-                    <Image src={SAMPLE_SRC} alt="app-pink" color="app-pink" width={120} height={90} />
-                    <Image src={SAMPLE_SRC} alt="purple" color="purple" width={120} height={90} />
-                    <Image src={SAMPLE_SRC} alt="app-teal" color="app-teal" width={120} height={90} />
-                    <Image src={SAMPLE_SRC} alt="app-green" color="app-green" width={120} height={90} />
+                    <Image src={SAMPLE_SRC} alt="default color" variant="bordered" color="default" width={120} height={90} />
+                    <Image src={SAMPLE_SRC} alt="app-pink" variant="bordered" color="app-pink" width={120} height={90} />
+                    <Image src={SAMPLE_SRC} alt="purple" variant="bordered" color="purple" width={120} height={90} />
+                    <Image src={SAMPLE_SRC} alt="app-teal" variant="bordered" color="app-teal" width={120} height={90} />
+                    <Image src={SAMPLE_SRC} alt="app-green" variant="bordered" color="app-green" width={120} height={90} />
                 </div>
             </div>
             <div style={sectionStyle}>
