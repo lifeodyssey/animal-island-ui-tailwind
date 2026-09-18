@@ -1,7 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState, useId } from 'react';
 import { createPortal } from 'react-dom';
 import { cn } from '../../utils/cn';
-import { Icon } from '../Icon';
+
+const BrokenImageIcon: React.FC<{ size?: number }> = ({ size = 32 }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+        <circle cx="12" cy="13" r="4" />
+    </svg>
+);
 
 export type ImageColor =
     | 'white'
@@ -27,7 +33,12 @@ export interface ImageProps extends Omit<
     alt?: string;
     width?: number | string;
     height?: number | string;
+    /** 背景颜色（仅 variant='bordered' 时生效） */
     color?: ImageColor;
+    /** 相框类型：'default' 大阴影+大圆角（默认），'bordered' 边框柔和阴影+小圆角，'stamp' 邮票齿孔边框 */
+    variant?: 'default' | 'bordered' | 'stamp';
+    /** 邮票变体下的发行年份，印在右上角；留空不显示 */
+    stampYear?: string;
     lazy?: boolean;
     preview?: boolean;
     onLoad?: (e: React.SyntheticEvent<HTMLImageElement>) => void;
@@ -40,6 +51,8 @@ export const Image: React.FC<ImageProps> = ({
     width,
     height,
     color = 'white',
+    variant = 'default',
+    stampYear,
     lazy = false,
     preview = true,
     className,
@@ -55,10 +68,15 @@ export const Image: React.FC<ImageProps> = ({
     const lastFocusedRef = useRef<HTMLElement | null>(null);
     const dialogLabelId = useId();
 
-    useEffect(() => {
+    // Reset load state during render (not in an effect) so an instantly-loading
+    // image — e.g. a data-URI src — can't have its onLoad swallowed by a
+    // post-mount reset.
+    const [prevSrc, setPrevSrc] = useState(src);
+    if (prevSrc !== src) {
+        setPrevSrc(src);
         setFailed(false);
         setLoaded(false);
-    }, [src]);
+    }
 
     const handleLoad = useCallback(
         (e: React.SyntheticEvent<HTMLImageElement>) => {
@@ -109,7 +127,9 @@ export const Image: React.FC<ImageProps> = ({
             <span
                 className={cn(
                     'animal-image',
-                    color !== 'white' && `animal-image-${color}`,
+                    variant === 'default' && 'animal-image-variant-default',
+                    variant === 'stamp' && 'animal-image-variant-stamp',
+                    variant === 'bordered' && color !== 'white' && `animal-image-${color}`,
                     'animal-image-error',
                     className
                 )}
@@ -117,7 +137,7 @@ export const Image: React.FC<ImageProps> = ({
                 role="img"
                 aria-label={alt || '图片加载失败'}
             >
-                <Icon name="icon-camera" size={32} />
+                <BrokenImageIcon size={32} />
                 <span>图片加载失败</span>
             </span>
         );
@@ -125,7 +145,9 @@ export const Image: React.FC<ImageProps> = ({
 
     const frameCls = cn(
         'animal-image',
-        color !== 'white' && `animal-image-${color}`,
+        variant === 'default' && 'animal-image-variant-default',
+        variant === 'stamp' && 'animal-image-variant-stamp',
+        variant === 'bordered' && color !== 'white' && `animal-image-${color}`,
         loaded && 'animal-image-loaded',
         preview && 'animal-image-preview',
         className
@@ -144,11 +166,16 @@ export const Image: React.FC<ImageProps> = ({
         />
     );
 
+    const stampExtra = variant === 'stamp' && stampYear && (
+        <span className="animal-image-stamp-year">{stampYear}</span>
+    );
+
     if (preview) {
         return (
             <>
                 <button type="button" className={frameCls} style={frameStyle} onClick={openPreview}>
                     {content}
+                    {stampExtra}
                 </button>
                 {typeof document !== 'undefined' && createPortal(
                     previewOpen ? (
@@ -185,6 +212,7 @@ export const Image: React.FC<ImageProps> = ({
     return (
         <span className={frameCls} style={frameStyle}>
             {content}
+            {stampExtra}
         </span>
     );
 };

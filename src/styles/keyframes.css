@@ -6,6 +6,11 @@
   to { background-position: -28.28px 0; }
 }
 
+@keyframes animal-btn-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
 @keyframes animal-spin {
   to { transform: rotate(360deg); }
 }

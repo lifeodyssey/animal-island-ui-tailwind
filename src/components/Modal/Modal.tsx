@@ -28,9 +28,13 @@ const visuallyHiddenStyle: React.CSSProperties = {
     border: 0,
 };
 
+export type ModalVariant = 'default' | 'game';
+
 export interface ModalProps {
     /** 是否可见 */
     open: boolean;
+    /** 弹窗类型: default 常规圆角矩形, game 异形自然外框。默认 default */
+    variant?: ModalVariant;
     /** 标题 */
     title?: React.ReactNode;
     /** 宽度 */
@@ -58,6 +62,7 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
     (
         {
             open,
+            variant = 'default',
             title,
             width = 520,
             maskClosable = true,
@@ -115,10 +120,13 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
                             onPointerDownOutside={handleOutsideInteraction}
                             onInteractOutside={handleOutsideInteraction}
                         >
-                            <ClipDef id={clipId} />
+                            {variant === 'game' && <ClipDef id={clipId} />}
                             <div
-                                className="animal-modal-clipped"
-                                style={{ clipPath: `url(#${clipId})` }}
+                                className={cn(
+                                    'animal-modal-clipped',
+                                    variant === 'game' && 'animal-modal-clipped-game'
+                                )}
+                                style={variant === 'game' ? { clipPath: `url(#${clipId})` } : undefined}
                             >
                                 {title ? (
                                     <>

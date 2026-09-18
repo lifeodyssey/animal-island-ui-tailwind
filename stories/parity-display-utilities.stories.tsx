@@ -76,7 +76,10 @@ const dividerTypes = [
     'dashed-white',
     'dashed-yellow',
 ] as const;
-const footerTypes = ['sea', 'tree'] as const;
+const footerSamples = [
+    { text: 'All Rights Reserved.', year: 2024 },
+    { text: 'Animal Island Co., Ltd.', year: 2025 },
+] as const;
 
 const codeSample = `import React, { useState } from 'react';
 
@@ -100,13 +103,10 @@ const DividerFooterSection = () => (
         </div>
         <div style={labelStyle}>Footer variants</div>
         <div data-testid="footer-matrix" style={{ ...panelStyle, display: 'grid', gridTemplateColumns: '1fr', gap: 16 }}>
-            {footerTypes.flatMap((type) => [
-                { type, seamless: false, label: type },
-                { type, seamless: true, label: `${type} seamless` },
-            ]).map(({ type, seamless, label }) => (
-                <div key={label}>
-                    <div style={{ color: '#725d42', fontSize: 13, fontWeight: 700, marginBottom: 8 }}>{label}</div>
-                    <Footer type={type} seamless={seamless} className={`parity-footer-${type}${seamless ? '-seamless' : ''}`} style={{ width: 520 }} />
+            {footerSamples.map(({ text, year }) => (
+                <div key={`${year}-${text}`}>
+                    <div style={{ color: '#725d42', fontSize: 13, fontWeight: 700, marginBottom: 8 }}>{year}</div>
+                    <Footer text={text} year={year} className="parity-footer" />
                 </div>
             ))}
         </div>
@@ -245,7 +245,7 @@ export const AssetsParity: Story = {
             expect(canvas.getByTestId('divider-matrix').querySelectorAll('div[class*="divider"]').length).toBeGreaterThanOrEqual(10);
         });
         await waitFor(() => {
-            expect(canvas.getByTestId('footer-matrix').querySelectorAll('div[class*="footer"]').length).toBeGreaterThanOrEqual(4);
+            expect(canvas.getByTestId('footer-matrix').querySelectorAll('.animal-footer').length).toBeGreaterThanOrEqual(2);
         });
         for (const icon of ICON_LIST) {
             await expect(canvas.getByText(icon.label)).toBeVisible();

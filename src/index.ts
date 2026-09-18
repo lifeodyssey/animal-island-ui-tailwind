@@ -32,16 +32,16 @@ export { Switch } from './components/Switch';
 export type { SwitchProps, SwitchSize } from './components/Switch';
 
 export { Modal } from './components/Modal';
-export type { ModalProps } from './components/Modal';
+export type { ModalProps, ModalVariant } from './components/Modal';
 
 export { Card } from './components/Card';
 export type { CardProps, CardType, CardColor, CardPattern } from './components/Card';
 
 export { Title } from './components/Title';
-export type { TitleProps, TitleSize, TitleColor } from './components/Title';
+export type { TitleProps, TitleSize, TitleColor, TitleVariant } from './components/Title';
 
 export { Footer } from './components/Footer';
-export type { FooterProps, FooterType } from './components/Footer';
+export type { FooterProps } from './components/Footer';
 
 export { Collapse } from './components/Collapse';
 export type { CollapseProps } from './components/Collapse';
@@ -147,7 +147,7 @@ export { Drawer } from './components/Drawer';
 export type { DrawerProps, DrawerPlacement } from './components/Drawer';
 
 export { Progress } from './components/Progress';
-export type { ProgressProps, ProgressSize, ProgressInfoPosition } from './components/Progress';
+export type { ProgressProps, ProgressSize, ProgressInfoPosition, ProgressVariant } from './components/Progress';
 
 export { Skeleton, SkeletonButton, SkeletonInput, SkeletonAvatar } from './components/Skeleton';
 export type { SkeletonProps, SkeletonVariant, SkeletonButtonProps, SkeletonInputProps, SkeletonAvatarProps } from './components/Skeleton';

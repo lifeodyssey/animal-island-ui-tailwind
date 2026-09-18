@@ -34,8 +34,9 @@ test.describe('reference display utility parity', () => {
         const solidAndWaveDividers = page
             .getByTestId('divider-matrix')
             .locator(
-                '.animal-divider:not(.animal-divider-dashed-brown):not(.animal-divider-dashed-teal):not(.animal-divider-dashed-white):not(.animal-divider-dashed-yellow)',
+                '.animal-divider:not(.animal-divider-dashed-brown):not(.animal-divider-dashed-teal):not(.animal-divider-dashed-white):not(.animal-divider-dashed-yellow):not(.animal-divider-wave-yellow)',
             );
+        const waveDivider = page.getByTestId('divider-matrix').locator('.animal-divider-wave-yellow');
         const dashedDividers = page
             .getByTestId('divider-matrix')
             .locator(
@@ -46,6 +47,10 @@ test.describe('reference display utility parity', () => {
             await expect(divider).toHaveCSS('height', '12px');
             await expect(divider).toHaveCSS('background-repeat', 'no-repeat');
         }
+        // wave-yellow tiles full-width like upstream (40px period, 14px tall)
+        await expect(waveDivider).toHaveCSS('height', '14px');
+        await expect(waveDivider).toHaveCSS('background-repeat', 'repeat-x');
+        await expect(waveDivider).toHaveCSS('background-size', '40px 14px');
         for (const divider of await dashedDividers.all()) {
             await expect(divider).toHaveCSS('height', '12px');
             await expect(divider).toHaveCSS('background-repeat', 'repeat-x');
@@ -54,20 +59,12 @@ test.describe('reference display utility parity', () => {
         await expect(dividers.last()).toHaveCSS('width', '220px');
 
         const footers = page.getByTestId('footer-matrix').locator('.animal-footer');
-        await expect(footers).toHaveCount(4);
+        await expect(footers).toHaveCount(2);
         for (const footer of await footers.all()) {
-            await expect(footer).toHaveCSS('height', '80px');
+            await expect(footer).toHaveCSS('text-align', 'center');
         }
-        const seamlessFooters = page.getByTestId('footer-matrix').locator('.animal-footer-seamless');
-        await expect(seamlessFooters).toHaveCount(2);
-        for (const footer of await seamlessFooters.all()) {
-            await expect(footer).toHaveCSS('background-repeat', 'repeat-x');
-            await expect(footer).toHaveCSS('background-size', 'auto 100%');
-            await expect(footer).toHaveCSS('background-position', '0% 100%');
-        }
-        await expect(
-            page.getByTestId('footer-matrix').locator('.animal-footer-tree:not(.animal-footer-seamless)'),
-        ).toHaveCSS('background-size', 'auto 100%');
+        await expect(footers.first()).toContainText('All Rights Reserved.');
+        await expect(footers.last()).toContainText('Animal Island Co., Ltd.');
 
         const iconGrid = page.getByTestId('icon-grid');
         await expect(iconGrid.locator('.animal-icon')).toHaveCount(16);

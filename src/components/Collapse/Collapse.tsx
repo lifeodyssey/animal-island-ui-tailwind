@@ -76,11 +76,22 @@ export const Collapse = React.forwardRef<HTMLDivElement, CollapseProps>(
                             </span>
                             <span className="animal-collapse-title">{question}</span>
                             <span className="animal-collapse-leaf">
-                                <svg viewBox="0 0 24 24" width="20" height="20">
-                                    <path
-                                        fill="currentColor"
-                                        d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"
-                                    />
+                                <svg
+                                    viewBox="0 0 48 48"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="20"
+                                    height="20"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth={3.5}
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    aria-hidden
+                                >
+                                    <path d="M6 24 C 8 14 22 10 30 14 C 38 18 38 30 30 34 C 22 38 8 34 6 24 Z" fill="#2A9D8F" />
+                                    <path d="M30 24 L42 14 L42 34 Z" fill="#E76F51" />
+                                    <circle cx="14" cy="22" r="2" fill="#FFFFFF" />
+                                    <circle cx="14" cy="22" r="1" fill="#2A2A2A" />
                                 </svg>
                             </span>
                         </RadixAccordion.Trigger>
