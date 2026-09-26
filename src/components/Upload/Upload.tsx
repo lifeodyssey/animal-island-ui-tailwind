@@ -2,139 +2,72 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Upload as UploadIcon, File as FileIcon, Check as CheckIcon, X as CloseIcon, Eye as EyeIcon } from 'lucide-react';
 import { cn } from '../../utils/cn';
 
-/** 单个文件的状态 */
 export type UploadFileStatus = 'uploading' | 'done' | 'error' | 'removed';
-
-/** 文件列表的展示形态 */
 export type UploadListType = 'text' | 'picture' | 'picture-card';
 
-/** 文件列表项（组件内部以 uid 追踪） */
 export interface UploadFile {
-    /** 唯一标识 */
     uid: string;
-    /** 文件名 */
     name: string;
-    /** 字节数 */
     size?: number;
-    /** MIME 类型 */
     type?: string;
-    /** 上传状态，默认 'uploading'；删除时经 onChange 上报为 'removed' */
     status?: UploadFileStatus;
-    /** 上传进度 0–100 */
     percent?: number;
-    /** 下载/服务端地址（语义上区别于缩略图）；由自定义/受控 fileList 或服务端提供 */
     url?: string;
-    /** 缩略图地址（与本地上传时组件自动生成的 ObjectURL）；展示时优先于 url */
     thumbUrl?: string;
-    /** 用户选择的原始 File 对象（beforeUpload 返回转换后的 File 时，这里仍是未转换的原始文件） */
     originFileObj?: File;
-    /** 服务端返回（action XHR 的 response，或 customRequest 调 onSuccess(resp) 时传入） */
     response?: unknown;
-    /** 失败信息（action XHR 出错，或 customRequest 调 onError(err) 时传入） */
     error?: unknown;
 }
 
-/** customRequest 收到的回调集合 */
 export interface UploadCustomRequestOptions {
     file: File;
-    /** 上报进度 0–100 */
     onProgress: (percent: number) => void;
-    /** 标记成功，可附带服务端返回 */
     onSuccess: (response?: unknown) => void;
-    /** 标记失败，可附带错误信息 */
     onError: (error?: unknown) => void;
 }
 
-/** onChange 回调收到的信息（file 为本次变化的文件，fileList 为最新列表） */
 export interface UploadChangeParam {
-    /** 本次发生变化的文件 */
     file: UploadFile;
-    /** 最新文件列表（受控模式下以此为准） */
     fileList: UploadFile[];
-    /** 进度事件（仅 XHR 上传进度跳变时携带） */
     event?: ProgressEvent;
 }
 
-/** 列表显隐配置（布尔形式等价 `{ showPreviewIcon: true, showRemoveIcon: true }`） */
 export interface UploadShowUploadList {
-    /** 是否显示预览图标（picture-card 下点击缩略图触发 onPreview），默认 true */
     showPreviewIcon?: boolean;
-    /** 是否显示删除图标，默认 true */
     showRemoveIcon?: boolean;
 }
 
 export type UploadOnChange = (info: UploadChangeParam) => void;
 
 export interface UploadProps {
-    /** 接受的文件类型，透传给 <input accept>，如 "image/*" 或 ".pdf,.png" */
     accept?: string;
-    /** 是否支持多选 */
     multiple?: boolean;
-    /**
-     * 最多上传的文件数。语义如下：
-     * - `1`：新文件替换已有的那个（头像 / 单文件场景）
-     * - `>1`：保留最早的 N 个，超出的新文件直接丢弃且不触发 onChange（改用 onExceed 通知）
-     * 触发区 / 添加块始终可点，由消费方决定是否自行隐藏。
-     * `0` 或负数视为未设置（不限量）。
-     */
     maxCount?: number;
-    /** 是否禁用 */
     disabled?: boolean;
-    /** 是否按目录选择上传（透传 webkitdirectory，浏览器支持整文件夹选择） */
     directory?: boolean;
-    /** 文件列表（受控）；传入后列表完全由外部驱动 */
     fileList?: UploadFile[];
-    /** 默认文件列表（非受控） */
     defaultFileList?: UploadFile[];
-    /** 列表形态：text 文件行 / picture 带行内缩略图 / picture-card 图片卡片，默认 'text' */
     listType?: UploadListType;
-    /** 是否展示文件列表，或传入对象分别控制预览/删除图标，默认 true */
     showUploadList?: boolean | UploadShowUploadList;
-    /** 点击预览（picture-card 缩略图或 picture/text 行图片的预览图标）时触发 */
     onPreview?: (file: UploadFile) => void;
-    /** 是否开启拖拽上传区域 */
     drag?: boolean;
-    /** 触发区下方的提示文字 */
     tip?: React.ReactNode;
-    /** 自定义触发区内容（text / drag）；picture-card 下自定义添加块图标 */
     children?: React.ReactNode;
-    /** 上传前的钩子；返回 false（或 Promise<false>）则跳过该文件，返回 File（或 Promise<File>）则改为上传该转换后的文件 */
     beforeUpload?: (file: File, fileList: File[]) => boolean | File | Promise<boolean | File>;
-    /** 自定义上传实现；优先级高于 action（若同时提供则优先 customRequest） */
     customRequest?: (options: UploadCustomRequestOptions) => void;
-    /**
-     * 上传地址；提供时用原生 XMLHttpRequest 真实上传（优先级低于 customRequest）。
-     * 也接受 (file) => 地址 或异步 (file) => Promise<地址> 的形式（便于每文件取 OSS 直传签名）。
-     * 解析结果为空字符串时该文件标记为 error，不会静默停在 uploading。
-     */
     action?: string | ((file: File) => string | Promise<string>);
-    /** 请求方法，默认 POST */
     method?: 'POST' | 'PUT' | 'PATCH';
-    /** 追加到请求的自定义请求头 */
     headers?: Record<string, string>;
-    /** 随文件一起提交的附加表单字段；也接受 (file) => 字段 或异步 (file) => Promise<字段> 的形式 */
     data?:
         | Record<string, unknown>
         | ((file: File) => Record<string, unknown> | undefined | Promise<Record<string, unknown> | undefined>);
-    /** 文件字段名，默认 'file' */
     name?: string;
-    /** 是否携带跨域凭证（withCredentials） */
     withCredentials?: boolean;
-    /** 列表变化回调（新增/进度/完成/删除都会触发），参数为 { file, fileList, event? } */
     onChange?: UploadOnChange;
-    /**
-     * 选中的文件超出 maxCount 被丢弃时触发（组件自身静默丢弃，用它提示用户「已达上限」）。
-     * 参数为被丢弃的原始 File 列表与当前文件列表。仅在 maxCount > 1 的丢弃分支触发，
-     * maxCount === 1 属于替换语义，不触发。
-     */
     onExceed?: (files: File[], fileList: UploadFile[]) => void;
-    /** 删除前的钩子；返回 false（或 Promise<false>）则阻止删除 */
     onRemove?: (file: UploadFile) => boolean | void | Promise<boolean | void>;
-    /** 无可见说明时的无障碍标签（默认「上传文件」） */
     'aria-label'?: string;
-    /** 额外类名 */
     className?: string;
-    /** 行内样式 */
     style?: React.CSSProperties;
 }
 
@@ -143,10 +76,6 @@ const genUid = () => `animal-upload-${Date.now().toString(36)}-${(uidSeed += 1)}
 
 const clampPercent = (n: number) => Math.max(0, Math.min(100, Math.round(n)));
 
-/**
- * 按 accept 校验单个文件（拖拽进来的文件不受 <input accept> 约束，必须自己过滤）。
- * 规则同浏览器：`.ext` 比扩展名、`image/*` 比主类型、`image/png` 精确比 MIME。
- */
 const matchAccept = (file: File, accept?: string): boolean => {
     if (!accept) return true;
     const patterns = accept
@@ -165,7 +94,6 @@ const matchAccept = (file: File, accept?: string): boolean => {
     });
 };
 
-/** 字节数格式化为 B / KB / MB */
 const formatFileSize = (size?: number): string => {
     if (size === undefined || size === null || Number.isNaN(size)) return '';
     if (size < 1024) return `${size} B`;
@@ -604,69 +532,62 @@ export const Upload: React.FC<UploadProps> = ({
         void handleFiles(Array.from(e.dataTransfer?.files ?? []));
     };
 
-    const wrapperCls = cn(
-        'animal-upload',
-        `animal-upload--list-${listType}`,
-        disabled && 'animal-upload--disabled',
-        className
-    );
-
     const renderStatus = (file: UploadFile) => {
         const status = file.status ?? 'uploading';
         if (status === 'done') {
             return (
-                <span className="animal-upload__status-icon animal-upload__status-icon--done" aria-label="上传完成">
+                <span className={cn('animal-upload-status-icon', 'animal-upload-status-done')} aria-label="上传完成">
                     <CheckIcon size={16} />
                 </span>
             );
         }
         if (status === 'error') {
             return (
-                <span className="animal-upload__status-icon animal-upload__status-icon--error" aria-label="上传失败">
+                <span className={cn('animal-upload-status-icon', 'animal-upload-status-error')} aria-label="上传失败">
                     <CloseIcon size={16} />
                 </span>
             );
         }
         if (status === 'removed') return null;
         return (
-            <span className="animal-upload__status-icon" aria-label={`上传中 ${clampPercent(file.percent ?? 0)}%`}>
-                <span className="animal-upload__spinner" aria-hidden="true" />
-                <span className="animal-upload__percent">{clampPercent(file.percent ?? 0)}%</span>
+            <span className="animal-upload-status-icon" aria-label={`上传中 ${clampPercent(file.percent ?? 0)}%`}>
+                <span className="animal-upload-spinner" aria-hidden="true" />
+                <span className="animal-upload-percent">{clampPercent(file.percent ?? 0)}%</span>
             </span>
         );
     };
 
     const renderTextList = () => (
-        <ul className="animal-upload__text-list">
+        <ul className="animal-upload-text-list">
             {list.map((file) => (
                 <li
                     key={file.uid}
-                    className={cn('animal-upload__text-item', file.status === 'error' && 'animal-upload__text-item--error')}
+                    className={cn('animal-upload-text-item', file.status === 'error' && 'animal-upload-item-error')}
                 >
                     {listType === 'picture' ? (
-                        <span className="animal-upload__text-thumb">
+                        <span className="animal-upload-text-thumb">
                             {previewSrc(file) ? (
-                                <img className="animal-upload__text-thumb-img" src={previewSrc(file)} alt={file.name} />
+                                <img className="animal-upload-text-thumb-img" src={previewSrc(file)} alt={file.name} />
                             ) : (
                                 <FileIcon size={18} />
                             )}
                         </span>
                     ) : (
-                        <span className="animal-upload__file-icon">
+                        <span className="animal-upload-file-icon">
                             <FileIcon size={15} />
                         </span>
                     )}
-                    <span className="animal-upload__file-name" title={file.name}>
+                    <span className="animal-upload-file-name" title={file.name}>
                         {file.name}
                     </span>
                     {file.size !== undefined && file.size !== null && (
-                        <span className="animal-upload__file-size">{formatFileSize(file.size)}</span>
+                        <span className="animal-upload-file-size">{formatFileSize(file.size)}</span>
                     )}
                     {renderStatus(file)}
                     {showPreviewIcon && canPreview(file) && (
                         <button
                             type="button"
-                            className="animal-upload__preview-btn"
+                            className="animal-upload-preview-btn"
                             aria-label={`预览 ${file.name}`}
                             disabled={disabled}
                             onClick={() => openPreview(file)}
@@ -677,7 +598,7 @@ export const Upload: React.FC<UploadProps> = ({
                     {showRemoveIcon && (
                         <button
                             type="button"
-                            className="animal-upload__remove-btn"
+                            className="animal-upload-remove-btn"
                             aria-label={`删除 ${file.name}`}
                             disabled={disabled}
                             onClick={() => void handleRemove(file)}
@@ -691,7 +612,7 @@ export const Upload: React.FC<UploadProps> = ({
     );
 
     const renderPictureList = () => (
-        <ul className="animal-upload__card-list">
+        <ul className="animal-upload-card-list">
             {listVisible &&
                 list.map((file) => {
                     const status = file.status ?? 'uploading';
@@ -699,41 +620,41 @@ export const Upload: React.FC<UploadProps> = ({
                         <li
                             key={file.uid}
                             className={cn(
-                                'animal-upload__card',
-                                status === 'error' && 'animal-upload__card--error',
-                                status === 'done' && 'animal-upload__card--done'
+                                'animal-upload-card',
+                                status === 'error' && 'animal-upload-card-error',
+                                status === 'done' && 'animal-upload-card-done'
                             )}
                         >
                             {previewSrc(file) ? (
                                 <img
                                     className={cn(
-                                        'animal-upload__card-img',
-                                        canPreview(file) && 'animal-upload__card-img--previewable'
+                                        'animal-upload-card-img',
+                                        canPreview(file) && 'animal-upload-card-img-previewable'
                                     )}
                                     src={previewSrc(file)}
                                     alt={file.name}
                                     onClick={showPreviewIcon && canPreview(file) ? () => openPreview(file) : undefined}
                                 />
                             ) : (
-                                <span className="animal-upload__card-file-icon">
+                                <span className="animal-upload-card-file-icon">
                                     <FileIcon size={15} />
                                 </span>
                             )}
                             {status === 'uploading' && (
-                                <span className="animal-upload__card-mask">
-                                    <span className="animal-upload__spinner" aria-hidden="true" />
-                                    <span className="animal-upload__percent">{clampPercent(file.percent ?? 0)}%</span>
+                                <span className="animal-upload-card-mask">
+                                    <span className="animal-upload-spinner" aria-hidden="true" />
+                                    <span className="animal-upload-percent">{clampPercent(file.percent ?? 0)}%</span>
                                 </span>
                             )}
                             {status === 'error' && (
-                                <span className="animal-upload__card-mask">
+                                <span className="animal-upload-card-mask">
                                     <CloseIcon size={22} color="#e05a5a" />
                                 </span>
                             )}
                             {showPreviewIcon && canPreview(file) && (
                                 <button
                                     type="button"
-                                    className="animal-upload__card-preview"
+                                    className="animal-upload-card-preview"
                                     aria-label={`预览 ${file.name}`}
                                     disabled={disabled}
                                     onClick={() => openPreview(file)}
@@ -744,7 +665,7 @@ export const Upload: React.FC<UploadProps> = ({
                             {showRemoveIcon && (
                                 <button
                                     type="button"
-                                    className="animal-upload__card-remove"
+                                    className="animal-upload-card-remove"
                                     aria-label={`删除 ${file.name}`}
                                     disabled={disabled}
                                     onClick={() => void handleRemove(file)}
@@ -755,11 +676,10 @@ export const Upload: React.FC<UploadProps> = ({
                         </li>
                     );
                 })}
-            {/* 添加块始终保留：maxCount=1 时点击可替换，>1 满员时新文件会被丢弃 */}
-            <li className="animal-upload__card-add">
+            <li className="animal-upload-card-add">
                 <button
                     type="button"
-                    className="animal-upload__card-add-btn"
+                    className="animal-upload-card-add-btn"
                     aria-label={ariaLabel ?? '上传文件'}
                     onClick={openFilePicker}
                     disabled={disabled}
@@ -771,10 +691,10 @@ export const Upload: React.FC<UploadProps> = ({
     );
 
     return (
-        <div className={wrapperCls} style={style}>
+        <div className={cn('animal-upload', disabled && 'animal-upload-disabled', className)} style={style}>
             <input
                 ref={inputRef}
-                className="animal-upload__hidden-input"
+                className="animal-upload-hidden-input"
                 type="file"
                 accept={accept}
                 multiple={multiple}
@@ -789,7 +709,7 @@ export const Upload: React.FC<UploadProps> = ({
             {listType === 'picture-card' ? (
                 <>
                     {renderPictureList()}
-                    {tip && <div className="animal-upload__tip">{tip}</div>}
+                    {tip && <div className="animal-upload-tip">{tip}</div>}
                 </>
             ) : (
                 <>
@@ -799,7 +719,7 @@ export const Upload: React.FC<UploadProps> = ({
                             tabIndex={disabled ? -1 : 0}
                             aria-label={ariaLabel ?? '上传文件'}
                             aria-disabled={disabled || undefined}
-                            className={cn('animal-upload__drag-zone', dragging && 'animal-upload__drag-zone--active')}
+                            className={cn('animal-upload-drag-zone', dragging && 'animal-upload-drag-active')}
                             onClick={openFilePicker}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter' || e.key === ' ') {
@@ -814,17 +734,17 @@ export const Upload: React.FC<UploadProps> = ({
                         >
                             {children ?? (
                                 <>
-                                    <span className="animal-upload__drag-icon">
+                                    <span className="animal-upload-drag-icon">
                                         <UploadIcon size={16} />
                                     </span>
-                                    <span className="animal-upload__drag-text">点击或拖拽文件到这里</span>
+                                    <span className="animal-upload-drag-text">点击或拖拽文件到这里</span>
                                 </>
                             )}
                         </div>
                     ) : (
                         <button
                             type="button"
-                            className={children ? 'animal-upload__trigger--custom' : 'animal-upload__trigger'}
+                            className={children ? 'animal-upload-trigger-custom' : 'animal-upload-trigger'}
                             aria-label={ariaLabel ?? '上传文件'}
                             onClick={openFilePicker}
                             disabled={disabled}
@@ -837,7 +757,7 @@ export const Upload: React.FC<UploadProps> = ({
                             )}
                         </button>
                     )}
-                    {tip && <div className="animal-upload__tip">{tip}</div>}
+                    {tip && <div className="animal-upload-tip">{tip}</div>}
                     {listVisible && list.length > 0 && renderTextList()}
                 </>
             )}
@@ -845,7 +765,7 @@ export const Upload: React.FC<UploadProps> = ({
             {previewTarget && (
                 <div
                     ref={previewLayerRef}
-                    className="animal-upload__preview-layer"
+                    className="animal-upload-preview-layer"
                     role="dialog"
                     aria-modal="true"
                     tabIndex={-1}
@@ -853,7 +773,7 @@ export const Upload: React.FC<UploadProps> = ({
                     onClick={() => setPreviewTarget(null)}
                 >
                     <img
-                        className="animal-upload__preview-img"
+                        className="animal-upload-preview-img"
                         src={previewSrc(previewTarget)}
                         alt={previewTarget.name}
                         onClick={(e) => e.stopPropagation()}
@@ -861,7 +781,7 @@ export const Upload: React.FC<UploadProps> = ({
                     <button
                         ref={closeBtnRef}
                         type="button"
-                        className="animal-upload__preview-close"
+                        className="animal-upload-preview-close"
                         aria-label="关闭预览"
                         onClick={() => setPreviewTarget(null)}
                     >

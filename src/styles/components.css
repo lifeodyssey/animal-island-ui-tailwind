@@ -5852,29 +5852,28 @@
       default !important;
   }
 
-  /* ============================================================
+  /* ============================================
      Upload
-     奶油胶囊触发钮 / 虚线拖拽区 / text 行列表 / picture-card 卡片
-     ============================================================ */
+     ============================================ */
   .animal-upload {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     gap: 10px;
     font-family: inherit;
-    color: #794f27;
+    color: var(--animal-text-color);
   }
 
-  .animal-upload--disabled {
+  .animal-upload-disabled {
     opacity: 0.55;
   }
 
-  .animal-upload__hidden-input {
+  .animal-upload-hidden-input {
     display: none;
   }
 
-  /* Trigger — text mode: cream capsule + hard-bottom shadow (same as Button primary) */
-  .animal-upload__trigger {
+  /* Trigger (text mode — cream capsule + hard-bottom shadow, same as Button primary) */
+  .animal-upload-trigger {
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -5884,7 +5883,7 @@
     border: none;
     border-radius: 50px;
     background: #f8f8f0;
-    color: #794f27;
+    color: var(--animal-text-color);
     font-family: inherit;
     font-size: 14px;
     font-weight: 700;
@@ -5894,25 +5893,29 @@
       transform 0.15s ease;
     box-shadow: 0 5px 0 0 #bdaea0;
   }
-  .animal-upload__trigger:hover:not(:disabled) {
+
+  .animal-upload-trigger:hover:not(:disabled) {
     box-shadow: 0 6px 0 0 #bdaea0;
     transform: translateY(-1px);
   }
-  .animal-upload__trigger:active:not(:disabled) {
+
+  .animal-upload-trigger:active:not(:disabled) {
     transform: translateY(2px);
     box-shadow: 0 1px 0 0 #bdaea0;
   }
-  .animal-upload__trigger:disabled {
+
+  .animal-upload-trigger:disabled {
     cursor: not-allowed;
     box-shadow: 0 5px 0 0 #d5c8b8;
   }
-  .animal-upload__trigger:focus-visible {
+
+  .animal-upload-trigger:focus-visible {
     outline: 2px solid var(--animal-focus-yellow);
     outline-offset: 2px;
   }
 
-  /* Custom children trigger — transparent wrapper */
-  .animal-upload__trigger--custom {
+  /* Custom children trigger (transparent wrapper, no capsule styles) */
+  .animal-upload-trigger-custom {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -5924,22 +5927,23 @@
     color: inherit;
     cursor: pointer;
   }
-  .animal-upload__trigger--custom:disabled {
+
+  .animal-upload-trigger-custom:disabled {
     cursor: not-allowed;
   }
 
   /* Drag zone */
-  .animal-upload__drag-zone {
+  .animal-upload-drag-zone {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 8px;
     padding: 28px 20px;
-    border: 2px dashed #c4b89e;
+    border: 2px dashed var(--animal-text-color-disabled);
     border-radius: 20px;
     background: #fffdf7;
-    color: #9f927d;
+    color: var(--animal-text-color-secondary);
     cursor: pointer;
     user-select: none;
     transition:
@@ -5947,40 +5951,43 @@
       background 0.2s ease,
       color 0.2s ease;
   }
-  .animal-upload__drag-zone:hover {
-    border-color: #19c8b9;
-    color: #19c8b9;
+
+  .animal-upload-drag-zone:hover {
+    border-color: var(--animal-primary-color);
+    color: var(--animal-primary-color);
   }
-  .animal-upload__drag-zone:focus-visible {
+
+  .animal-upload-drag-zone:focus-visible {
     outline: 2px solid var(--animal-focus-yellow);
     outline-offset: 2px;
   }
-  .animal-upload__drag-zone--active {
-    border-color: #19c8b9;
-    background: #e6f9f6;
-    color: #19c8b9;
+
+  .animal-upload-drag-active {
+    border-color: var(--animal-primary-color);
+    background: var(--animal-primary-color-bg);
+    color: var(--animal-primary-color);
   }
 
-  .animal-upload__drag-icon {
+  .animal-upload-drag-icon {
     display: inline-flex;
     transform: scale(1.5);
   }
 
-  .animal-upload__drag-text {
+  .animal-upload-drag-text {
     font-size: 14px;
     font-weight: 700;
     color: inherit;
   }
 
   /* Tip */
-  .animal-upload__tip {
+  .animal-upload-tip {
     font-size: 12px;
-    color: #9f927d;
+    color: var(--animal-text-color-secondary);
     line-height: 1.6;
   }
 
   /* Text list */
-  .animal-upload__text-list {
+  .animal-upload-text-list {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -5989,7 +5996,7 @@
     gap: 6px;
   }
 
-  .animal-upload__text-item {
+  .animal-upload-text-item {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -6002,22 +6009,24 @@
       background 0.15s ease,
       border-color 0.15s ease;
   }
-  .animal-upload__text-item:hover {
-    background: #e6f9f6;
+
+  .animal-upload-text-item:hover {
+    background: var(--animal-primary-color-bg);
   }
-  .animal-upload__text-item--error {
-    border-color: #e05a5a;
+
+  .animal-upload-item-error {
+    border-color: var(--animal-error-color);
     background: #fdeeee;
   }
 
-  .animal-upload__file-icon {
+  .animal-upload-file-icon {
     display: inline-flex;
-    color: #c4b89e;
+    color: var(--animal-text-color-disabled);
     flex-shrink: 0;
   }
 
   /* Inline thumbnail (listType="picture") */
-  .animal-upload__text-thumb {
+  .animal-upload-text-thumb {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -6028,61 +6037,63 @@
     overflow: hidden;
     background: #fffdf7;
     border: 1.5px solid #e8dcc8;
-    color: #c4b89e;
+    color: var(--animal-text-color-disabled);
   }
 
-  .animal-upload__text-thumb-img {
+  .animal-upload-text-thumb-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
   }
 
-  .animal-upload__file-name {
+  .animal-upload-file-name {
     font-weight: 600;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  .animal-upload__file-size {
+  .animal-upload-file-size {
     flex-shrink: 0;
     font-size: 11px;
-    color: #c4b89e;
+    color: var(--animal-text-color-disabled);
   }
 
   /* Status icons */
-  .animal-upload__status-icon {
+  .animal-upload-status-icon {
     display: inline-flex;
     align-items: center;
     gap: 4px;
     margin-left: auto;
     flex-shrink: 0;
   }
-  .animal-upload__status-icon--done {
-    color: #6fba2c;
-  }
-  .animal-upload__status-icon--error {
-    color: #e05a5a;
+
+  .animal-upload-status-done {
+    color: var(--animal-success-color);
   }
 
-  .animal-upload__spinner {
+  .animal-upload-status-error {
+    color: var(--animal-error-color);
+  }
+
+  .animal-upload-spinner {
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    border: 2px solid #e6f9f6;
-    border-top-color: #19c8b9;
+    border: 2px solid var(--animal-primary-color-bg);
+    border-top-color: var(--animal-primary-color);
     animation: animal-upload-spin 0.8s linear infinite;
   }
 
-  .animal-upload__percent {
+  .animal-upload-percent {
     font-size: 11px;
     font-weight: 700;
-    color: #19c8b9;
+    color: var(--animal-primary-color);
     font-variant-numeric: tabular-nums;
   }
 
-  .animal-upload__preview-btn {
+  .animal-upload-preview-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -6103,16 +6114,18 @@
       background 0.15s ease,
       color 0.15s ease;
   }
-  .animal-upload__preview-btn:hover {
+
+  .animal-upload-preview-btn:hover {
     background: rgba(0, 0, 0, 0.08);
-    color: #19c8b9;
+    color: var(--animal-primary-color);
   }
-  .animal-upload__preview-btn:focus-visible {
+
+  .animal-upload-preview-btn:focus-visible {
     outline: 2px solid var(--animal-focus-yellow);
     outline-offset: 1px;
   }
 
-  .animal-upload__remove-btn {
+  .animal-upload-remove-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -6131,17 +6144,19 @@
     flex-shrink: 0;
     transition: background 0.15s ease;
   }
-  .animal-upload__remove-btn:hover {
+
+  .animal-upload-remove-btn:hover {
     background: rgba(0, 0, 0, 0.08);
-    color: #e05a5a;
+    color: var(--animal-error-color);
   }
-  .animal-upload__remove-btn:focus-visible {
+
+  .animal-upload-remove-btn:focus-visible {
     outline: 2px solid var(--animal-focus-yellow);
     outline-offset: 1px;
   }
 
   /* Picture-card list */
-  .animal-upload__card-list {
+  .animal-upload-card-list {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -6150,7 +6165,7 @@
     gap: 10px;
   }
 
-  .animal-upload__card {
+  .animal-upload-card {
     position: relative;
     width: 84px;
     height: 84px;
@@ -6162,25 +6177,28 @@
     align-items: center;
     justify-content: center;
   }
-  .animal-upload__card--done {
-    border-color: #c4b89e;
-  }
-  .animal-upload__card--error {
-    border-color: #e05a5a;
+
+  .animal-upload-card-done {
+    border-color: var(--animal-text-color-disabled);
   }
 
-  .animal-upload__card-img {
+  .animal-upload-card-error {
+    border-color: var(--animal-error-color);
+  }
+
+  .animal-upload-card-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
   }
-  .animal-upload__card-img--previewable {
+
+  .animal-upload-card-img-previewable {
     cursor: zoom-in;
   }
 
-  /* Built-in preview modal layer */
-  .animal-upload__preview-layer {
+  /* Built-in preview overlay */
+  .animal-upload-preview-layer {
     position: fixed;
     inset: 0;
     z-index: 1000;
@@ -6190,7 +6208,7 @@
     background: rgba(15, 12, 8, 0.82);
   }
 
-  .animal-upload__preview-img {
+  .animal-upload-preview-img {
     max-width: 90vw;
     max-height: 88vh;
     border-radius: 16px;
@@ -6199,7 +6217,7 @@
     object-fit: contain;
   }
 
-  .animal-upload__preview-close {
+  .animal-upload-preview-close {
     position: absolute;
     top: 16px;
     right: 16px;
@@ -6216,21 +6234,23 @@
     cursor: pointer;
     transition: background 0.15s ease;
   }
-  .animal-upload__preview-close:hover {
+
+  .animal-upload-preview-close:hover {
     background: rgba(255, 255, 255, 0.32);
   }
-  .animal-upload__preview-close:focus-visible {
+
+  .animal-upload-preview-close:focus-visible {
     outline: 2px solid var(--animal-focus-yellow);
     outline-offset: 2px;
   }
 
-  .animal-upload__card-file-icon {
+  .animal-upload-card-file-icon {
     display: inline-flex;
-    color: #c4b89e;
+    color: var(--animal-text-color-disabled);
     transform: scale(1.6);
   }
 
-  .animal-upload__card-mask {
+  .animal-upload-card-mask {
     position: absolute;
     inset: 0;
     display: flex;
@@ -6242,7 +6262,7 @@
     color: #fff;
   }
 
-  .animal-upload__card-remove {
+  .animal-upload-card-remove {
     position: absolute;
     top: 4px;
     right: 4px;
@@ -6265,19 +6285,22 @@
       opacity 0.15s ease,
       background 0.15s ease;
   }
-  .animal-upload__card-remove:hover {
+
+  .animal-upload-card-remove:hover {
     background: transparent;
   }
-  .animal-upload__card-remove:focus-visible {
+
+  .animal-upload-card-remove:focus-visible {
     opacity: 1;
     outline: 2px solid var(--animal-focus-yellow);
     outline-offset: 1px;
   }
-  .animal-upload__card:hover .animal-upload__card-remove {
+
+  .animal-upload-card:hover .animal-upload-card-remove {
     opacity: 1;
   }
 
-  .animal-upload__card-preview {
+  .animal-upload-card-preview {
     position: absolute;
     top: 4px;
     left: 4px;
@@ -6291,71 +6314,77 @@
     font-size: 12px;
     line-height: 1;
     cursor: pointer;
+    opacity: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0;
     transition:
       opacity 0.15s ease,
       background 0.15s ease;
   }
-  .animal-upload__card-preview:hover {
+
+  .animal-upload-card-preview:hover {
     background: rgba(0, 0, 0, 0.65);
   }
-  .animal-upload__card-preview:focus-visible {
+
+  .animal-upload-card-preview:focus-visible {
     opacity: 1;
     outline: 2px solid var(--animal-focus-yellow);
     outline-offset: 1px;
   }
-  .animal-upload__card:hover .animal-upload__card-preview {
+
+  .animal-upload-card:hover .animal-upload-card-preview {
     opacity: 1;
   }
 
-  .animal-upload__card-add {
+  .animal-upload-card-add {
     width: 84px;
     height: 84px;
   }
 
-  .animal-upload__card-add-btn {
+  .animal-upload-card-add-btn {
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px dashed #c4b89e;
+    border: 2px dashed var(--animal-text-color-disabled);
     border-radius: 16px;
     background: transparent;
-    color: #c4b89e;
+    color: var(--animal-text-color-disabled);
     cursor: pointer;
     transition:
       border-color 0.2s ease,
       color 0.2s ease,
       background 0.2s ease;
   }
-  .animal-upload__card-add-btn:hover {
-    border-color: #19c8b9;
-    color: #19c8b9;
-    background: #e6f9f6;
+
+  .animal-upload-card-add-btn:hover {
+    border-color: var(--animal-primary-color);
+    color: var(--animal-primary-color);
+    background: var(--animal-primary-color-bg);
   }
-  .animal-upload__card-add-btn:disabled {
+
+  .animal-upload-card-add-btn:disabled {
     cursor: not-allowed;
     opacity: 0.5;
   }
-  .animal-upload__card-add-btn:focus-visible {
+
+  .animal-upload-card-add-btn:focus-visible {
     outline: 2px solid var(--animal-focus-yellow);
     outline-offset: 2px;
   }
 
-  /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
-    .animal-upload__spinner {
+    .animal-upload-spinner {
       animation: none;
-      border-top-color: #19c8b9;
+      border-top-color: var(--animal-primary-color);
     }
-    .animal-upload__trigger,
-    .animal-upload__drag-zone,
-    .animal-upload__text-item,
-    .animal-upload__card-remove {
+
+    .animal-upload-trigger,
+    .animal-upload-drag-zone,
+    .animal-upload-text-item,
+    .animal-upload-card-remove {
       transition: none;
     }
   }

@@ -72,6 +72,7 @@ export const Progress: React.FC<ProgressProps> = ({
     const inlineFillStyle: React.CSSProperties = {
         width: `${safePercent}%`,
         transitionDuration: `${duration}s`,
+        // 传入 variant 时用场景图铺满（从左揭开）；未传时用纯色 fill
         ...(variant
             ? {
                   backgroundImage: `url(${VARIANT_BG[variant]})`,
