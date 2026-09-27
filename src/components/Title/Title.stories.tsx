@@ -11,7 +11,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    args: { children: '标题', variant: 'layer' },
+    args: { children: '标题', variant: 'ribbon' },
 };
 
 export const Ribbon: Story = {

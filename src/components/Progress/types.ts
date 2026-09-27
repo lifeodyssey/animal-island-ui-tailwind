@@ -16,7 +16,7 @@ export interface ProgressProps {
     showInfo?: boolean;
     /** @deprecated Use `variant` to set a scene image fill instead */
     infoPosition?: ProgressInfoPosition;
-    /** Scene image to use as fill background. When set, replaces the striped fill. */
+    /** fill 背景场景图；不传时为纯色 fill（`#19c8b9`） */
     variant?: ProgressVariant;
     infoFormat?: (percent: number) => React.ReactNode;
     duration?: number;
