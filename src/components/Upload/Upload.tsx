@@ -40,6 +40,7 @@ export interface UploadShowUploadList {
 export type UploadOnChange = (info: UploadChangeParam) => void;
 
 export interface UploadProps {
+    'data-testid'?: string;
     accept?: string;
     multiple?: boolean;
     maxCount?: number;
@@ -127,6 +128,7 @@ export const Upload: React.FC<UploadProps> = ({
     onExceed,
     onRemove,
     'aria-label': ariaLabel,
+    'data-testid': dataTestId,
     className,
     style,
 }) => {
@@ -691,7 +693,7 @@ export const Upload: React.FC<UploadProps> = ({
     );
 
     return (
-        <div className={cn('animal-upload', disabled && 'animal-upload-disabled', className)} style={style}>
+        <div className={cn('animal-upload', disabled && 'animal-upload--disabled', className)} style={style} data-testid={dataTestId}>
             <input
                 ref={inputRef}
                 className="animal-upload-hidden-input"
