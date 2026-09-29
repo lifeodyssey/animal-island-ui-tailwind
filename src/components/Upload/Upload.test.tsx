@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render, screen, fireEvent, act, cleanup } from '@testing-library/react';
 import { Upload, UploadFile } from './Upload';
 
 
@@ -22,6 +22,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+    cleanup();
     vi.useRealTimers();
 });
 
@@ -37,7 +38,7 @@ const pickFilesAsync = async (input: HTMLElement, files: File[]) => {
     });
 };
 
-const getInput = (container: HTMLElement) => container.querySelector('.animal-upload__hidden-input') as HTMLInputElement;
+const getInput = (container: HTMLElement) => container.querySelector('.animal-upload-hidden-input') as HTMLInputElement;
 
 describe('Upload', () => {
     describe('trigger & picker', () => {
@@ -302,7 +303,7 @@ describe('Upload', () => {
             const { container } = render(<Upload listType="picture-card" />);
             pickFiles(getInput(container), [makeFile('pic.png', 'image/png')]);
 
-            const img = container.querySelector('.animal-upload__card-img') as HTMLImageElement;
+            const img = container.querySelector('.animal-upload-card-img') as HTMLImageElement;
             expect(img).toBeInTheDocument();
             expect(img).toHaveAttribute('src', 'blob:mock-url');
             expect(screen.getByLabelText('上传文件')).toBeInTheDocument(); // 添加块
@@ -324,13 +325,13 @@ describe('Upload', () => {
             pickFiles(getInput(container), [makeFile('pic.png', 'image/png')]);
             fireEvent.click(screen.getByLabelText('删除 pic.png'));
             expect(window.URL.revokeObjectURL).toHaveBeenCalledWith('blob:mock-url');
-            expect(container.querySelector('.animal-upload__card-img')).not.toBeInTheDocument();
+            expect(container.querySelector('.animal-upload-card-img')).not.toBeInTheDocument();
         });
 
         it('opens the built-in lightbox when clicking the card image (default preview, no onPreview)', () => {
             const { container } = render(<Upload listType="picture-card" />);
             pickFiles(getInput(container), [makeFile('pic.png', 'image/png')]);
-            fireEvent.click(container.querySelector('.animal-upload__card-img') as HTMLImageElement);
+            fireEvent.click(container.querySelector('.animal-upload-card-img') as HTMLImageElement);
             const dialog = screen.getByRole('dialog', { name: '预览 pic.png' });
             expect(dialog).toBeInTheDocument();
         });
@@ -338,7 +339,7 @@ describe('Upload', () => {
         it('closes the built-in lightbox on Escape', () => {
             const { container } = render(<Upload listType="picture-card" />);
             pickFiles(getInput(container), [makeFile('pic.png', 'image/png')]);
-            fireEvent.click(container.querySelector('.animal-upload__card-img') as HTMLImageElement);
+            fireEvent.click(container.querySelector('.animal-upload-card-img') as HTMLImageElement);
             expect(screen.getByRole('dialog')).toBeInTheDocument();
             fireEvent.keyDown(document, { key: 'Escape' });
             expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
@@ -356,7 +357,7 @@ describe('Upload', () => {
         it('renders an inline thumbnail img for image files', () => {
             const { container } = render(<Upload listType="picture" />);
             pickFiles(getInput(container), [makeFile('pic.png', 'image/png')]);
-            const img = container.querySelector('.animal-upload__text-thumb-img') as HTMLImageElement;
+            const img = container.querySelector('.animal-upload-text-thumb-img') as HTMLImageElement;
             expect(img).toBeInTheDocument();
             expect(img).toHaveAttribute('src', 'blob:mock-url');
         });
@@ -364,14 +365,14 @@ describe('Upload', () => {
         it('falls back to a file icon for non-image files', () => {
             const { container } = render(<Upload listType="picture" />);
             pickFiles(getInput(container), [makeFile('a.txt')]);
-            expect(container.querySelector('.animal-upload__text-thumb')).toBeInTheDocument();
-            expect(container.querySelector('.animal-upload__text-thumb-img')).not.toBeInTheDocument();
+            expect(container.querySelector('.animal-upload-text-thumb')).toBeInTheDocument();
+            expect(container.querySelector('.animal-upload-text-thumb-img')).not.toBeInTheDocument();
         });
 
         it('replaces the separate file icon with the thumbnail', () => {
             const { container } = render(<Upload listType="picture" />);
             pickFiles(getInput(container), [makeFile('a.txt')]);
-            expect(container.querySelector('.animal-upload__file-icon')).not.toBeInTheDocument();
+            expect(container.querySelector('.animal-upload-file-icon')).not.toBeInTheDocument();
         });
     });
 
@@ -632,14 +633,14 @@ describe('Upload', () => {
         it('hides the text list when showUploadList=false', () => {
             const { container } = render(<Upload showUploadList={false} />);
             pickFiles(getInput(container), [makeFile('a.txt')]);
-            expect(container.querySelector('.animal-upload__text-list')).not.toBeInTheDocument();
+            expect(container.querySelector('.animal-upload-text-list')).not.toBeInTheDocument();
             expect(screen.getByRole('button', { name: '上传文件' })).toBeInTheDocument();
         });
 
         it('picture-card with showUploadList=false shows only the add tile', () => {
             const { container } = render(<Upload listType="picture-card" showUploadList={false} />);
             pickFiles(getInput(container), [makeFile('pic.png', 'image/png')]);
-            expect(container.querySelector('.animal-upload__card')).not.toBeInTheDocument();
+            expect(container.querySelector('.animal-upload-card')).not.toBeInTheDocument();
             expect(screen.getByLabelText('上传文件')).toBeInTheDocument(); // add tile remains
         });
 

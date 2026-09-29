@@ -38,6 +38,7 @@ export default mergeConfig(
                         'src/components/DatePicker/DatePicker.test.tsx',
                         'src/components/TimePicker/TimePicker.test.tsx',
                         'src/components/Pagination/Pagination.test.tsx',
+                        'src/components/Upload/Upload.test.tsx',
                     ],
                         setupFiles: ['./src/test-unit-setup.ts'],
                     },
