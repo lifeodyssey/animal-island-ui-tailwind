@@ -79,7 +79,7 @@ export const Progress: React.FC<ProgressProps> = ({
                   backgroundPosition: 'left top',
                   backgroundSize: trackW > 0 ? `${trackW}px auto` : '100% auto',
               }
-            : {}),
+            : { backgroundColor: '#19c8b9' }),
     };
 
     const isInside = !variant && showInfo && infoPosition === 'inside';
