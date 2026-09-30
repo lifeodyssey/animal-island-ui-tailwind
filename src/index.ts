@@ -175,3 +175,15 @@ export type { PaginationProps, PaginationVariant } from './components/Pagination
 
 export { Background } from './components/Background';
 export type { BackgroundProps, BackgroundType } from './components/Background';
+
+export { Upload } from './components/Upload';
+export type {
+    UploadFile,
+    UploadFileStatus,
+    UploadListType,
+    UploadCustomRequestOptions,
+    UploadChangeParam,
+    UploadShowUploadList,
+    UploadOnChange,
+    UploadProps,
+} from './components/Upload';
