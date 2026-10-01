@@ -202,10 +202,8 @@ export const ProgressParity: Story = {
                 <Progress percent={60} size="large" aria-label="large progress" />
             </div>
             <div style={sectionStyle}>
-                <div style={labelStyle}>Info position</div>
-                <Progress percent={75} infoPosition="right" aria-label="right info" />
-                <Progress percent={75} infoPosition="top" aria-label="top info" />
-                <Progress percent={75} infoPosition="inside" size="large" aria-label="inside info" />
+                <div style={labelStyle}>Solid fill (default)</div>
+                <Progress percent={75} aria-label="solid fill" />
             </div>
             <div style={sectionStyle}>
                 <div style={labelStyle}>Hide info</div>
