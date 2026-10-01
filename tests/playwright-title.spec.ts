@@ -26,7 +26,7 @@ const colorVariants = [
 ] as const;
 
 test.describe('Title', () => {
-    test('default variant is ribbon', async ({ page }) => {
+    test('default variant is ribbon (upstream c7d47d2)', async ({ page }) => {
         await page.goto(defaultStoryUrl);
         const title = page.locator('.animal-title');
         await expect(title).toContainText('标题');

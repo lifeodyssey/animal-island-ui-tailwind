@@ -4452,22 +4452,64 @@
     bottom: 0;
     width: 0;
     border-radius: 999px;
+    background: #0ec4b6;
+    background-image: repeating-linear-gradient(
+      -45deg,
+      #0ec4b6 0,
+      #0ec4b6 10px,
+      #01b0a7 10px,
+      #01b0a7 20px
+    );
+    background-size: 28.28px 28.28px;
+    animation: animal-progress-stripe 1s linear infinite;
     transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 4px;
   }
 
-  /* scene-image fill: clear the inline background-color, let inline backgroundImage show */
+  /* scene-image fill: remove striped animation, let inline backgroundImage show */
   .animal-progress-fill-scene {
-    background-color: transparent;
+    background: var(--animal-bg-color);
     background-image: none;
+    animation: none;
   }
 
   .animal-progress-fill-no-transition {
     transition: none;
   }
 
+  /* Info inside fill */
+  .animal-progress-info-inside {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 1;
+  }
+
+  .animal-progress-track-large .animal-progress-info-inside {
+    font-size: 13px;
+  }
+
+  .animal-progress-track-small .animal-progress-info-inside {
+    font-size: 9px;
+    right: 4px;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .animal-progress-fill {
       transition: none;
+      animation: none;
     }
   }
 }
@@ -5810,9 +5852,11 @@
       default !important;
   }
 
+}
+
+@layer components {
   /* ============================================================
      Upload — file upload component
-     奶油胶囊触发钮 / 虚线拖拽区 / text 行列表 / picture-card 卡片
      ============================================================ */
 
   .animal-upload {
@@ -5821,10 +5865,10 @@
     flex-direction: column;
     gap: 10px;
     font-family: inherit;
-    color: #794f27;
+    color: var(--animal-text-color);
   }
 
-  .animal-upload-disabled {
+  .animal-upload.animal-upload--disabled {
     opacity: 0.55;
   }
 
@@ -5832,7 +5876,7 @@
     display: none;
   }
 
-  /* Trigger button (cream capsule + 3D shadow, matches Button primary) */
+  /* Trigger — primary button style (pill + 3D shadow, matching Button primary) */
   .animal-upload-trigger {
     display: inline-flex;
     align-items: center;
@@ -5842,24 +5886,26 @@
     height: 36px;
     border: none;
     border-radius: 50px;
-    background: #f8f8f0;
-    color: #794f27;
+    background: var(--animal-bg-color);
+    color: var(--animal-text-color);
     font-family: inherit;
     font-size: 14px;
     font-weight: 700;
     cursor: pointer;
-    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s ease;
-    box-shadow: 0 5px 0 0 #bdaea0;
+    transition:
+      box-shadow var(--animal-motion-duration-base) var(--animal-motion-ease),
+      transform 0.15s ease;
+    box-shadow: var(--animal-shadow-press);
   }
 
   .animal-upload-trigger:hover:not(:disabled) {
-    box-shadow: 0 6px 0 0 #bdaea0;
+    box-shadow: var(--animal-shadow-press-hover);
     transform: translateY(-1px);
   }
 
   .animal-upload-trigger:active:not(:disabled) {
     transform: translateY(2px);
-    box-shadow: 0 1px 0 0 #bdaea0;
+    box-shadow: var(--animal-shadow-press-active);
   }
 
   .animal-upload-trigger:disabled {
@@ -5872,7 +5918,7 @@
     outline-offset: 2px;
   }
 
-  /* Custom children trigger (transparent wrapper) */
+  /* Custom children trigger (transparent wrapper, no pill styling) */
   .animal-upload-trigger-custom {
     display: inline-flex;
     align-items: center;
@@ -5901,15 +5947,18 @@
     border: 2px dashed #c4b89e;
     border-radius: 20px;
     background: #fffdf7;
-    color: #9f927d;
+    color: var(--animal-text-color-secondary);
     cursor: pointer;
     user-select: none;
-    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+    transition:
+      border-color 0.2s ease,
+      background 0.2s ease,
+      color 0.2s ease;
   }
 
   .animal-upload-drag-zone:hover {
-    border-color: #19c8b9;
-    color: #19c8b9;
+    border-color: var(--animal-primary-color);
+    color: var(--animal-primary-color);
   }
 
   .animal-upload-drag-zone:focus-visible {
@@ -5917,10 +5966,10 @@
     outline-offset: 2px;
   }
 
-  .animal-upload-drag-active {
-    border-color: #19c8b9;
-    background: #e6f9f6;
-    color: #19c8b9;
+  .animal-upload-drag-zone--active {
+    border-color: var(--animal-primary-color);
+    background: var(--animal-primary-color-bg);
+    color: var(--animal-primary-color);
   }
 
   .animal-upload-drag-icon {
@@ -5937,11 +5986,11 @@
   /* Tip text */
   .animal-upload-tip {
     font-size: 12px;
-    color: #9f927d;
+    color: var(--animal-text-color-secondary);
     line-height: 1.6;
   }
 
-  /* Text/Picture list */
+  /* Text file list */
   .animal-upload-text-list {
     list-style: none;
     margin: 0;
@@ -5960,24 +6009,27 @@
     background: #fffdf7;
     border: 1.5px solid #e8dcc8;
     font-size: 13px;
-    transition: background 0.15s ease, border-color 0.15s ease;
+    transition:
+      background 0.15s ease,
+      border-color 0.15s ease;
   }
 
   .animal-upload-text-item:hover {
-    background: #e6f9f6;
+    background: var(--animal-primary-color-bg);
   }
 
-  .animal-upload-text-item-error {
-    border-color: #e05a5a;
+  .animal-upload-text-item--error {
+    border-color: var(--animal-error-color);
     background: #fdeeee;
   }
 
   .animal-upload-file-icon {
     display: inline-flex;
-    color: #c4b89e;
+    color: var(--animal-text-color-disabled);
     flex-shrink: 0;
   }
 
+  /* Inline thumbnail (listType="picture") */
   .animal-upload-text-thumb {
     display: inline-flex;
     align-items: center;
@@ -5989,7 +6041,7 @@
     overflow: hidden;
     background: #fffdf7;
     border: 1.5px solid #e8dcc8;
-    color: #c4b89e;
+    color: var(--animal-text-color-disabled);
   }
 
   .animal-upload-text-thumb-img {
@@ -6009,7 +6061,7 @@
   .animal-upload-file-size {
     flex-shrink: 0;
     font-size: 11px;
-    color: #c4b89e;
+    color: var(--animal-text-color-disabled);
   }
 
   /* Status icons */
@@ -6022,36 +6074,30 @@
   }
 
   .animal-upload-status-done {
-    color: #6fba2c;
+    color: var(--animal-success-color);
   }
 
   .animal-upload-status-error {
-    color: #e05a5a;
+    color: var(--animal-error-color);
   }
 
   .animal-upload-spinner {
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    border: 2px solid #e6f9f6;
-    border-top-color: #19c8b9;
+    border: 2px solid var(--animal-primary-color-bg);
+    border-top-color: var(--animal-primary-color);
     animation: animal-upload-spin 0.8s linear infinite;
   }
 
   .animal-upload-percent {
     font-size: 11px;
     font-weight: 700;
-    color: #19c8b9;
+    color: var(--animal-primary-color);
     font-variant-numeric: tabular-nums;
   }
 
-  @keyframes animal-upload-spin {
-    to { transform: rotate(360deg); }
-  }
-
-  /* Action buttons in text list */
-  .animal-upload-preview-btn,
-  .animal-upload-remove-btn {
+  .animal-upload-preview-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -6068,20 +6114,46 @@
     line-height: 1;
     cursor: pointer;
     flex-shrink: 0;
-    transition: background 0.15s ease, color 0.15s ease;
+    transition:
+      background 0.15s ease,
+      color 0.15s ease;
   }
 
   .animal-upload-preview-btn:hover {
     background: rgba(0, 0, 0, 0.08);
-    color: #19c8b9;
+    color: var(--animal-primary-color);
+  }
+
+  .animal-upload-preview-btn:focus-visible {
+    outline: 2px solid var(--animal-focus-yellow);
+    outline-offset: 1px;
+  }
+
+  .animal-upload-remove-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    margin-left: 4px;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    box-shadow: none;
+    color: inherit;
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s ease;
   }
 
   .animal-upload-remove-btn:hover {
     background: rgba(0, 0, 0, 0.08);
-    color: #e05a5a;
+    color: var(--animal-error-color);
   }
 
-  .animal-upload-preview-btn:focus-visible,
   .animal-upload-remove-btn:focus-visible {
     outline: 2px solid var(--animal-focus-yellow);
     outline-offset: 1px;
@@ -6110,12 +6182,12 @@
     justify-content: center;
   }
 
-  .animal-upload-card-done {
+  .animal-upload-card--done {
     border-color: #c4b89e;
   }
 
-  .animal-upload-card-error {
-    border-color: #e05a5a;
+  .animal-upload-card--error {
+    border-color: var(--animal-error-color);
   }
 
   .animal-upload-card-img {
@@ -6125,118 +6197,11 @@
     display: block;
   }
 
-  .animal-upload-card-img-previewable {
+  .animal-upload-card-img--previewable {
     cursor: zoom-in;
   }
 
-  .animal-upload-card-file-icon {
-    display: inline-flex;
-    color: #c4b89e;
-    transform: scale(1.6);
-  }
-
-  .animal-upload-card-mask {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    background: rgba(15, 12, 8, 0.55);
-    color: #fff;
-  }
-
-  /* Card remove/preview buttons (hidden until hover) */
-  .animal-upload-card-remove,
-  .animal-upload-card-preview {
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    padding: 0;
-    border: none;
-    border-radius: 50%;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    line-height: 1;
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.15s ease, background 0.15s ease;
-  }
-
-  .animal-upload-card-remove {
-    top: 4px;
-    right: 4px;
-    background: transparent;
-    box-shadow: none;
-  }
-
-  .animal-upload-card-remove:hover {
-    background: transparent;
-  }
-
-  .animal-upload-card-preview {
-    top: 4px;
-    left: 4px;
-    background: rgba(0, 0, 0, 0.45);
-  }
-
-  .animal-upload-card-preview:hover {
-    background: rgba(0, 0, 0, 0.65);
-  }
-
-  .animal-upload-card:hover .animal-upload-card-remove,
-  .animal-upload-card:hover .animal-upload-card-preview {
-    opacity: 1;
-  }
-
-  .animal-upload-card-remove:focus-visible,
-  .animal-upload-card-preview:focus-visible {
-    opacity: 1;
-    outline: 2px solid var(--animal-focus-yellow);
-    outline-offset: 1px;
-  }
-
-  /* Card add button */
-  .animal-upload-card-add {
-    width: 84px;
-    height: 84px;
-  }
-
-  .animal-upload-card-add-btn {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px dashed #c4b89e;
-    border-radius: 16px;
-    background: transparent;
-    color: #c4b89e;
-    cursor: pointer;
-    transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
-  }
-
-  .animal-upload-card-add-btn:hover {
-    border-color: #19c8b9;
-    color: #19c8b9;
-    background: #e6f9f6;
-  }
-
-  .animal-upload-card-add-btn:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-  }
-
-  .animal-upload-card-add-btn:focus-visible {
-    outline: 2px solid var(--animal-focus-yellow);
-    outline-offset: 2px;
-  }
-
-  /* Full-screen preview layer */
+  /* Built-in preview layer */
   .animal-upload-preview-layer {
     position: fixed;
     inset: 0;
@@ -6283,10 +6248,141 @@
     outline-offset: 2px;
   }
 
+  .animal-upload-card-file-icon {
+    display: inline-flex;
+    color: var(--animal-text-color-disabled);
+    transform: scale(1.6);
+  }
+
+  .animal-upload-card-mask {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: rgba(15, 12, 8, 0.55);
+    color: #fff;
+  }
+
+  .animal-upload-card-remove {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    box-shadow: none;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0;
+    transition:
+      opacity 0.15s ease,
+      background 0.15s ease;
+  }
+
+  .animal-upload-card-remove:hover {
+    background: transparent;
+  }
+
+  .animal-upload-card-remove:focus-visible {
+    opacity: 1;
+    outline: 2px solid var(--animal-focus-yellow);
+    outline-offset: 1px;
+  }
+
+  .animal-upload-card:hover .animal-upload-card-remove {
+    opacity: 1;
+  }
+
+  .animal-upload-card-preview {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.45);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0;
+    transition:
+      opacity 0.15s ease,
+      background 0.15s ease;
+  }
+
+  .animal-upload-card-preview:hover {
+    background: rgba(0, 0, 0, 0.65);
+  }
+
+  .animal-upload-card-preview:focus-visible {
+    opacity: 1;
+    outline: 2px solid var(--animal-focus-yellow);
+    outline-offset: 1px;
+  }
+
+  .animal-upload-card:hover .animal-upload-card-preview {
+    opacity: 1;
+  }
+
+  .animal-upload-card-add {
+    width: 84px;
+    height: 84px;
+  }
+
+  .animal-upload-card-add-btn {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #c4b89e;
+    border-radius: 16px;
+    background: transparent;
+    color: var(--animal-text-color-disabled);
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      color 0.2s ease,
+      background 0.2s ease;
+  }
+
+  .animal-upload-card-add-btn:hover {
+    border-color: var(--animal-primary-color);
+    color: var(--animal-primary-color);
+    background: var(--animal-primary-color-bg);
+  }
+
+  .animal-upload-card-add-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .animal-upload-card-add-btn:focus-visible {
+    outline: 2px solid var(--animal-focus-yellow);
+    outline-offset: 2px;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .animal-upload-spinner {
       animation: none;
-      border-top-color: #19c8b9;
+      border-top-color: var(--animal-primary-color);
     }
 
     .animal-upload-trigger,

@@ -1,125 +1,94 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Upload } from './Upload';
 import type { UploadFile } from './Upload';
 
-const meta: Meta<typeof Upload> = {
-    title: 'Components/Upload',
+const meta = {
     component: Upload,
-    parameters: {
-        layout: 'padded',
+    tags: ['autodocs'],
+    argTypes: {
+        listType: {
+            control: 'select',
+            options: ['text', 'picture', 'picture-card'],
+            description: '文件列表展示形态',
+            table: { defaultValue: { summary: 'text' } },
+        },
+        multiple: { control: 'boolean', description: '是否支持多选' },
+        disabled: { control: 'boolean', description: '是否禁用' },
+        drag: { control: 'boolean', description: '是否开启拖拽上传区域' },
+        maxCount: { control: 'number', description: '最多上传文件数' },
+        showUploadList: { control: 'boolean', description: '是否显示文件列表' },
+        tip: { control: 'text', description: '触发区下方的提示文字' },
+        accept: { control: 'text', description: '接受的文件类型 (如 "image/*")' },
     },
-};
+} satisfies Meta<typeof Upload>;
 
 export default meta;
-type Story = StoryObj<typeof Upload>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        'aria-label': '上传文件',
-    },
-};
-
-export const WithTip: Story = {
-    args: {
-        tip: '支持 JPG、PNG、PDF，单文件不超过 10MB',
-        'aria-label': '上传文件',
-    },
-};
-
-export const Drag: Story = {
-    args: {
-        drag: true,
-        'aria-label': '拖拽上传',
-    },
-};
-
-export const DragWithTip: Story = {
-    args: {
-        drag: true,
-        tip: '支持 JPG、PNG、PDF，单文件不超过 10MB',
-        'aria-label': '拖拽上传',
-    },
-};
-
-export const PictureList: Story = {
-    args: {
-        listType: 'picture',
-        'aria-label': '上传图片',
-    },
-};
-
-export const PictureCard: Story = {
-    args: {
-        listType: 'picture-card',
-        'aria-label': '上传图片卡片',
-    },
-};
-
-export const Disabled: Story = {
-    args: {
-        disabled: true,
-        'aria-label': '上传文件（已禁用）',
-    },
-};
-
-export const DisabledWithFiles: Story = {
-    args: {
-        disabled: true,
-        defaultFileList: [
-            { uid: 'f1', name: 'document.pdf', size: 204800, status: 'done' },
-            { uid: 'f2', name: 'image.png', size: 51200, status: 'done' },
-        ],
-        'aria-label': '上传文件（已禁用）',
-    },
-};
-
-export const WithExistingFiles: Story = {
-    args: {
-        defaultFileList: [
-            { uid: 'f1', name: 'annual-report.pdf', size: 1024 * 1024 * 2.4, status: 'done' },
-            { uid: 'f2', name: 'photo.jpg', size: 1024 * 512, status: 'error' },
-            { uid: 'f3', name: 'notes.txt', size: 1024 * 8, status: 'uploading', percent: 65 },
-        ],
-        'aria-label': '上传文件',
-    },
-};
-
-export const MaxCount: Story = {
-    args: {
-        maxCount: 3,
-        tip: '最多上传 3 个文件',
-        'aria-label': '上传文件（最多3个）',
-    },
-};
-
-export const AcceptImages: Story = {
-    args: {
-        accept: 'image/*',
-        tip: '仅支持图片格式',
-        'aria-label': '上传图片',
+        children: undefined,
+        tip: '支持单个或批量上传',
     },
 };
 
 export const Multiple: Story = {
     args: {
         multiple: true,
-        tip: '可多选文件',
-        'aria-label': '多选上传',
+        tip: '可同时选择多个文件',
     },
 };
 
-export const WithPreviewFiles: Story = {
+export const DragUpload: Story = {
+    name: 'Drag Upload',
+    args: {
+        drag: true,
+        multiple: true,
+        tip: '支持拖拽或点击上传',
+    },
+};
+
+export const PictureList: Story = {
+    name: 'Picture List',
+    args: {
+        listType: 'picture',
+        multiple: true,
+        tip: '带缩略图的文件列表',
+    },
+};
+
+export const PictureCard: Story = {
+    name: 'Picture Card',
     args: {
         listType: 'picture-card',
-        defaultFileList: [
-            {
-                uid: 'img1',
-                name: 'sample.jpg',
-                size: 1024 * 45,
-                status: 'done',
-                thumbUrl: 'https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=84',
-            } as UploadFile,
-        ],
-        'aria-label': '图片列表',
+        multiple: true,
+    },
+};
+
+export const WithPreloadedFiles: Story = {
+    name: 'With Preloaded Files',
+    render: () => {
+        const files: UploadFile[] = [
+            { uid: '1', name: 'document.pdf', size: 102400, status: 'done' },
+            { uid: '2', name: 'image.png', size: 51200, status: 'uploading', percent: 45 },
+            { uid: '3', name: 'broken.txt', size: 1024, status: 'error' },
+        ];
+        return <Upload fileList={files} onChange={() => {}} />;
+    },
+};
+
+export const Disabled: Story = {
+    args: {
+        disabled: true,
+        tip: '当前上传已禁用',
+    },
+};
+
+export const MaxCount: Story = {
+    name: 'Max Count',
+    args: {
+        maxCount: 3,
+        tip: '最多上传 3 个文件',
     },
 };

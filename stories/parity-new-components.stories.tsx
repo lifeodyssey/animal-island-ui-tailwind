@@ -16,6 +16,7 @@ import {
     SkeletonButton,
     SkeletonInput,
     Tag,
+    Upload,
 } from '../src';
 
 const meta = {
@@ -401,5 +402,29 @@ export const CursorRaindropScoped: Story = {
             <input aria-label="Name" type="text" />
             <button disabled>Unavailable</button>
         </Cursor>
+    ),
+};
+
+export const UploadBasic: Story = {
+    render: () => (
+        <div style={pageStyle}>
+            <h2 style={{ ...labelStyle, fontSize: 16 }}>Upload</h2>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>Default (text list)</div>
+                <Upload data-testid="upload-default" aria-label="上传文件" />
+            </div>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>With drag zone</div>
+                <Upload drag aria-label="拖拽上传" data-testid="upload-drag" />
+            </div>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>Picture-card list</div>
+                <Upload listType="picture-card" aria-label="上传图片" data-testid="upload-card" />
+            </div>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>Disabled</div>
+                <Upload disabled aria-label="上传文件（禁用）" data-testid="upload-disabled" />
+            </div>
+        </div>
     ),
 };
