@@ -16,6 +16,7 @@ import {
     SkeletonButton,
     SkeletonInput,
     Tag,
+    Upload,
 } from '../src';
 
 const meta = {
@@ -202,10 +203,8 @@ export const ProgressParity: Story = {
                 <Progress percent={60} size="large" aria-label="large progress" />
             </div>
             <div style={sectionStyle}>
-                <div style={labelStyle}>Info position</div>
-                <Progress percent={75} infoPosition="right" aria-label="right info" />
-                <Progress percent={75} infoPosition="top" aria-label="top info" />
-                <Progress percent={75} infoPosition="inside" size="large" aria-label="inside info" />
+                <div style={labelStyle}>Solid fill (default)</div>
+                <Progress percent={75} aria-label="solid fill" />
             </div>
             <div style={sectionStyle}>
                 <div style={labelStyle}>Hide info</div>
@@ -403,5 +402,29 @@ export const CursorRaindropScoped: Story = {
             <input aria-label="Name" type="text" />
             <button disabled>Unavailable</button>
         </Cursor>
+    ),
+};
+
+export const UploadBasic: Story = {
+    render: () => (
+        <div style={pageStyle}>
+            <h2 style={{ ...labelStyle, fontSize: 16 }}>Upload</h2>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>Default (text list)</div>
+                <Upload data-testid="upload-default" aria-label="上传文件" />
+            </div>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>With drag zone</div>
+                <Upload drag aria-label="拖拽上传" data-testid="upload-drag" />
+            </div>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>Picture-card list</div>
+                <Upload listType="picture-card" aria-label="上传图片" data-testid="upload-card" />
+            </div>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>Disabled</div>
+                <Upload disabled aria-label="上传文件（禁用）" data-testid="upload-disabled" />
+            </div>
+        </div>
     ),
 };

@@ -147,7 +147,7 @@ export { Drawer } from './components/Drawer';
 export type { DrawerProps, DrawerPlacement } from './components/Drawer';
 
 export { Progress } from './components/Progress';
-export type { ProgressProps, ProgressSize, ProgressInfoPosition, ProgressVariant } from './components/Progress';
+export type { ProgressProps, ProgressSize, ProgressVariant } from './components/Progress';
 
 export { Skeleton, SkeletonButton, SkeletonInput, SkeletonAvatar } from './components/Skeleton';
 export type { SkeletonProps, SkeletonVariant, SkeletonButtonProps, SkeletonInputProps, SkeletonAvatarProps } from './components/Skeleton';
@@ -175,3 +175,15 @@ export type { PaginationProps, PaginationVariant } from './components/Pagination
 
 export { Background } from './components/Background';
 export type { BackgroundProps, BackgroundType } from './components/Background';
+
+export { Upload } from './components/Upload';
+export type {
+    UploadProps,
+    UploadFile,
+    UploadFileStatus,
+    UploadListType,
+    UploadCustomRequestOptions,
+    UploadChangeParam,
+    UploadShowUploadList,
+    UploadOnChange,
+} from './components/Upload';
