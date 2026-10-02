@@ -26,15 +26,15 @@ const colorVariants = [
 ] as const;
 
 test.describe('Title', () => {
-    test('default variant is layer', async ({ page }) => {
+    test('default variant is ribbon (upstream sync: feat(title): make ribbon the default variant)', async ({ page }) => {
         await page.goto(defaultStoryUrl);
         const title = page.locator('.animal-title');
         await expect(title).toContainText('标题');
-        const layer = title.locator('.animal-title-layer');
-        await expect(layer).toBeVisible();
-        await expect(layer.locator('.animal-title-layer-front')).toHaveText('标题');
-        // no ribbon structure when variant=layer
-        await expect(title.locator('.animal-title-ribbon')).toHaveCount(0);
+        const ribbon = title.locator('.animal-title-ribbon');
+        await expect(ribbon).toBeVisible();
+        await expect(ribbon.locator('.animal-title-ribbon-text')).toHaveText('标题');
+        // no layer structure when variant=ribbon (default)
+        await expect(title.locator('.animal-title-layer')).toHaveCount(0);
     });
 
     test('ribbon variant renders upstream six-layer structure', async ({ page }) => {
