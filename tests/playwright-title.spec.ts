@@ -26,14 +26,14 @@ const colorVariants = [
 ] as const;
 
 test.describe('Title', () => {
-    test('default variant is ribbon (upstream sync: feat(title): make ribbon the default variant)', async ({ page }) => {
+    test('default variant is ribbon (upstream c7d47d2)', async ({ page }) => {
         await page.goto(defaultStoryUrl);
         const title = page.locator('.animal-title');
         await expect(title).toContainText('标题');
         const ribbon = title.locator('.animal-title-ribbon');
         await expect(ribbon).toBeVisible();
         await expect(ribbon.locator('.animal-title-ribbon-text')).toHaveText('标题');
-        // no layer structure when variant=ribbon (default)
+        // no layer structure when variant=ribbon
         await expect(title.locator('.animal-title-layer')).toHaveCount(0);
     });
 

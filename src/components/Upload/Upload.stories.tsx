@@ -1,77 +1,94 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Upload } from './Upload';
 import type { UploadFile } from './Upload';
 
 const meta = {
     component: Upload,
-    tags: ['ai-generated'],
-    args: {},
+    tags: ['autodocs'],
+    argTypes: {
+        listType: {
+            control: 'select',
+            options: ['text', 'picture', 'picture-card'],
+            description: '文件列表展示形态',
+            table: { defaultValue: { summary: 'text' } },
+        },
+        multiple: { control: 'boolean', description: '是否支持多选' },
+        disabled: { control: 'boolean', description: '是否禁用' },
+        drag: { control: 'boolean', description: '是否开启拖拽上传区域' },
+        maxCount: { control: 'number', description: '最多上传文件数' },
+        showUploadList: { control: 'boolean', description: '是否显示文件列表' },
+        tip: { control: 'text', description: '触发区下方的提示文字' },
+        accept: { control: 'text', description: '接受的文件类型 (如 "image/*")' },
+    },
 } satisfies Meta<typeof Upload>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const wrapStyle: React.CSSProperties = { padding: 24, width: 460 };
-
 export const Default: Story = {
-    render: () => (
-        <div style={wrapStyle}>
-            <Upload />
-        </div>
-    ),
+    args: {
+        children: undefined,
+        tip: '支持单个或批量上传',
+    },
 };
 
-export const WithTip: Story = {
-    render: () => (
-        <div style={wrapStyle}>
-            <Upload tip="支持 PNG、JPG、PDF，单文件不超过 10 MB" />
-        </div>
-    ),
+export const Multiple: Story = {
+    args: {
+        multiple: true,
+        tip: '可同时选择多个文件',
+    },
 };
 
-export const Drag: Story = {
-    render: () => (
-        <div style={wrapStyle}>
-            <Upload drag tip="支持 PNG、JPG、PDF，单文件不超过 10 MB" accept="image/*,.pdf" />
-        </div>
-    ),
+export const DragUpload: Story = {
+    name: 'Drag Upload',
+    args: {
+        drag: true,
+        multiple: true,
+        tip: '支持拖拽或点击上传',
+    },
 };
 
-export const PictureType: Story = {
-    render: () => (
-        <div style={wrapStyle}>
-            <Upload listType="picture" multiple tip="行内缩略图 picture 模式" accept="image/*" />
-        </div>
-    ),
+export const PictureList: Story = {
+    name: 'Picture List',
+    args: {
+        listType: 'picture',
+        multiple: true,
+        tip: '带缩略图的文件列表',
+    },
 };
 
-export const PictureCardType: Story = {
-    render: () => (
-        <div style={wrapStyle}>
-            <Upload listType="picture-card" multiple accept="image/*" />
-        </div>
-    ),
+export const PictureCard: Story = {
+    name: 'Picture Card',
+    args: {
+        listType: 'picture-card',
+        multiple: true,
+    },
+};
+
+export const WithPreloadedFiles: Story = {
+    name: 'With Preloaded Files',
+    render: () => {
+        const files: UploadFile[] = [
+            { uid: '1', name: 'document.pdf', size: 102400, status: 'done' },
+            { uid: '2', name: 'image.png', size: 51200, status: 'uploading', percent: 45 },
+            { uid: '3', name: 'broken.txt', size: 1024, status: 'error' },
+        ];
+        return <Upload fileList={files} onChange={() => {}} />;
+    },
 };
 
 export const Disabled: Story = {
-    render: () => (
-        <div style={wrapStyle}>
-            <Upload disabled />
-        </div>
-    ),
+    args: {
+        disabled: true,
+        tip: '当前上传已禁用',
+    },
 };
 
-const DEMO_FILES: UploadFile[] = [
-    { uid: '1', name: 'photo.jpg', size: 102400, type: 'image/jpeg', status: 'done', percent: 100 },
-    { uid: '2', name: 'report.pdf', size: 2048000, type: 'application/pdf', status: 'error', percent: 100 },
-    { uid: '3', name: 'data.csv', size: 8192, type: 'text/csv', status: 'uploading', percent: 45 },
-];
-
-export const WithFileList: Story = {
-    render: () => (
-        <div style={wrapStyle}>
-            <Upload fileList={DEMO_FILES} onChange={() => {}} />
-        </div>
-    ),
+export const MaxCount: Story = {
+    name: 'Max Count',
+    args: {
+        maxCount: 3,
+        tip: '最多上传 3 个文件',
+    },
 };

@@ -41,22 +41,9 @@ export const Sizes: Story = {
     ),
 };
 
-export const InfoPositions: Story = {
-    render: () => (
-        <div style={columnStyle}>
-            {(['inside', 'right', 'top'] as const).map((infoPosition) => (
-                <div key={infoPosition}>
-                    <p style={labelStyle}>{infoPosition}</p>
-                    <Progress
-                        percent={75}
-                        infoPosition={infoPosition}
-                        duration={0}
-                        aria-label={`info ${infoPosition}`}
-                    />
-                </div>
-            ))}
-        </div>
-    ),
+/** 纯色 fill 默认样式（不传 variant）。 */
+export const SolidFill: Story = {
+    args: { percent: 75, duration: 0, 'aria-label': 'solid fill progress' },
 };
 
 const ALL_VARIANTS: ProgressVariant[] = ['sweet-corner', 'forest-grove', 'starry-camp', 'coffee-break'];

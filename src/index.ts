@@ -147,7 +147,7 @@ export { Drawer } from './components/Drawer';
 export type { DrawerProps, DrawerPlacement } from './components/Drawer';
 
 export { Progress } from './components/Progress';
-export type { ProgressProps, ProgressSize, ProgressInfoPosition, ProgressVariant } from './components/Progress';
+export type { ProgressProps, ProgressSize, ProgressVariant } from './components/Progress';
 
 export { Skeleton, SkeletonButton, SkeletonInput, SkeletonAvatar } from './components/Skeleton';
 export type { SkeletonProps, SkeletonVariant, SkeletonButtonProps, SkeletonInputProps, SkeletonAvatarProps } from './components/Skeleton';
