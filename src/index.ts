@@ -175,3 +175,18 @@ export type { PaginationProps, PaginationVariant } from './components/Pagination
 
 export { Background } from './components/Background';
 export type { BackgroundProps, BackgroundType } from './components/Background';
+export { Avatar, AvatarGroup } from './components/Avatar';
+export type { AvatarProps, AvatarSize, AvatarShape, AvatarGroupProps } from './components/Avatar';
+export { Rate } from './components/Rate';
+export type { RateProps, RateSize } from './components/Rate';
+export { Upload } from './components/Upload';
+export type {
+    UploadProps,
+    UploadFile,
+    UploadFileStatus,
+    UploadListType,
+    UploadCustomRequestOptions,
+    UploadChangeParam,
+    UploadShowUploadList,
+    UploadOnChange,
+} from './components/Upload';

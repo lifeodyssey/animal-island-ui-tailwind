@@ -1,12 +1,15 @@
 import { afterEach, describe, it, expect, vi } from 'vitest';
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
-import { DatePicker, type DatePickerValue } from './DatePicker';
+import { DatePicker } from './DatePicker';
 import { setup } from '@test/utils';
 import { ControlledHost } from '@test/components';
 
+/** 面板带退场动效（0.2s），等待动画结束、面板真正卸载后再断言 */
 const expectPanelClosed = async () => waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
 
-afterEach(() => { cleanup(); });
+afterEach(() => {
+    cleanup();
+});
 
 describe('DatePicker', () => {
     describe('rendering', () => {
@@ -84,8 +87,8 @@ describe('DatePicker', () => {
             const user = setup();
             const onChange = vi.fn();
             render(
-                <ControlledHost<string | null, DatePickerValue> initial="2026-08-10" onChange={onChange}>
-                    {({ value, onChange: set }) => <DatePicker value={value ?? undefined} onChange={(v) => set(v)} />}
+                <ControlledHost<string | null, string | null> initial="2026-08-10" onChange={onChange}>
+                    {({ value, onChange: set }) => <DatePicker value={value ?? undefined} onChange={(v) => set(v as string | null)} />}
                 </ControlledHost>
             );
             await user.click(screen.getByRole('combobox'));
