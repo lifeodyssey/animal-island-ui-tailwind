@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 import type { CSSProperties } from 'react';
 import { useState } from 'react';
 import {
+    Avatar,
+    AvatarGroup,
     BackTop,
     Background,
     Button,
@@ -11,12 +13,15 @@ import {
     Image,
     Notification,
     Progress,
+    Rate,
     Skeleton,
     SkeletonAvatar,
     SkeletonButton,
     SkeletonInput,
     Tag,
+    Upload,
 } from '../src';
+import type { UploadFile } from '../src';
 
 const meta = {
     title: 'Regression/Parity/New Components',
@@ -404,4 +409,127 @@ export const CursorRaindropScoped: Story = {
             <button disabled>Unavailable</button>
         </Cursor>
     ),
+};
+
+export const AvatarParity: Story = {
+    name: 'Avatar',
+    render: () => (
+        <div style={pageStyle}>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>Sizes</div>
+                <div style={rowStyle}>
+                    <Avatar size="small">S</Avatar>
+                    <Avatar size="middle">M</Avatar>
+                    <Avatar size="large">L</Avatar>
+                    <Avatar size={64}>64</Avatar>
+                </div>
+            </div>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>Shape</div>
+                <div style={rowStyle}>
+                    <Avatar>Circle</Avatar>
+                    <Avatar shape="square">Square</Avatar>
+                </div>
+            </div>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>With image</div>
+                <div style={rowStyle}>
+                    <Avatar src="https://api.dicebear.com/7.x/fun-emoji/svg?seed=cat" alt="cat" size="large" />
+                    <Avatar src="https://api.dicebear.com/7.x/fun-emoji/svg?seed=dog" alt="dog" size="large" />
+                </div>
+            </div>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>Group</div>
+                <div style={rowStyle}>
+                    <AvatarGroup maxCount={3}>
+                        <Avatar>A</Avatar>
+                        <Avatar>B</Avatar>
+                        <Avatar>C</Avatar>
+                        <Avatar>D</Avatar>
+                        <Avatar>E</Avatar>
+                    </AvatarGroup>
+                </div>
+            </div>
+        </div>
+    ),
+};
+
+export const RateParity: Story = {
+    name: 'Rate',
+    render: () => {
+        const [value, setValue] = useState(3);
+        return (
+            <div style={pageStyle}>
+                <div style={sectionStyle}>
+                    <div style={labelStyle}>Sizes</div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                        <Rate size="small" defaultValue={3} />
+                        <Rate size="middle" defaultValue={3} />
+                        <Rate size="large" defaultValue={3} />
+                    </div>
+                </div>
+                <div style={sectionStyle}>
+                    <div style={labelStyle}>Controlled (value: {value})</div>
+                    <Rate value={value} onChange={setValue} />
+                </div>
+                <div style={sectionStyle}>
+                    <div style={labelStyle}>Readonly</div>
+                    <Rate value={4} readonly />
+                </div>
+                <div style={sectionStyle}>
+                    <div style={labelStyle}>Custom count (10)</div>
+                    <Rate count={10} defaultValue={7} />
+                </div>
+            </div>
+        );
+    },
+};
+
+export const UploadParity: Story = {
+    name: 'Upload',
+    render: () => {
+        const [fileList, setFileList] = useState<UploadFile[]>([
+            { uid: '1', name: 'photo.png', status: 'done', url: '#' },
+            { uid: '2', name: 'report.pdf', status: 'uploading', percent: 60 },
+            { uid: '3', name: 'error-file.txt', status: 'error' },
+        ]);
+        const [cardFiles, setCardFiles] = useState<UploadFile[]>([
+            { uid: 'c1', name: 'img1.jpg', status: 'done', url: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=a' },
+            { uid: 'c2', name: 'img2.jpg', status: 'done', url: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=b' },
+        ]);
+        return (
+            <div style={pageStyle}>
+                <div style={sectionStyle}>
+                    <div style={labelStyle}>Text list</div>
+                    <Upload
+                        fileList={fileList}
+                        onChange={({ fileList: fl }) => setFileList(fl)}
+                        tip="支持上传 PDF、PNG 等格式"
+                    >
+                        <Button>选择文件</Button>
+                    </Upload>
+                </div>
+                <div style={sectionStyle}>
+                    <div style={labelStyle}>Picture card</div>
+                    <Upload
+                        listType="picture-card"
+                        fileList={cardFiles}
+                        onChange={({ fileList: fl }) => setCardFiles(fl)}
+                    />
+                </div>
+                <div style={sectionStyle}>
+                    <div style={labelStyle}>Drag zone</div>
+                    <Upload drag>
+                        <div />
+                    </Upload>
+                </div>
+                <div style={sectionStyle}>
+                    <div style={labelStyle}>Disabled</div>
+                    <Upload disabled>
+                        <Button disabled>上传（已禁用）</Button>
+                    </Upload>
+                </div>
+            </div>
+        );
+    },
 };
