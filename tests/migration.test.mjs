@@ -111,3 +111,20 @@ test('WeddingInvitation public exports are wired when upstream sync adds the com
     /export \{ WeddingInvitation, WeddingInvitationExportButton \} from '\.\/components\/WeddingInvitation';/,
   );
 });
+
+test('upstream-sync f8d08d27..18b7bca3: new components Badge, Avatar, Rate, Upload are exported', () => {
+  const indexTs = read('src/index.ts');
+
+  for (const [component, file] of [
+    ['Badge', 'src/components/Badge/Badge.tsx'],
+    ['Avatar', 'src/components/Avatar/Avatar.tsx'],
+    ['Rate', 'src/components/Rate/Rate.tsx'],
+    ['Upload', 'src/components/Upload/Upload.tsx'],
+  ]) {
+    assert.ok(existsSync(join(root, file)), `${component} source should exist`);
+    assert.match(indexTs, new RegExp(`export \\{[^}]*${component}[^}]*\\} from '\\./components/${component}'`));
+  }
+
+  // AvatarGroup is a named export alongside Avatar
+  assert.match(indexTs, /export \{ Avatar, AvatarGroup \} from '\.\/components\/Avatar'/);
+});

@@ -2,8 +2,11 @@ import type { Meta, StoryObj } from '@storybook/react';
 import type { CSSProperties } from 'react';
 import { useState } from 'react';
 import {
+    Avatar,
+    AvatarGroup,
     BackTop,
     Background,
+    Badge,
     Button,
     Card,
     Cursor,
@@ -11,11 +14,13 @@ import {
     Image,
     Notification,
     Progress,
+    Rate,
     Skeleton,
     SkeletonAvatar,
     SkeletonButton,
     SkeletonInput,
     Tag,
+    Upload,
 } from '../src';
 
 const meta = {
@@ -403,5 +408,211 @@ export const CursorRaindropScoped: Story = {
             <input aria-label="Name" type="text" />
             <button disabled>Unavailable</button>
         </Cursor>
+    ),
+};
+
+// ─── Badge ───────────────────────────────────────────────────────────────────
+
+export const BadgeParity: Story = {
+    name: 'Badge',
+    render: () => (
+        <div style={pageStyle}>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>Count badge on Button</div>
+                <div style={rowStyle}>
+                    <Badge count={5}><Button>消息</Button></Badge>
+                    <Badge count={99}><Button>通知</Button></Badge>
+                    <Badge count={100} overflowCount={99}><Button>邮件</Button></Badge>
+                    <Badge count={0} showZero><Button>零</Button></Badge>
+                </div>
+            </div>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>Dot badge</div>
+                <div style={rowStyle}>
+                    <Badge dot><Button>消息</Button></Badge>
+                </div>
+            </div>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>Standalone</div>
+                <div style={rowStyle}>
+                    <Badge count={7} />
+                    <Badge count={42} color="app-pink" />
+                    <Badge dot />
+                </div>
+            </div>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>Colors</div>
+                <div style={rowStyle}>
+                    {(['app-red', 'app-pink', 'purple', 'app-blue', 'app-teal', 'app-green', 'app-yellow', 'app-orange'] as const).map(c => (
+                        <Badge key={c} count={1} color={c} />
+                    ))}
+                </div>
+            </div>
+        </div>
+    ),
+};
+
+export const BadgeStable: Story = {
+    name: 'Badge (stable)',
+    render: () => (
+        <div style={rowStyle}>
+            <Badge count={3}><Button>通知</Button></Badge>
+            <Badge dot><Button>点</Button></Badge>
+            <Badge count={5} />
+        </div>
+    ),
+};
+
+// ─── Avatar ──────────────────────────────────────────────────────────────────
+
+const AVATAR_SRC = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%2319c8b9'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23fff'%3E🐾%3C/text%3E%3C/svg%3E";
+
+export const AvatarParity: Story = {
+    name: 'Avatar',
+    render: () => (
+        <div style={pageStyle}>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>Sizes</div>
+                <div style={rowStyle}>
+                    <Avatar size={24} src={AVATAR_SRC} />
+                    <Avatar size={32} src={AVATAR_SRC} />
+                    <Avatar size={40} src={AVATAR_SRC} />
+                    <Avatar size={48} src={AVATAR_SRC} />
+                    <Avatar size={64} src={AVATAR_SRC} />
+                </div>
+            </div>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>Text / icon fallback</div>
+                <div style={rowStyle}>
+                    <Avatar>AI</Avatar>
+                    <Avatar shape="square">U</Avatar>
+                    <Avatar />
+                </div>
+            </div>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>Shape</div>
+                <div style={rowStyle}>
+                    <Avatar src={AVATAR_SRC} shape="circle" size={48} />
+                    <Avatar src={AVATAR_SRC} shape="square" size={48} />
+                </div>
+            </div>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>Group</div>
+                <AvatarGroup maxCount={3}>
+                    <Avatar src={AVATAR_SRC} />
+                    <Avatar>A</Avatar>
+                    <Avatar>B</Avatar>
+                    <Avatar>C</Avatar>
+                    <Avatar>D</Avatar>
+                </AvatarGroup>
+            </div>
+        </div>
+    ),
+};
+
+export const AvatarStable: Story = {
+    name: 'Avatar (stable)',
+    render: () => (
+        <div style={rowStyle}>
+            <Avatar src={AVATAR_SRC} size={40} />
+            <Avatar>AI</Avatar>
+            <Avatar />
+        </div>
+    ),
+};
+
+// ─── Rate ────────────────────────────────────────────────────────────────────
+
+export const RateParity: Story = {
+    name: 'Rate',
+    render: () => (
+        <div style={pageStyle}>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>Default (5 stars, middle)</div>
+                <Rate defaultValue={3} />
+            </div>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>Sizes</div>
+                <div style={sectionStyle}>
+                    <Rate defaultValue={3} size="small" />
+                    <Rate defaultValue={3} size="middle" />
+                    <Rate defaultValue={3} size="large" />
+                </div>
+            </div>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>Readonly</div>
+                <Rate value={4} readonly />
+            </div>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>Count = 10</div>
+                <Rate defaultValue={7} count={10} />
+            </div>
+            <div style={sectionStyle}>
+                <div style={labelStyle}>Allow clear = false</div>
+                <Rate defaultValue={3} allowClear={false} />
+            </div>
+        </div>
+    ),
+};
+
+export const RateStable: Story = {
+    name: 'Rate (stable)',
+    render: () => (
+        <div style={sectionStyle}>
+            <Rate defaultValue={3} />
+            <Rate value={4} readonly />
+        </div>
+    ),
+};
+
+// ─── Upload ──────────────────────────────────────────────────────────────────
+
+export const UploadParity: Story = {
+    name: 'Upload',
+    render: () => {
+        const UploadDemo = () => {
+            const [fileList, setFileList] = useState<Parameters<typeof Upload>[0]['fileList']>([]);
+            return (
+                <div style={pageStyle}>
+                    <div style={sectionStyle}>
+                        <div style={labelStyle}>Button upload (text list)</div>
+                        <Upload
+                            action="/api/upload"
+                            fileList={fileList}
+                            onChange={({ fileList: next }) => setFileList(next)}
+                            maxCount={3}
+                        >
+                            <Button>选择文件</Button>
+                        </Upload>
+                    </div>
+                    <div style={sectionStyle}>
+                        <div style={labelStyle}>Drag zone</div>
+                        <Upload
+                            action="/api/upload"
+                            listType="text"
+                            drag
+                        />
+                    </div>
+                    <div style={sectionStyle}>
+                        <div style={labelStyle}>Picture card</div>
+                        <Upload
+                            action="/api/upload"
+                            listType="picture-card"
+                            maxCount={4}
+                        />
+                    </div>
+                </div>
+            );
+        };
+        return <UploadDemo />;
+    },
+};
+
+export const UploadStable: Story = {
+    name: 'Upload (stable)',
+    render: () => (
+        <Upload action="/api/upload">
+            <Button>上传文件</Button>
+        </Upload>
     ),
 };

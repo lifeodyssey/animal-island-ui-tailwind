@@ -5851,4 +5851,695 @@
           16 6,
       default !important;
   }
+
+  /* ============================================
+     Badge —— 徽标数
+  ============================================ */
+  .animal-badge {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    line-height: 1;
+    font-family: inherit;
+  }
+
+  .animal-badge-indicator {
+    --badge-shift-x: 50%;
+    --badge-shift-y: -50%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(var(--badge-shift-x), var(--badge-shift-y));
+    transform-origin: 100% 0;
+    background: #fc736d;
+    color: #fff;
+    font-family: inherit;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+    border-radius: 999px;
+    border: 2px solid var(--animal-bg-color, #f8f8f0);
+    box-shadow: var(--animal-shadow-sm, 0 2px 4px 0 rgba(61, 52, 40, 0.06));
+    animation: animal-badge-zoom-in 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .animal-badge-standalone .animal-badge-indicator {
+    position: static;
+    --badge-shift-x: 0;
+    --badge-shift-y: 0;
+    border-color: transparent;
+    box-shadow: none;
+  }
+
+  .animal-badge-size-medium {
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    font-size: 10px;
+  }
+
+  .animal-badge-size-small {
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    font-size: 9px;
+  }
+
+  .animal-badge-size-medium.animal-badge-circle {
+    width: 20px;
+    min-width: 0;
+    padding: 0;
+  }
+
+  .animal-badge-size-small.animal-badge-circle {
+    width: 16px;
+    min-width: 0;
+    padding: 0;
+  }
+
+  .animal-badge-dot {
+    width: 10px;
+    min-width: 0;
+    height: 10px;
+    padding: 0;
+  }
+
+  .animal-badge-color-app-red { background: #fc736d; color: #fff; }
+  .animal-badge-color-app-pink { background: #f8a6b2; color: #fff; }
+  .animal-badge-color-app-orange { background: #e59266; color: #fff; }
+  .animal-badge-color-app-yellow { background: #f7cd67; color: #725d42; }
+  .animal-badge-color-app-teal { background: #82d5bb; color: #fff; }
+  .animal-badge-color-app-green { background: #8ac68a; color: #fff; }
+  .animal-badge-color-app-blue { background: #889df0; color: #fff; }
+  .animal-badge-color-purple { background: #b77dee; color: #fff; }
+  .animal-badge-color-lime-green { background: #d1da49; color: #3d5a1a; }
+  .animal-badge-color-yellow-green { background: #ecdf52; color: #725d42; }
+  .animal-badge-color-brown { background: #9a835a; color: #fff; }
+  .animal-badge-color-warm-peach-pink { background: #e18c6f; color: #fff; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animal-badge-indicator { animation: none; }
+  }
+
+  /* ============================================
+     Avatar —— 头像
+  ============================================ */
+  .animal-avatar {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+    vertical-align: middle;
+    user-select: none;
+    background: var(--animal-primary-color-bg);
+    color: var(--animal-primary-color);
+    font-weight: 600;
+    border-radius: 999px;
+  }
+
+  .animal-avatar-shape-square {
+    border-radius: 8px;
+  }
+
+  .animal-avatar-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .animal-avatar-string {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .animal-avatar-placeholder {
+    border: 2px solid var(--animal-bg-color);
+  }
+
+  .animal-avatar-group {
+    display: inline-flex;
+    align-items: center;
+    --avatar-group-gap: 8px;
+  }
+
+  .animal-avatar-group > .animal-avatar {
+    border: 2px solid var(--animal-bg-color);
+  }
+
+  .animal-avatar-group > .animal-avatar + .animal-avatar {
+    margin-left: calc(-1 * var(--avatar-group-gap));
+  }
+
+  .animal-avatar-group-more {
+    font-size: 14px;
+  }
+
+  /* ============================================
+     Rate —— 星级评分
+  ============================================ */
+  .animal-rate {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--rate-gap);
+    font-family: var(--animal-font-family);
+    line-height: 1;
+  }
+
+  .animal-rate-small {
+    --rate-size: 20px;
+    --rate-gap: var(--animal-spacing-xs);
+    --rate-splash-scale: 0.91;
+  }
+
+  .animal-rate-middle {
+    --rate-size: 26px;
+    --rate-gap: 6px;
+    --rate-splash-scale: 1.18;
+  }
+
+  .animal-rate-large {
+    --rate-size: 34px;
+    --rate-gap: var(--animal-spacing-sm);
+    --rate-splash-scale: 1.55;
+  }
+
+  .animal-rate-item {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--rate-size);
+    height: var(--rate-size);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform var(--animal-motion-duration-base) var(--animal-motion-ease);
+  }
+
+  .animal-rate-item:hover {
+    transform: translateY(-1px);
+  }
+
+  .animal-rate-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    appearance: none;
+    -webkit-appearance: none;
+    opacity: 0;
+    cursor: inherit;
+  }
+
+  .animal-rate-star {
+    display: block;
+    width: var(--rate-size);
+    height: var(--rate-size);
+  }
+
+  .animal-rate-icon {
+    display: block;
+    width: 100%;
+    height: 100%;
+    stroke: var(--animal-text-color-disabled);
+    transition: stroke var(--animal-motion-duration-base) var(--animal-motion-ease);
+  }
+
+  .animal-rate-icon path {
+    fill: var(--animal-warning-color);
+    fill-opacity: 0;
+    transition: fill-opacity var(--animal-motion-duration-base) var(--animal-motion-ease);
+  }
+
+  .animal-rate-icon circle {
+    fill: var(--animal-text-color);
+    opacity: 0;
+    transition: opacity var(--animal-motion-duration-base) var(--animal-motion-ease);
+  }
+
+  .animal-rate-item-active .animal-rate-icon {
+    stroke: var(--animal-warning-color-active);
+  }
+
+  .animal-rate-item-active .animal-rate-icon path {
+    fill-opacity: 1;
+  }
+
+  .animal-rate-item-active .animal-rate-icon circle {
+    opacity: 1;
+  }
+
+  .animal-rate-input:focus-visible ~ .animal-rate-star {
+    border-radius: 50%;
+    outline: 2px solid var(--animal-warning-color);
+    outline-offset: 1px;
+  }
+
+  .animal-rate-star-pop {
+    animation-name: animal-rate-pop;
+    animation-duration: var(--animal-motion-duration-slow);
+    animation-timing-function: var(--animal-motion-ease);
+    animation-delay: var(--rate-pop-delay, 0s);
+    animation-fill-mode: both;
+  }
+
+  .animal-rate-splash {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 22px;
+    height: 22px;
+    margin: -11px 0 0 -11px;
+    border-radius: 50%;
+    transform: scale(var(--rate-splash-scale));
+    animation: animal-rate-splash 0.6s ease forwards;
+    pointer-events: none;
+  }
+
+  .animal-rate-readonly .animal-rate-item {
+    cursor: default;
+  }
+
+  .animal-rate-readonly .animal-rate-item:hover {
+    transform: none;
+  }
+
+  /* ============================================
+     Upload —— 文件上传
+  ============================================ */
+  .animal-upload {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-family: inherit;
+    color: #794f27;
+  }
+
+  .animal-upload-disabled {
+    opacity: 0.55;
+  }
+
+  .animal-upload-hidden-input {
+    display: none;
+  }
+
+  .animal-upload-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-start;
+    padding: 0 18px;
+    height: 36px;
+    border: none;
+    border-radius: 50px;
+    background: #f8f8f0;
+    color: #794f27;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+      box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.15s ease;
+    box-shadow: 0 5px 0 0 #bdaea0;
+  }
+
+  .animal-upload-trigger:hover:not(:disabled) {
+    box-shadow: 0 6px 0 0 #bdaea0;
+    transform: translateY(-1px);
+  }
+
+  .animal-upload-trigger:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 0 #bdaea0;
+  }
+
+  .animal-upload-trigger:disabled {
+    cursor: not-allowed;
+    box-shadow: 0 5px 0 0 #d5c8b8;
+  }
+
+  .animal-upload-trigger:focus-visible {
+    outline: 2px solid var(--animal-focus-yellow, #ffcc00);
+    outline-offset: 2px;
+  }
+
+  .animal-upload-trigger-custom {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-start;
+    border: none;
+    background: transparent;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .animal-upload-trigger-custom:disabled {
+    cursor: not-allowed;
+  }
+
+  .animal-upload-drag-zone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 24px;
+    border: 2px dashed #c4b89e;
+    border-radius: 12px;
+    background: #fffbe7;
+    color: #794f27;
+    font-family: inherit;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .animal-upload-drag-zone:hover,
+  .animal-upload-drag-active {
+    border-color: #19c8b9;
+    background: #e6f9f6;
+  }
+
+  .animal-upload-drag-zone:focus-visible {
+    outline: 2px solid var(--animal-focus-yellow, #ffcc00);
+    outline-offset: 2px;
+  }
+
+  .animal-upload-drag-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9f927d;
+  }
+
+  .animal-upload-drag-text {
+    font-size: 14px;
+    color: #9f927d;
+  }
+
+  .animal-upload-tip {
+    font-size: 12px;
+    color: #c4b89e;
+  }
+
+  .animal-upload-text-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .animal-upload-text-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: #fffdf7;
+    border: 1px solid #e8dcc8;
+    font-size: 13px;
+    color: #794f27;
+    min-width: 0;
+  }
+
+  .animal-upload-item-error {
+    border-color: #e05a5a;
+    background: #fff5f5;
+  }
+
+  .animal-upload-text-thumb {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f8f0;
+  }
+
+  .animal-upload-text-thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .animal-upload-file-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    color: #c4b89e;
+  }
+
+  .animal-upload-file-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .animal-upload-file-size {
+    flex-shrink: 0;
+    font-size: 11px;
+    color: #c4b89e;
+  }
+
+  .animal-upload-status-icon {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+  }
+
+  .animal-upload-status-done { color: #6fba2c; }
+  .animal-upload-status-error { color: #e05a5a; }
+
+  .animal-upload-spinner {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 2px solid #e8dcc8;
+    border-top-color: #19c8b9;
+    border-radius: 50%;
+    animation: animal-upload-spin 0.7s linear infinite;
+  }
+
+  .animal-upload-percent {
+    color: #9f927d;
+  }
+
+  .animal-upload-preview-btn,
+  .animal-upload-remove-btn {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: none;
+    color: #c4b89e;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 0;
+    transition: color 0.15s, background 0.15s;
+  }
+
+  .animal-upload-preview-btn:hover:not(:disabled),
+  .animal-upload-remove-btn:hover:not(:disabled) {
+    color: #794f27;
+    background: #f0e8d8;
+  }
+
+  .animal-upload-preview-btn:disabled,
+  .animal-upload-remove-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+
+  .animal-upload-card-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .animal-upload-card {
+    position: relative;
+    width: 104px;
+    height: 104px;
+    border-radius: 8px;
+    border: 1px solid #e8dcc8;
+    background: #fffdf7;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .animal-upload-card-error {
+    border-color: #e05a5a;
+  }
+
+  .animal-upload-card-done {
+    border-color: #6fba2c;
+  }
+
+  .animal-upload-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .animal-upload-card-img-previewable {
+    cursor: zoom-in;
+  }
+
+  .animal-upload-card-file-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #c4b89e;
+  }
+
+  .animal-upload-card-mask {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: rgba(248, 248, 240, 0.85);
+    font-size: 12px;
+    color: #9f927d;
+  }
+
+  .animal-upload-card-preview,
+  .animal-upload-card-remove {
+    position: absolute;
+    bottom: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: rgba(248, 248, 240, 0.9);
+    border-radius: 4px;
+    color: #794f27;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.15s;
+  }
+
+  .animal-upload-card-preview { right: 32px; }
+  .animal-upload-card-remove { right: 4px; }
+
+  .animal-upload-card-preview:hover:not(:disabled),
+  .animal-upload-card-remove:hover:not(:disabled) {
+    background: #f0e8d8;
+  }
+
+  .animal-upload-card-preview:disabled,
+  .animal-upload-card-remove:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+
+  .animal-upload-card-add {
+    width: 104px;
+    height: 104px;
+  }
+
+  .animal-upload-card-add-btn {
+    width: 100%;
+    height: 100%;
+    border: 2px dashed #c4b89e;
+    border-radius: 8px;
+    background: #fffbe7;
+    color: #c4b89e;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.15s, color 0.15s;
+    font: inherit;
+    padding: 0;
+  }
+
+  .animal-upload-card-add-btn:hover:not(:disabled) {
+    border-color: #19c8b9;
+    color: #19c8b9;
+  }
+
+  .animal-upload-card-add-btn:disabled {
+    cursor: not-allowed;
+  }
+
+  .animal-upload-preview-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.72);
+  }
+
+  .animal-upload-preview-img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+
+  .animal-upload-preview-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: rgba(248, 248, 240, 0.15);
+    border-radius: 50%;
+    color: #f8f8f0;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.15s;
+  }
+
+  .animal-upload-preview-close:hover {
+    background: rgba(248, 248, 240, 0.3);
+  }
 }
