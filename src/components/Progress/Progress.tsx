@@ -2,10 +2,9 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { cva } from 'class-variance-authority';
 import { cn } from '../../utils/cn';
 import type { ProgressProps, ProgressSize, ProgressVariant } from './types';
-import sweetCorner from '../../assets/image/sweet-corner.svg';
+import { sweetCorner, coffeeBreak } from '../../assets/image/sceneImages';
 import forestGrove from '../../assets/image/forest-grove.svg';
 import starryCamp from '../../assets/image/starry-camp.svg';
-import coffeeBreak from '../../assets/image/coffee-break.svg';
 
 const VARIANT_BG: Record<ProgressVariant, string> = {
     'sweet-corner': sweetCorner,

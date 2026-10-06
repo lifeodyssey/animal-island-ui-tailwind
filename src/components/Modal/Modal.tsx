@@ -62,7 +62,7 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
     (
         {
             open,
-            variant = 'default',
+            variant = 'game',
             title,
             width = 520,
             maskClosable = true,

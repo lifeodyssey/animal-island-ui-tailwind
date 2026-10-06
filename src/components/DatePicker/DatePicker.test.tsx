@@ -85,7 +85,12 @@ describe('DatePicker', () => {
             const onChange = vi.fn();
             render(
                 <ControlledHost<string | null, DatePickerValue> initial="2026-08-10" onChange={onChange}>
-                    {({ value, onChange: set }) => <DatePicker value={value ?? undefined} onChange={(v) => set(v)} />}
+                    {({ value, onChange: set }) => (
+                        <DatePicker
+                            value={value ?? undefined}
+                            onChange={(v) => set(typeof v === 'string' ? v : null)}
+                        />
+                    )}
                 </ControlledHost>
             );
             await user.click(screen.getByRole('combobox'));
