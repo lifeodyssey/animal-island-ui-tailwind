@@ -759,7 +759,7 @@ describe('Form', () => {
             });
             const feedback = container.querySelector('.animal-form-item-feedback-icon');
             expect(feedback).toBeTruthy();
-            expect(feedback?.textContent).toContain('✕');
+            expect(feedback?.querySelector('svg')).toBeTruthy();
         });
 
         it('validateStatus=success 手动指定覆盖自动推断', () => {

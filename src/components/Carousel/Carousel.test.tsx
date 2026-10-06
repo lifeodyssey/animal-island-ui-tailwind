@@ -73,10 +73,10 @@ describe('Carousel', () => {
     it('焦点进入后暂停，并可从播放控制显式恢复', async () => {
         const onChange = vi.fn();
         let latestTimer: TimerHandler | undefined;
-        vi.spyOn(window, 'setInterval').mockImplementation((handler: TimerHandler) => {
+        vi.spyOn(window, 'setInterval').mockImplementation(((handler: TimerHandler) => {
             latestTimer = handler;
-            return 1 as unknown as ReturnType<typeof setInterval>;
-        });
+            return 1;
+        }) as unknown as typeof window.setInterval);
         vi.spyOn(window, 'clearInterval').mockImplementation(() => {
             latestTimer = undefined;
         });
