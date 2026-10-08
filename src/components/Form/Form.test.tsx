@@ -759,7 +759,8 @@ describe('Form', () => {
             });
             const feedback = container.querySelector('.animal-form-item-feedback-icon');
             expect(feedback).toBeTruthy();
-            expect(feedback?.textContent).toContain('✕');
+            // icon is now an SVG (lucide-react X), not a raw Unicode symbol
+            expect(feedback?.querySelector('svg')).toBeTruthy();
         });
 
         it('validateStatus=success 手动指定覆盖自动推断', () => {
