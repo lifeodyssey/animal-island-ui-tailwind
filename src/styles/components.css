@@ -251,7 +251,7 @@
     display: inline-flex;
     align-items: center;
     width: 100%;
-    background: rgb(250, 248, 243);
+    background: #fffdf7;
     border-radius: var(--animal-radius-pill);
     box-shadow: 0 3px 0 0 #d4c9b4;
     transition: all var(--animal-motion-duration-base) var(--animal-motion-ease);
@@ -4421,30 +4421,32 @@
   /* Track */
   .animal-progress-track {
     position: relative;
+    box-sizing: border-box;
     flex: 1 1 auto;
     width: 100%;
     min-width: 80px;
-    background: #f8f8f0;
-    border: 2px solid #e8dcc8;
-    box-shadow: inset 0 2px 4px rgba(114, 93, 66, 0.08);
-    overflow: hidden;
+    /* dot layer over cream base; 1.5px dots on 14px grid, matches upstream polish */
+    background:
+      radial-gradient(circle, rgba(196, 184, 158, 0.1) 1.5px, transparent 1.5px) 7px 7px / 14px 14px,
+      #f8f8f0;
+    border: 2px solid #e2d6bd;
     border-radius: 999px;
+    overflow: hidden;
   }
 
   .animal-progress-track-small {
-    height: 12px;
-    border-width: 1.5px;
+    height: 14px;
   }
 
   .animal-progress-track-middle {
-    height: 20px;
+    height: 24px;
   }
 
   .animal-progress-track-large {
-    height: 28px;
+    height: 32px;
   }
 
-  /* Fill */
+  /* Fill — mint vertical gradient + top highlight */
   .animal-progress-fill {
     position: absolute;
     top: 0;
@@ -4452,16 +4454,8 @@
     bottom: 0;
     width: 0;
     border-radius: 999px;
-    background: #0ec4b6;
-    background-image: repeating-linear-gradient(
-      -45deg,
-      #0ec4b6 0,
-      #0ec4b6 10px,
-      #01b0a7 10px,
-      #01b0a7 20px
-    );
-    background-size: 28.28px 28.28px;
-    animation: animal-progress-stripe 1s linear infinite;
+    background: linear-gradient(180deg, #3dd4c6 0%, #19c8b9 60%, #14b6a8 100%);
+    box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.45);
     transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
     display: flex;
@@ -4470,11 +4464,15 @@
     padding-right: 4px;
   }
 
-  /* scene-image fill: remove striped animation, let inline backgroundImage show */
+  /* 100% done — brighten fill */
+  .animal-progress[aria-valuenow='100'] .animal-progress-fill {
+    background: linear-gradient(180deg, #7fe0d5 0%, #3dd4c6 100%);
+  }
+
+  /* scene-image fill: let inline backgroundImage override gradient */
   .animal-progress-fill-scene {
-    background: var(--animal-bg-color);
-    background-image: none;
-    animation: none;
+    background: transparent;
+    box-shadow: none;
   }
 
   .animal-progress-fill-no-transition {
@@ -5852,3 +5850,788 @@
       default !important;
   }
 }
+
+/* ============================================
+   Badge — 徽标数
+   ============================================ */
+@layer components {
+  .animal-badge {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    line-height: 1;
+    font-family: inherit;
+  }
+
+  .animal-badge-indicator {
+    --badge-shift-x: 50%;
+    --badge-shift-y: -50%;
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(var(--badge-shift-x), var(--badge-shift-y));
+    transform-origin: 100% 0;
+    background: #fc736d;
+    color: #fff;
+    font-family: inherit;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+    border-radius: 999px;
+    border: 2px solid var(--animal-bg-color, #f8f8f0);
+    box-shadow: var(--animal-shadow-sm, 0 2px 4px 0 rgba(61, 52, 40, 0.06));
+    animation: animal-badge-zoom-in 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .animal-badge-standalone .animal-badge-indicator {
+    position: static;
+    --badge-shift-x: 0;
+    --badge-shift-y: 0;
+    border-color: transparent;
+    box-shadow: none;
+  }
+
+  .animal-badge-size-medium {
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    font-size: 10px;
+  }
+
+  .animal-badge-size-small {
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    font-size: 9px;
+  }
+
+  .animal-badge-size-medium.animal-badge-circle {
+    width: 20px;
+    min-width: 0;
+    padding: 0;
+  }
+
+  .animal-badge-size-small.animal-badge-circle {
+    width: 16px;
+    min-width: 0;
+    padding: 0;
+  }
+
+  .animal-badge-dot {
+    width: 10px;
+    min-width: 0;
+    height: 10px;
+    padding: 0;
+  }
+
+  /* Badge colors — same palette as Card / Tag */
+  .animal-badge-color-app-red    { background: #fc736d; color: #fff; }
+  .animal-badge-color-app-pink   { background: #f8a6b2; color: #fff; }
+  .animal-badge-color-app-orange { background: #e59266; color: #fff; }
+  .animal-badge-color-app-yellow { background: #f7cd67; color: #725d42; }
+  .animal-badge-color-app-teal   { background: #82d5bb; color: #fff; }
+  .animal-badge-color-app-green  { background: #8ac68a; color: #fff; }
+  .animal-badge-color-app-blue   { background: #889df0; color: #fff; }
+  .animal-badge-color-purple     { background: #b77dee; color: #fff; }
+  .animal-badge-color-lime-green    { background: #d1da49; color: #3d5a1a; }
+  .animal-badge-color-yellow-green  { background: #ecdf52; color: #725d42; }
+  .animal-badge-color-brown         { background: #9a835a; color: #fff; }
+  .animal-badge-color-warm-peach-pink { background: #e18c6f; color: #fff; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animal-badge-indicator {
+      animation: none;
+    }
+  }
+}
+
+/* ============================================
+   Rate — 评分
+   ============================================ */
+@layer components {
+  .animal-rate {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--rate-gap);
+    font-family: var(--animal-font-family);
+    line-height: 1;
+  }
+
+  .animal-rate-small {
+    --rate-size: 20px;
+    --rate-gap: var(--animal-spacing-xs, 4px);
+    --rate-splash-scale: 0.91;
+  }
+
+  .animal-rate-middle {
+    --rate-size: 26px;
+    --rate-gap: 6px;
+    --rate-splash-scale: 1.18;
+  }
+
+  .animal-rate-large {
+    --rate-size: 34px;
+    --rate-gap: var(--animal-spacing-sm, 8px);
+    --rate-splash-scale: 1.55;
+  }
+
+  .animal-rate-item {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--rate-size);
+    height: var(--rate-size);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform var(--animal-motion-duration-base, 0.2s) var(--animal-motion-ease, ease);
+  }
+
+  .animal-rate-item:hover {
+    transform: translateY(-1px);
+  }
+
+  .animal-rate-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    appearance: none;
+    -webkit-appearance: none;
+    opacity: 0;
+    cursor: inherit;
+  }
+
+  .animal-rate-star {
+    display: block;
+    width: var(--rate-size);
+    height: var(--rate-size);
+  }
+
+  .animal-rate-icon {
+    display: block;
+    width: 100%;
+    height: 100%;
+    stroke: var(--animal-text-color-disabled, #c4b89e);
+    transition: stroke var(--animal-motion-duration-base, 0.2s) var(--animal-motion-ease, ease);
+  }
+
+  .animal-rate-icon path {
+    fill: var(--animal-warning-color, #f7cd67);
+    fill-opacity: 0;
+    transition: fill-opacity var(--animal-motion-duration-base, 0.2s) var(--animal-motion-ease, ease);
+  }
+
+  .animal-rate-icon circle {
+    fill: var(--animal-text-color, #3d3422);
+    opacity: 0;
+    transition: opacity var(--animal-motion-duration-base, 0.2s) var(--animal-motion-ease, ease);
+  }
+
+  .animal-rate-active .animal-rate-icon {
+    stroke: var(--animal-warning-color-active, #e5b800);
+  }
+
+  .animal-rate-active .animal-rate-icon path {
+    fill-opacity: 1;
+  }
+
+  .animal-rate-active .animal-rate-icon circle {
+    opacity: 1;
+  }
+
+  .animal-rate-input:focus-visible ~ .animal-rate-star {
+    border-radius: 50%;
+    outline: 2px solid var(--animal-warning-color, #f7cd67);
+    outline-offset: 1px;
+  }
+
+  .animal-rate-pop {
+    animation-name: animal-rate-pop;
+    animation-duration: var(--animal-motion-duration-slow, 0.3s);
+    animation-timing-function: var(--animal-motion-ease, ease);
+    animation-delay: var(--rate-pop-delay, 0s);
+    animation-fill-mode: both;
+  }
+
+  .animal-rate-splash {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 22px;
+    height: 22px;
+    margin: -11px 0 0 -11px;
+    border-radius: 50%;
+    transform: scale(var(--rate-splash-scale, 1));
+    animation: animal-rate-splash 0.6s ease forwards;
+    pointer-events: none;
+  }
+
+  .animal-rate-readonly .animal-rate-item {
+    cursor: default;
+  }
+
+  .animal-rate-readonly .animal-rate-item:hover {
+    transform: none;
+  }
+}
+
+/* ============================================
+   Avatar — 头像
+   ============================================ */
+@layer components {
+  .animal-avatar {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+    vertical-align: middle;
+    user-select: none;
+    background: var(--animal-primary-color-bg, #e6f9f6);
+    color: var(--animal-primary-color, #19c8b9);
+    font-weight: 600;
+    border-radius: 999px;
+  }
+
+  .animal-avatar-shape-square {
+    border-radius: 8px;
+  }
+
+  .animal-avatar-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .animal-avatar-string {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .animal-avatar-placeholder {
+    border: 2px solid var(--animal-bg-color, #f8f8f0);
+  }
+
+  .animal-avatar-group {
+    display: inline-flex;
+    align-items: center;
+    --avatar-group-gap: 8px;
+  }
+
+  .animal-avatar-group > .animal-avatar {
+    border: 2px solid var(--animal-bg-color, #f8f8f0);
+  }
+
+  .animal-avatar-group > .animal-avatar + .animal-avatar {
+    margin-left: calc(-1 * var(--avatar-group-gap));
+  }
+
+  .animal-avatar-group-more {
+    font-size: 14px;
+  }
+}
+
+/* ============================================
+   Upload — 文件上传
+   ============================================ */
+@layer components {
+  .animal-upload {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-family: inherit;
+    color: #794f27;
+  }
+
+  .animal-upload-disabled {
+    opacity: 0.55;
+  }
+
+  .animal-upload-hidden-input {
+    display: none;
+  }
+
+  /* Trigger — cream pill button */
+  .animal-upload-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-start;
+    padding: 0 18px;
+    height: 36px;
+    border: none;
+    border-radius: 50px;
+    background: #f8f8f0;
+    color: #794f27;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+      box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.15s ease;
+    box-shadow: 0 5px 0 0 #bdaea0;
+  }
+
+  .animal-upload-trigger:hover:not(:disabled) {
+    box-shadow: 0 6px 0 0 #bdaea0;
+    transform: translateY(-1px);
+  }
+
+  .animal-upload-trigger:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 0 #bdaea0;
+  }
+
+  .animal-upload-trigger:disabled {
+    cursor: not-allowed;
+    box-shadow: 0 5px 0 0 #d5c8b8;
+  }
+
+  .animal-upload-trigger:focus-visible {
+    outline: 2px solid #f5c842;
+    outline-offset: 2px;
+  }
+
+  /* Custom children trigger */
+  .animal-upload-trigger-custom {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-start;
+    border: none;
+    background: transparent;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .animal-upload-trigger-custom:disabled {
+    cursor: not-allowed;
+  }
+
+  /* Drag zone */
+  .animal-upload-drag-zone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 28px 20px;
+    border: 2px dashed #c4b89e;
+    border-radius: 20px;
+    background: #fffdf7;
+    color: #9f927d;
+    cursor: pointer;
+    user-select: none;
+    transition:
+      border-color 0.2s ease,
+      background 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .animal-upload-drag-zone:hover {
+    border-color: #19c8b9;
+    color: #19c8b9;
+  }
+
+  .animal-upload-drag-zone:focus-visible {
+    outline: 2px solid #f5c842;
+    outline-offset: 2px;
+  }
+
+  .animal-upload-drag-active {
+    border-color: #19c8b9;
+    background: #e6f9f6;
+    color: #19c8b9;
+  }
+
+  .animal-upload-drag-icon {
+    display: inline-flex;
+    transform: scale(1.5);
+  }
+
+  .animal-upload-drag-text {
+    font-size: 14px;
+    font-weight: 700;
+    color: inherit;
+  }
+
+  .animal-upload-tip {
+    font-size: 12px;
+    color: #9f927d;
+    line-height: 1.6;
+  }
+
+  /* Text list */
+  .animal-upload-text-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .animal-upload-text-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    border-radius: 12px;
+    background: #fffdf7;
+    border: 1.5px solid #e8dcc8;
+    font-size: 13px;
+    transition:
+      background 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  .animal-upload-text-item:hover {
+    background: #e6f9f6;
+  }
+
+  .animal-upload-item-error {
+    border-color: #e05a5a;
+    background: #fdeeee;
+  }
+
+  .animal-upload-file-icon {
+    display: inline-flex;
+    color: #c4b89e;
+    flex-shrink: 0;
+  }
+
+  /* Inline thumbnail (listType="picture") */
+  .animal-upload-text-thumb {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fffdf7;
+    border: 1.5px solid #e8dcc8;
+    color: #c4b89e;
+  }
+
+  .animal-upload-text-thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .animal-upload-file-name {
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .animal-upload-file-size {
+    flex-shrink: 0;
+    font-size: 11px;
+    color: #c4b89e;
+  }
+
+  /* Status icons */
+  .animal-upload-status-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  .animal-upload-status-done { color: #6fba2c; }
+  .animal-upload-status-error { color: #e05a5a; }
+
+  .animal-upload-spinner {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid #e6f9f6;
+    border-top-color: #19c8b9;
+    animation: animal-upload-spin 0.8s linear infinite;
+  }
+
+  .animal-upload-percent {
+    font-size: 11px;
+    font-weight: 700;
+    color: #19c8b9;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .animal-upload-preview-btn,
+  .animal-upload-remove-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    margin-left: 4px;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    box-shadow: none;
+    color: inherit;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition:
+      background 0.15s ease,
+      color 0.15s ease;
+  }
+
+  .animal-upload-preview-btn:hover {
+    background: rgba(0, 0, 0, 0.08);
+    color: #19c8b9;
+  }
+
+  .animal-upload-remove-btn:hover {
+    background: rgba(0, 0, 0, 0.08);
+    color: #e05a5a;
+  }
+
+  .animal-upload-preview-btn:focus-visible,
+  .animal-upload-remove-btn:focus-visible {
+    outline: 2px solid #f5c842;
+    outline-offset: 1px;
+  }
+
+  /* Picture-card list */
+  .animal-upload-card-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .animal-upload-card {
+    position: relative;
+    width: 84px;
+    height: 84px;
+    border-radius: 16px;
+    border: 1.5px solid #e8dcc8;
+    background: #fffdf7;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .animal-upload-card-done { border-color: #c4b89e; }
+  .animal-upload-card-error { border-color: #e05a5a; }
+
+  .animal-upload-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .animal-upload-card-img-previewable { cursor: zoom-in; }
+
+  /* Preview overlay */
+  .animal-upload-preview-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15, 12, 8, 0.82);
+  }
+
+  .animal-upload-preview-img {
+    max-width: 90vw;
+    max-height: 88vh;
+    border-radius: 16px;
+    box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.6);
+    background: #fff;
+    object-fit: contain;
+  }
+
+  .animal-upload-preview-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.18);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .animal-upload-preview-close:hover {
+    background: rgba(255, 255, 255, 0.32);
+  }
+
+  .animal-upload-preview-close:focus-visible {
+    outline: 2px solid #f5c842;
+    outline-offset: 2px;
+  }
+
+  .animal-upload-card-file-icon {
+    display: inline-flex;
+    color: #c4b89e;
+    transform: scale(1.6);
+  }
+
+  .animal-upload-card-mask {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: rgba(15, 12, 8, 0.55);
+    color: #fff;
+  }
+
+  .animal-upload-card-remove,
+  .animal-upload-card-preview {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition:
+      opacity 0.15s ease,
+      background 0.15s ease;
+  }
+
+  .animal-upload-card-remove {
+    top: 4px;
+    right: 4px;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .animal-upload-card-remove:hover {
+    background: transparent;
+  }
+
+  .animal-upload-card-remove:focus-visible {
+    opacity: 1;
+    outline: 2px solid #f5c842;
+    outline-offset: 1px;
+  }
+
+  .animal-upload-card:hover .animal-upload-card-remove {
+    opacity: 1;
+  }
+
+  .animal-upload-card-preview {
+    top: 4px;
+    left: 4px;
+    background: rgba(0, 0, 0, 0.45);
+  }
+
+  .animal-upload-card-preview:hover {
+    background: rgba(0, 0, 0, 0.65);
+  }
+
+  .animal-upload-card-preview:focus-visible {
+    opacity: 1;
+    outline: 2px solid #f5c842;
+    outline-offset: 1px;
+  }
+
+  .animal-upload-card:hover .animal-upload-card-preview {
+    opacity: 1;
+  }
+
+  .animal-upload-card-add {
+    width: 84px;
+    height: 84px;
+  }
+
+  .animal-upload-card-add-btn {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #c4b89e;
+    border-radius: 16px;
+    background: transparent;
+    color: #c4b89e;
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      color 0.2s ease,
+      background 0.2s ease;
+  }
+
+  .animal-upload-card-add-btn:hover {
+    border-color: #19c8b9;
+    color: #19c8b9;
+    background: #e6f9f6;
+  }
+
+  .animal-upload-card-add-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .animal-upload-card-add-btn:focus-visible {
+    outline: 2px solid #f5c842;
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animal-upload-spinner {
+      animation: none;
+      border-top-color: #19c8b9;
+    }
+
+    .animal-upload-trigger,
+    .animal-upload-drag-zone,
+    .animal-upload-text-item,
+    .animal-upload-card-remove {
+      transition: none;
+    }
+  }
+}
+
