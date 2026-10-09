@@ -22,6 +22,12 @@ import '@fontsource/noto-sans-sc/chinese-simplified-700.css';
 // ============================================
 // 基础 UI 组件
 // ============================================
+export { Avatar, AvatarGroup } from './components/Avatar';
+export type { AvatarProps, AvatarGroupProps, AvatarShape, AvatarSize } from './components/Avatar';
+
+export { Badge } from './components/Badge';
+export type { BadgeProps, BadgeSize, BadgeColor } from './components/Badge';
+
 export { Button } from './components/Button';
 export type { ButtonProps, ButtonType, ButtonSize, ButtonHTMLType } from './components/Button';
 
@@ -104,6 +110,9 @@ export type { CheckboxProps, CheckboxOption, CheckboxSize } from './components/C
 export { Radio } from './components/Radio';
 export type { RadioProps, RadioOption, RadioSize } from './components/Radio';
 
+export { Rate } from './components/Rate';
+export type { RateProps, RateSize } from './components/Rate';
+
 export { Tooltip } from './components/Tooltip';
 export type { TooltipProps, TooltipPlacement, TooltipTrigger, TooltipVariant } from './components/Tooltip';
 
@@ -175,3 +184,15 @@ export type { PaginationProps, PaginationVariant } from './components/Pagination
 
 export { Background } from './components/Background';
 export type { BackgroundProps, BackgroundType } from './components/Background';
+
+export { Upload } from './components/Upload';
+export type {
+    UploadProps,
+    UploadFile,
+    UploadFileStatus,
+    UploadListType,
+    UploadCustomRequestOptions,
+    UploadChangeParam,
+    UploadShowUploadList,
+    UploadOnChange,
+} from './components/Upload';

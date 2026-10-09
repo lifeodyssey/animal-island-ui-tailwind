@@ -126,7 +126,7 @@ export const Title: React.FC<TitleProps> = ({
     children,
     size = 'middle',
     color = 'default',
-    variant = 'layer',
+    variant = 'ribbon',
     className,
     style,
 }) => {
