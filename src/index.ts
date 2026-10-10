@@ -167,6 +167,40 @@ export type { CarouselProps } from './components/Carousel';
 export { DatePicker } from './components/DatePicker';
 export type { DatePickerProps, DatePickerSize, DatePickerStatus, DatePickerValue } from './components/DatePicker';
 
+export { Badge } from './components/Badge';
+export type { BadgeProps, BadgeSize, BadgeColor } from './components/Badge';
+
+export { Avatar, AvatarGroup } from './components/Avatar';
+export type { AvatarProps, AvatarSize, AvatarShape, AvatarGroupProps } from './components/Avatar';
+
+export { Rate } from './components/Rate';
+export type { RateProps, RateSize } from './components/Rate';
+
+export { Upload } from './components/Upload';
+export type {
+    UploadProps,
+    UploadFile,
+    UploadFileStatus,
+    UploadListType,
+    UploadCustomRequestOptions,
+    UploadChangeParam,
+    UploadShowUploadList,
+    UploadOnChange,
+} from './components/Upload';
+
+export { CountUp } from './components/CountUp';
+export type {
+    CountUpProps,
+    CountUpSize,
+    CountUpVariant,
+    CountUpEasing,
+    CountUpEasingName,
+    CountUpEasingFunction,
+    CountUpCompleteResult,
+    CountUpCelebrateOptions,
+    CountUpRenderState,
+} from './components/CountUp';
+
 export { TimePicker } from './components/TimePicker';
 export type { TimePickerProps, TimePickerSize, TimePickerStatus, TimePart } from './components/TimePicker';
 
