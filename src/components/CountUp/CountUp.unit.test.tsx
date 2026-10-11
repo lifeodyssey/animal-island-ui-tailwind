@@ -65,4 +65,51 @@ describe('CountUp animation restarts', () => {
         tick(2_000);
         expect(container.querySelector('.animal-count-up-number')).toHaveTextContent('70');
     });
+
+    it('preserves the remaining repeat delay across pause and resume', () => {
+        const onComplete = vi.fn().mockReturnValueOnce({ shouldRepeat: true, delay: 1, newStartAt: 40 });
+        const props = { start: 0, end: 100, duration: 1, easing: 'linear' as const, onComplete };
+        const { container, rerender } = render(<CountUp {...props} isCounting />);
+        const value = () => container.querySelector('.animal-count-up-number');
+        tick(0);
+        tick(1_000);
+        act(() => vi.advanceTimersByTime(350));
+        rerender(<CountUp {...props} isCounting={false} />);
+        act(() => vi.advanceTimersByTime(3_000));
+        expect(value()).toHaveTextContent('100');
+        expect(onComplete).toHaveBeenCalledTimes(1);
+
+        rerender(<CountUp {...props} isCounting />);
+        act(() => vi.advanceTimersByTime(649));
+        expect(value()).toHaveTextContent('100');
+        act(() => vi.advanceTimersByTime(1));
+        expect(value()).toHaveTextContent('40');
+        tick(4_000);
+        tick(4_500);
+        expect(value()).toHaveTextContent('70');
+        tick(5_000);
+        expect(onComplete).toHaveBeenCalledTimes(2);
+    });
+
+    it('discards a paused repeat when explicitly reset', () => {
+        const onComplete = vi.fn().mockReturnValueOnce({ shouldRepeat: true, delay: 1, newStartAt: 40 });
+        const content = ({ value, reset }: { value: number; reset: (start?: number) => void }) => (
+            <button onClick={() => reset(20)}>{value}</button>
+        );
+        const props = { start: 0, end: 100, duration: 2, easing: 'linear' as const, onComplete };
+        const { rerender } = render(<CountUp {...props} isCounting>{content}</CountUp>);
+        tick(0);
+        tick(2_000);
+        act(() => vi.advanceTimersByTime(350));
+        rerender(<CountUp {...props} isCounting={false}>{content}</CountUp>);
+        fireEvent.click(screen.getByRole('button', { hidden: true }));
+        rerender(<CountUp {...props} isCounting>{content}</CountUp>);
+        tick(3_000);
+        tick(3_500);
+        expect(screen.getByRole('button', { hidden: true })).toHaveTextContent('40');
+        act(() => vi.advanceTimersByTime(1_000));
+        tick(4_000);
+        expect(screen.getByRole('button', { hidden: true })).toHaveTextContent('60');
+        expect(onComplete).toHaveBeenCalledTimes(1);
+    });
 });

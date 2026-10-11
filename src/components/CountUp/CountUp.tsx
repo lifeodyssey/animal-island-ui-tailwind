@@ -111,6 +111,11 @@ export const CountUp: React.FC<CountUpProps> = ({
 
     const frameRef = useRef<number | null>(null);
     const repeatTimerRef = useRef<number | null>(null);
+    const pendingRepeatRef = useRef<{
+        remainingMs: number;
+        startedAt: number | null;
+        newStartAt?: number;
+    } | null>(null);
     const celebrateTimerRef = useRef<number | null>(null);
     const elapsedRef = useRef(0);
     const lastTimestampRef = useRef<number | null>(null);
@@ -147,7 +152,23 @@ export const CountUp: React.FC<CountUpProps> = ({
             if (repeatTimerRef.current !== null) {
                 window.clearTimeout(repeatTimerRef.current);
                 repeatTimerRef.current = null;
+                const pending = pendingRepeatRef.current;
+                if (pending && pending.startedAt !== null) {
+                    pending.remainingMs = Math.max(0, pending.remainingMs - (performance.now() - pending.startedAt));
+                    pending.startedAt = null;
+                }
             }
+        };
+        const scheduleRepeat = () => {
+            const pending = pendingRepeatRef.current;
+            if (!pending) return;
+            pending.startedAt = performance.now();
+            repeatTimerRef.current = window.setTimeout(() => {
+                repeatTimerRef.current = null;
+                pendingRepeatRef.current = null;
+                pendingStartRef.current = pending.newStartAt;
+                setRunToken((token) => token + 1);
+            }, pending.remainingMs);
         };
         const commit = (next: number, force = false) => {
             const rendered = formatRef.current(next);
@@ -177,14 +198,12 @@ export const CountUp: React.FC<CountUpProps> = ({
             const result = onCompleteRef.current?.(elapsedMs / 1_000);
             if (result && result.shouldRepeat) {
                 clearRepeat();
-                repeatTimerRef.current = window.setTimeout(
-                    () => {
-                        repeatTimerRef.current = null;
-                        pendingStartRef.current = result.newStartAt;
-                        setRunToken((token) => token + 1);
-                    },
-                    Math.max(0, result.delay ?? 0) * 1_000
-                );
+                pendingRepeatRef.current = {
+                    remainingMs: Math.max(0, result.delay ?? 0) * 1_000,
+                    startedAt: null,
+                    newStartAt: result.newStartAt,
+                };
+                scheduleRepeat();
             }
         };
 
@@ -227,6 +246,7 @@ export const CountUp: React.FC<CountUpProps> = ({
         tokenRef.current = runToken;
 
         if (restart) {
+            pendingRepeatRef.current = null;
             elapsedRef.current = 0;
             lastTimestampRef.current = null;
             completedRef.current = false;
@@ -236,9 +256,15 @@ export const CountUp: React.FC<CountUpProps> = ({
         }
         pendingStartRef.current = undefined;
 
-        if (!isCounting || completedRef.current) {
+        if (!isCounting) {
             setCounting(false);
             return undefined;
+        }
+
+        if (completedRef.current) {
+            setCounting(false);
+            scheduleRepeat();
+            return clearRepeat;
         }
 
         if (typeof requestAnimationFrame !== 'function' || typeof cancelAnimationFrame !== 'function') {
