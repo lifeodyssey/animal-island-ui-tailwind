@@ -5,7 +5,10 @@ All notable changes to `animal-island-ui-tailwind` are documented here.
 This project follows a lightweight Keep a Changelog style and uses semantic
 versioning for npm releases.
 
-## Unreleased
+## 2.1.1 - 2026-10-11
+
+Align the package version with upstream 2.1.1 while retaining this fork's
+approved visual choices and replacement artwork.
 
 - Sync upstream `f8d08d27..945cb5bb`: add Badge, Avatar/AvatarGroup, Rate, Upload
   and CountUp with public TypeScript exports and shared scene assets.
@@ -19,7 +22,7 @@ versioning for npm releases.
   preview URLs until their files are removed, and expose accessible status icons.
 - Correct CountUp reset/repeat starting values and preserve them when resuming.
 - Patch vulnerable development dependencies and enforce dependency audits and
-  unit tests in CI. No package version or release is created by this sync.
+  unit tests in CI.
 
 ## 1.10.0 - 2026-09-09
 

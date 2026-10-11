@@ -34,6 +34,18 @@ A React component library with Animal Crossing visual styling. Cream-colored bac
 
 The visual design is inspired by [guokaigdg/animal-island-ui](https://github.com/guokaigdg/animal-island-ui). The internals have been completely rewritten using Tailwind CSS v4 and Radix UI, and the library is published independently as `animal-island-ui-tailwind` on npm.
 
+## New in 2.1.1
+
+The version aligns with upstream 2.1.1. This release adds Badge, Avatar / AvatarGroup,
+Rate, Upload and CountUp, fixes vulnerable dependencies, and corrects Upload and
+CountUp interactions.
+
+Title keeps its `layer` default and Progress keeps its striped appearance and
+`infoPosition` API. Modal now defaults to `game`; pass `variant="default"` to keep
+its previous appearance. Input and Form use the synced styles. These choices are
+recorded in [Known deviations](KNOWN_DEVIATIONS.md) for future syncs. See the
+[2.1.1 release notes](../CHANGELOG.md#211---2026-10-11).
+
 ## New in 1.10.0
 
 Use `Background` for `dots` or `sprinkles` patterns and `Cursor type="raindrop"`

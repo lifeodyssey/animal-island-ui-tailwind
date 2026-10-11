@@ -34,13 +34,6 @@ npx tsc --noEmit
 
 ## npm Trusted Publishing Setup
 
-Log in locally if publishing by hand:
-
-```bash
-npm login
-npm whoami
-```
-
 The npm package is configured to publish through GitHub Actions OIDC trusted
 publishing:
 
@@ -53,34 +46,30 @@ The package publishing access is set to "Require two-factor authentication and
 disallow tokens". Trusted publishers continue to work with this setting, while
 long-lived npm tokens cannot publish the package.
 
-## Manual Publish
+## GitHub Actions Release
 
-```bash
-npm publish --access public
-```
+Publish through the `Release` workflow in `.github/workflows/release.yml`.
+Do not run `npm publish` locally or manually create a GitHub Release.
 
-Local publishing still requires an interactive 2FA method. Provenance is
-generated from supported CI providers, not from a normal local shell.
+1. Merge the approved changes and run the required checks above.
+2. Update `package.json` and `package-lock.json` to the intended version, and add
+   a nonempty `## VERSION - YYYY-MM-DD` section to `CHANGELOG.md`. Update README
+   release guidance at the same time.
+3. Commit the release files and create an annotated `vVERSION` tag on that commit.
+   `scripts/release-notes.mjs` extracts the matching changelog section and verifies
+   that the tag version matches `package.json`.
+4. Push the release commit to `main` and the new version tag. Pushing a tag matching
+   `v*.*.*` triggers the workflow; it has no manual trigger.
 
-## GitHub Actions Publish
+The workflow runs type checking, builds, migration and unit tests, Storybook tests,
+Playwright behavior tests, accessibility checks, and a package dry run. Visual
+regression remains part of local `npm test` because its baselines are macOS-specific.
+The separate CI workflow also audits dependencies.
 
-The `Release` workflow publishes after CI verification steps pass. Visual
-snapshot regression remains part of local `npm test`; the hosted workflow runs
-`npm run test:ci` so Linux runners do not require platform-specific snapshots.
-Trigger it
-by either:
+After verification, the workflow publishes through npm trusted publishing with
+GitHub Actions OIDC, then creates a GitHub Release from the matching changelog
+section. npm generates provenance automatically for trusted publishing.
 
-- pushing a version tag such as `v0.9.0`
-- running the workflow manually from GitHub Actions
-
-Before triggering a release, confirm `package.json` has the intended version
-and that `CHANGELOG.md` contains the release notes.
-
-The workflow publishes with npm trusted publishing through GitHub Actions OIDC:
-
-```bash
-npm publish --access public
-```
-
-Do not pass `--provenance` here; npm generates provenance automatically for
-trusted publishing.
+Confirm the workflow succeeds, npm serves the intended version with the `latest`
+dist-tag, and the GitHub Release points to the expected tag before reporting the
+release as complete.
