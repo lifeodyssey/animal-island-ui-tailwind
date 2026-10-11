@@ -33,7 +33,6 @@ test.describe('Title', () => {
         const layer = title.locator('.animal-title-layer');
         await expect(layer).toBeVisible();
         await expect(layer.locator('.animal-title-layer-front')).toHaveText('标题');
-        // no ribbon structure when variant=layer
         await expect(title.locator('.animal-title-ribbon')).toHaveCount(0);
     });
 

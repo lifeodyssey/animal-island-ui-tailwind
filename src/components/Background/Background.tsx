@@ -1,7 +1,6 @@
 import React from 'react';
 import { cn } from '../../utils/cn';
-import sweetCorner from '../../assets/image/sweet-corner.svg';
-import coffeeBreak from '../../assets/image/coffee-break.svg';
+import { sweetCorner, coffeeBreak } from '../../assets/image/sceneImages';
 
 export type BackgroundType =
     | 'default'

@@ -11,7 +11,7 @@ const sizeStories = [
 ] as const;
 
 test.describe('Title visual parity', () => {
-    test('captures default and size ribbon regions', async ({ page }) => {
+    test('captures default and size layer regions', async ({ page }) => {
         await page.goto(defaultStoryUrl);
         await disableMotion(page);
         await expect(page.locator('.animal-title')).toBeVisible();
@@ -29,7 +29,7 @@ test.describe('Title visual parity', () => {
         }
     });
 
-    test('captures color variant ribbon region', async ({ page }) => {
+    test('captures color variant layer region', async ({ page }) => {
         await page.goto(colorsStoryUrl);
         await disableMotion(page);
         await expect(page.locator('.animal-title-layer')).toHaveCount(13);

@@ -5,6 +5,22 @@ All notable changes to `animal-island-ui-tailwind` are documented here.
 This project follows a lightweight Keep a Changelog style and uses semantic
 versioning for npm releases.
 
+## Unreleased
+
+- Sync upstream `f8d08d27..945cb5bb`: add Badge, Avatar/AvatarGroup, Rate, Upload
+  and CountUp with public TypeScript exports and shared scene assets.
+- Change the default Modal variant to `game`; set `<Modal variant="default">`
+  explicitly to retain its previous appearance.
+- Match upstream Input surfaces and Form error icons.
+- Retain the pre-sync Title default (`layer`) and striped Progress appearance,
+  including the existing Progress `infoPosition` API, as approved fork visual
+  differences. See [Known deviations](docs/KNOWN_DEVIATIONS.md).
+- Ignore stale Upload callbacks after removal or unmount, retain controlled
+  preview URLs until their files are removed, and expose accessible status icons.
+- Correct CountUp reset/repeat starting values and preserve them when resuming.
+- Patch vulnerable development dependencies and enforce dependency audits and
+  unit tests in CI. No package version or release is created by this sync.
+
 ## 1.10.0 - 2026-09-09
 
 - Add the upstream Background component with dots and sprinkles patterns.
