@@ -134,6 +134,7 @@ UI package imports CSS, images, SVGs, and fonts.
 | Test | Where | Command |
 |------|-------|---------|
 | Migration structure | Local + CI | `npm run test:migration` |
+| Unit tests | Local + CI | `npm run test:unit` |
 | Storybook/Vitest interaction | Local + CI | `npm run test-storybook` |
 | Playwright behavior | Local + CI | `npm run test:playwright` |
 | Visual regression screenshots | **Local only** | `npm run test:visual` |

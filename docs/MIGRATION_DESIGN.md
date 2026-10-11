@@ -170,7 +170,7 @@ For each changed file, first ask "can this be reused from upstream via git?":
 5. **STATE:** all Radix state styling via `data-*`/`aria-*` selectors.
 6. **PROMOTE:** reusable heavy visuals → `@utility` / `@theme --animate-*` / `@custom-variant`, only if output is byte-identical; re-gate.
 7. **IRREDUCIBLE:** clip-path/keyframes/multi-shadow/GSAP/pseudo stay raw CSS — **explicitly out of scope, zero edits**.
-8. **VERIFY:** `build && pack --dry-run` (publish shape unchanged) `&& tsc --noEmit && test:migration && test-storybook && test:playwright && test:a11y`; `test:visual-check` is the local merge gate.
+8. **VERIFY:** `build && pack --dry-run` (publish shape unchanged) `&& tsc --noEmit && test:migration && test:unit && test-storybook && test:playwright && test:a11y`; `test:visual-check` is the local merge gate.
 9. **PR draft** with upstream commit range + "zero-pixel verified locally on macOS".
 
 **Special case — Modal (the only behavior-forked component):** do a standalone **behavior reconciliation PR** first (Radix Dialog + `useSafeId` vs upstream `createPortal` + manual focus trap; ESC/Tab/focus-trap/maskStyle), gated by play tests; only **after it passes**, do styling. Never mix behavior and styling in one commit. Per-instance clip-path stays raw.
@@ -234,7 +234,7 @@ Encodes §5 as an executable runbook. The **judgment** parts (A/B/C reuse classi
 A daily cron routine: run `upstream-delta` → if delta, open a branch + draft PR (or invoke the migration loop) → notify; silent when no delta. Fully CC-native, no Codex runtime.
 
 ### 9.5 CI / Release (mostly unchanged, already correct)
-- `ci.yml` runs `test:migration + test:coverage + test:playwright + test:a11y`, correctly skipping visual.
+- `ci.yml` runs `test:migration + test:unit + test:coverage + test:playwright + test:a11y`, correctly skipping visual.
 - **New cross-platform backstop (the judges' top reinforcement):** add `toHaveCSS()` token-value assertions to CI Playwright behavior tests (e.g. button `background-color` === the rgb of `--color-animal-primary`). Since screenshots are local-only/skipped in CI, `toHaveCSS()` is the **only** mechanism that catches token/color-substitution regressions on the Linux runner.
 - `release.yml` stays tag-triggered OIDC publish.
 
