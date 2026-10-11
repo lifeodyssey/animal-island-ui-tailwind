@@ -14,9 +14,13 @@ export interface ProgressProps {
     percent: number;
     size?: ProgressSize;
     showInfo?: boolean;
-    /** @deprecated Use `variant` to set a scene image fill instead */
+    /**
+     * Legacy placement for the default fill; defaults to `inside`.
+     * Retained for compatibility. Scene variants always display information on the right.
+     * @deprecated Prefer the right-side placement used by scene variants.
+     */
     infoPosition?: ProgressInfoPosition;
-    /** Scene image to use as fill background. When set, replaces the striped fill. */
+    /** Scene image to use as fill background. When set, replaces the mint gradient. */
     variant?: ProgressVariant;
     infoFormat?: (percent: number) => React.ReactNode;
     duration?: number;

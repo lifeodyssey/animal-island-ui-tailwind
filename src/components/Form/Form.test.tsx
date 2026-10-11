@@ -745,7 +745,7 @@ describe('Form', () => {
             expect(screen.getByRole('textbox')).toBeTruthy();
         });
 
-        it('hasFeedback 时错误状态下显示 ✕ 图标', async () => {
+        it('hasFeedback 时错误状态下显示装饰性 SVG 图标', async () => {
             const { container } = render(
                 <Form>
                     <Form.Item name="a" hasFeedback rules={[{ required: true, message: '必填' }]}>
@@ -759,7 +759,7 @@ describe('Form', () => {
             });
             const feedback = container.querySelector('.animal-form-item-feedback-icon');
             expect(feedback).toBeTruthy();
-            expect(feedback?.textContent).toContain('✕');
+            expect(feedback?.querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
         });
 
         it('validateStatus=success 手动指定覆盖自动推断', () => {

@@ -73,7 +73,7 @@ export const BadgeStory: Story = {
             <div style={sectionStyle}>
                 <div style={labelStyle}>Colors</div>
                 <div style={rowStyle}>
-                    {(['app-red', 'app-orange', 'app-yellow', 'app-green', 'app-teal', 'app-blue', 'app-purple', 'app-pink'] as const).map((color) => (
+                    {(['app-red', 'app-orange', 'app-yellow', 'app-green', 'app-teal', 'app-blue', 'purple', 'app-pink'] as const).map((color) => (
                         <Badge key={color} count={color} color={color} />
                     ))}
                 </div>

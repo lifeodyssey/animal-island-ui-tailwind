@@ -115,6 +115,7 @@ export const CountUp: React.FC<CountUpProps> = ({
     const elapsedRef = useRef(0);
     const lastTimestampRef = useRef<number | null>(null);
     const completedRef = useRef(false);
+    const activeStartRef = useRef(start);
     const pendingStartRef = useRef<number | undefined>(undefined);
     const formattedRef = useRef<string | null>(null);
     const targetRef = useRef(`${start}|${end}|${duration}`);
@@ -205,7 +206,8 @@ export const CountUp: React.FC<CountUpProps> = ({
             const quantized = intervalMs > 0 ? Math.floor(elapsed / intervalMs) * intervalMs : elapsed;
             const done = elapsed >= totalMs;
             const progress = done ? 1 : Math.min(1, Math.max(0, quantized / totalMs));
-            const next = done ? end : start + (end - start) * resolveEasing(easingRef.current)(progress);
+            const activeStart = activeStartRef.current;
+            const next = done ? end : activeStart + (end - activeStart) * resolveEasing(easingRef.current)(progress);
 
             onUpdateRef.current?.(next);
 
@@ -229,7 +231,8 @@ export const CountUp: React.FC<CountUpProps> = ({
             lastTimestampRef.current = null;
             completedRef.current = false;
             setCelebrating(false);
-            commit(typeof pendingStart === 'number' ? pendingStart : start, true);
+            activeStartRef.current = typeof pendingStart === 'number' ? pendingStart : start;
+            commit(activeStartRef.current, true);
         }
         pendingStartRef.current = undefined;
 

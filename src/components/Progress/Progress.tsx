@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { cva } from 'class-variance-authority';
 import { cn } from '../../utils/cn';
-import type { ProgressProps, ProgressSize, ProgressVariant } from './types';
+import type { ProgressProps, ProgressVariant } from './types';
 import { sweetCorner, coffeeBreak } from '../../assets/image/sceneImages';
 import forestGrove from '../../assets/image/forest-grove.svg';
 import starryCamp from '../../assets/image/starry-camp.svg';
@@ -78,7 +78,7 @@ export const Progress: React.FC<ProgressProps> = ({
                   backgroundPosition: 'left top',
                   backgroundSize: trackW > 0 ? `${trackW}px auto` : '100% auto',
               }
-            : {}),
+            : { backgroundColor: '#19c8b9' }),
     };
 
     const isInside = !variant && showInfo && infoPosition === 'inside';

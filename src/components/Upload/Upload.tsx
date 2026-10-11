@@ -153,6 +153,8 @@ export const Upload: React.FC<UploadProps> = ({
     const timersRef = useRef<Map<string, number>>(new Map());
     const blobUrlsRef = useRef<Map<string, string>>(new Map());
     const xhrRef = useRef<Map<string, XMLHttpRequest>>(new Map());
+    const activeRequestsRef = useRef(new Set<string>());
+    const mountedRef = useRef(true);
 
     const previewSrc = (file: UploadFile) => file.thumbUrl ?? file.url;
     const isImage = (file: UploadFile) =>
@@ -218,6 +220,7 @@ export const Upload: React.FC<UploadProps> = ({
 
     const commit = useCallback(
         (next: UploadFile[], changed?: UploadFile, event?: ProgressEvent, notify = true) => {
+            if (!mountedRef.current) return;
             listRef.current = next;
             if (!isControlled) setInnerList(next);
             if (notify) onChange?.({ file: changed ?? next[0], fileList: next, event });
@@ -226,6 +229,7 @@ export const Upload: React.FC<UploadProps> = ({
     );
 
     const stopTransfer = useCallback((uid: string) => {
+        activeRequestsRef.current.delete(uid);
         const timer = timersRef.current.get(uid);
         if (timer !== undefined) {
             window.clearInterval(timer);
@@ -233,8 +237,8 @@ export const Upload: React.FC<UploadProps> = ({
         }
         const xhr = xhrRef.current.get(uid);
         if (xhr) {
-            xhr.abort();
             xhrRef.current.delete(uid);
+            xhr.abort();
         }
     }, []);
 
@@ -252,7 +256,7 @@ export const Upload: React.FC<UploadProps> = ({
 
     const patchFile = useCallback(
         (uid: string, patch: Partial<UploadFile>, event?: ProgressEvent) => {
-            if (!listRef.current.some((f) => f.uid === uid)) return;
+            if (!mountedRef.current || !listRef.current.some((f) => f.uid === uid)) return;
             const next = listRef.current.map((f) => (f.uid === uid ? { ...f, ...patch } : f));
             const changed = next.find((f) => f.uid === uid);
             commit(next, changed, event);
@@ -261,6 +265,7 @@ export const Upload: React.FC<UploadProps> = ({
     );
 
     const clearTimers = useCallback(() => {
+        activeRequestsRef.current.clear();
         timersRef.current.forEach((t) => window.clearInterval(t));
         timersRef.current.clear();
         xhrRef.current.forEach((xhr) => xhr.abort());
@@ -269,7 +274,22 @@ export const Upload: React.FC<UploadProps> = ({
         blobUrlsRef.current.clear();
     }, []);
 
-    useEffect(() => clearTimers, [clearTimers]);
+    useEffect(() => {
+        mountedRef.current = true;
+        return () => {
+            mountedRef.current = false;
+            clearTimers();
+        };
+    }, [clearTimers]);
+
+    const finishRequest = useCallback(
+        (uid: string, patch: Partial<UploadFile>) => {
+            if (!activeRequestsRef.current.delete(uid)) return;
+            xhrRef.current.delete(uid);
+            patchFile(uid, patch);
+        },
+        [patchFile]
+    );
 
     const prevUidsRef = useRef<string[]>([]);
     useEffect(() => {
@@ -288,20 +308,21 @@ export const Upload: React.FC<UploadProps> = ({
     const simulateUpload = useCallback(
         (uid: string) => {
             patchFile(uid, { percent: 6 });
+            if (!activeRequestsRef.current.has(uid)) return;
             const timer = window.setInterval(() => {
                 const current = listRef.current.find((f) => f.uid === uid);
                 const next = (current?.percent ?? 0) + 12 + Math.round(Math.random() * 8);
                 if (next >= 100) {
                     window.clearInterval(timer);
                     timersRef.current.delete(uid);
-                    patchFile(uid, { percent: 100, status: 'done' });
+                    finishRequest(uid, { percent: 100, status: 'done' });
                 } else {
                     patchFile(uid, { percent: next });
                 }
             }, 220);
             timersRef.current.set(uid, timer);
         },
-        [patchFile]
+        [finishRequest, patchFile]
     );
 
     const startRealUpload = useCallback(
@@ -310,71 +331,80 @@ export const Upload: React.FC<UploadProps> = ({
             let resolvedData: Record<string, unknown> | undefined;
             try {
                 resolvedAction = (typeof action === 'function' ? await action(file) : action) ?? '';
+                if (!activeRequestsRef.current.has(uid)) return;
                 resolvedData = typeof data === 'function' ? await data(file) : data;
             } catch (err) {
-                patchFile(uid, { status: 'error', percent: 100, error: err });
+                finishRequest(uid, { status: 'error', percent: 100, error: err });
                 return;
             }
-            if (!listRef.current.some((f) => f.uid === uid)) return;
+            if (!activeRequestsRef.current.has(uid)) return;
             if (!resolvedAction) {
-                patchFile(uid, { status: 'error', percent: 100, error: new Error('upload action is empty') });
+                finishRequest(uid, { status: 'error', percent: 100, error: new Error('upload action is empty') });
                 return;
             }
-            const xhr = new XMLHttpRequest();
-            xhrRef.current.set(uid, xhr);
-            const form = new FormData();
-            form.append(name ?? 'file', file, file.name);
-            if (resolvedData) {
-                Object.entries(resolvedData).forEach(([key, value]) => {
-                    if (value instanceof Blob) form.append(key, value);
-                    else form.append(key, String(value));
-                });
-            }
-            xhr.open(method, resolvedAction, true);
-            if (withCredentials) xhr.withCredentials = true;
-            if (headers) {
-                Object.entries(headers).forEach(([key, value]) => xhr.setRequestHeader(key, value));
-            }
-            xhr.upload.onprogress = (e) => {
-                if (e.lengthComputable) {
-                    patchFile(uid, { status: 'uploading', percent: clampPercent((e.loaded / e.total) * 100) }, e);
+            try {
+                const xhr = new XMLHttpRequest();
+                xhrRef.current.set(uid, xhr);
+                const form = new FormData();
+                form.append(name ?? 'file', file, file.name);
+                if (resolvedData) {
+                    Object.entries(resolvedData).forEach(([key, value]) => {
+                        if (value instanceof Blob) form.append(key, value);
+                        else form.append(key, String(value));
+                    });
                 }
-            };
-            xhr.onload = () => {
-                xhrRef.current.delete(uid);
-                const ok = xhr.status >= 200 && xhr.status < 300;
-                patchFile(
-                    uid,
-                    ok
-                        ? { status: 'done', percent: 100, response: xhr.response }
-                        : { status: 'error', percent: 100, error: xhr.response }
-                );
-            };
-            xhr.onerror = () => {
-                xhrRef.current.delete(uid);
-                patchFile(uid, { status: 'error', percent: 100, error: new Error('network error') });
-            };
-            xhr.onabort = () => {
-                xhrRef.current.delete(uid);
-            };
-            xhr.send(form);
+                xhr.open(method, resolvedAction, true);
+                if (withCredentials) xhr.withCredentials = true;
+                if (headers) {
+                    Object.entries(headers).forEach(([key, value]) => xhr.setRequestHeader(key, value));
+                }
+                xhr.upload.onprogress = (e) => {
+                    if (activeRequestsRef.current.has(uid) && e.lengthComputable) {
+                        patchFile(uid, { status: 'uploading', percent: clampPercent((e.loaded / e.total) * 100) }, e);
+                    }
+                };
+                xhr.onload = () => {
+                    const ok = xhr.status >= 200 && xhr.status < 300;
+                    finishRequest(
+                        uid,
+                        ok
+                            ? { status: 'done', percent: 100, response: xhr.response }
+                            : { status: 'error', percent: 100, error: xhr.response }
+                    );
+                };
+                xhr.onerror = () => {
+                    finishRequest(uid, { status: 'error', percent: 100, error: new Error('network error') });
+                };
+                xhr.onabort = () => {
+                    xhrRef.current.delete(uid);
+                };
+                xhr.send(form);
+            } catch (err) {
+                finishRequest(uid, { status: 'error', percent: 100, error: err });
+            }
         },
-        [action, data, headers, method, name, withCredentials, patchFile]
+        [action, data, headers, method, name, withCredentials, finishRequest, patchFile]
     );
 
     const runRequest = useCallback(
         (file: File, uid: string) => {
+            if (!mountedRef.current || !listRef.current.some((item) => item.uid === uid)) return;
+            activeRequestsRef.current.add(uid);
             if (customRequest) {
                 try {
                     customRequest({
                         file,
-                        onProgress: (pct) => patchFile(uid, { percent: clampPercent(pct), status: 'uploading' }),
-                        onSuccess: (response) => patchFile(uid, { status: 'done', percent: 100, response }),
-                        onError: (error) => patchFile(uid, { status: 'error', percent: 100, error }),
+                        onProgress: (pct) => {
+                            if (activeRequestsRef.current.has(uid)) {
+                                patchFile(uid, { percent: clampPercent(pct), status: 'uploading' });
+                            }
+                        },
+                        onSuccess: (response) => finishRequest(uid, { status: 'done', percent: 100, response }),
+                        onError: (error) => finishRequest(uid, { status: 'error', percent: 100, error }),
                     });
                 } catch (err) {
                     console.error('[Upload] customRequest threw:', err);
-                    patchFile(uid, { status: 'error', percent: 100, error: err });
+                    finishRequest(uid, { status: 'error', percent: 100, error: err });
                 }
             } else if (action) {
                 void startRealUpload(file, uid);
@@ -382,7 +412,7 @@ export const Upload: React.FC<UploadProps> = ({
                 simulateUpload(uid);
             }
         },
-        [customRequest, action, startRealUpload, patchFile, simulateUpload]
+        [customRequest, action, startRealUpload, finishRequest, patchFile, simulateUpload]
     );
 
     const handleFiles = useCallback(
@@ -408,9 +438,11 @@ export const Upload: React.FC<UploadProps> = ({
                 if (beforeUpload) {
                     try {
                         const res = await beforeUpload(file, rawFilesIn);
+                        if (!mountedRef.current) return;
                         if (res === false) continue;
                         if (res instanceof File) uploadFile = res;
                     } catch (err) {
+                        if (!mountedRef.current) return;
                         console.error('[Upload] beforeUpload threw, file skipped:', err);
                         continue;
                     }
@@ -450,7 +482,10 @@ export const Upload: React.FC<UploadProps> = ({
                 next = merged.slice(0, limit);
                 dropped = merged.slice(limit);
             }
-            dropped.forEach((f) => releaseFile(f.uid));
+            dropped.forEach((f) => {
+                if (isControlled && prevUidsRef.current.includes(f.uid)) stopTransfer(f.uid);
+                else releaseFile(f.uid);
+            });
             const keptUids = new Set(next.map((f) => f.uid));
             const keptAdded = added.filter((f) => keptUids.has(f.uid));
             const addedUids = new Set(added.map((f) => f.uid));
@@ -464,7 +499,7 @@ export const Upload: React.FC<UploadProps> = ({
                 requests.filter(([, uid]) => keptUids.has(uid)).forEach(([file, uid]) => runRequest(file, uid));
             }
         },
-        [accept, beforeUpload, commit, directory, disabled, maxCount, multiple, onExceed, releaseFile, runRequest]
+        [accept, beforeUpload, commit, directory, disabled, isControlled, maxCount, multiple, onExceed, releaseFile, runRequest, stopTransfer]
     );
 
     const handleRemove = useCallback(
@@ -480,6 +515,7 @@ export const Upload: React.FC<UploadProps> = ({
                 }
                 if (ok === false) return;
             }
+            if (!mountedRef.current || !listRef.current.some((item) => item.uid === file.uid)) return;
             if (isControlled) {
                 stopTransfer(file.uid);
             } else {
@@ -537,15 +573,15 @@ export const Upload: React.FC<UploadProps> = ({
         const status = file.status ?? 'uploading';
         if (status === 'done') {
             return (
-                <span className="animal-upload-status-icon animal-upload-status-done" aria-label="上传完成">
-                    <CheckIcon size={16} />
+                <span className="animal-upload-status-icon animal-upload-status-done" role="img" aria-label="上传完成">
+                    <CheckIcon size={16} aria-hidden="true" />
                 </span>
             );
         }
         if (status === 'error') {
             return (
-                <span className="animal-upload-status-icon animal-upload-status-error" aria-label="上传失败">
-                    <CloseIcon size={16} />
+                <span className="animal-upload-status-icon animal-upload-status-error" role="img" aria-label="上传失败">
+                    <CloseIcon size={16} aria-hidden="true" />
                 </span>
             );
         }
@@ -553,6 +589,7 @@ export const Upload: React.FC<UploadProps> = ({
         return (
             <span
                 className="animal-upload-status-icon"
+                role="img"
                 aria-label={`上传中 ${clampPercent(file.percent ?? 0)}%`}
             >
                 <span className="animal-upload-spinner" aria-hidden="true" />
