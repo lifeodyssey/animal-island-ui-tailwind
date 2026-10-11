@@ -33,14 +33,14 @@ describe('Title variants', () => {
         expect(body).toHaveStyle({ fontSize: `${fontSize}px` });
     });
 
-    it('uses the upstream ribbon default while retaining explicit variants', () => {
+    it('keeps the layer default while retaining explicit variants', () => {
         const { container, rerender } = render(<Title>Island</Title>);
-        expect(container.querySelector('.animal-title-ribbon-text')).toHaveTextContent('Island');
+        expect(container.querySelector('.animal-title-layer-front')).toHaveTextContent('Island');
+        expect(container.querySelector('.animal-title-ribbon')).toBeNull();
+        rerender(<Title variant="ribbon">Ribbon</Title>);
+        expect(container.querySelector('.animal-title-ribbon-text')).toHaveTextContent('Ribbon');
         expect(container.querySelectorAll('.animal-title-ribbon-back')).toHaveLength(2);
         expect(container.querySelectorAll('.animal-title-ribbon-fold')).toHaveLength(2);
-        rerender(<Title variant="layer">Layer</Title>);
-        expect(container.querySelector('.animal-title-layer-front')).toHaveTextContent('Layer');
-        expect(container.querySelector('.animal-title-ribbon')).toBeNull();
         rerender(<Title variant="tab">Tab</Title>);
         expect(container.querySelector('.animal-title-tab-text')).toHaveTextContent('Tab');
     });

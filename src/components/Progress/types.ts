@@ -20,7 +20,7 @@ export interface ProgressProps {
      * @deprecated Prefer the right-side placement used by scene variants.
      */
     infoPosition?: ProgressInfoPosition;
-    /** Scene image to use as fill background. When set, replaces the mint gradient. */
+    /** Scene image to use as fill background. When set, replaces the striped fill. */
     variant?: ProgressVariant;
     infoFormat?: (percent: number) => React.ReactNode;
     duration?: number;

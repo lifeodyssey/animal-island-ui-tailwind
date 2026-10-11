@@ -30,12 +30,12 @@ describe('Progress', () => {
         expect(getFill(container).style.width).toBe(width);
     });
 
-    it('retains inside information by default with the mint base color', () => {
+    it('retains inside information by default with a stylesheet-controlled fill', () => {
         const { container } = render(<Progress percent={75} />);
         const fill = getFill(container);
 
         expect(fill).toContainElement(screen.getByText('75%'));
-        expect(fill).toHaveStyle({ backgroundColor: '#19c8b9' });
+        expect(fill.style.backgroundColor).toBe('');
         expect(fill.style.backgroundImage).toBe('');
     });
 

@@ -37,8 +37,9 @@
 ## 1.10.0 新增功能
 
 > 尚未发布的上游同步新增 Badge、Avatar / AvatarGroup、Rate、Upload 和 CountUp。
-> Title 的默认样式改为 `ribbon`，Modal 改为 `game`；需要保留原外观时，分别显式传入
-> `variant="layer"` 和 `variant="default"`。Progress 继续支持 `infoPosition`。
+> Title 默认保留 `layer`，Progress 保留同步前的斜纹外观和 `infoPosition`。
+> Modal 默认改为 `game`（旧外观可传 `variant="default"`），Input 与 Form 采用同步后的样式。
+> 这些视觉选择已记录在 [上游视觉差异](docs/KNOWN_DEVIATIONS.md)，后续同步继续保留。
 > 这些改动尚不包含在 npm 1.10.0 中，详见 [Unreleased](CHANGELOG.md#unreleased)。
 
 新增 `Background` 背景组件（`dots` 圆点和 `sprinkles` 糖针图案），以及

@@ -24,8 +24,10 @@ When upstream-only commits exist:
    Create `codex/upstream-sync-<upstream-sha>` only when no sync PR is open.
    The `.upstream-sync` ledger is the ported baseline; independent fork commit
    ancestry does not indicate whether upstream behavior has already been ported.
-2. Inspect the upstream diff and identify affected public APIs, visuals,
-   assets, docs, package shape, and demo behavior.
+2. Read `docs/KNOWN_DEVIATIONS.md` and preserve the approved fork visual choices.
+   Inspect the upstream diff and identify affected public APIs, visuals,
+   assets, docs, package shape, and demo behavior. Do not overwrite a documented
+   visual choice during a later sync without explicit user approval.
 3. First add or update parity coverage:
    - Storybook parity stories under `stories/`.
    - Playwright behavior specs under `tests/playwright-*.spec.ts`.
