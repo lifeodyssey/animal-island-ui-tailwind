@@ -1,9 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { cn } from '../../utils/cn';
+import { UploadIcon, FileIcon, CheckIcon, CloseIcon, EyeIcon } from '../../utils/icons';
 
+/** 单个文件的状态 */
 export type UploadFileStatus = 'uploading' | 'done' | 'error' | 'removed';
+
+/** 文件列表的展示形态 */
 export type UploadListType = 'text' | 'picture' | 'picture-card';
 
+/** 文件列表项（组件内部以 uid 追踪） */
 export interface UploadFile {
     uid: string;
     name: string;
@@ -69,42 +74,6 @@ export interface UploadProps {
     className?: string;
     style?: React.CSSProperties;
 }
-
-// Inline SVG icons (replaces naive-icons)
-const UploadIcon: React.FC<{ size?: number }> = ({ size = 24 }) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
-        <polyline points="17 8 12 3 7 8" />
-        <line x1="12" y1="3" x2="12" y2="15" />
-    </svg>
-);
-
-const FileIcon: React.FC<{ size?: number }> = ({ size = 24 }) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
-        <polyline points="14 2 14 8 20 8" />
-    </svg>
-);
-
-const CheckIcon: React.FC<{ size?: number }> = ({ size = 24 }) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="20 6 9 17 4 12" />
-    </svg>
-);
-
-const CloseIcon: React.FC<{ size?: number; color?: string }> = ({ size = 24, color }) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true" stroke={color ?? 'currentColor'} strokeWidth="2" strokeLinecap="round">
-        <line x1="18" y1="6" x2="6" y2="18" />
-        <line x1="6" y1="6" x2="18" y2="18" />
-    </svg>
-);
-
-const EyeIcon: React.FC<{ size?: number }> = ({ size = 24 }) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-        <circle cx="12" cy="12" r="3" />
-    </svg>
-);
 
 let uidSeed = 0;
 const genUid = () => `animal-upload-${Date.now().toString(36)}-${(uidSeed += 1)}`;
@@ -353,25 +322,19 @@ export const Upload: React.FC<UploadProps> = ({
             }
             const xhr = new XMLHttpRequest();
             xhrRef.current.set(uid, xhr);
-
             const form = new FormData();
             form.append(name ?? 'file', file, file.name);
             if (resolvedData) {
                 Object.entries(resolvedData).forEach(([key, value]) => {
-                    if (value instanceof Blob) {
-                        form.append(key, value);
-                    } else {
-                        form.append(key, String(value));
-                    }
+                    if (value instanceof Blob) form.append(key, value);
+                    else form.append(key, String(value));
                 });
             }
-
             xhr.open(method, resolvedAction, true);
             if (withCredentials) xhr.withCredentials = true;
             if (headers) {
                 Object.entries(headers).forEach(([key, value]) => xhr.setRequestHeader(key, value));
             }
-
             xhr.upload.onprogress = (e) => {
                 if (e.lengthComputable) {
                     patchFile(uid, { status: 'uploading', percent: clampPercent((e.loaded / e.total) * 100) }, e);
@@ -588,7 +551,10 @@ export const Upload: React.FC<UploadProps> = ({
         }
         if (status === 'removed') return null;
         return (
-            <span className="animal-upload-status-icon" aria-label={`上传中 ${clampPercent(file.percent ?? 0)}%`}>
+            <span
+                className="animal-upload-status-icon"
+                aria-label={`上传中 ${clampPercent(file.percent ?? 0)}%`}
+            >
                 <span className="animal-upload-spinner" aria-hidden="true" />
                 <span className="animal-upload-percent">{clampPercent(file.percent ?? 0)}%</span>
             </span>
@@ -607,18 +573,16 @@ export const Upload: React.FC<UploadProps> = ({
                             {previewSrc(file) ? (
                                 <img className="animal-upload-text-thumb-img" src={previewSrc(file)} alt={file.name} />
                             ) : (
-                                <FileIcon size={18} />
+                                <FileIcon size={16} />
                             )}
                         </span>
                     ) : (
                         <span className="animal-upload-file-icon">
-                            <FileIcon size={15} />
+                            <FileIcon size={16} />
                         </span>
                     )}
-                    <span className="animal-upload-file-name" title={file.name}>
-                        {file.name}
-                    </span>
-                    {file.size !== undefined && file.size !== null && (
+                    <span className="animal-upload-file-name">{file.name}</span>
+                    {file.size !== undefined && (
                         <span className="animal-upload-file-size">{formatFileSize(file.size)}</span>
                     )}
                     {renderStatus(file)}
@@ -630,7 +594,7 @@ export const Upload: React.FC<UploadProps> = ({
                             disabled={disabled}
                             onClick={() => openPreview(file)}
                         >
-                            <EyeIcon size={16} />
+                            <EyeIcon size={14} />
                         </button>
                     )}
                     {showRemoveIcon && (
@@ -671,7 +635,11 @@ export const Upload: React.FC<UploadProps> = ({
                                     )}
                                     src={previewSrc(file)}
                                     alt={file.name}
-                                    onClick={showPreviewIcon && canPreview(file) ? () => openPreview(file) : undefined}
+                                    onClick={
+                                        showPreviewIcon && canPreview(file)
+                                            ? () => openPreview(file)
+                                            : undefined
+                                    }
                                 />
                             ) : (
                                 <span className="animal-upload-card-file-icon">
@@ -681,7 +649,9 @@ export const Upload: React.FC<UploadProps> = ({
                             {status === 'uploading' && (
                                 <span className="animal-upload-card-mask">
                                     <span className="animal-upload-spinner" aria-hidden="true" />
-                                    <span className="animal-upload-percent">{clampPercent(file.percent ?? 0)}%</span>
+                                    <span className="animal-upload-percent">
+                                        {clampPercent(file.percent ?? 0)}%
+                                    </span>
                                 </span>
                             )}
                             {status === 'error' && (
