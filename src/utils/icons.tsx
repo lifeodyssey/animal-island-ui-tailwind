@@ -148,6 +148,39 @@ export const CheckIcon: React.FC<IconProps> = ({ size = 16, color = 'currentColo
     </svg>
 );
 
+export const RocketIcon: React.FC<IconProps> = ({ size = 48, color = 'currentColor', className, ...rest }) => (
+    <svg
+        width={size}
+        height={size}
+        viewBox="0 0 48 48"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={className}
+        {...rest}
+    >
+        <path
+            d="M24 4C24 4 14 12 14 26c0 4 2 7.5 5 10l5-5 5 5c3-2.5 5-6 5-10 0-14-10-22-10-22z"
+            fill={color}
+            fillOpacity="0.9"
+        />
+        <path
+            d="M19 36l-4 4c-1 1-1.5 3-1 4.5L19 40"
+            stroke={color}
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+        <path
+            d="M29 36l4 4c1 1 1.5 3 1 4.5L29 40"
+            stroke={color}
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+        <circle cx="24" cy="22" r="3" fill="#fff" fillOpacity="0.7" />
+    </svg>
+);
+
 export const EyeIcon: React.FC<IconProps> = ({ size = 16, color = 'currentColor', className, ...rest }) => (
     <svg
         width={size}

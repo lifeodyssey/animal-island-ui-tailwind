@@ -1400,6 +1400,37 @@
     transform: translateY(-50%);
   }
 
+  /* Clear button — shown on hover via JS (allowClear), positioned over the arrow */
+  .animal-select-clear {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: #a09070;
+    z-index: 2;
+  }
+
+  .animal-select-clear:hover {
+    color: #c4614a;
+  }
+
+  /* Not-found empty state inside the dropdown */
+  .animal-select-not-found {
+    padding: 12px 20px;
+    color: #a09070;
+    font-size: 13px;
+    text-align: center;
+  }
+
   .animal-tabs {
     overflow: hidden;
     border: var(--animal-border-width) solid var(--animal-border-color-light);
@@ -1672,7 +1703,7 @@
      colors (dedup of upstream's 14 near-identical .pattern-* rules). */
   .animal-card-pattern {
     background:
-      radial-gradient(circle, var(--animal-card-pattern-dot1) 1.5px, transparent 1.5px),
+      radial-gradient(circle, var(--animal-card-pattern-dot1) 1.4px, transparent 1.4px),
       radial-gradient(circle, var(--animal-card-pattern-dot2) 1px, transparent 1px),
       var(--animal-card-pattern-bg);
     background-size: 28px 28px, 14px 14px;
@@ -1795,6 +1826,12 @@
     flex-direction: column;
     outline: none;
     animation: animal-zoom-in 0.3s ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animal-modal {
+      animation: none;
+    }
   }
 
   /* default variant: rounded rectangle */
@@ -4262,6 +4299,12 @@
     transition: transform 0.36s cubic-bezier(0.2, 0, 0.2, 1);
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .animal-drawer-panel {
+      transition: none;
+    }
+  }
+
   .animal-drawer-right {
     top: 0;
     right: 0;
@@ -5813,6 +5856,14 @@
       radial-gradient(circle, rgba(225, 140, 111, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
       radial-gradient(circle, rgba(255, 185, 160, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
       #fff0e8;
+  }
+
+  /* dots-gray — white base with light-grey two-layer dots */
+  .animal-background--dots-gray {
+    background:
+      radial-gradient(circle, rgba(140, 140, 140, 0.18) 1.4px, transparent 1.4px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(190, 190, 190, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #ffffff;
   }
 
   /* sprinkles: cylindrical candy rods — three mutually-prime SVG tiles, LCM repeat ≈ 220000×280000 px */
