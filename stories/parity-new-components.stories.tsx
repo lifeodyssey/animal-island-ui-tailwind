@@ -371,6 +371,21 @@ export const BackgroundStable: Story = {
     ),
 };
 
+export const BackgroundDotsGray: Story = {
+    name: 'Background (dots-gray)',
+    render: () => (
+        <Background
+            type="dots-gray"
+            data-testid="background-dots-gray"
+            style={{ width: 360, height: 200, borderRadius: 16 }}
+        >
+            <div style={{ padding: 24, fontFamily: 'var(--animal-font-family)', color: '#4a3728', fontWeight: 700 }}>
+                Dots gray background
+            </div>
+        </Background>
+    ),
+};
+
 // ─── Cursor raindrop ─────────────────────────────────────────────────────────
 
 export const CursorRaindrop: Story = {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as RadixSelect from '@radix-ui/react-select';
 import { cn } from '../../utils/cn';
 import { useControllableState } from '../../utils/useControllableState';
@@ -18,6 +18,30 @@ export interface SelectProps extends Omit<
     onChange?: (key: string) => void;
     placeholder?: string;
     disabled?: boolean;
+    /** Allow clearing the selected value; shows a × button on hover. */
+    allowClear?: boolean;
+    /** Callback fired when the clear button is clicked. */
+    onClear?: () => void;
+    /** Accessible label for the clear button (default: "清除"). */
+    clearAriaLabel?: string;
+    /**
+     * Enable in-dropdown search/filter. Note: full combobox-style search is
+     * architecturally incompatible with Radix Select; this prop is accepted
+     * for API compatibility and will be implemented in a future iteration.
+     */
+    showSearch?: boolean;
+    /** Filter predicate for showSearch mode. */
+    filterOption?: boolean | ((inputValue: string, option: SelectOption) => boolean);
+    /** Field to match when filterOption is true; default "label". */
+    optionFilterProp?: 'key' | 'label';
+    /** Callback when the search input value changes (showSearch mode). */
+    onSearch?: (value: string) => void;
+    /** Content shown when no options match the search filter. */
+    notFoundContent?: React.ReactNode;
+    /** Accessible label for the combobox when no visible label is present. */
+    'aria-label'?: string;
+    /** Id of an external visible label element. */
+    'aria-labelledby'?: string;
 }
 
 const EMPTY_KEY_PREFIX = '__animal_empty_';
@@ -41,11 +65,25 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
             onChange,
             placeholder = '请选择',
             disabled = false,
+            allowClear = false,
+            onClear,
+            clearAriaLabel = '清除',
+            // showSearch and related props are accepted for API compatibility.
+            // Full combobox search requires replacing the Radix Select primitive (planned).
+            showSearch: _showSearch,
+            filterOption: _filterOption,
+            optionFilterProp: _optionFilterProp,
+            onSearch: _onSearch,
+            notFoundContent: _notFoundContent,
+            'aria-label': ariaLabel,
+            'aria-labelledby': ariaLabelledBy,
             className,
             ...rest
         },
         ref,
     ) => {
+        const [hovered, setHovered] = useState(false);
+
         const { value: currentValue, setValue: handleChange } = useControllableState<string>({
             value,
             defaultValue: defaultValue ?? '',
@@ -54,6 +92,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
 
         const selectedOption = options.find((option) => option.key === currentValue);
         const radixValue = selectedOption ? toRadixValue(currentValue) : '';
+        const showClear = allowClear && Boolean(currentValue) && !disabled && hovered;
 
         return (
             <RadixSelect.Root
@@ -64,10 +103,16 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                 }}
                 disabled={disabled}
             >
-                <div className={cn('animal-select-wrapper', disabled && 'animal-select-disabled')}>
+                <div
+                    className={cn('animal-select-wrapper', disabled && 'animal-select-disabled')}
+                    onMouseEnter={() => setHovered(true)}
+                    onMouseLeave={() => setHovered(false)}
+                >
                     <RadixSelect.Trigger
                         ref={ref}
                         className={cn('animal-select-trigger', className)}
+                        aria-label={ariaLabel}
+                        aria-labelledby={ariaLabelledBy}
                         {...rest}
                     >
                         <RadixSelect.Value
@@ -82,6 +127,23 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                             </svg>
                         </RadixSelect.Icon>
                     </RadixSelect.Trigger>
+                    {showClear && (
+                        <button
+                            type="button"
+                            className="animal-select-clear"
+                            aria-label={clearAriaLabel}
+                            onMouseDown={(e) => e.preventDefault()}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleChange('');
+                                onClear?.();
+                            }}
+                        >
+                            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+                                <path d="M1.5 1.5l7 7M8.5 1.5l-7 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                            </svg>
+                        </button>
+                    )}
                     <RadixSelect.Portal>
                         <RadixSelect.Content
                             className="animal-select-content"
