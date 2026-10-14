@@ -603,3 +603,34 @@ export const ControlsStateMatrixStable: Story = {
 export const SelectPlacementParity: Story = {
     render: () => <SelectPlacementSection />,
 };
+
+const SelectAllowClearSection = () => {
+    const [value, setValue] = useState('fish1');
+    const [cleared, setCleared] = useState(false);
+
+    return (
+        <section data-testid="select-allow-clear-region" style={sectionStyle}>
+            <div style={labelStyle}>allowClear (hover to reveal ×)</div>
+            <div data-testid="select-allow-clear" style={boxStyle}>
+                <Select
+                    options={fishOptions}
+                    value={value}
+                    onChange={(k) => { setValue(k); setCleared(false); }}
+                    allowClear
+                    onClear={() => setCleared(true)}
+                />
+            </div>
+            <span data-testid="select-allow-clear-state" style={{ fontSize: 13, color: '#a08060' }}>
+                {cleared ? 'cleared' : (fishOptions.find((o) => o.key === value)?.label ?? 'none')}
+            </span>
+        </section>
+    );
+};
+
+export const SelectAllowClearParity: Story = {
+    render: () => (
+        <div style={pageStyle}>
+            <SelectAllowClearSection />
+        </div>
+    ),
+};
