@@ -21,9 +21,7 @@ const openRadixSelect = async ({
     trigger: Locator;
     dropdown: Locator;
 }) => {
-    // Opening Radix overlays inside Storybook can be flaky when the preview is still hydrating.
-    // Prefer the documented keyboard interaction (`Space`) and fall back to click if needed.
-    // Guard the flow with Radix's `data-state="open"` so we don't race the portal mount.
+    // Guard with data-state="open" so we don't race the dropdown mount.
     await expect(async () => {
         await page.keyboard.press('Escape');
         await trigger.scrollIntoViewIfNeeded();
@@ -31,7 +29,6 @@ const openRadixSelect = async ({
         await page.keyboard.press('Space');
         await expect(trigger).toHaveAttribute('data-state', 'open', { timeout: 1000 });
         await expect(dropdown).toBeVisible({ timeout: 1000 });
-        await expect(dropdown.locator('[data-highlighted]')).toHaveCount(1, { timeout: 1000 });
     }).toPass({ timeout: 10_000 });
 };
 

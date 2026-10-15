@@ -38,8 +38,35 @@ const HIGHLIGHT_PATTERNS: { regex: RegExp; color: string }[] = [
     { regex: /[{}[\]();,]/g, color: COLORS.operator },
 ];
 
+type Token = { start: number; end: number; color: string; italic?: boolean };
+
+const renderTokens = (code: string, tokens: Token[]): React.ReactNode[] => {
+    tokens.sort((a, b) => a.start - b.start);
+    const result: React.ReactNode[] = [];
+    let pos = 0;
+    for (const token of tokens) {
+        if (token.start < pos) continue;
+        if (token.start > pos) {
+            result.push(<span key={`t${pos}`} style={{ color: COLORS.default }}>{code.slice(pos, token.start)}</span>);
+        }
+        result.push(
+            <span
+                key={`s${token.start}`}
+                style={{ color: token.color, ...(token.italic ? { fontStyle: 'italic' } : null) }}
+            >
+                {code.slice(token.start, token.end)}
+            </span>
+        );
+        pos = token.end;
+    }
+    if (pos < code.length) {
+        result.push(<span key={`e${pos}`} style={{ color: COLORS.default }}>{code.slice(pos)}</span>);
+    }
+    return result;
+};
+
 const highlightJSX = (code: string): React.ReactNode[] => {
-    const tokens: { start: number; end: number; color: string }[] = [];
+    const tokens: Token[] = [];
 
     const addPattern = (regex: RegExp, color: string) => {
         let match;
@@ -53,25 +80,98 @@ const highlightJSX = (code: string): React.ReactNode[] => {
         addPattern(regex, color);
     }
 
-    tokens.sort((a, b) => a.start - b.start);
+    return renderTokens(code, tokens);
+};
 
-    const result: React.ReactNode[] = [];
-    let pos = 0;
+const SHELL_COMMANDS = /\b(npm|yarn|pnpm|npx|node|git|cd|ls|mkdir|rm|cp|mv|touch|chmod|chown|curl|wget|brew|pip|python|python3|bash)\b/;
 
-    for (const token of tokens) {
-        if (token.start < pos) continue;
-        if (token.start > pos) {
-            result.push(<span key={`t${pos}`} style={{ color: COLORS.default }}>{code.slice(pos, token.start)}</span>);
+// Only commands that cannot be JS/TS identifiers at line-start to avoid false positives
+const looksLikeShell = (code: string): boolean =>
+    /^\s*(npm|yarn|pnpm|npx|node|git|cd|ls|mkdir|rm|cp|mv)\b/m.test(code);
+
+const highlightShell = (code: string): React.ReactNode[] => {
+    const tokens: Token[] = [];
+    const lines = code.split('\n');
+    let offset = 0;
+
+    for (const line of lines) {
+        const trimmed = line.trimStart();
+        const indent = line.length - trimmed.length;
+
+        // comment lines
+        if (trimmed.startsWith('#') || trimmed.startsWith('//')) {
+            tokens.push({ start: offset + indent, end: offset + line.length, color: COLORS.comment, italic: true });
+        } else {
+            // tokenize the line
+            const lineTokens: Token[] = [];
+            let matchedCmd = false;
+
+            // leading command (npm, git, etc.)
+            const cmdMatch = new RegExp('^(' + SHELL_COMMANDS.source.slice(2, -2) + ')\\b').exec(trimmed);
+            if (cmdMatch) {
+                matchedCmd = true;
+                const start = offset + indent;
+                const end = start + cmdMatch[0].length;
+                lineTokens.push({ start, end, color: COLORS.jsx });
+            }
+
+            if (matchedCmd) {
+                // parse rest of line: sub-commands, flags, strings, inline comments
+                let pos = indent + (cmdMatch![0].length);
+                const rest = line.slice(pos);
+                let localOffset = 0;
+                let firstSubCmd = true;
+
+                const flagRe = /--?[\w-]+(=\S+)?/g;
+                const stringRe = /"[^"]*"|'[^']*'/g;
+                const inlineCommentRe = /(?:^|\s)(#|\/\/).*$/;
+                const subCmdRe = /^\s+([a-z][\w:-]*)(?=\s|$)/;
+
+                // inline comment check on rest
+                const icm = inlineCommentRe.exec(rest);
+                const commentStart = icm ? rest.indexOf(icm[0].trim(), icm.index) : rest.length;
+
+                // first word after command as sub-command
+                if (firstSubCmd) {
+                    const scm = subCmdRe.exec(rest);
+                    if (scm && scm.index < commentStart) {
+                        const start = offset + pos + scm.index + (scm[0].length - scm[1].length);
+                        lineTokens.push({ start, end: start + scm[1].length, color: COLORS.string });
+                        localOffset = scm.index + scm[0].length;
+                        firstSubCmd = false;
+                    }
+                }
+
+                // flags
+                let fm;
+                flagRe.lastIndex = localOffset;
+                while ((fm = flagRe.exec(rest)) !== null) {
+                    if (fm.index >= commentStart) break;
+                    lineTokens.push({ start: offset + pos + fm.index, end: offset + pos + fm.index + fm[0].length, color: COLORS.operator });
+                }
+
+                // strings
+                let sm;
+                stringRe.lastIndex = 0;
+                while ((sm = stringRe.exec(rest)) !== null) {
+                    if (sm.index >= commentStart) break;
+                    lineTokens.push({ start: offset + pos + sm.index, end: offset + pos + sm.index + sm[0].length, color: COLORS.string });
+                }
+
+                // inline comment
+                if (icm) {
+                    const cs = offset + pos + commentStart;
+                    lineTokens.push({ start: cs, end: offset + line.length, color: COLORS.comment, italic: true });
+                }
+            }
+
+            tokens.push(...lineTokens);
         }
-        result.push(<span key={`s${token.start}`} style={{ color: token.color }}>{code.slice(token.start, token.end)}</span>);
-        pos = token.end;
+
+        offset += line.length + 1; // +1 for '\n'
     }
 
-    if (pos < code.length) {
-        result.push(<span key={`e${pos}`} style={{ color: COLORS.default }}>{code.slice(pos)}</span>);
-    }
-
-    return result;
+    return renderTokens(code, tokens);
 };
 
 const codeBlockStyle: React.CSSProperties = {
@@ -164,7 +264,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({ code, style, className, co
                 style={{ ...codeBlockStyle, ...(copyButtonSpacing ? { paddingRight: 96 } : null), ...preStyle }}
                 className={cn('animal-code-block', className)}
             >
-                {React.useMemo(() => highlightJSX(code), [code])}
+                {React.useMemo(() => looksLikeShell(code) ? highlightShell(code) : highlightJSX(code), [code])}
             </pre>
             {copyable && (
                 <button
