@@ -1,17 +1,51 @@
 @layer components {
-  /* Shared 48px glove cursor; hotspot is the raised fingertip. */
-  .animal-cursor,
-  .animal-cursor * {
-    cursor:
-      url('../components/Cursor/assets/glove.png') 8 5,
-      auto !important;
+  /* ============ Cursor — image & hotspot variables (shared by all rules below) ============ */
+  /* default: thick-outlined rounded arrow, 32×32, hotspot at 6 2 */
+  .animal-cursor {
+    --animal-cursor-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M6.7 5.5L8.1 22.7Q8.3 25.5 10.0 23.3L12.5 20.3Q13.2 19.4 13.8 20.5L17.0 26.5Q17.9 28.2 19.6 27.3L20.1 27.0Q21.8 26.1 20.9 24.4L17.6 18.4Q17.0 17.4 18.2 17.2L21.8 16.9Q24.8 16.6 22.4 14.7L8.9 4.3Q6.5 2.4 6.7 5.5Z' fill='%23fff7e6' stroke='%23794f27' stroke-width='2.75' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E");
+    --animal-cursor-hotspot: 6 2;
+    /* text selection: warm yellow base + dark text (WCAG AAA: 8.97:1) */
+    --animal-selection-bg: #e9c46a;
+    --animal-selection-fg: #2b2620;
   }
 
-  /* Scoped mode: restore semantic cursors on interactive descendants. */
-  .animal-cursor--scoped * {
+  /* raindrop: blue droplet, 32×32, hotspot at 16 6 */
+  .animal-cursor--raindrop {
+    --animal-cursor-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M16 6s-9 12-9 16a9 9 0 0 0 18 0c0-4-9-16-9-16z' fill='%2374ccff' stroke='%232e86ab' stroke-width='1.5'/%3E%3Cellipse cx='12.5' cy='19' rx='2' ry='3.2' fill='%23dff4ff' transform='rotate(-18 12.5 19)'/%3E%3C/svg%3E");
+    --animal-cursor-hotspot: 16 6;
+    /* restore system selection for raindrop — avoids染色 of nested default Cursor */
+    --animal-selection-bg: Highlight;
+    --animal-selection-fg: HighlightText;
+  }
+
+  /* text selection uses the nearest Cursor ancestor's variables */
+  .animal-cursor ::selection {
+    background: var(--animal-selection-bg);
+    color: var(--animal-selection-fg);
+  }
+
+  /* force mode (default): apply cursor to container + all descendants */
+  .animal-cursor--force,
+  .animal-cursor--force * {
+    cursor:
+      var(--animal-cursor-img) var(--animal-cursor-hotspot),
+      default !important;
+  }
+
+  /* scoped mode: container only (double class beats ancestor force rule) */
+  .animal-cursor.animal-cursor--scoped {
+    cursor:
+      var(--animal-cursor-img) var(--animal-cursor-hotspot),
+      default !important;
+  }
+
+  /* scoped children: restore browser default */
+  .animal-cursor--scoped *,
+  .animal-cursor.animal-cursor--scoped * {
     cursor: auto !important;
   }
 
+  /* scoped interactive elements: restore pointer */
   .animal-cursor--scoped a[href],
   .animal-cursor--scoped button,
   .animal-cursor--scoped [role="button"],
@@ -24,8 +58,7 @@
   .animal-cursor--scoped input[type="reset"],
   .animal-cursor--scoped input[type="checkbox"],
   .animal-cursor--scoped input[type="radio"],
-  .animal-cursor--scoped input[type="range"],
-  .animal-cursor--scoped [data-animal-cursor="pointer"] {
+  .animal-cursor--scoped [data-cursor="pointer"] {
     cursor: pointer !important;
   }
 
@@ -1329,9 +1362,12 @@
   }
 
   .animal-select-content {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
     z-index: 1000;
+    min-width: 100%;
     width: max-content;
-    min-width: max-content;
     padding: 12px 0;
     border-radius: 28px;
     background: #ffeea0;
@@ -1339,10 +1375,63 @@
     animation: animal-dropdown-fade-in 0.2s ease forwards;
   }
 
-  .animal-select-viewport {
-    /* Reserve space inside Radix's scrolling viewport for the outside glove. */
+  .animal-select-dropdown {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    max-height: 256px;
+    /* Reserve space for the outside glove hover icon */
     margin-left: -30px;
     padding-left: 30px;
+  }
+
+  .animal-select-search {
+    padding: 6px 16px 6px 46px;
+  }
+
+  .animal-select-search-input {
+    width: 100%;
+    padding: 6px 10px;
+    border: 1.5px solid #e8dcc8;
+    border-radius: 8px;
+    background: #fff;
+    color: var(--animal-text-color-body);
+    font-size: 13px;
+    font-family: var(--animal-font-family);
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+
+  .animal-select-search-input:focus {
+    border-color: var(--animal-primary-color);
+  }
+
+  .animal-select-clear {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    color: #a09080;
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .animal-select-clear:hover {
+    color: var(--animal-text-color-body);
+  }
+
+  .animal-select-not-found {
+    padding: 12px 30px;
+    color: #a09080;
+    font-size: 13px;
+    text-align: center;
+    white-space: nowrap;
   }
 
   .animal-select-item {
@@ -1359,6 +1448,7 @@
     outline: none;
     cursor: pointer;
     white-space: nowrap;
+    list-style: none;
   }
 
   .animal-select-item-indicator {
@@ -1370,7 +1460,8 @@
   }
 
   .animal-select-item:hover,
-  .animal-select-item[data-state="checked"] {
+  .animal-select-item-selected,
+  .animal-select-item-active {
     font-weight: 700;
   }
 
@@ -1386,7 +1477,7 @@
     animation: animal-cursor-slide-in 0.5s ease-out forwards;
   }
 
-  .animal-select-item[data-state="checked"]::after {
+  .animal-select-item-selected::after {
     content: "";
     position: absolute;
     left: 20px;
@@ -1672,7 +1763,7 @@
      colors (dedup of upstream's 14 near-identical .pattern-* rules). */
   .animal-card-pattern {
     background:
-      radial-gradient(circle, var(--animal-card-pattern-dot1) 1.5px, transparent 1.5px),
+      radial-gradient(circle, var(--animal-card-pattern-dot1) 1.4px, transparent 1.4px),
       radial-gradient(circle, var(--animal-card-pattern-dot2) 1px, transparent 1px),
       var(--animal-card-pattern-bg);
     background-size: 28px 28px, 14px 14px;
@@ -1795,6 +1886,12 @@
     flex-direction: column;
     outline: none;
     animation: animal-zoom-in 0.3s ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animal-modal {
+      animation: none;
+    }
   }
 
   /* default variant: rounded rectangle */
@@ -5815,6 +5912,14 @@
       #fff0e8;
   }
 
+  /* dots-gray: white base + light-grey dots */
+  .animal-background--dots-gray {
+    background:
+      radial-gradient(circle, rgba(140, 140, 140, 0.18) 1.4px, transparent 1.4px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(190, 190, 190, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #ffffff;
+  }
+
   /* sprinkles: cylindrical candy rods — three mutually-prime SVG tiles, LCM repeat ≈ 220000×280000 px */
   .animal-background--sprinkles {
     background:
@@ -5827,30 +5932,6 @@
       #fdf3e3;
   }
 
-  /* ============================================================
-     Cursor — raindrop type (type='raindrop')
-     Inline SVG droplet cursor, hotspot 16 6.
-     Force mode (default): applies to container + all descendants.
-     Scoped mode: container only (descendants keep semantic cursor
-     from the existing .animal-cursor--scoped * rule).
-     The .animal-cursor--force class is a semantic marker only;
-     our fork keeps the PNG asset for the default cursor.
-     ============================================================ */
-  .animal-cursor--raindrop,
-  .animal-cursor--raindrop:not(.animal-cursor--scoped) * {
-    cursor:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M16 6s-9 12-9 16a9 9 0 0 0 18 0c0-4-9-16-9-16z' fill='%2374ccff' stroke='%232e86ab' stroke-width='1.5'/%3E%3Cellipse cx='12.5' cy='19' rx='2' ry='3.2' fill='%23dff4ff' transform='rotate(-18 12.5 19)'/%3E%3C/svg%3E")
-          16 6,
-      default !important;
-  }
-
-  /* scoped raindrop: container only */
-  .animal-cursor.animal-cursor--scoped.animal-cursor--raindrop {
-    cursor:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M16 6s-9 12-9 16a9 9 0 0 0 18 0c0-4-9-16-9-16z' fill='%2374ccff' stroke='%232e86ab' stroke-width='1.5'/%3E%3Cellipse cx='12.5' cy='19' rx='2' ry='3.2' fill='%23dff4ff' transform='rotate(-18 12.5 19)'/%3E%3C/svg%3E")
-          16 6,
-      default !important;
-  }
 }
 
   /* ================================================

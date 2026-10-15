@@ -133,9 +133,13 @@ export const Drawer: React.FC<DrawerProps> = ({
         return undefined;
     }, [open]);
 
-    // Push background depth effect
+    // Push background depth effect — no filter:blur (non-composited; causes first-open stall)
     useEffect(() => {
         if (!open || !pushBackground) return;
+        // Skip push under reduced-motion: scale/translate is exactly the motion this setting suppresses
+        if (typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            return;
+        }
 
         if (restoreTransitionRafRef.current !== null) {
             cancelAnimationFrame(restoreTransitionRafRef.current);
@@ -145,9 +149,9 @@ export const Drawer: React.FC<DrawerProps> = ({
         const pushed: Array<{
             el: HTMLElement;
             transform: string;
-            filter: string;
             borderRadius: string;
             overflow: string;
+            willChange: string;
             transition: string;
         }> = [];
 
@@ -164,19 +168,19 @@ export const Drawer: React.FC<DrawerProps> = ({
             pushed.push({
                 el,
                 transform: el.style.transform,
-                filter: el.style.filter,
                 borderRadius: el.style.borderRadius,
                 overflow: el.style.overflow,
+                willChange: el.style.willChange,
                 transition: el.style.transition,
             });
-            el.style.transition =
-                'transform 0.36s cubic-bezier(0.2, 0, 0.2, 1), filter 0.36s ease, border-radius 0.36s ease';
+            // will-change before the transition so layer promotion happens before animation starts
+            el.style.willChange = 'transform';
+            el.style.transition = 'transform 0.36s cubic-bezier(0.2, 0, 0.2, 1), border-radius 0.36s ease';
         });
 
         const rafId = requestAnimationFrame(() => {
             pushed.forEach(({ el }) => {
                 el.style.transform = 'scale(0.94)';
-                el.style.filter = 'blur(1px)';
                 el.style.borderRadius = '14px';
                 el.style.overflow = 'hidden';
             });
@@ -188,11 +192,11 @@ export const Drawer: React.FC<DrawerProps> = ({
                 cancelAnimationFrame(restoreTransitionRafRef.current);
                 restoreTransitionRafRef.current = null;
             }
-            pushed.forEach(({ el, transform, filter, borderRadius, overflow }) => {
+            pushed.forEach(({ el, transform, borderRadius, overflow, willChange }) => {
                 el.style.transform = transform;
-                el.style.filter = filter;
                 el.style.borderRadius = borderRadius;
                 el.style.overflow = overflow;
+                el.style.willChange = willChange;
             });
             restoreTransitionRafRef.current = requestAnimationFrame(() => {
                 pushed.forEach(({ el, transition }) => {
