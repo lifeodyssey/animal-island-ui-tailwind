@@ -64,11 +64,12 @@ test('runtime style entry is Tailwind CSS, not Less modules', () => {
 });
 
 test('Radix primitives back the headless interactive components', () => {
+  // Select uses a custom headless combobox (not @radix-ui/react-select) to
+  // support showSearch / filterOption, which Radix Select does not expose.
   const expectedImports = {
     'src/components/Modal/Modal.tsx': '@radix-ui/react-dialog',
     'src/components/Switch/Switch.tsx': '@radix-ui/react-switch',
     'src/components/Checkbox/Checkbox.tsx': '@radix-ui/react-checkbox',
-    'src/components/Select/Select.tsx': '@radix-ui/react-select',
     'src/components/Tabs/Tabs.tsx': '@radix-ui/react-tabs',
     'src/components/Collapse/Collapse.tsx': '@radix-ui/react-accordion',
   };
@@ -76,6 +77,9 @@ test('Radix primitives back the headless interactive components', () => {
   for (const [path, importName] of Object.entries(expectedImports)) {
     assert.match(read(path), new RegExp(importName.replaceAll('/', '\\/')));
   }
+
+  // Select must NOT import Radix select (it's a custom implementation).
+  assert.doesNotMatch(read('src/components/Select/Select.tsx'), /@radix-ui\/react-select/);
 });
 
 test('Tailwind token file preserves the animal-island design variables', () => {
