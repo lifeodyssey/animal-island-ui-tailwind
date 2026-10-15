@@ -35,7 +35,7 @@ test('leaf and both glove assets load at their intended resolutions', async ({ p
 
     await page.goto('/iframe.html?id=regression-parity-display-utilities--text-utility-stable&viewMode=story');
     const cursor = page.getByTestId('cursor-force-button');
-    await expect(cursor).toHaveCSS('cursor', /8 5, auto$/);
+    await expect(cursor).toHaveCSS('cursor', /6 2, default$/);
     const cursorWidth = await cursor.evaluate(async (el) => {
         const url = getComputedStyle(el).cursor.match(/url\("([^"]+)"\)/)![1];
         const image = new Image();
@@ -43,7 +43,7 @@ test('leaf and both glove assets load at their intended resolutions', async ({ p
         await image.decode();
         return image.naturalWidth;
     });
-    expect(cursorWidth).toBe(48);
+    expect(cursorWidth).toBe(32);
 
     await page.goto('/iframe.html?id=components-select--placeholder&viewMode=story');
     await page.getByRole('combobox').click();

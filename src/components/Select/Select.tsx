@@ -73,6 +73,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
         const [open, setOpen] = useState(false);
         const [searchText, setSearchText] = useState('');
         const [activeIndex, setActiveIndex] = useState(-1);
+        const [dropdownLeft, setDropdownLeft] = useState(0);
 
         const wrapperRef = useRef<HTMLDivElement>(null);
         const searchRef = useRef<HTMLInputElement>(null);
@@ -133,6 +134,13 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
             document.addEventListener('pointerdown', onPointerDown);
             return () => document.removeEventListener('pointerdown', onPointerDown);
         }, [open, closeDropdown]);
+
+        // Collision detection: ensure glove has room on the left side
+        useEffect(() => {
+            if (!open || !wrapperRef.current) return;
+            const rect = wrapperRef.current.getBoundingClientRect();
+            setDropdownLeft(Math.max(0, 30 - rect.left));
+        }, [open]);
 
         // Focus search input when opened
         useEffect(() => {
@@ -199,6 +207,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                     type="button"
                     className={cn('animal-select-trigger', className)}
                     disabled={disabled}
+                    role="combobox"
                     data-state={open ? 'open' : 'closed'}
                     aria-haspopup="listbox"
                     aria-expanded={open}
@@ -234,7 +243,10 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                 </button>
 
                 {open && (
-                    <div className="animal-select-content">
+                    <div
+                        className="animal-select-content"
+                        style={dropdownLeft > 0 ? { left: dropdownLeft } : undefined}
+                    >
                         {showSearch && (
                             <div className="animal-select-search">
                                 <input

@@ -83,10 +83,11 @@ const highlightJSX = (code: string): React.ReactNode[] => {
     return renderTokens(code, tokens);
 };
 
-const SHELL_COMMANDS = /\b(npm|yarn|pnpm|npx|node|git|cd|ls|mkdir|rm|cp|mv|touch|chmod|chown|curl|wget|brew|pip|python|python3|bash|sh|echo|cat|grep|find|sed|awk|sort|uniq|xargs|tee|export|source)\b/;
+const SHELL_COMMANDS = /\b(npm|yarn|pnpm|npx|node|git|cd|ls|mkdir|rm|cp|mv|touch|chmod|chown|curl|wget|brew|pip|python|python3|bash)\b/;
 
+// Only commands that cannot be JS/TS identifiers at line-start to avoid false positives
 const looksLikeShell = (code: string): boolean =>
-    new RegExp('^\\s*' + SHELL_COMMANDS.source.slice(2, -2) + '\\b', 'm').test(code);
+    /^\s*(npm|yarn|pnpm|npx|node|git|cd|ls|mkdir|rm|cp|mv)\b/m.test(code);
 
 const highlightShell = (code: string): React.ReactNode[] => {
     const tokens: Token[] = [];
