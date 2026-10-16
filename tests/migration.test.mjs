@@ -68,7 +68,9 @@ test('Radix primitives back the headless interactive components', () => {
     'src/components/Modal/Modal.tsx': '@radix-ui/react-dialog',
     'src/components/Switch/Switch.tsx': '@radix-ui/react-switch',
     'src/components/Checkbox/Checkbox.tsx': '@radix-ui/react-checkbox',
-    'src/components/Select/Select.tsx': '@radix-ui/react-select',
+    // Select uses a custom combobox (not Radix) to support showSearch — Radix Select
+    // cannot render an input inside the trigger. The @radix-ui/react-select package
+    // remains a peerDependency for ecosystem compatibility but is not imported here.
     'src/components/Tabs/Tabs.tsx': '@radix-ui/react-tabs',
     'src/components/Collapse/Collapse.tsx': '@radix-ui/react-accordion',
   };
@@ -76,6 +78,10 @@ test('Radix primitives back the headless interactive components', () => {
   for (const [path, importName] of Object.entries(expectedImports)) {
     assert.match(read(path), new RegExp(importName.replaceAll('/', '\\/')));
   }
+
+  // Select must use custom combobox with useControllableState
+  assert.match(read('src/components/Select/Select.tsx'), /useControllableState/);
+  assert.doesNotMatch(read('src/components/Select/Select.tsx'), /@radix-ui\/react-select/);
 });
 
 test('Tailwind token file preserves the animal-island design variables', () => {

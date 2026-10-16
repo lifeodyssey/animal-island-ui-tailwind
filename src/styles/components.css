@@ -1,13 +1,48 @@
 @layer components {
-  /* Shared 48px glove cursor; hotspot is the raised fingertip. */
-  .animal-cursor,
-  .animal-cursor * {
+  /* Cursor: thick-outline rounded-corner arrow (32×32 inline SVG); hotspot is the tip at 8 5. */
+  .animal-cursor {
+    --animal-cursor-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M8.5 7.9L9.7 21.1Q10.0 23.8 11.6 21.6L13.1 19.8Q13.8 18.8 14.4 19.9L17.0 24.7Q17.8 26.1 19.2 25.3L19.6 25.1Q21.0 24.3 20.2 22.9L17.6 18.1Q17.0 17.1 18.2 17.0L20.5 16.7Q23.3 16.5 21.1 14.8L10.6 6.7Q8.2 4.8 8.5 7.9Z' fill='%23fff7e6' stroke='%23794f27' stroke-width='2.75' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E");
+    --animal-cursor-hotspot: 8 5;
+    --animal-selection-bg: #e9c46a;
+    --animal-selection-fg: #2b2620;
+  }
+
+  .animal-cursor--raindrop {
+    --animal-cursor-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M16 6s-9 12-9 16a9 9 0 0 0 18 0c0-4-9-16-9-16z' fill='%2374ccff' stroke='%232e86ab' stroke-width='1.5'/%3E%3Cellipse cx='12.5' cy='19' rx='2' ry='3.2' fill='%23dff4ff' transform='rotate(-18 12.5 19)'/%3E%3C/svg%3E");
+    --animal-cursor-hotspot: 16 6;
+    --animal-selection-bg: Highlight;
+    --animal-selection-fg: HighlightText;
+  }
+
+  .animal-cursor ::selection {
+    background: var(--animal-selection-bg);
+    color: var(--animal-selection-fg);
+  }
+
+  /* Force mode: all descendants use the custom cursor.
+     Default type falls back to `auto`; raindrop overrides to `default`. */
+  .animal-cursor--force,
+  .animal-cursor--force * {
     cursor:
-      url('../components/Cursor/assets/glove.png') 8 5,
+      var(--animal-cursor-img) var(--animal-cursor-hotspot),
       auto !important;
   }
 
+  /* Raindrop force: override fallback to `default`. */
+  .animal-cursor--raindrop.animal-cursor--force,
+  .animal-cursor--raindrop.animal-cursor--force * {
+    cursor:
+      var(--animal-cursor-img) var(--animal-cursor-hotspot),
+      default !important;
+  }
+
   /* Scoped mode: restore semantic cursors on interactive descendants. */
+  .animal-cursor.animal-cursor--scoped {
+    cursor:
+      var(--animal-cursor-img) var(--animal-cursor-hotspot),
+      default !important;
+  }
+
   .animal-cursor--scoped * {
     cursor: auto !important;
   }
@@ -1265,6 +1300,7 @@
     min-width: 140px;
     font-family: var(--animal-font-family);
     user-select: none;
+    -webkit-user-select: none;
   }
 
   .animal-select-trigger {
@@ -1289,36 +1325,80 @@
     background: #fffdf7;
   }
 
-  .animal-select-disabled .animal-select-trigger,
-  .animal-select-trigger[data-disabled] {
+  .animal-select-disabled .animal-select-trigger {
     cursor: not-allowed;
     background: #f5f5f0;
     opacity: 0.5;
   }
 
+  .animal-select-trigger--open .animal-select-arrow,
   .animal-select-trigger[data-state="open"] .animal-select-arrow {
     color: var(--animal-primary-color);
     transform: rotate(180deg);
   }
 
   .animal-select-placeholder {
+    flex: 1;
     color: #a09080;
     font-size: 14px;
     font-weight: 400;
-  }
-
-  .animal-select-trigger > span:first-child {
-    display: block;
-    color: var(--animal-text-color-body);
-    font-size: 14px;
-    font-weight: 600;
-    line-height: var(--animal-line-height-base);
+    text-align: left;
   }
 
   .animal-select-value {
+    flex: 1;
     color: var(--animal-text-color-body);
     font-size: 14px;
     font-weight: 600;
+    text-align: left;
+  }
+
+  .animal-select-search {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    color: #725d42;
+    background: transparent;
+    border: none;
+    outline: none;
+  }
+
+  .animal-select-search::placeholder {
+    color: #a09080;
+    font-weight: 400;
+  }
+
+  .animal-select-search:disabled {
+    cursor: not-allowed;
+  }
+
+  .animal-select-clear {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+    padding: 0;
+    color: #c4b89e;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    transition: all var(--animal-motion-duration-fast, 0.1s) ease;
+  }
+
+  .animal-select-clear:hover {
+    color: #725d42;
+    background: rgba(114, 93, 66, 0.1);
+  }
+
+  .animal-select-clear:focus-visible {
+    outline: 2px solid var(--animal-primary-color);
+    outline-offset: 1px;
   }
 
   .animal-select-arrow {
@@ -1328,6 +1408,16 @@
     transition: transform 0.2s ease;
   }
 
+  .animal-select-dropdown {
+    z-index: 1000;
+    padding: 12px 0;
+    border-radius: 28px;
+    background: #ffeea0;
+    overflow: visible;
+    animation: animal-dropdown-fade-in 0.2s ease forwards;
+  }
+
+  /* Kept for backward compat with Radix-rendered markup */
   .animal-select-content {
     z-index: 1000;
     width: max-content;
@@ -1340,9 +1430,17 @@
   }
 
   .animal-select-viewport {
-    /* Reserve space inside Radix's scrolling viewport for the outside glove. */
     margin-left: -30px;
     padding-left: 30px;
+  }
+
+  .animal-select-not-found {
+    padding: 10px 14px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #a09080;
+    text-align: center;
+    white-space: nowrap;
   }
 
   .animal-select-item {
@@ -1352,13 +1450,18 @@
     align-items: center;
     justify-content: center;
     min-height: 42px;
-    padding: 10px 30px 10px 28px;
+    padding: 10px 30px 10px 14px;
     color: var(--animal-text-color-body);
     font-size: 14px;
     font-weight: 500;
     outline: none;
     cursor: pointer;
     white-space: nowrap;
+  }
+
+  .animal-select-item-dot {
+    width: 16px;
+    font-size: 12px;
   }
 
   .animal-select-item-indicator {
@@ -1370,6 +1473,7 @@
   }
 
   .animal-select-item:hover,
+  .animal-select-item--active,
   .animal-select-item[data-state="checked"] {
     font-weight: 700;
   }
@@ -1386,6 +1490,7 @@
     animation: animal-cursor-slide-in 0.5s ease-out forwards;
   }
 
+  .animal-select-item-pill,
   .animal-select-item[data-state="checked"]::after {
     content: "";
     position: absolute;
@@ -1398,6 +1503,21 @@
     background: #ffcc00;
     opacity: 0.3;
     transform: translateY(-50%);
+  }
+
+  .animal-select-item-pill {
+    /* rendered as a child div, not a pseudo-element */
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    top: 56%;
+    z-index: -1;
+    height: 14px;
+    border-radius: 7px;
+    background: #ffcc00;
+    opacity: 0.3;
+    transform: translateY(-50%);
+    pointer-events: none;
   }
 
   .animal-tabs {
@@ -1672,7 +1792,7 @@
      colors (dedup of upstream's 14 near-identical .pattern-* rules). */
   .animal-card-pattern {
     background:
-      radial-gradient(circle, var(--animal-card-pattern-dot1) 1.5px, transparent 1.5px),
+      radial-gradient(circle, var(--animal-card-pattern-dot1) 1.4px, transparent 1.4px),
       radial-gradient(circle, var(--animal-card-pattern-dot2) 1px, transparent 1px),
       var(--animal-card-pattern-bg);
     background-size: 28px 28px, 14px 14px;
@@ -1851,6 +1971,12 @@
     align-items: center;
     justify-content: flex-end;
     gap: 12px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animal-modal {
+      animation: none;
+    }
   }
 
   .animal-divider {
@@ -5813,6 +5939,13 @@
       radial-gradient(circle, rgba(225, 140, 111, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
       radial-gradient(circle, rgba(255, 185, 160, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
       #fff0e8;
+  }
+
+  .animal-background--dots-gray {
+    background:
+      radial-gradient(circle, rgba(140, 140, 140, 0.18) 1.4px, transparent 1.4px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(190, 190, 190, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #ffffff;
   }
 
   /* sprinkles: cylindrical candy rods — three mutually-prime SVG tiles, LCM repeat ≈ 220000×280000 px */
