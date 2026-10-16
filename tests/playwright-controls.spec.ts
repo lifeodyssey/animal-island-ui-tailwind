@@ -35,6 +35,23 @@ const openRadixSelect = async ({
     }).toPass({ timeout: 10_000 });
 };
 
+/** Open a custom combobox Select (not Radix) by clicking its trigger. */
+const openCustomSelect = async ({
+    trigger,
+    dropdown,
+}: {
+    trigger: Locator;
+    dropdown: Locator;
+}) => {
+    await expect(async () => {
+        await trigger.scrollIntoViewIfNeeded();
+        await trigger.click();
+        await expect(trigger).toHaveClass(/animal-select-trigger--open/, { timeout: 1000 });
+        await expect(dropdown).toBeVisible({ timeout: 1000 });
+        await expect(dropdown.locator('.animal-select-item--active')).toHaveCount(1, { timeout: 1000 });
+    }).toPass({ timeout: 10_000 });
+};
+
 test.describe('reference controls parity', () => {
     test.beforeEach(async ({ page }) => {
         await page.goto(storyUrl);
@@ -96,8 +113,8 @@ test.describe('reference controls parity', () => {
         await expect(page.getByText('请选择水果')).toBeVisible();
         await expect(page.getByText('玫瑰')).toBeVisible();
 
-        const dropdown = page.locator('.animal-select-content');
-        await openRadixSelect({ page, trigger, dropdown });
+        const dropdown = selectDefault.locator('.animal-select-dropdown');
+        await openCustomSelect({ trigger, dropdown });
         await dropdown.locator('.animal-select-item').filter({ hasText: '鲷鱼' }).first().click({ force: true });
         await expect(page.getByText('当前选中: 鲷鱼')).toBeVisible();
     });
@@ -107,15 +124,15 @@ test.describe('reference controls parity', () => {
         await expect(page.getByTestId('select-empty-key-label')).toContainText('空键选项');
         const selectBox = page.getByTestId('select-empty-key');
         const trigger = selectBox.locator('.animal-select-trigger');
-        const dropdown = page.locator('.animal-select-content');
+        const dropdown = selectBox.locator('.animal-select-dropdown');
 
-        await openRadixSelect({ page, trigger, dropdown });
+        await openCustomSelect({ trigger, dropdown });
         await expect(dropdown.locator('.animal-select-item')).toHaveCount(2);
         await dropdown.locator('.animal-select-item').filter({ hasText: '普通选项' }).first().click({ force: true });
         await expect(page.getByTestId('select-empty-key-label')).toContainText('普通选项');
 
         // Re-open and select the first (empty key) option again.
-        await openRadixSelect({ page, trigger, dropdown });
+        await openCustomSelect({ trigger, dropdown });
         await expect(dropdown.locator('.animal-select-item')).toHaveCount(2);
         await dropdown.locator('.animal-select-item').filter({ hasText: '空键选项' }).first().click({ force: true });
         await expect(page.getByTestId('select-empty-key-label')).toContainText('空键选项');

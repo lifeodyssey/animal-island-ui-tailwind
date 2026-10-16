@@ -19,9 +19,18 @@
     color: var(--animal-selection-fg);
   }
 
-  /* Force mode: all descendants use the custom cursor. */
+  /* Force mode: all descendants use the custom cursor.
+     Default type falls back to `auto`; raindrop overrides to `default`. */
   .animal-cursor--force,
   .animal-cursor--force * {
+    cursor:
+      var(--animal-cursor-img) var(--animal-cursor-hotspot),
+      auto !important;
+  }
+
+  /* Raindrop force: override fallback to `default`. */
+  .animal-cursor--raindrop.animal-cursor--force,
+  .animal-cursor--raindrop.animal-cursor--force * {
     cursor:
       var(--animal-cursor-img) var(--animal-cursor-hotspot),
       default !important;
@@ -34,8 +43,7 @@
       default !important;
   }
 
-  .animal-cursor--scoped *,
-  .animal-cursor.animal-cursor--scoped * {
+  .animal-cursor--scoped * {
     cursor: auto !important;
   }
 
