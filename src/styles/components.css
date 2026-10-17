@@ -1,17 +1,52 @@
 @layer components {
-  /* Shared 48px glove cursor; hotspot is the raised fingertip. */
-  .animal-cursor,
-  .animal-cursor * {
-    cursor:
-      url('../components/Cursor/assets/glove.png') 8 5,
-      auto !important;
+  /* ============================================================
+     Cursor — inline SVG cursors, CSS custom property architecture
+     default: thick-stroke rounded arrow, 32×32, hotspot 8 5
+     raindrop: blue droplet, 32×32, hotspot 16 6
+     All cursors are inline SVGs; no external image assets.
+     ============================================================ */
+
+  .animal-cursor {
+    --animal-cursor-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M8.5 7.9L9.7 21.1Q10.0 23.8 11.6 21.6L13.1 19.8Q13.8 18.8 14.4 19.9L17.0 24.7Q17.8 26.1 19.2 25.3L19.6 25.1Q21.0 24.3 20.2 22.9L17.6 18.1Q17.0 17.1 18.2 17.0L20.5 16.7Q23.3 16.5 21.1 14.8L10.6 6.7Q8.2 4.8 8.5 7.9Z' fill='%23fff7e6' stroke='%23794f27' stroke-width='2.75' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E");
+    --animal-cursor-hotspot: 8 5;
+    --animal-selection-bg: #e9c46a;
+    --animal-selection-fg: #2b2620;
   }
 
-  /* Scoped mode: restore semantic cursors on interactive descendants. */
-  .animal-cursor--scoped * {
+  .animal-cursor--raindrop {
+    --animal-cursor-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M16 6s-9 12-9 16a9 9 0 0 0 18 0c0-4-9-16-9-16z' fill='%2374ccff' stroke='%232e86ab' stroke-width='1.5'/%3E%3Cellipse cx='12.5' cy='19' rx='2' ry='3.2' fill='%23dff4ff' transform='rotate(-18 12.5 19)'/%3E%3C/svg%3E");
+    --animal-cursor-hotspot: 16 6;
+    --animal-selection-bg: Highlight;
+    --animal-selection-fg: HighlightText;
+  }
+
+  .animal-cursor ::selection {
+    background: var(--animal-selection-bg);
+    color: var(--animal-selection-fg);
+  }
+
+  /* Force mode (default): apply custom cursor to container + all descendants */
+  .animal-cursor--force,
+  .animal-cursor--force * {
+    cursor:
+      var(--animal-cursor-img) var(--animal-cursor-hotspot),
+      default !important;
+  }
+
+  /* Scoped mode: container uses custom cursor */
+  .animal-cursor.animal-cursor--scoped {
+    cursor:
+      var(--animal-cursor-img) var(--animal-cursor-hotspot),
+      default !important;
+  }
+
+  /* Scoped: restore auto for descendants */
+  .animal-cursor--scoped *,
+  .animal-cursor.animal-cursor--scoped * {
     cursor: auto !important;
   }
 
+  /* Scoped: restore pointer for interactive elements */
   .animal-cursor--scoped a[href],
   .animal-cursor--scoped button,
   .animal-cursor--scoped [role="button"],
@@ -24,11 +59,11 @@
   .animal-cursor--scoped input[type="reset"],
   .animal-cursor--scoped input[type="checkbox"],
   .animal-cursor--scoped input[type="radio"],
-  .animal-cursor--scoped input[type="range"],
-  .animal-cursor--scoped [data-animal-cursor="pointer"] {
+  .animal-cursor--scoped [data-cursor="pointer"] {
     cursor: pointer !important;
   }
 
+  /* Scoped: restore text cursor for inputs */
   .animal-cursor--scoped input[type="text"],
   .animal-cursor--scoped input[type="search"],
   .animal-cursor--scoped input[type="email"],
@@ -40,6 +75,7 @@
     cursor: text !important;
   }
 
+  /* Scoped: disabled state */
   .animal-cursor--scoped [disabled],
   .animal-cursor--scoped [aria-disabled="true"] {
     cursor: not-allowed !important;
@@ -1672,7 +1708,7 @@
      colors (dedup of upstream's 14 near-identical .pattern-* rules). */
   .animal-card-pattern {
     background:
-      radial-gradient(circle, var(--animal-card-pattern-dot1) 1.5px, transparent 1.5px),
+      radial-gradient(circle, var(--animal-card-pattern-dot1) 1.4px, transparent 1.4px),
       radial-gradient(circle, var(--animal-card-pattern-dot2) 1px, transparent 1px),
       var(--animal-card-pattern-bg);
     background-size: 28px 28px, 14px 14px;
@@ -1851,6 +1887,14 @@
     align-items: center;
     justify-content: flex-end;
     gap: 12px;
+  }
+
+  /* prefers-reduced-motion: reduce — scale(0.92) → scale(1) zoom is motion, drop it.
+     The mask's opacity fade is not motion and is kept. */
+  @media (prefers-reduced-motion: reduce) {
+    .animal-modal {
+      animation: none;
+    }
   }
 
   .animal-divider {
@@ -5710,7 +5754,7 @@
   /* default — cream dots */
   .animal-background--default {
     background:
-      radial-gradient(circle, rgba(196, 184, 158, 0.15) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(196, 184, 158, 0.15) 1.4px, transparent 1.4px) 0 0 / 28px 28px,
       radial-gradient(circle, rgba(196, 184, 158, 0.1) 1px, transparent 1px) 7px 7px / 14px 14px,
       var(--animal-bg-color-content);
   }
@@ -5727,7 +5771,7 @@
   /* dark-green dots (original default) */
   .animal-background--dots-dark-green {
     background:
-      radial-gradient(circle, rgba(90, 160, 90, 0.22) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(90, 160, 90, 0.22) 1.4px, transparent 1.4px) 0 0 / 28px 28px,
       radial-gradient(circle, rgba(140, 200, 140, 0.15) 1px, transparent 1px) 7px 7px / 14px 14px,
       #bfe3bf;
   }
@@ -5744,75 +5788,83 @@
   /* 12-color dots-* matching Card pattern-* */
   .animal-background--dots-pink {
     background:
-      radial-gradient(circle, rgba(248, 166, 178, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
-      radial-gradient(circle, rgba(255, 200, 210, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      radial-gradient(circle, rgba(248, 166, 178, 0.26) 1.4px, transparent 1.4px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(255, 200, 210, 0.18) 1px, transparent 1px) 7px 7px / 14px 14px,
       #fde4e8;
   }
   .animal-background--dots-purple {
     background:
-      radial-gradient(circle, rgba(183, 125, 238, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(183, 125, 238, 0.18) 1.4px, transparent 1.4px) 0 0 / 28px 28px,
       radial-gradient(circle, rgba(220, 180, 255, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
       #f0e8ff;
   }
   .animal-background--dots-blue {
     background:
-      radial-gradient(circle, rgba(136, 157, 240, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(136, 157, 240, 0.18) 1.4px, transparent 1.4px) 0 0 / 28px 28px,
       radial-gradient(circle, rgba(180, 195, 255, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
       #e8edff;
   }
   .animal-background--dots-yellow {
     background:
-      radial-gradient(circle, rgba(247, 205, 103, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
-      radial-gradient(circle, rgba(255, 230, 160, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      radial-gradient(circle, rgba(247, 205, 103, 0.26) 1.4px, transparent 1.4px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(255, 230, 160, 0.18) 1px, transparent 1px) 7px 7px / 14px 14px,
       #fff8e0;
   }
   .animal-background--dots-orange {
     background:
-      radial-gradient(circle, rgba(229, 146, 102, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(229, 146, 102, 0.18) 1.4px, transparent 1.4px) 0 0 / 28px 28px,
       radial-gradient(circle, rgba(255, 190, 150, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
       #fff0e8;
   }
   .animal-background--dots-teal {
     background:
-      radial-gradient(circle, rgba(130, 213, 187, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
-      radial-gradient(circle, rgba(170, 235, 210, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      radial-gradient(circle, rgba(130, 213, 187, 0.26) 1.4px, transparent 1.4px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(170, 235, 210, 0.18) 1px, transparent 1px) 7px 7px / 14px 14px,
       #e8faf5;
   }
   .animal-background--dots-green {
     background:
-      radial-gradient(circle, rgba(138, 198, 138, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(138, 198, 138, 0.18) 1.4px, transparent 1.4px) 0 0 / 28px 28px,
       radial-gradient(circle, rgba(180, 220, 180, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
       #e8f5e8;
   }
   .animal-background--dots-red {
     background:
-      radial-gradient(circle, rgba(252, 115, 109, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(252, 115, 109, 0.18) 1.4px, transparent 1.4px) 0 0 / 28px 28px,
       radial-gradient(circle, rgba(255, 160, 155, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
       #ffe8e8;
   }
   .animal-background--dots-lime-green {
     background:
-      radial-gradient(circle, rgba(209, 218, 73, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
-      radial-gradient(circle, rgba(230, 240, 130, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      radial-gradient(circle, rgba(209, 218, 73, 0.26) 1.4px, transparent 1.4px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(230, 240, 130, 0.18) 1px, transparent 1px) 7px 7px / 14px 14px,
       #f5f8e0;
   }
   .animal-background--dots-yellow-green {
     background:
-      radial-gradient(circle, rgba(236, 223, 82, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
-      radial-gradient(circle, rgba(255, 245, 140, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      radial-gradient(circle, rgba(236, 223, 82, 0.26) 1.4px, transparent 1.4px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(255, 245, 140, 0.18) 1px, transparent 1px) 7px 7px / 14px 14px,
       #fffde8;
   }
   .animal-background--dots-brown {
     background:
-      radial-gradient(circle, rgba(154, 131, 90, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(154, 131, 90, 0.18) 1.4px, transparent 1.4px) 0 0 / 28px 28px,
       radial-gradient(circle, rgba(190, 165, 120, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
       #f5f0e0;
   }
   .animal-background--dots-warm-peach-pink {
     background:
-      radial-gradient(circle, rgba(225, 140, 111, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(225, 140, 111, 0.18) 1.4px, transparent 1.4px) 0 0 / 28px 28px,
       radial-gradient(circle, rgba(255, 185, 160, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
       #fff0e8;
+  }
+
+  /* dots-gray — white base + light grey two-layer dots */
+  .animal-background--dots-gray {
+    background:
+      radial-gradient(circle, rgba(140, 140, 140, 0.18) 1.4px, transparent 1.4px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(190, 190, 190, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #ffffff;
   }
 
   /* sprinkles: cylindrical candy rods — three mutually-prime SVG tiles, LCM repeat ≈ 220000×280000 px */
@@ -5827,30 +5879,6 @@
       #fdf3e3;
   }
 
-  /* ============================================================
-     Cursor — raindrop type (type='raindrop')
-     Inline SVG droplet cursor, hotspot 16 6.
-     Force mode (default): applies to container + all descendants.
-     Scoped mode: container only (descendants keep semantic cursor
-     from the existing .animal-cursor--scoped * rule).
-     The .animal-cursor--force class is a semantic marker only;
-     our fork keeps the PNG asset for the default cursor.
-     ============================================================ */
-  .animal-cursor--raindrop,
-  .animal-cursor--raindrop:not(.animal-cursor--scoped) * {
-    cursor:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M16 6s-9 12-9 16a9 9 0 0 0 18 0c0-4-9-16-9-16z' fill='%2374ccff' stroke='%232e86ab' stroke-width='1.5'/%3E%3Cellipse cx='12.5' cy='19' rx='2' ry='3.2' fill='%23dff4ff' transform='rotate(-18 12.5 19)'/%3E%3C/svg%3E")
-          16 6,
-      default !important;
-  }
-
-  /* scoped raindrop: container only */
-  .animal-cursor.animal-cursor--scoped.animal-cursor--raindrop {
-    cursor:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M16 6s-9 12-9 16a9 9 0 0 0 18 0c0-4-9-16-9-16z' fill='%2374ccff' stroke='%232e86ab' stroke-width='1.5'/%3E%3Cellipse cx='12.5' cy='19' rx='2' ry='3.2' fill='%23dff4ff' transform='rotate(-18 12.5 19)'/%3E%3C/svg%3E")
-          16 6,
-      default !important;
-  }
 }
 
   /* ================================================
