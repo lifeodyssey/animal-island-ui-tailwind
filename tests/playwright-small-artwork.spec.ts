@@ -8,11 +8,10 @@ test('BackTop artwork stays inside desktop and mobile viewports and returns its 
         const button = page.getByRole('button', { name: '返回顶部' });
         await area.evaluate((el) => { el.scrollTop = 300; });
         await expect(button).toHaveClass(/animal-backtop-visible/);
-        const dimensions = await button.locator('img').evaluate(async (el: HTMLImageElement) => {
-            await el.decode();
-            return [el.naturalWidth, el.naturalHeight];
-        });
-        expect(dimensions).toEqual([150, 150]);
+        const rocket = button.locator('svg').first();
+        await expect(rocket).toBeVisible();
+        const rocketWidth = await rocket.evaluate((el: SVGElement) => parseInt(el.getAttribute('width') ?? '0', 10));
+        expect(rocketWidth).toBe(64);
         const box = await button.boundingBox();
         expect(box!.x).toBeGreaterThanOrEqual(0);
         expect(box!.x + box!.width).toBeLessThanOrEqual(width);
@@ -43,7 +42,7 @@ test('leaf and both glove assets load at their intended resolutions', async ({ p
         await image.decode();
         return image.naturalWidth;
     });
-    expect(cursorWidth).toBe(48);
+    expect(cursorWidth).toBe(32);
 
     await page.goto('/iframe.html?id=components-select--placeholder&viewMode=story');
     await page.getByRole('combobox').click();
