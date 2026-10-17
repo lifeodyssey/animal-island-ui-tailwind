@@ -11,6 +11,10 @@ interface IconProps {
     'aria-hidden'?: boolean | 'true' | 'false';
 }
 
+interface StrokeIconProps extends IconProps {
+    strokeWidth?: number;
+}
+
 export const CloseIcon: React.FC<IconProps> = ({ size = 16, color = 'currentColor', className, ...rest }) => (
     <svg
         width={size}
@@ -166,5 +170,85 @@ export const EyeIcon: React.FC<IconProps> = ({ size = 16, color = 'currentColor'
             strokeLinejoin="round"
         />
         <circle cx="12" cy="12" r="3" stroke={color} strokeWidth="2" />
+    </svg>
+);
+
+export const RocketIcon: React.FC<IconProps> = ({ size = 48, className, ...rest }) => (
+    <svg
+        width={size}
+        height={size}
+        viewBox="0 0 48 48"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        stroke="#2A2A2A"
+        strokeWidth="3.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={className}
+        aria-hidden="true"
+        {...rest}
+    >
+        <path d="M24 6 C 16 6 14 18 14 26 L14 38 L34 38 L34 26 C 34 18 32 6 24 6 Z" fill="#FAEDCD" />
+        <circle cx="24" cy="22" r="5" fill="#2A9D8F" />
+        <path d="M14 30 L8 36 L8 42 L14 38" fill="#E76F51" />
+        <path d="M34 30 L40 36 L40 42 L34 38" fill="#E76F51" />
+        <path d="M18 42 L24 46 L30 42" fill="#E76F51" />
+    </svg>
+);
+
+export const ChevronLeftIcon: React.FC<StrokeIconProps> = ({ size = 24, color = 'currentColor', strokeWidth = 2, className, ...rest }) => (
+    <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={className}
+        {...rest}
+    >
+        <path
+            d="M15 18l-6-6 6-6"
+            stroke={color}
+            strokeWidth={strokeWidth}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+    </svg>
+);
+
+export const ChevronRightIcon: React.FC<StrokeIconProps> = ({ size = 24, color = 'currentColor', strokeWidth = 2, className, ...rest }) => (
+    <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={className}
+        {...rest}
+    >
+        <path
+            d="M9 18l6-6-6-6"
+            stroke={color}
+            strokeWidth={strokeWidth}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+    </svg>
+);
+
+export const CalendarIcon: React.FC<StrokeIconProps> = ({ size = 24, color = 'currentColor', strokeWidth = 2, className, ...rest }) => (
+    <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={className}
+        {...rest}
+    >
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke={color} strokeWidth={strokeWidth} />
+        <line x1="16" y1="2" x2="16" y2="6" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" />
+        <line x1="8" y1="2" x2="8" y2="6" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" />
+        <line x1="3" y1="10" x2="21" y2="10" stroke={color} strokeWidth={strokeWidth} />
     </svg>
 );

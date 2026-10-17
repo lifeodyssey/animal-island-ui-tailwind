@@ -209,3 +209,6 @@ export type { PaginationProps, PaginationVariant } from './components/Pagination
 
 export { Background } from './components/Background';
 export type { BackgroundProps, BackgroundType } from './components/Background';
+
+export { Calendar } from './components/Calendar';
+export type { CalendarProps, CalendarEvent, CalendarColor } from './components/Calendar';

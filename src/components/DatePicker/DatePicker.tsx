@@ -1,5 +1,9 @@
 import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat.js';
 import { cn } from '../../utils/cn';
+
+dayjs.extend(customParseFormat);
 
 export type DatePickerSize = 'small' | 'middle' | 'large';
 
@@ -79,22 +83,15 @@ const pad = (n: number) => `${n}`.padStart(2, '0');
 
 const parseValue = (value: string | null | undefined): Date | null => {
     if (!value) return null;
-    const match = /^(\d{4})-(\d{1,2})(?:-(\d{1,2}))?$/.exec(value);
-    if (!match || Number(match[2]) > 12) return null;
-    const date = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3] ?? 1));
-    return Number.isNaN(date.getTime()) ? null : date;
+    const parsed = dayjs(value, ['YYYY-MM-DD', 'YYYY-M-D', 'YYYY-MM'], true);
+    if (!parsed.isValid()) return null;
+    return parsed.toDate();
 };
 
 const toValue = (date: Date) => `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 const toMonthValue = (date: Date) => `${date.getFullYear()}-${pad(date.getMonth() + 1)}`;
 
-const formatDate = (date: Date, format: string) =>
-    format
-        .replace('YYYY', `${date.getFullYear()}`)
-        .replace('MM', pad(date.getMonth() + 1))
-        .replace('DD', pad(date.getDate()))
-        .replace('M', `${date.getMonth() + 1}`)
-        .replace('D', `${date.getDate()}`);
+const formatDate = (date: Date, format: string) => dayjs(date).format(format);
 
 const isSameDay = (a: Date, b: Date) =>
     a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();

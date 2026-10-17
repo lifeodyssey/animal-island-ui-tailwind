@@ -136,6 +136,7 @@ export const Drawer: React.FC<DrawerProps> = ({
     // Push background depth effect
     useEffect(() => {
         if (!open || !pushBackground) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
         if (restoreTransitionRafRef.current !== null) {
             cancelAnimationFrame(restoreTransitionRafRef.current);
@@ -145,7 +146,7 @@ export const Drawer: React.FC<DrawerProps> = ({
         const pushed: Array<{
             el: HTMLElement;
             transform: string;
-            filter: string;
+            willChange: string;
             borderRadius: string;
             overflow: string;
             transition: string;
@@ -164,19 +165,19 @@ export const Drawer: React.FC<DrawerProps> = ({
             pushed.push({
                 el,
                 transform: el.style.transform,
-                filter: el.style.filter,
+                willChange: el.style.willChange,
                 borderRadius: el.style.borderRadius,
                 overflow: el.style.overflow,
                 transition: el.style.transition,
             });
             el.style.transition =
-                'transform 0.36s cubic-bezier(0.2, 0, 0.2, 1), filter 0.36s ease, border-radius 0.36s ease';
+                'transform 0.36s cubic-bezier(0.2, 0, 0.2, 1), border-radius 0.36s ease';
+            el.style.willChange = 'transform';
         });
 
         const rafId = requestAnimationFrame(() => {
             pushed.forEach(({ el }) => {
                 el.style.transform = 'scale(0.94)';
-                el.style.filter = 'blur(1px)';
                 el.style.borderRadius = '14px';
                 el.style.overflow = 'hidden';
             });
@@ -188,15 +189,15 @@ export const Drawer: React.FC<DrawerProps> = ({
                 cancelAnimationFrame(restoreTransitionRafRef.current);
                 restoreTransitionRafRef.current = null;
             }
-            pushed.forEach(({ el, transform, filter, borderRadius, overflow }) => {
+            pushed.forEach(({ el, transform, borderRadius, overflow }) => {
                 el.style.transform = transform;
-                el.style.filter = filter;
                 el.style.borderRadius = borderRadius;
                 el.style.overflow = overflow;
             });
             restoreTransitionRafRef.current = requestAnimationFrame(() => {
-                pushed.forEach(({ el, transition }) => {
+                pushed.forEach(({ el, transition, willChange }) => {
                     el.style.transition = transition;
+                    el.style.willChange = willChange;
                 });
                 restoreTransitionRafRef.current = null;
             });

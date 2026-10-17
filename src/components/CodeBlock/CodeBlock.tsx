@@ -38,8 +38,46 @@ const HIGHLIGHT_PATTERNS: { regex: RegExp; color: string }[] = [
     { regex: /[{}[\]();,]/g, color: COLORS.operator },
 ];
 
+interface HighlightToken {
+    start: number;
+    end: number;
+    color: string;
+    italic?: boolean;
+}
+
+const renderTokens = (code: string, tokens: HighlightToken[]): React.ReactNode[] => {
+    const result: React.ReactNode[] = [];
+    let pos = 0;
+
+    for (const token of tokens) {
+        if (token.start < pos) continue;
+        if (token.start > pos) {
+            result.push(<span key={`t${pos}`} style={{ color: COLORS.default }}>{code.slice(pos, token.start)}</span>);
+        }
+        result.push(
+            <span
+                key={`s${token.start}`}
+                style={{
+                    color: token.color,
+                    fontStyle: token.italic ? 'italic' : undefined,
+                    fontWeight: token.italic ? 400 : undefined,
+                }}
+            >
+                {code.slice(token.start, token.end)}
+            </span>
+        );
+        pos = token.end;
+    }
+
+    if (pos < code.length) {
+        result.push(<span key={`e${pos}`} style={{ color: COLORS.default }}>{code.slice(pos)}</span>);
+    }
+
+    return result;
+};
+
 const highlightJSX = (code: string): React.ReactNode[] => {
-    const tokens: { start: number; end: number; color: string }[] = [];
+    const tokens: HighlightToken[] = [];
 
     const addPattern = (regex: RegExp, color: string) => {
         let match;
@@ -55,24 +93,34 @@ const highlightJSX = (code: string): React.ReactNode[] => {
 
     tokens.sort((a, b) => a.start - b.start);
 
-    const result: React.ReactNode[] = [];
-    let pos = 0;
-
-    for (const token of tokens) {
-        if (token.start < pos) continue;
-        if (token.start > pos) {
-            result.push(<span key={`t${pos}`} style={{ color: COLORS.default }}>{code.slice(pos, token.start)}</span>);
-        }
-        result.push(<span key={`s${token.start}`} style={{ color: token.color }}>{code.slice(token.start, token.end)}</span>);
-        pos = token.end;
-    }
-
-    if (pos < code.length) {
-        result.push(<span key={`e${pos}`} style={{ color: COLORS.default }}>{code.slice(pos)}</span>);
-    }
-
-    return result;
+    return renderTokens(code, tokens);
 };
+
+const highlightShell = (code: string): React.ReactNode[] => {
+    const tokens: HighlightToken[] = [];
+
+    const addPattern = (regex: RegExp, color: string, italic = false) => {
+        let match;
+        const re = new RegExp(regex.source, regex.flags.includes('g') ? regex.flags : regex.flags + 'g');
+        while ((match = re.exec(code)) !== null) {
+            tokens.push({ start: match.index, end: match.index + match[0].length, color, italic });
+        }
+    };
+
+    addPattern(/\/\/.*$/gm, COLORS.comment, true);
+    addPattern(/^\s*(npm|yarn|pnpm|npx|node|git|cd|ls|mkdir|rm|cp|mv)\b/gm, COLORS.jsx);
+    addPattern(
+        /(?<=\s)(install|add|remove|uninstall|run|start|dev|build|test|lint|publish|init|create|exec|global|link|upgrade|update|clone|commit|push|pull|checkout|branch|merge|rebase|status|log|diff)\b/g,
+        COLORS.string
+    );
+    addPattern(/(?<=\s)(-{1,2}[\w-]+)/g, COLORS.operator);
+
+    tokens.sort((a, b) => a.start - b.start);
+
+    return renderTokens(code, tokens);
+};
+
+const looksLikeShell = (code: string): boolean => /^\s*(npm|yarn|pnpm|npx|node|git|cd|ls|mkdir|rm|cp|mv)\b/m.test(code);
 
 const codeBlockStyle: React.CSSProperties = {
     boxSizing: 'border-box',
@@ -164,7 +212,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({ code, style, className, co
                 style={{ ...codeBlockStyle, ...(copyButtonSpacing ? { paddingRight: 96 } : null), ...preStyle }}
                 className={cn('animal-code-block', className)}
             >
-                {React.useMemo(() => highlightJSX(code), [code])}
+                {React.useMemo(() => looksLikeShell(code) ? highlightShell(code) : highlightJSX(code), [code])}
             </pre>
             {copyable && (
                 <button
