@@ -1,47 +1,78 @@
 @layer components {
-  /* Shared 48px glove cursor; hotspot is the raised fingertip. */
-  .animal-cursor,
-  .animal-cursor * {
-    cursor:
-      url('../components/Cursor/assets/glove.png') 8 5,
-      auto !important;
+  /* Default cursor: glove PNG, hotspot at raised fingertip (our fork deviation from upstream SVG arrow).
+     CSS variable architecture mirrors upstream so variants can override image+hotspot independently. */
+  .animal-cursor {
+    --animal-cursor-img: url('../components/Cursor/assets/glove.png');
+    --animal-cursor-hotspot: 8 5;
+    --animal-cursor-fallback: auto;
+    --animal-selection-bg: #e9c46a;
+    --animal-selection-fg: #2b2620;
   }
 
-  /* Scoped mode: restore semantic cursors on interactive descendants. */
-  .animal-cursor--scoped * {
+  .animal-cursor--raindrop {
+    --animal-cursor-fallback: default;
+    --animal-selection-bg: Highlight;
+    --animal-selection-fg: HighlightText;
+  }
+
+  /* All selection inside a Cursor container uses the variant's tokens */
+  .animal-cursor ::selection {
+    background: var(--animal-selection-bg);
+    color: var(--animal-selection-fg);
+  }
+
+  /* Force mode (default): applies custom cursor to container + all descendants */
+  .animal-cursor--force,
+  .animal-cursor--force * {
+    cursor:
+      var(--animal-cursor-img) var(--animal-cursor-hotspot),
+      var(--animal-cursor-fallback, auto) !important;
+  }
+
+  /* Scoped mode: apply cursor to container, restore semantics on descendants.
+     Doubled class selector (.animal-cursor.animal-cursor--scoped) raises specificity
+     above the blanket reset (.animal-cursor.animal-cursor--scoped * at 0,2,0). */
+  .animal-cursor.animal-cursor--scoped {
+    cursor:
+      var(--animal-cursor-img) var(--animal-cursor-hotspot),
+      var(--animal-cursor-fallback, auto) !important;
+  }
+
+  .animal-cursor--scoped *,
+  .animal-cursor.animal-cursor--scoped * {
     cursor: auto !important;
   }
 
-  .animal-cursor--scoped a[href],
-  .animal-cursor--scoped button,
-  .animal-cursor--scoped [role="button"],
-  .animal-cursor--scoped [role="link"],
-  .animal-cursor--scoped label[for],
-  .animal-cursor--scoped select,
-  .animal-cursor--scoped summary,
-  .animal-cursor--scoped input[type="button"],
-  .animal-cursor--scoped input[type="submit"],
-  .animal-cursor--scoped input[type="reset"],
-  .animal-cursor--scoped input[type="checkbox"],
-  .animal-cursor--scoped input[type="radio"],
-  .animal-cursor--scoped input[type="range"],
-  .animal-cursor--scoped [data-animal-cursor="pointer"] {
+  .animal-cursor.animal-cursor--scoped a[href],
+  .animal-cursor.animal-cursor--scoped button,
+  .animal-cursor.animal-cursor--scoped [role="button"],
+  .animal-cursor.animal-cursor--scoped [role="link"],
+  .animal-cursor.animal-cursor--scoped label[for],
+  .animal-cursor.animal-cursor--scoped select,
+  .animal-cursor.animal-cursor--scoped summary,
+  .animal-cursor.animal-cursor--scoped input[type="button"],
+  .animal-cursor.animal-cursor--scoped input[type="submit"],
+  .animal-cursor.animal-cursor--scoped input[type="reset"],
+  .animal-cursor.animal-cursor--scoped input[type="checkbox"],
+  .animal-cursor.animal-cursor--scoped input[type="radio"],
+  .animal-cursor.animal-cursor--scoped input[type="range"],
+  .animal-cursor.animal-cursor--scoped [data-animal-cursor="pointer"] {
     cursor: pointer !important;
   }
 
-  .animal-cursor--scoped input[type="text"],
-  .animal-cursor--scoped input[type="search"],
-  .animal-cursor--scoped input[type="email"],
-  .animal-cursor--scoped input[type="password"],
-  .animal-cursor--scoped input[type="number"],
-  .animal-cursor--scoped input[type="tel"],
-  .animal-cursor--scoped input[type="url"],
-  .animal-cursor--scoped textarea {
+  .animal-cursor.animal-cursor--scoped input[type="text"],
+  .animal-cursor.animal-cursor--scoped input[type="search"],
+  .animal-cursor.animal-cursor--scoped input[type="email"],
+  .animal-cursor.animal-cursor--scoped input[type="password"],
+  .animal-cursor.animal-cursor--scoped input[type="number"],
+  .animal-cursor.animal-cursor--scoped input[type="tel"],
+  .animal-cursor.animal-cursor--scoped input[type="url"],
+  .animal-cursor.animal-cursor--scoped textarea {
     cursor: text !important;
   }
 
-  .animal-cursor--scoped [disabled],
-  .animal-cursor--scoped [aria-disabled="true"] {
+  .animal-cursor.animal-cursor--scoped [disabled],
+  .animal-cursor.animal-cursor--scoped [aria-disabled="true"] {
     cursor: not-allowed !important;
   }
 
@@ -1400,6 +1431,68 @@
     transform: translateY(-50%);
   }
 
+  .animal-select-wrapper {
+    position: relative;
+  }
+
+  .animal-select-clear {
+    position: absolute;
+    right: 32px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: var(--animal-text-color-light, #8c6d4f);
+    font-size: 16px;
+    line-height: 1;
+    border-radius: 50%;
+    padding: 0;
+    z-index: 1;
+  }
+
+  .animal-select-wrapper:hover .animal-select-clear {
+    display: flex;
+  }
+
+  .animal-select-clear:hover {
+    color: var(--animal-text-color, #3d2c1e);
+    background: rgba(140, 109, 79, 0.1);
+  }
+
+  .animal-select-search-wrapper {
+    padding: 8px 8px 4px;
+  }
+
+  .animal-select-search-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6px 10px;
+    border: 1.5px solid var(--animal-border-color-light, #d6b896);
+    border-radius: var(--animal-radius-md, 10px);
+    background: var(--animal-bg-color, #fdf6ec);
+    color: var(--animal-text-color, #3d2c1e);
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+  }
+
+  .animal-select-search-input:focus {
+    border-color: var(--animal-primary-color, #2a9d8f);
+  }
+
+  .animal-select-not-found {
+    padding: 12px 16px;
+    color: var(--animal-text-color-light, #8c6d4f);
+    font-size: 13px;
+    text-align: center;
+  }
+
   .animal-tabs {
     overflow: hidden;
     border: var(--animal-border-width) solid var(--animal-border-color-light);
@@ -1672,7 +1765,7 @@
      colors (dedup of upstream's 14 near-identical .pattern-* rules). */
   .animal-card-pattern {
     background:
-      radial-gradient(circle, var(--animal-card-pattern-dot1) 1.5px, transparent 1.5px),
+      radial-gradient(circle, var(--animal-card-pattern-dot1) 1.4px, transparent 1.4px),
       radial-gradient(circle, var(--animal-card-pattern-dot2) 1px, transparent 1px),
       var(--animal-card-pattern-bg);
     background-size: 28px 28px, 14px 14px;
@@ -1851,6 +1944,12 @@
     align-items: center;
     justify-content: flex-end;
     gap: 12px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animal-modal {
+      animation: none;
+    }
   }
 
   .animal-divider {
@@ -5814,6 +5913,12 @@
       radial-gradient(circle, rgba(255, 185, 160, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
       #fff0e8;
   }
+  .animal-background--dots-gray {
+    background:
+      radial-gradient(circle, rgba(140, 140, 140, 0.18) 1.4px, transparent 1.4px) 0 0 / 28px 28px,
+      radial-gradient(circle, rgba(190, 190, 190, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+      #ffffff;
+  }
 
   /* sprinkles: cylindrical candy rods — three mutually-prime SVG tiles, LCM repeat ≈ 220000×280000 px */
   .animal-background--sprinkles {
@@ -6823,4 +6928,233 @@
     .animal-count-up-badge {
       animation: animal-countup-fade 0.25s cubic-bezier(0.4, 0, 0.2, 1) both;
     }
+  }
+
+  /* ── Calendar ─────────────────────────────────────────────────── */
+  .animal-calendar {
+    box-sizing: border-box;
+    background: var(--animal-bg-color, #fdf6ec);
+    border: var(--animal-border-width, 1.5px) solid var(--animal-border-color-light, #e8d5bc);
+    border-radius: var(--animal-radius-xl, 20px);
+    overflow: hidden;
+    font-family: var(--animal-font-family, inherit);
+    color: var(--animal-text-color, #3d2c1e);
+  }
+
+  .animal-calendar-fullscreen {
+    width: 100%;
+  }
+
+  .animal-calendar-card {
+    width: 320px;
+  }
+
+  .animal-calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px 10px;
+    border-bottom: var(--animal-border-width, 1.5px) solid var(--animal-border-color-light, #e8d5bc);
+    background: var(--animal-surface-color, #fffaf3);
+  }
+
+  .animal-calendar-header-left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .animal-calendar-icon {
+    color: var(--animal-primary-color, #2a9d8f);
+    flex-shrink: 0;
+  }
+
+  .animal-calendar-mode-btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--animal-text-color, #3d2c1e);
+    padding: 2px 6px;
+    border-radius: var(--animal-radius-sm, 6px);
+    font-family: inherit;
+    transition: background 0.15s;
+  }
+
+  .animal-calendar-mode-btn:hover {
+    background: var(--animal-hover-bg, rgba(42, 157, 143, 0.08));
+  }
+
+  .animal-calendar-header-right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .animal-calendar-nav-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: var(--animal-text-color-light, #8c6d4f);
+    border-radius: var(--animal-radius-sm, 6px);
+    transition: background 0.15s, color 0.15s;
+    padding: 0;
+  }
+
+  .animal-calendar-nav-btn:hover {
+    background: var(--animal-hover-bg, rgba(42, 157, 143, 0.08));
+    color: var(--animal-text-color, #3d2c1e);
+  }
+
+  .animal-calendar-body {
+    padding: 8px;
+  }
+
+  .animal-calendar-week-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-bottom: 4px;
+  }
+
+  .animal-calendar-week-cell {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--animal-text-color-light, #8c6d4f);
+    padding: 4px 0;
+  }
+
+  .animal-calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+  }
+
+  .animal-calendar-day-cell {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+    border-radius: var(--animal-radius-sm, 6px);
+    cursor: pointer;
+    min-height: 36px;
+    outline: none;
+    transition: background 0.15s;
+  }
+
+  .animal-calendar-fullscreen .animal-calendar-day-cell {
+    min-height: 60px;
+  }
+
+  .animal-calendar-day-cell:hover:not(.animal-calendar-day-disabled) {
+    background: var(--animal-hover-bg, rgba(42, 157, 143, 0.08));
+  }
+
+  .animal-calendar-day-cell:focus-visible {
+    box-shadow: 0 0 0 2px var(--animal-primary-color, #2a9d8f);
+  }
+
+  .animal-calendar-day-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 4px 2px;
+  }
+
+  .animal-calendar-day-number {
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+
+  .animal-calendar-day-extra {
+    width: 100%;
+    font-size: 11px;
+    margin-top: 2px;
+  }
+
+  .animal-calendar-day-outside .animal-calendar-day-number {
+    color: var(--animal-text-color-disabled, #c4a882);
+  }
+
+  .animal-calendar-day-today .animal-calendar-day-number {
+    background: var(--animal-primary-color, #2a9d8f);
+    color: #fff;
+  }
+
+  .animal-calendar-day-selected .animal-calendar-day-number {
+    background: var(--animal-accent-color, #e9c46a);
+    color: var(--animal-text-color, #3d2c1e);
+    font-weight: 700;
+  }
+
+  .animal-calendar-day-disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+
+  .animal-calendar-month-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    padding: 4px 0;
+  }
+
+  .animal-calendar-month-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 6px;
+    border-radius: var(--animal-radius-md, 10px);
+    cursor: pointer;
+    min-height: 48px;
+    outline: none;
+    transition: background 0.15s;
+  }
+
+  .animal-calendar-month-cell:hover {
+    background: var(--animal-hover-bg, rgba(42, 157, 143, 0.08));
+  }
+
+  .animal-calendar-month-cell:focus-visible {
+    box-shadow: 0 0 0 2px var(--animal-primary-color, #2a9d8f);
+  }
+
+  .animal-calendar-month-label {
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .animal-calendar-month-extra {
+    font-size: 11px;
+    margin-top: 2px;
+    color: var(--animal-text-color-light, #8c6d4f);
+  }
+
+  .animal-calendar-month-today .animal-calendar-month-label {
+    color: var(--animal-primary-color, #2a9d8f);
+    font-weight: 700;
+  }
+
+  .animal-calendar-month-selected {
+    background: var(--animal-accent-bg, rgba(233, 196, 106, 0.2));
+  }
+
+  .animal-calendar-month-selected .animal-calendar-month-label {
+    color: var(--animal-text-color, #3d2c1e);
+    font-weight: 700;
   }
