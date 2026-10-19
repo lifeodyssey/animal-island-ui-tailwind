@@ -168,3 +168,51 @@ export const EyeIcon: React.FC<IconProps> = ({ size = 16, color = 'currentColor'
         <circle cx="12" cy="12" r="3" stroke={color} strokeWidth="2" />
     </svg>
 );
+
+export const CalendarIcon: React.FC<IconProps> = ({ size = 16, color = 'currentColor', className, ...rest }) => (
+    <svg width={size} height={size} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"
+         className={className} {...rest}>
+        <rect x="1.5" y="2.5" width="13" height="12" rx="2" stroke={color} strokeWidth="1.5" />
+        <path d="M1.5 6.5h13" stroke={color} strokeWidth="1.5" />
+        <path d="M5 1v3M11 1v3" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+        <rect x="4" y="9" width="2" height="2" rx="0.5" fill={color} />
+        <rect x="7" y="9" width="2" height="2" rx="0.5" fill={color} />
+        <rect x="10" y="9" width="2" height="2" rx="0.5" fill={color} />
+    </svg>
+);
+
+export const ChevronLeftIcon: React.FC<IconProps> = ({ size = 16, color = 'currentColor', className, ...rest }) => (
+    <svg width={size} height={size} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"
+         className={className} {...rest}>
+        <path d="M10 4L6 8l4 4" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+);
+
+export const ChevronRightIcon: React.FC<IconProps> = ({ size = 16, color = 'currentColor', className, ...rest }) => (
+    <svg width={size} height={size} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"
+         className={className} {...rest}>
+        <path d="M6 4l4 4-4 4" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+);
+
+export const RocketIcon: React.FC<IconProps> = ({ size = 16, className, ...rest }) => (
+    <svg
+        viewBox="0 0 48 48"
+        xmlns="http://www.w3.org/2000/svg"
+        width={size}
+        height={size}
+        fill="none"
+        stroke="#2A2A2A"
+        strokeWidth="3.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={className}
+        {...rest}
+    >
+        <path d="M24 6 C 16 6 14 18 14 26 L14 38 L34 38 L34 26 C 34 18 32 6 24 6 Z" fill="#FAEDCD" />
+        <circle cx="24" cy="22" r="5" fill="#2A9D8F" />
+        <path d="M14 30 L8 36 L8 42 L14 38" fill="#E76F51" />
+        <path d="M34 30 L40 36 L40 42 L34 38" fill="#E76F51" />
+        <path d="M18 42 L24 46 L30 42" fill="#E76F51" />
+    </svg>
+);

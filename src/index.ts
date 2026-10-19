@@ -204,6 +204,9 @@ export type {
 export { TimePicker } from './components/TimePicker';
 export type { TimePickerProps, TimePickerSize, TimePickerStatus, TimePart } from './components/TimePicker';
 
+export { Calendar } from './components/Calendar';
+export type { CalendarProps, CalendarMode } from './components/Calendar';
+
 export { Pagination } from './components/Pagination';
 export type { PaginationProps, PaginationVariant } from './components/Pagination';
 

@@ -1,5 +1,9 @@
 import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
+import dayjs, { type Dayjs } from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { cn } from '../../utils/cn';
+
+dayjs.extend(customParseFormat);
 
 export type DatePickerSize = 'small' | 'middle' | 'large';
 
@@ -51,6 +55,7 @@ export interface DatePickerProps {
 
 const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六'];
 const MONTHS = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
+const GRID_CELLS = 42;
 
 const ChevronLeft = (
     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
@@ -75,33 +80,16 @@ const DoubleChevronRight = (
     </svg>
 );
 
-const pad = (n: number) => `${n}`.padStart(2, '0');
-
-const parseValue = (value: string | null | undefined): Date | null => {
+const parseValue = (value: string | null | undefined): Dayjs | null => {
     if (!value) return null;
-    const match = /^(\d{4})-(\d{1,2})(?:-(\d{1,2}))?$/.exec(value);
-    if (!match || Number(match[2]) > 12) return null;
-    const date = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3] ?? 1));
-    return Number.isNaN(date.getTime()) ? null : date;
+    const d = dayjs(value, ['YYYY-MM-DD', 'YYYY-MM'], true);
+    return d.isValid() ? d : null;
 };
 
-const toValue = (date: Date) => `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
-const toMonthValue = (date: Date) => `${date.getFullYear()}-${pad(date.getMonth() + 1)}`;
+const toValue = (date: Dayjs) => date.format('YYYY-MM-DD');
+const toMonthValue = (date: Dayjs) => date.format('YYYY-MM');
 
-const formatDate = (date: Date, format: string) =>
-    format
-        .replace('YYYY', `${date.getFullYear()}`)
-        .replace('MM', pad(date.getMonth() + 1))
-        .replace('DD', pad(date.getDate()))
-        .replace('M', `${date.getMonth() + 1}`)
-        .replace('D', `${date.getDate()}`);
-
-const isSameDay = (a: Date, b: Date) =>
-    a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
-
-const isSameMonth = (a: Date, b: Date) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth();
-
-const parseRange = (value: DatePickerValue): [Date, Date] | null => {
+const parseRange = (value: DatePickerValue): [Dayjs, Dayjs] | null => {
     if (!value || typeof value === 'string') return null;
     const start = parseValue(value[0]);
     const end = parseValue(value[1]);
@@ -133,17 +121,17 @@ export const DatePicker: React.FC<DatePickerProps> = ({
 }) => {
     const [innerValue, setInnerValue] = useState<DatePickerValue>(defaultValue ?? null);
     const [innerOpen, setInnerOpen] = useState(false);
-    const [viewDate, setViewDate] = useState(
-        () => parseValue(typeof defaultValue === 'string' ? defaultValue : null) ?? new Date()
+    const [viewDate, setViewDate] = useState<Dayjs>(
+        () => parseValue(typeof defaultValue === 'string' ? defaultValue : null) ?? dayjs()
     );
     const [mode, setMode] = useState<'date' | 'month' | 'year'>('date');
-    const [focusedDate, setFocusedDate] = useState(
-        () => parseValue(typeof defaultValue === 'string' ? defaultValue : null) ?? new Date()
+    const [focusedDate, setFocusedDate] = useState<Dayjs>(
+        () => parseValue(typeof defaultValue === 'string' ? defaultValue : null) ?? dayjs()
     );
-    const [rangeStart, setRangeStart] = useState<Date | null>(null);
-    const [rangeEnd, setRangeEnd] = useState<Date | null>(null);
-    const [hoverDate, setHoverDate] = useState<Date | null>(null);
-    const [pendingDate, setPendingDate] = useState<Date | null>(null);
+    const [rangeStart, setRangeStart] = useState<Dayjs | null>(null);
+    const [rangeEnd, setRangeEnd] = useState<Dayjs | null>(null);
+    const [hoverDate, setHoverDate] = useState<Dayjs | null>(null);
+    const [pendingDate, setPendingDate] = useState<Dayjs | null>(null);
     const [panelStyle, setPanelStyle] = useState<React.CSSProperties>({});
     const [mounted, setMounted] = useState(false);
     const [closing, setClosing] = useState(false);
@@ -207,8 +195,8 @@ export const DatePicker: React.FC<DatePickerProps> = ({
         setClosing(false);
         const current = valueRef.current;
         const base = range
-            ? (parseRange(current)?.[0] ?? new Date())
-            : (parseValue(typeof current === 'string' ? current : null) ?? new Date());
+            ? (parseRange(current)?.[0] ?? dayjs())
+            : (parseValue(typeof current === 'string' ? current : null) ?? dayjs());
         setViewDate(base);
         setFocusedDate(base);
         setMode(picker === 'month' && !range ? 'month' : 'date');
@@ -255,8 +243,8 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     }, [open, range]);
 
     const selectDate = useCallback(
-        (date: Date) => {
-            if (disabledDate?.(date)) return;
+        (date: Dayjs) => {
+            if (disabledDate?.(date.toDate())) return;
             if (!range) {
                 setPendingDate(date);
                 return;
@@ -265,7 +253,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                 setRangeStart(date);
                 return;
             }
-            if (date < rangeStart) {
+            if (date.isBefore(rangeStart, 'day')) {
                 setRangeStart(date);
                 return;
             }
@@ -282,19 +270,19 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     };
 
     const shiftView = (yearDelta: number, monthDelta = 0) => {
-        setViewDate(new Date(viewDate.getFullYear() + yearDelta, viewDate.getMonth() + monthDelta, 1));
+        setViewDate(viewDate.add(yearDelta, 'year').add(monthDelta, 'month').startOf('month'));
     };
 
     const handleToday = () => {
-        const today = new Date();
+        const today = dayjs();
         if (!range) {
-            setViewDate(new Date(today.getFullYear(), today.getMonth(), 1));
+            setViewDate(today.startOf('month'));
             setFocusedDate(today);
             setMode(picker === 'month' ? 'month' : 'date');
             setPendingDate(today);
             return;
         }
-        setViewDate(new Date(today.getFullYear(), today.getMonth(), 1));
+        setViewDate(today.startOf('month'));
         setFocusedDate(today);
         setRangeStart(null);
         setRangeEnd(null);
@@ -339,11 +327,11 @@ export const DatePicker: React.FC<DatePickerProps> = ({
         if (key === 'Enter' || key === ' ') {
             e.preventDefault();
             if (mode === 'date') {
-                if (disabledDate?.(focusedDate)) return;
+                if (disabledDate?.(focusedDate.toDate())) return;
                 if (range) {
                     if (!rangeStart) {
                         setRangeStart(focusedDate);
-                    } else if (focusedDate < rangeStart) {
+                    } else if (focusedDate.isBefore(rangeStart, 'day')) {
                         setRangeStart(focusedDate);
                     } else {
                         setRangeEnd(focusedDate);
@@ -353,14 +341,15 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                 setPendingDate(focusedDate);
             } else if (mode === 'month') {
                 if (picker === 'month' && !range) {
-                    setPendingDate(new Date(viewDate.getFullYear(), viewDate.getMonth(), 1));
+                    setPendingDate(viewDate.startOf('month'));
                 } else {
-                    setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth(), 1));
-                    setFocusedDate(new Date(viewDate.getFullYear(), viewDate.getMonth(), 1));
+                    const d = viewDate.startOf('month');
+                    setViewDate(d);
+                    setFocusedDate(d);
                     setMode('date');
                 }
             } else {
-                setFocusedDate(new Date(viewDate.getFullYear(), viewDate.getMonth(), 1));
+                setFocusedDate(viewDate.startOf('month'));
                 setMode('month');
             }
             return;
@@ -369,15 +358,15 @@ export const DatePicker: React.FC<DatePickerProps> = ({
             e.preventDefault();
             const delta = key === 'ArrowLeft' ? -1 : key === 'ArrowRight' ? 1 : key === 'ArrowUp' ? -7 : 7;
             if (mode === 'date') {
-                const next = new Date(focusedDate.getFullYear(), focusedDate.getMonth(), focusedDate.getDate() + delta);
+                const next = focusedDate.add(delta, 'day');
                 setFocusedDate(next);
-                if (!isSameMonth(next, viewDate)) setViewDate(new Date(next.getFullYear(), next.getMonth(), 1));
+                if (!next.isSame(viewDate, 'month')) setViewDate(next.startOf('month'));
             } else if (mode === 'month') {
-                const next = new Date(viewDate.getFullYear(), viewDate.getMonth() + delta, 1);
+                const next = viewDate.add(delta, 'month').startOf('month');
                 setViewDate(next);
                 setFocusedDate(next);
             } else {
-                const next = new Date(viewDate.getFullYear() + delta, viewDate.getMonth(), 1);
+                const next = viewDate.add(delta, 'year').startOf('month');
                 setViewDate(next);
                 setFocusedDate(next);
             }
@@ -387,38 +376,38 @@ export const DatePicker: React.FC<DatePickerProps> = ({
             e.preventDefault();
             const delta = key === 'PageUp' ? -1 : 1;
             if (mode === 'date') {
-                const next = new Date(viewDate.getFullYear(), viewDate.getMonth() + delta, 1);
+                const next = viewDate.add(delta, 'month').startOf('month');
                 setViewDate(next);
-                setFocusedDate(new Date(next.getFullYear(), next.getMonth(), focusedDate.getDate()));
+                setFocusedDate(next.date(focusedDate.date()));
             } else if (mode === 'month') {
-                const next = new Date(viewDate.getFullYear() + delta, viewDate.getMonth(), 1);
+                const next = viewDate.add(delta, 'year').startOf('month');
                 setViewDate(next);
                 setFocusedDate(next);
             } else {
-                const next = new Date(viewDate.getFullYear() + delta * 10, viewDate.getMonth(), 1);
+                const next = viewDate.add(delta * 10, 'year').startOf('month');
                 setViewDate(next);
                 setFocusedDate(next);
             }
         }
     };
 
-    const buildCells = (vDate: Date): Date[] => {
-        const vYear = vDate.getFullYear();
-        const vMonth = vDate.getMonth();
-        const cells: Date[] = [];
-        const startWeekday = new Date(vYear, vMonth, 1).getDay();
-        const daysInMonth = new Date(vYear, vMonth + 1, 0).getDate();
-        const daysInPrevMonth = new Date(vYear, vMonth, 0).getDate();
-        for (let i = startWeekday - 1; i >= 0; i--) cells.push(new Date(vYear, vMonth - 1, daysInPrevMonth - i));
-        for (let d = 1; d <= daysInMonth; d++) cells.push(new Date(vYear, vMonth, d));
-        for (let d = 1; cells.length < 42; d++) cells.push(new Date(vYear, vMonth + 1, d));
+    const buildCells = (vDate: Dayjs): Dayjs[] => {
+        const cells: Dayjs[] = [];
+        const startOfMonth = vDate.startOf('month');
+        const startWeekday = startOfMonth.day();
+        const daysInMonth = vDate.daysInMonth();
+        const prevMonth = vDate.subtract(1, 'month');
+        const daysInPrevMonth = prevMonth.daysInMonth();
+        for (let i = startWeekday - 1; i >= 0; i--) cells.push(prevMonth.date(daysInPrevMonth - i));
+        for (let d = 1; d <= daysInMonth; d++) cells.push(startOfMonth.date(d));
+        const nextMonth = vDate.add(1, 'month');
+        for (let d = 1; cells.length < GRID_CELLS; d++) cells.push(nextMonth.date(d));
         return cells;
     };
 
-    const today = new Date();
+    const today = dayjs();
 
-    const renderDayGrid = (vDate: Date) => {
-        const vMonth = vDate.getMonth();
+    const renderDayGrid = (vDate: Dayjs) => {
         return (
             <>
                 <div className="animal-datepicker-week-row">
@@ -428,43 +417,43 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                 </div>
                 <div className="animal-datepicker-grid">
                     {buildCells(vDate).map((cell) => {
-                        const disabledCell = disabledDate?.(cell) === true;
-                        const isToday = isSameDay(cell, today);
-                        const outside = cell.getMonth() !== vMonth;
+                        const disabledCell = disabledDate?.(cell.toDate()) === true;
+                        const isToday = cell.isSame(today, 'day');
+                        const outside = !cell.isSame(vDate, 'month');
                         let selected = false;
                         let rangeStartCell = false;
                         let rangeEndCell = false;
                         let inRange = false;
                         if (range) {
-                            let effStart: Date | null = null;
-                            let effEnd: Date | null = null;
+                            let effStart: Dayjs | null = null;
+                            let effEnd: Dayjs | null = null;
                             if (rangeStart) {
                                 if (rangeEnd) {
                                     effStart = rangeStart;
                                     effEnd = rangeEnd;
-                                } else if (hoverDate && hoverDate < rangeStart) {
+                                } else if (hoverDate && hoverDate.isBefore(rangeStart, 'day')) {
                                     effStart = hoverDate;
                                     effEnd = rangeStart;
                                 } else {
                                     effStart = rangeStart;
-                                    effEnd = hoverDate && hoverDate > rangeStart ? hoverDate : rangeStart;
+                                    effEnd = hoverDate && hoverDate.isAfter(rangeStart, 'day') ? hoverDate : rangeStart;
                                 }
                             } else if (selectedRange) {
                                 effStart = selectedRange[0];
                                 effEnd = selectedRange[1];
                             }
                             if (effStart && effEnd) {
-                                rangeStartCell = isSameDay(cell, effStart);
-                                rangeEndCell = isSameDay(cell, effEnd);
-                                inRange = cell > effStart && cell < effEnd;
+                                rangeStartCell = cell.isSame(effStart, 'day');
+                                rangeEndCell = cell.isSame(effEnd, 'day');
+                                inRange = cell.isAfter(effStart, 'day') && cell.isBefore(effEnd, 'day');
                             }
                         } else {
                             const activeDate = pendingDate ?? selectedDate;
-                            selected = !!activeDate && isSameDay(cell, activeDate);
+                            selected = !!activeDate && cell.isSame(activeDate, 'day');
                         }
                         return (
                             <button
-                                key={cell.getTime()}
+                                key={cell.valueOf()}
                                 type="button"
                                 className={cn(
                                     'animal-datepicker-day-cell',
@@ -476,7 +465,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                                     inRange && 'animal-datepicker-day-in-range',
                                     disabledCell && 'animal-datepicker-day-disabled'
                                 )}
-                                aria-label={`${cell.getFullYear()}年${cell.getMonth() + 1}月${cell.getDate()}日`}
+                                aria-label={`${cell.year()}年${cell.month() + 1}月${cell.date()}日`}
                                 aria-disabled={disabledCell || undefined}
                                 disabled={disabledCell}
                                 onClick={() => selectDate(cell)}
@@ -484,7 +473,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                                 onMouseLeave={() => range && setHoverDate(null)}
                                 onMouseDown={(e) => e.preventDefault()}
                             >
-                                {cell.getDate()}
+                                {cell.date()}
                             </button>
                         );
                     })}
@@ -493,8 +482,8 @@ export const DatePicker: React.FC<DatePickerProps> = ({
         );
     };
 
-    const year = viewDate.getFullYear();
-    const month = viewDate.getMonth();
+    const year = viewDate.year();
+    const month = viewDate.month();
     const startYear = Math.floor(year / 10) * 10;
     const yearCells = Array.from({ length: 12 }, (_, i) => startYear - 1 + i);
 
@@ -531,17 +520,17 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                 {range ? (
                     open && rangeStart ? (
                         <>
-                            <span className="animal-datepicker-value">{formatDate(rangeStart, format)}</span>
+                            <span className="animal-datepicker-value">{rangeStart.format(format)}</span>
                             <span className="animal-datepicker-range-divider" aria-hidden />
                             <span className={rangeEnd ? 'animal-datepicker-value' : 'animal-datepicker-placeholder'}>
-                                {rangeEnd ? formatDate(rangeEnd, format) : placeholder}
+                                {rangeEnd ? rangeEnd.format(format) : placeholder}
                             </span>
                         </>
                     ) : selectedRange ? (
                         <>
-                            <span className="animal-datepicker-value">{formatDate(selectedRange[0], format)}</span>
+                            <span className="animal-datepicker-value">{selectedRange[0].format(format)}</span>
                             <span className="animal-datepicker-range-divider" aria-hidden />
-                            <span className="animal-datepicker-value">{formatDate(selectedRange[1], format)}</span>
+                            <span className="animal-datepicker-value">{selectedRange[1].format(format)}</span>
                         </>
                     ) : (
                         <span className="animal-datepicker-placeholder">{placeholder}</span>
@@ -549,9 +538,9 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                 ) : (
                     <span className={currentValue || (open && pendingDate) ? 'animal-datepicker-value' : 'animal-datepicker-placeholder'}>
                         {open && pendingDate
-                            ? formatDate(pendingDate, format)
+                            ? pendingDate.format(format)
                             : selectedDate
-                              ? formatDate(selectedDate, format)
+                              ? selectedDate.format(format)
                               : placeholder}
                     </span>
                 )}
@@ -589,42 +578,40 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                     {range ? (
                         <>
                             <div className="animal-datepicker-range-panels">
-                                {[viewDate, new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1)].map(
-                                    (panelDate, idx) => (
-                                        <div key={panelDate.getTime()} className="animal-datepicker-range-panel">
-                                            <div className="animal-datepicker-header">
-                                                <div className="animal-datepicker-header-group">
-                                                    {idx === 0 && (
-                                                        <button type="button" className="animal-datepicker-nav-btn" aria-label="上一年" onClick={() => shiftView(-1, 0)} onMouseDown={(e) => e.preventDefault()}>
-                                                            {DoubleChevronLeft}
-                                                        </button>
-                                                    )}
-                                                    {idx === 0 && (
-                                                        <button type="button" className="animal-datepicker-nav-btn" aria-label="上个月" onClick={() => shiftView(0, -1)} onMouseDown={(e) => e.preventDefault()}>
-                                                            {ChevronLeft}
-                                                        </button>
-                                                    )}
-                                                </div>
-                                                <span className="animal-datepicker-year-label">
-                                                    {panelDate.getFullYear()}年{panelDate.getMonth() + 1}月
-                                                </span>
-                                                <div className="animal-datepicker-header-group">
-                                                    {idx === 1 && (
-                                                        <button type="button" className="animal-datepicker-nav-btn" aria-label="下个月" onClick={() => shiftView(0, 1)} onMouseDown={(e) => e.preventDefault()}>
-                                                            {ChevronRight}
-                                                        </button>
-                                                    )}
-                                                    {idx === 1 && (
-                                                        <button type="button" className="animal-datepicker-nav-btn" aria-label="下一年" onClick={() => shiftView(1, 0)} onMouseDown={(e) => e.preventDefault()}>
-                                                            {DoubleChevronRight}
-                                                        </button>
-                                                    )}
-                                                </div>
+                                {[viewDate, viewDate.add(1, 'month')].map((panelDate, idx) => (
+                                    <div key={panelDate.valueOf()} className="animal-datepicker-range-panel">
+                                        <div className="animal-datepicker-header">
+                                            <div className="animal-datepicker-header-group">
+                                                {idx === 0 && (
+                                                    <button type="button" className="animal-datepicker-nav-btn" aria-label="上一年" onClick={() => shiftView(-1, 0)} onMouseDown={(e) => e.preventDefault()}>
+                                                        {DoubleChevronLeft}
+                                                    </button>
+                                                )}
+                                                {idx === 0 && (
+                                                    <button type="button" className="animal-datepicker-nav-btn" aria-label="上个月" onClick={() => shiftView(0, -1)} onMouseDown={(e) => e.preventDefault()}>
+                                                        {ChevronLeft}
+                                                    </button>
+                                                )}
                                             </div>
-                                            {renderDayGrid(panelDate)}
+                                            <span className="animal-datepicker-year-label">
+                                                {panelDate.year()}年{panelDate.month() + 1}月
+                                            </span>
+                                            <div className="animal-datepicker-header-group">
+                                                {idx === 1 && (
+                                                    <button type="button" className="animal-datepicker-nav-btn" aria-label="下个月" onClick={() => shiftView(0, 1)} onMouseDown={(e) => e.preventDefault()}>
+                                                        {ChevronRight}
+                                                    </button>
+                                                )}
+                                                {idx === 1 && (
+                                                    <button type="button" className="animal-datepicker-nav-btn" aria-label="下一年" onClick={() => shiftView(1, 0)} onMouseDown={(e) => e.preventDefault()}>
+                                                        {DoubleChevronRight}
+                                                    </button>
+                                                )}
+                                            </div>
                                         </div>
-                                    )
-                                )}
+                                        {renderDayGrid(panelDate)}
+                                    </div>
+                                ))}
                             </div>
                             <div className="animal-datepicker-footer">
                                 <button type="button" className="animal-datepicker-confirm-btn" onClick={confirmTime} onMouseDown={(e) => e.preventDefault()}>
@@ -674,7 +661,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                                 <div className="animal-datepicker-grid-3x4">
                                     {MONTHS.map((label, i) => {
                                         const activeDate = pendingDate ?? selectedDate;
-                                        const sel = !!activeDate && activeDate.getFullYear() === year && activeDate.getMonth() === i;
+                                        const sel = !!activeDate && activeDate.year() === year && activeDate.month() === i;
                                         return (
                                             <button
                                                 key={label}
@@ -683,10 +670,11 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                                                 aria-label={`${i + 1}月`}
                                                 onClick={() => {
                                                     if (picker === 'month' && !range) {
-                                                        setPendingDate(new Date(year, i, 1));
+                                                        setPendingDate(viewDate.year(year).month(i).startOf('month'));
                                                     } else {
-                                                        setViewDate(new Date(year, i, 1));
-                                                        setFocusedDate(new Date(year, i, 1));
+                                                        const d = viewDate.year(year).month(i).startOf('month');
+                                                        setViewDate(d);
+                                                        setFocusedDate(d);
                                                         setMode('date');
                                                     }
                                                 }}
@@ -701,7 +689,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                             {mode === 'year' && (
                                 <div className="animal-datepicker-grid-3x4">
                                     {yearCells.map((y) => {
-                                        const sel = selectedDate?.getFullYear() === y;
+                                        const sel = selectedDate?.year() === y;
                                         return (
                                             <button
                                                 key={y}
@@ -709,8 +697,9 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                                                 className={cn('animal-datepicker-year-cell', sel && 'animal-datepicker-year-selected')}
                                                 aria-label={`${y}年`}
                                                 onClick={() => {
-                                                    setViewDate(new Date(y, month, 1));
-                                                    setFocusedDate(new Date(y, month, 1));
+                                                    const d = viewDate.year(y).month(month).startOf('month');
+                                                    setViewDate(d);
+                                                    setFocusedDate(d);
                                                     setMode('month');
                                                 }}
                                                 onMouseDown={(e) => e.preventDefault()}
