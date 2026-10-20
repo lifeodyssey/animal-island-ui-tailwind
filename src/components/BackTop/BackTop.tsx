@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { cn } from '../../utils/cn';
 
-import rocketIcon from './rocket.svg';
-
 export interface BackTopProps {
     target?: () => HTMLElement | Window;
     visibilityHeight?: number;
@@ -87,7 +85,23 @@ export const BackTop: React.FC<BackTopProps> = ({
                 }
             }}
         >
-            <img className="animal-backtop-rocket" src={rocketIcon} alt="返回顶部" />
+            <svg
+                className="animal-backtop-rocket"
+                viewBox="0 0 48 48"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                stroke="#2A2A2A"
+                strokeWidth="3.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+            >
+                <path d="M24 6 C 16 6 14 18 14 26 L14 38 L34 38 L34 26 C 34 18 32 6 24 6 Z" fill="#FAEDCD" />
+                <circle cx="24" cy="22" r="5" fill="#2A9D8F" />
+                <path d="M14 30 L8 36 L8 42 L14 38" fill="#E76F51" />
+                <path d="M34 30 L40 36 L40 42 L34 38" fill="#E76F51" />
+                <path d="M18 42 L24 46 L30 42" fill="#E76F51" />
+            </svg>
         </div>
     );
 };

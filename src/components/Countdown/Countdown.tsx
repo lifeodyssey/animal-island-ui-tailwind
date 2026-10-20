@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import dayjs from 'dayjs';
 import { cva } from 'class-variance-authority';
 import { cn } from '../../utils/cn';
 
@@ -44,8 +45,7 @@ const parseFormat = (format: string): TimePart[] => {
     return parts;
 };
 
-const splitRemaining = (remaining: number, format: string) => {
-    const totalSeconds = Math.ceil(remaining / 1_000);
+const splitSeconds = (totalSeconds: number, format: string) => {
     const days = Math.floor(totalSeconds / 86_400);
     const hasDays = format.includes('DD');
     const hours = hasDays ? Math.floor((totalSeconds % 86_400) / 3_600) : Math.floor(totalSeconds / 3_600);
@@ -131,7 +131,7 @@ export const Countdown: React.FC<CountdownProps> = ({
     className,
     ...rest
 }) => {
-    const getRemaining = useCallback(() => Math.max(0, toTimestamp(value) - Date.now()), [value]);
+    const getRemaining = useCallback(() => Math.max(0, dayjs(toTimestamp(value)).diff(dayjs())), [value]);
     const [remaining, setRemaining] = useState(getRemaining);
     const finishedRef = useRef(false);
     const onChangeRef = useRef(onChange);
@@ -172,7 +172,7 @@ export const Countdown: React.FC<CountdownProps> = ({
     }, [getRemaining]);
 
     const parts = parseFormat(format);
-    const digits = splitRemaining(remaining, format);
+    const digits = splitSeconds(Math.ceil(remaining / 1_000), format);
     const readable = parts.map((part) => (part.kind === 'token' ? digits[part.token] : part.text)).join('');
 
     return (
