@@ -8,11 +8,11 @@ test('BackTop artwork stays inside desktop and mobile viewports and returns its 
         const button = page.getByRole('button', { name: '返回顶部' });
         await area.evaluate((el) => { el.scrollTop = 300; });
         await expect(button).toHaveClass(/animal-backtop-visible/);
-        const dimensions = await button.locator('img').evaluate(async (el: HTMLImageElement) => {
-            await el.decode();
-            return [el.naturalWidth, el.naturalHeight];
-        });
-        expect(dimensions).toEqual([150, 150]);
+        const rocket = button.locator('svg.animal-backtop-rocket');
+        await expect(rocket).toBeVisible();
+        const rocketBox = await rocket.boundingBox();
+        expect(rocketBox!.width).toBeGreaterThan(0);
+        expect(rocketBox!.height).toBeGreaterThan(0);
         const box = await button.boundingBox();
         expect(box!.x).toBeGreaterThanOrEqual(0);
         expect(box!.x + box!.width).toBeLessThanOrEqual(width);
