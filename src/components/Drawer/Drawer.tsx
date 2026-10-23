@@ -133,7 +133,8 @@ export const Drawer: React.FC<DrawerProps> = ({
         return undefined;
     }, [open]);
 
-    // Push background depth effect
+    // 背景下沉景深效果：scale + 圆角 + 遮罩压暗，不用 filter:blur（非合成器属性，首帧卡）
+    // will-change 让浏览器在动画前完成分层，避开首帧合成往返
     useEffect(() => {
         if (!open || !pushBackground) return;
 
@@ -142,13 +143,17 @@ export const Drawer: React.FC<DrawerProps> = ({
             restoreTransitionRafRef.current = null;
         }
 
+        if (typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            return;
+        }
+
         const pushed: Array<{
             el: HTMLElement;
             transform: string;
-            filter: string;
             borderRadius: string;
             overflow: string;
             transition: string;
+            willChange: string;
         }> = [];
 
         const candidates = Array.from(document.body.children).filter((el): el is HTMLElement => {
@@ -164,19 +169,18 @@ export const Drawer: React.FC<DrawerProps> = ({
             pushed.push({
                 el,
                 transform: el.style.transform,
-                filter: el.style.filter,
                 borderRadius: el.style.borderRadius,
                 overflow: el.style.overflow,
                 transition: el.style.transition,
+                willChange: el.style.willChange,
             });
-            el.style.transition =
-                'transform 0.36s cubic-bezier(0.2, 0, 0.2, 1), filter 0.36s ease, border-radius 0.36s ease';
+            el.style.transition = 'transform 0.36s cubic-bezier(0.2, 0, 0.2, 1), border-radius 0.36s ease';
+            el.style.willChange = 'transform';
         });
 
         const rafId = requestAnimationFrame(() => {
             pushed.forEach(({ el }) => {
                 el.style.transform = 'scale(0.94)';
-                el.style.filter = 'blur(1px)';
                 el.style.borderRadius = '14px';
                 el.style.overflow = 'hidden';
             });
@@ -188,15 +192,16 @@ export const Drawer: React.FC<DrawerProps> = ({
                 cancelAnimationFrame(restoreTransitionRafRef.current);
                 restoreTransitionRafRef.current = null;
             }
-            pushed.forEach(({ el, transform, filter, borderRadius, overflow }) => {
+            // 先恢复 transform/borderRadius/overflow，保留 transition 让背景平滑恢复
+            pushed.forEach(({ el, transform, borderRadius, overflow }) => {
                 el.style.transform = transform;
-                el.style.filter = filter;
                 el.style.borderRadius = borderRadius;
                 el.style.overflow = overflow;
             });
             restoreTransitionRafRef.current = requestAnimationFrame(() => {
-                pushed.forEach(({ el, transition }) => {
+                pushed.forEach(({ el, transition, willChange }) => {
                     el.style.transition = transition;
+                    el.style.willChange = willChange;
                 });
                 restoreTransitionRafRef.current = null;
             });

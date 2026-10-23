@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as RadixSelect from '@radix-ui/react-select';
 import { cn } from '../../utils/cn';
 import { useControllableState } from '../../utils/useControllableState';
@@ -16,8 +16,12 @@ export interface SelectProps extends Omit<
     value?: string;
     defaultValue?: string;
     onChange?: (key: string) => void;
+    onClear?: () => void;
     placeholder?: string;
     disabled?: boolean;
+    allowClear?: boolean;
+    showSearch?: boolean;
+    searchPlaceholder?: string;
 }
 
 const EMPTY_KEY_PREFIX = '__animal_empty_';
@@ -39,13 +43,19 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
             value,
             defaultValue,
             onChange,
+            onClear,
             placeholder = '请选择',
             disabled = false,
+            allowClear = false,
+            showSearch = false,
+            searchPlaceholder = '搜索...',
             className,
             ...rest
         },
         ref,
     ) => {
+        const [searchQuery, setSearchQuery] = useState('');
+
         const { value: currentValue, setValue: handleChange } = useControllableState<string>({
             value,
             defaultValue: defaultValue ?? '',
@@ -55,14 +65,26 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
         const selectedOption = options.find((option) => option.key === currentValue);
         const radixValue = selectedOption ? toRadixValue(currentValue) : '';
 
+        const filteredOptions = showSearch && searchQuery
+            ? options.filter((o) => o.label.toLowerCase().includes(searchQuery.toLowerCase()))
+            : options;
+
+        const handleClear = (e: React.MouseEvent) => {
+            e.stopPropagation();
+            handleChange('');
+            onClear?.();
+        };
+
         return (
             <RadixSelect.Root
                 value={radixValue}
                 onValueChange={(nextValue) => {
                     const key = fromRadixValue(nextValue, options);
                     if (key !== undefined) handleChange(key);
+                    setSearchQuery('');
                 }}
                 disabled={disabled}
+                onOpenChange={(open) => { if (!open) setSearchQuery(''); }}
             >
                 <div className={cn('animal-select-wrapper', disabled && 'animal-select-disabled')}>
                     <RadixSelect.Trigger
@@ -76,11 +98,25 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                         >
                             {selectedOption?.label}
                         </RadixSelect.Value>
-                        <RadixSelect.Icon className="animal-select-arrow">
-                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                                <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                            </svg>
-                        </RadixSelect.Icon>
+                        {allowClear && selectedOption && !disabled ? (
+                            <span
+                                className="animal-select-clear"
+                                role="button"
+                                aria-label="清除选择"
+                                onClick={handleClear}
+                                onPointerDown={(e) => e.preventDefault()}
+                            >
+                                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+                                    <path d="M8 2L2 8M2 2l6 6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
+                                </svg>
+                            </span>
+                        ) : (
+                            <RadixSelect.Icon className="animal-select-arrow">
+                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                    <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                </svg>
+                            </RadixSelect.Icon>
+                        )}
                     </RadixSelect.Trigger>
                     <RadixSelect.Portal>
                         <RadixSelect.Content
@@ -91,8 +127,21 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                             collisionPadding={{ left: 30, right: 10, top: 10, bottom: 10 }}
                             avoidCollisions
                         >
+                            {showSearch && (
+                                <div className="animal-select-search" onPointerDown={(e) => e.stopPropagation()}>
+                                    <input
+                                        className="animal-select-search-input"
+                                        type="text"
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                        placeholder={searchPlaceholder}
+                                        autoFocus
+                                        onKeyDown={(e) => e.stopPropagation()}
+                                    />
+                                </div>
+                            )}
                             <RadixSelect.Viewport className="animal-select-viewport">
-                                {options.map((option) => (
+                                {filteredOptions.map((option) => (
                                     <RadixSelect.Item
                                         key={option.key}
                                         value={toRadixValue(option.key)}
@@ -106,6 +155,9 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                                         <RadixSelect.ItemText>{option.label}</RadixSelect.ItemText>
                                     </RadixSelect.Item>
                                 ))}
+                                {filteredOptions.length === 0 && (
+                                    <div className="animal-select-empty">无匹配选项</div>
+                                )}
                             </RadixSelect.Viewport>
                         </RadixSelect.Content>
                     </RadixSelect.Portal>

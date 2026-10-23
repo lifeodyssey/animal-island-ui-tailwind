@@ -38,8 +38,30 @@ const HIGHLIGHT_PATTERNS: { regex: RegExp; color: string }[] = [
     { regex: /[{}[\]();,]/g, color: COLORS.operator },
 ];
 
+interface HighlightToken { start: number; end: number; color: string; italic?: boolean; }
+
+const renderTokens = (code: string, tokens: HighlightToken[]): React.ReactNode[] => {
+    tokens.sort((a, b) => a.start - b.start);
+    const result: React.ReactNode[] = [];
+    let pos = 0;
+    for (const token of tokens) {
+        if (token.start < pos) continue;
+        if (token.start > pos) {
+            result.push(<span key={`t${pos}`} style={{ color: COLORS.default }}>{code.slice(pos, token.start)}</span>);
+        }
+        const s: React.CSSProperties = { color: token.color };
+        if (token.italic) s.fontStyle = 'italic';
+        result.push(<span key={`s${token.start}`} style={s}>{code.slice(token.start, token.end)}</span>);
+        pos = token.end;
+    }
+    if (pos < code.length) {
+        result.push(<span key={`e${pos}`} style={{ color: COLORS.default }}>{code.slice(pos)}</span>);
+    }
+    return result;
+};
+
 const highlightJSX = (code: string): React.ReactNode[] => {
-    const tokens: { start: number; end: number; color: string }[] = [];
+    const tokens: HighlightToken[] = [];
 
     const addPattern = (regex: RegExp, color: string) => {
         let match;
@@ -53,26 +75,44 @@ const highlightJSX = (code: string): React.ReactNode[] => {
         addPattern(regex, color);
     }
 
-    tokens.sort((a, b) => a.start - b.start);
-
-    const result: React.ReactNode[] = [];
-    let pos = 0;
-
-    for (const token of tokens) {
-        if (token.start < pos) continue;
-        if (token.start > pos) {
-            result.push(<span key={`t${pos}`} style={{ color: COLORS.default }}>{code.slice(pos, token.start)}</span>);
-        }
-        result.push(<span key={`s${token.start}`} style={{ color: token.color }}>{code.slice(token.start, token.end)}</span>);
-        pos = token.end;
-    }
-
-    if (pos < code.length) {
-        result.push(<span key={`e${pos}`} style={{ color: COLORS.default }}>{code.slice(pos)}</span>);
-    }
-
-    return result;
+    return renderTokens(code, tokens);
 };
+
+const SHELL_COLORS = {
+    prompt: '#e8c87a',
+    command: '#80c0e0',
+    flag: '#d4a0e0',
+    string: '#a8d4a0',
+    comment: '#6b5e50',
+    path: '#f0a870',
+    variable: '#e06c75',
+    default: '#e8d5bc',
+};
+
+const highlightShell = (code: string): React.ReactNode[] => {
+    const tokens: HighlightToken[] = [];
+
+    const addPattern = (regex: RegExp, color: string, italic?: boolean) => {
+        let match;
+        const re = new RegExp(regex.source, regex.flags.includes('g') ? regex.flags : regex.flags + 'g');
+        while ((match = re.exec(code)) !== null) {
+            tokens.push({ start: match.index, end: match.index + match[0].length, color, italic });
+        }
+    };
+
+    addPattern(/#.*$/gm, SHELL_COLORS.comment, true);
+    addPattern(/"[^"]*"|'[^']*'/g, SHELL_COLORS.string);
+    addPattern(/\$\{?[\w]+\}?/g, SHELL_COLORS.variable);
+    addPattern(/(?:^|\s)(--?[\w-]+)/gm, SHELL_COLORS.flag);
+    addPattern(/(?:^|\|\s*)(npm|yarn|pnpm|npx|node|git|cd|ls|mkdir|rm|cp|mv|curl|wget|cat|echo|export|source|chmod|chown|touch|find|grep|sed|awk|sort|uniq|head|tail|wc|diff|patch|tar|zip|unzip|ssh|scp|rsync|docker|kubectl|make|cmake|python|python3|pip|pip3|ruby|gem|go|cargo|rustc|java|javac|mvn|gradle|dotnet|php|composer)\b/gm, SHELL_COLORS.command);
+    addPattern(/(?:^|\s)(\/[\w./-]+)/gm, SHELL_COLORS.path);
+    addPattern(/^\s*[$#>]\s*/gm, SHELL_COLORS.prompt);
+
+    return renderTokens(code, tokens);
+};
+
+const looksLikeShell = (code: string): boolean =>
+    /^\s*(npm|yarn|pnpm|npx|node|git|cd|ls|mkdir|rm|cp|mv)\b/m.test(code);
 
 const codeBlockStyle: React.CSSProperties = {
     boxSizing: 'border-box',
@@ -164,7 +204,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({ code, style, className, co
                 style={{ ...codeBlockStyle, ...(copyButtonSpacing ? { paddingRight: 96 } : null), ...preStyle }}
                 className={cn('animal-code-block', className)}
             >
-                {React.useMemo(() => highlightJSX(code), [code])}
+                {React.useMemo(() => looksLikeShell(code) ? highlightShell(code) : highlightJSX(code), [code])}
             </pre>
             {copyable && (
                 <button

@@ -148,6 +148,71 @@ export const CheckIcon: React.FC<IconProps> = ({ size = 16, color = 'currentColo
     </svg>
 );
 
+export const RocketIcon: React.FC<IconProps> = ({ size = 16, color = 'currentColor', className, ...rest }) => (
+    <svg
+        width={size}
+        height={size}
+        viewBox="0 0 48 48"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        stroke="#2A2A2A"
+        strokeWidth="3.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={className}
+        {...rest}
+    >
+        <path d="M24 6 C 16 6 14 18 14 26 L14 38 L34 38 L34 26 C 34 18 32 6 24 6 Z" fill="#FAEDCD" />
+        <circle cx="24" cy="22" r="5" fill="#2A9D8F" />
+        <path d="M14 30 L8 36 L8 42 L14 38" fill="#E76F51" />
+        <path d="M34 30 L40 36 L40 42 L34 38" fill="#E76F51" />
+        <path d="M18 42 L24 46 L30 42" fill="#E76F51" />
+    </svg>
+);
+
+export const CalendarIcon: React.FC<IconProps> = ({ size = 16, color = 'currentColor', className, ...rest }) => (
+    <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={className}
+        {...rest}
+    >
+        <rect x="3" y="4" width="18" height="18" rx="3" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M16 2v4M8 2v4M3 10h18" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+);
+
+export const ChevronLeftIcon: React.FC<IconProps & { strokeWidth?: number }> = ({ size = 16, color = 'currentColor', strokeWidth = 2, className, ...rest }) => (
+    <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={className}
+        {...rest}
+    >
+        <path d="M15 18l-6-6 6-6" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+);
+
+export const ChevronRightIcon: React.FC<IconProps & { strokeWidth?: number }> = ({ size = 16, color = 'currentColor', strokeWidth = 2, className, ...rest }) => (
+    <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={className}
+        {...rest}
+    >
+        <path d="M9 18l6-6-6-6" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+);
+
 export const EyeIcon: React.FC<IconProps> = ({ size = 16, color = 'currentColor', className, ...rest }) => (
     <svg
         width={size}
