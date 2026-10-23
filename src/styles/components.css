@@ -25,9 +25,17 @@
     color: var(--animal-selection-fg);
   }
 
-  /* ---- force mode (default): override all descendants ---- */
+  /* force mode (default glove): browser-native fallback keeps auto */
   .animal-cursor--force,
   .animal-cursor--force * {
+    cursor:
+      var(--animal-cursor-img) var(--animal-cursor-hotspot),
+      auto !important;
+  }
+
+  /* raindrop force mode: always arrow fallback, never pointer */
+  .animal-cursor--raindrop.animal-cursor--force,
+  .animal-cursor--raindrop.animal-cursor--force * {
     cursor:
       var(--animal-cursor-img) var(--animal-cursor-hotspot),
       default !important;
@@ -43,8 +51,7 @@
   }
 
   /* plain descendants: revert to auto (overrides ancestor force * rule) */
-  .animal-cursor--scoped *,
-  .animal-cursor.animal-cursor--scoped * {
+  .animal-cursor--scoped * {
     cursor: auto !important;
   }
 
