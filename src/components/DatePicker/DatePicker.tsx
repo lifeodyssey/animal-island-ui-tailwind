@@ -1,5 +1,9 @@
 import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat.js';
 import { cn } from '../../utils/cn';
+
+dayjs.extend(customParseFormat);
 
 export type DatePickerSize = 'small' | 'middle' | 'large';
 
@@ -49,6 +53,9 @@ export interface DatePickerProps {
     style?: React.CSSProperties;
 }
 
+const GRID_CELLS = 42;
+const DATE_PARSE_FORMATS = ['YYYY-M-D', 'YYYY-MM-DD', 'YYYY-M', 'YYYY-MM'];
+
 const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六'];
 const MONTHS = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
 
@@ -79,10 +86,9 @@ const pad = (n: number) => `${n}`.padStart(2, '0');
 
 const parseValue = (value: string | null | undefined): Date | null => {
     if (!value) return null;
-    const match = /^(\d{4})-(\d{1,2})(?:-(\d{1,2}))?$/.exec(value);
-    if (!match || Number(match[2]) > 12) return null;
-    const date = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3] ?? 1));
-    return Number.isNaN(date.getTime()) ? null : date;
+    const parsed = dayjs(value, DATE_PARSE_FORMATS, true);
+    if (!parsed.isValid()) return null;
+    return parsed.toDate();
 };
 
 const toValue = (date: Date) => `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
@@ -411,7 +417,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
         const daysInPrevMonth = new Date(vYear, vMonth, 0).getDate();
         for (let i = startWeekday - 1; i >= 0; i--) cells.push(new Date(vYear, vMonth - 1, daysInPrevMonth - i));
         for (let d = 1; d <= daysInMonth; d++) cells.push(new Date(vYear, vMonth, d));
-        for (let d = 1; cells.length < 42; d++) cells.push(new Date(vYear, vMonth + 1, d));
+        for (let d = 1; cells.length < GRID_CELLS; d++) cells.push(new Date(vYear, vMonth + 1, d));
         return cells;
     };
 

@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import dayjs from 'dayjs';
 import { cva } from 'class-variance-authority';
 import { cn } from '../../utils/cn';
 
@@ -26,6 +27,8 @@ export interface CountdownProps extends Omit<React.HTMLAttributes<HTMLDivElement
 
 const toTimestamp = (value: number | Date) => (value instanceof Date ? value.getTime() : value);
 
+const getRemaining = (value: number | Date) => Math.max(0, dayjs(toTimestamp(value)).diff(dayjs()));
+
 const pad = (value: number) => String(value).padStart(2, '0');
 
 type TimePart = { kind: 'token'; token: 'DD' | 'HH' | 'mm' | 'ss' } | { kind: 'literal'; text: string };
@@ -44,7 +47,7 @@ const parseFormat = (format: string): TimePart[] => {
     return parts;
 };
 
-const splitRemaining = (remaining: number, format: string) => {
+const splitSeconds = (remaining: number, format: string) => {
     const totalSeconds = Math.ceil(remaining / 1_000);
     const days = Math.floor(totalSeconds / 86_400);
     const hasDays = format.includes('DD');
@@ -131,8 +134,8 @@ export const Countdown: React.FC<CountdownProps> = ({
     className,
     ...rest
 }) => {
-    const getRemaining = useCallback(() => Math.max(0, toTimestamp(value) - Date.now()), [value]);
-    const [remaining, setRemaining] = useState(getRemaining);
+    const getRemainingCb = useCallback(() => getRemaining(value), [value]);
+    const [remaining, setRemaining] = useState(() => getRemaining(value));
     const finishedRef = useRef(false);
     const onChangeRef = useRef(onChange);
     const onFinishRef = useRef(onFinish);
@@ -145,7 +148,7 @@ export const Countdown: React.FC<CountdownProps> = ({
         let timer: number | undefined;
 
         const update = () => {
-            const next = getRemaining();
+            const next = getRemainingCb();
             setRemaining(next);
             onChangeRef.current?.(next);
 
@@ -169,10 +172,10 @@ export const Countdown: React.FC<CountdownProps> = ({
         return () => {
             if (timer !== undefined) window.clearInterval(timer);
         };
-    }, [getRemaining]);
+    }, [getRemainingCb]);
 
     const parts = parseFormat(format);
-    const digits = splitRemaining(remaining, format);
+    const digits = splitSeconds(remaining, format);
     const readable = parts.map((part) => (part.kind === 'token' ? digits[part.token] : part.text)).join('');
 
     return (

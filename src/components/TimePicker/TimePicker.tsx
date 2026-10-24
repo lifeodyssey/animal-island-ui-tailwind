@@ -199,8 +199,8 @@ export const TimePicker: React.FC<TimePickerProps> = ({
     const pickUnit = (part: TimePart) => setPending(part);
 
     const setNow = () => {
-        const now = new Date();
-        setPending({ h: now.getHours(), m: now.getMinutes(), s: now.getSeconds() });
+        const now = dayjs();
+        setPending({ h: now.hour(), m: now.minute(), s: now.second() });
     };
 
     const confirmTime = () => {
