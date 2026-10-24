@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { cn } from '../../utils/cn';
-
 import rocketIcon from './rocket.svg';
 
 export interface BackTopProps {
