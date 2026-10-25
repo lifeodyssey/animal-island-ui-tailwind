@@ -1,5 +1,11 @@
 import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { cn } from '../../utils/cn';
+
+dayjs.extend(customParseFormat);
+
+const TIME_ANCHOR = '2000-01-01';
 
 export type TimePickerSize = 'small' | 'middle' | 'large';
 
@@ -32,16 +38,19 @@ const pad2 = (n: number) => `${n}`.padStart(2, '0');
 
 const parseTime = (value: string | null | undefined): TimePart | null => {
     if (!value) return null;
-    const match = /^(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?$/.exec(value);
-    if (!match) return null;
-    const part: TimePart = { h: Number(match[1]), m: Number(match[2]), s: Number(match[3] ?? 0) };
-    return part.h > 23 || part.m > 59 || part.s > 59 ? null : part;
+    for (const fmt of ['HH:mm:ss', 'HH:mm']) {
+        const d = dayjs(`${TIME_ANCHOR} ${value}`, `YYYY-MM-DD ${fmt}`, true);
+        if (d.isValid()) return { h: d.hour(), m: d.minute(), s: d.second() };
+    }
+    return null;
 };
 
-const toValue = (part: TimePart) => `${pad2(part.h)}:${pad2(part.m)}:${pad2(part.s)}`;
+const toDayjs = (part: TimePart) =>
+    dayjs(TIME_ANCHOR).hour(part.h).minute(part.m).second(part.s);
 
-const formatTime = (part: TimePart, format: string) =>
-    format.replace('HH', pad2(part.h)).replace('mm', pad2(part.m)).replace('ss', pad2(part.s));
+const toValue = (part: TimePart) => toDayjs(part).format('HH:mm:ss');
+
+const formatTime = (part: TimePart, fmt: string) => toDayjs(part).format(fmt);
 
 const hasSeconds = (format: string) => format.includes('ss');
 

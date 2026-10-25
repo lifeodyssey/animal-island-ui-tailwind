@@ -133,7 +133,9 @@ export const Drawer: React.FC<DrawerProps> = ({
         return undefined;
     }, [open]);
 
-    // Push background depth effect
+    // Push background depth effect: scale + rounded corners + dimming mask carry the depth;
+    // filter: blur() removed (non-composited — forced a fresh layer + viewport-wide blur,
+    // stalling the first open). will-change promotes layers before transition starts.
     useEffect(() => {
         if (!open || !pushBackground) return;
 
@@ -142,13 +144,17 @@ export const Drawer: React.FC<DrawerProps> = ({
             restoreTransitionRafRef.current = null;
         }
 
+        if (typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            return;
+        }
+
         const pushed: Array<{
             el: HTMLElement;
             transform: string;
-            filter: string;
             borderRadius: string;
             overflow: string;
             transition: string;
+            willChange: string;
         }> = [];
 
         const candidates = Array.from(document.body.children).filter((el): el is HTMLElement => {
@@ -164,19 +170,18 @@ export const Drawer: React.FC<DrawerProps> = ({
             pushed.push({
                 el,
                 transform: el.style.transform,
-                filter: el.style.filter,
                 borderRadius: el.style.borderRadius,
                 overflow: el.style.overflow,
                 transition: el.style.transition,
+                willChange: el.style.willChange,
             });
-            el.style.transition =
-                'transform 0.36s cubic-bezier(0.2, 0, 0.2, 1), filter 0.36s ease, border-radius 0.36s ease';
+            el.style.willChange = 'transform';
+            el.style.transition = 'transform 0.36s cubic-bezier(0.2, 0, 0.2, 1), border-radius 0.36s ease';
         });
 
         const rafId = requestAnimationFrame(() => {
             pushed.forEach(({ el }) => {
                 el.style.transform = 'scale(0.94)';
-                el.style.filter = 'blur(1px)';
                 el.style.borderRadius = '14px';
                 el.style.overflow = 'hidden';
             });
@@ -188,15 +193,15 @@ export const Drawer: React.FC<DrawerProps> = ({
                 cancelAnimationFrame(restoreTransitionRafRef.current);
                 restoreTransitionRafRef.current = null;
             }
-            pushed.forEach(({ el, transform, filter, borderRadius, overflow }) => {
+            pushed.forEach(({ el, transform, borderRadius, overflow }) => {
                 el.style.transform = transform;
-                el.style.filter = filter;
                 el.style.borderRadius = borderRadius;
                 el.style.overflow = overflow;
             });
             restoreTransitionRafRef.current = requestAnimationFrame(() => {
-                pushed.forEach(({ el, transition }) => {
+                pushed.forEach(({ el, transition, willChange }) => {
                     el.style.transition = transition;
+                    el.style.willChange = willChange;
                 });
                 restoreTransitionRafRef.current = null;
             });

@@ -20,7 +20,8 @@ export type BackgroundType =
     | 'dots-lime-green'
     | 'dots-yellow-green'
     | 'dots-brown'
-    | 'dots-warm-peach-pink';
+    | 'dots-warm-peach-pink'
+    | 'dots-gray';
 
 const BG_IMAGE: Partial<Record<BackgroundType, string>> = {
     'sweet-corner': sweetCorner,
