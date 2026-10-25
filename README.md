@@ -34,12 +34,12 @@
 
 视觉设计来自 [guokaigdg/animal-island-ui](https://github.com/guokaigdg/animal-island-ui)，内部实现用 Tailwind CSS v4 和 Radix UI 重写，以 `animal-island-ui-tailwind` 的包名独立发布到 npm。
 
-## 开发中（尚未发布）
+## 2.3.0 新增功能与升级说明
 
-本分支同步上游 `945cb5bb..f3581385`：新增 Calendar，补充 Select 搜索与清除、
+版本号与上游 2.3.0 对齐，同步上游 `945cb5bb..f3581385`：新增 Calendar，补充 Select 搜索与清除、
 灰色波点背景、Time 日期格式与语言选项，以及日期时间解析和交互修复。
 Title、Progress 和默认手套光标保留此前确认的设计。
-详情见 [未发布变更](CHANGELOG.md#unreleased)。
+详情见 [2.3.0 发布说明](CHANGELOG.md#230---2026-10-25)。
 
 ## 2.1.1 新增功能与升级说明
 
@@ -81,7 +81,7 @@ import { Background, Cursor } from 'animal-island-ui-tailwind';
 
 ## 组件一览
 
-当前包含 25 个组件：
+常用组件包括：
 
 | 交互组件 | 容器与展示 | 装饰与特殊 |
 |----------|-----------|-----------|
@@ -93,7 +93,7 @@ import { Background, Cursor } from 'animal-island-ui-tailwind';
 | Select 选择器 | Loading 加载 | Cursor 光标 |
 | Tabs 标签页 | Table 表格 | Tooltip 气泡提示 |
 | Form 表单 | Title 标题缎带 | Wallet 钱袋 |
-| | WeddingInvitation 婚礼请柬 | |
+| Calendar 日历 | WeddingInvitation 婚礼请柬 | |
 
 ## 快速开始
 
@@ -165,7 +165,7 @@ npm pack --dry-run       # 检查 npm 包内容
 | 平台 | 触发条件 | 功能 |
 |------|---------|------|
 | GitHub Actions CI | PR / main push | 类型检查 + 构建 + 测试 + 无障碍扫描 + 包验证 |
-| GitHub Actions Release | `v*.*.*` tag / 手动 | CI 验证 + npm Trusted Publishing |
+| GitHub Actions Release | `v*.*.*` tag | CI 验证 + npm Trusted Publishing |
 | Cloudflare Pages | main push / PR | 自动部署 Storybook 到 [animalcrossing.zhenjia.dev](https://animalcrossing.zhenjia.dev) |
 
 详细发布流程见 [PUBLISHING.md](./PUBLISHING.md)。

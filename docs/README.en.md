@@ -34,12 +34,13 @@ A React component library with Animal Crossing visual styling. Cream-colored bac
 
 The visual design is inspired by [guokaigdg/animal-island-ui](https://github.com/guokaigdg/animal-island-ui). The internals have been completely rewritten using Tailwind CSS v4 and Radix UI, and the library is published independently as `animal-island-ui-tailwind` on npm.
 
-## In development (unreleased)
+## New in 2.3.0
 
-This branch syncs upstream `945cb5bb..f3581385`: Calendar, searchable and clearable
+The version aligns with upstream 2.3.0. This release syncs upstream
+`945cb5bb..f3581385`: Calendar, searchable and clearable
 Select, gray dotted backgrounds, Time formatting/locales, and date/time and
 interaction fixes. The approved Title, Progress and default glove cursor designs
-remain in place. See [Unreleased changes](../CHANGELOG.md#unreleased).
+remain in place. See the [2.3.0 release notes](../CHANGELOG.md#230---2026-10-25).
 
 ## New in 2.1.1
 
@@ -84,7 +85,7 @@ All existing components remain available with replacement artwork, including a r
 
 ## Components
 
-22 components included:
+Selected components:
 
 | Interactive | Surface / Content | Decorative / Special |
 |-------------|-------------------|---------------------|
@@ -95,7 +96,8 @@ All existing components remain available with replacement artwork, including a r
 | Radio | Footer | Time |
 | Select | Loading | Cursor |
 | Tabs | Table | Tooltip |
-| | WeddingInvitation | |
+| Form | Title | Wallet |
+| Calendar | WeddingInvitation | |
 
 ## Quick Start
 
@@ -167,7 +169,7 @@ npm pack --dry-run       # Verify npm package contents
 | Platform | Trigger | Purpose |
 |----------|---------|---------|
 | GitHub Actions CI | PR / main push | Type check + build + test + a11y scan + package verify |
-| GitHub Actions Release | `v*.*.*` tag / manual | CI checks + npm Trusted Publishing |
+| GitHub Actions Release | `v*.*.*` tag | CI checks + npm Trusted Publishing |
 | Cloudflare Pages | main push / PR | Auto-deploy Storybook to [animalcrossing.zhenjia.dev](https://animalcrossing.zhenjia.dev) |
 
 See [PUBLISHING.md](../PUBLISHING.md) for the full release flow.
