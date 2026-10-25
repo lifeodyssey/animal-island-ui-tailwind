@@ -168,3 +168,4 @@ export const EyeIcon: React.FC<IconProps> = ({ size = 16, color = 'currentColor'
         <circle cx="12" cy="12" r="3" stroke={color} strokeWidth="2" />
     </svg>
 );
+

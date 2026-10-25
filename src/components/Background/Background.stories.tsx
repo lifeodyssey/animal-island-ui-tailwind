@@ -22,6 +22,10 @@ export const Default: Story = {
     render: () => <Background style={boxStyle} />,
 };
 
+export const DotsGray: Story = {
+    args: { type: 'dots-gray', style: boxStyle },
+};
+
 export const Grid: Story = {
     render: () => <Background type="grid" style={boxStyle} />,
 };

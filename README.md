@@ -34,6 +34,13 @@
 
 视觉设计来自 [guokaigdg/animal-island-ui](https://github.com/guokaigdg/animal-island-ui)，内部实现用 Tailwind CSS v4 和 Radix UI 重写，以 `animal-island-ui-tailwind` 的包名独立发布到 npm。
 
+## 开发中（尚未发布）
+
+本分支同步上游 `945cb5bb..f3581385`：新增 Calendar，补充 Select 搜索与清除、
+灰色波点背景、Time 日期格式与语言选项，以及日期时间解析和交互修复。
+Title、Progress 和默认手套光标保留此前确认的设计。
+详情见 [未发布变更](CHANGELOG.md#unreleased)。
+
 ## 2.1.1 新增功能与升级说明
 
 版本号与上游 2.1.1 对齐，新增 Badge、Avatar / AvatarGroup、Rate、Upload 和 CountUp，

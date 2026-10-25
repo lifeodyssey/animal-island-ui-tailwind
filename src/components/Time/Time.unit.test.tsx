@@ -1,5 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, screen, act, cleanup } from '@testing-library/react';
+import dayjs from 'dayjs';
+import zhCn from 'dayjs/locale/zh-cn';
 import { Time } from './Time';
 
 describe('Time', () => {
@@ -54,5 +56,29 @@ describe('Time', () => {
         vi.setSystemTime(new Date('2026-06-14T09:30:00')); // Sunday
         render(<Time type="game" />);
         expect(screen.getByText('日')).toBeInTheDocument();
+    });
+
+    it.each(['hud', 'game'] as const)('type=%s explicit English ignores the global locale', (type) => {
+        const previousLocale = dayjs.locale();
+        try {
+            dayjs.locale(zhCn);
+            render(<Time type={type} locale="en" weekdayFormat="dddd" dateFormat="MMMM D" />);
+            expect(screen.getByText('Monday')).toBeInTheDocument();
+            expect(screen.getByText('June 8')).toBeInTheDocument();
+        } finally {
+            dayjs.locale(previousLocale);
+        }
+    });
+
+    it('HUD defaults remain English when the host sets a Chinese global locale', () => {
+        const previousLocale = dayjs.locale();
+        try {
+            dayjs.locale(zhCn);
+            render(<Time type="hud" />);
+            expect(screen.getByText('Monday')).toBeInTheDocument();
+            expect(screen.getByText('Jun 8')).toBeInTheDocument();
+        } finally {
+            dayjs.locale(previousLocale);
+        }
     });
 });

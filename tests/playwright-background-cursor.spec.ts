@@ -35,4 +35,5 @@ test('raindrop force mode uses a decodable SVG and default mode keeps the glove'
     });
     await expect(page.getByRole('button', { name: 'Forced child' })).toHaveCSS('cursor', /16 6, default$/);
     await expect(page.getByTestId('cursor-default')).toHaveCSS('cursor', /8 5, auto$/);
+    await expect(page.getByTestId('cursor-default')).toHaveCSS('cursor', /glove[^"]*\.png/);
 });
