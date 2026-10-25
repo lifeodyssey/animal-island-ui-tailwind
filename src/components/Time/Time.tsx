@@ -37,7 +37,7 @@ export const Time = React.forwardRef<HTMLDivElement, TimeProps>(
         const minutes = pad(now.getMinutes());
 
         const resolvedLocale: TimeLocale = locale ?? (type === 'game' ? 'zh-cn' : 'en');
-        const local = resolvedLocale === 'zh-cn' ? dayjs(now).locale(zhCn) : dayjs(now);
+        const local = dayjs(now).locale(resolvedLocale === 'zh-cn' ? zhCn : 'en');
 
         if (type === 'game') {
             const wFmt = weekdayFormat ?? 'dd';

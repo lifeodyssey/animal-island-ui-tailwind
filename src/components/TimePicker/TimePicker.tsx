@@ -22,6 +22,7 @@ export interface TimePickerProps {
     allowClear?: boolean;
     size?: TimePickerSize;
     status?: TimePickerStatus;
+    /** 支持 dayjs 时间 token；方括号中的文字不参与秒列判断。不要使用日期 token。 */
     format?: string;
     hourStep?: number;
     minuteStep?: number;
@@ -36,13 +37,19 @@ export interface TimePickerProps {
 
 const pad2 = (n: number) => `${n}`.padStart(2, '0');
 
+const TIME_PARSE_FORMATS = ['H', 'HH'].flatMap((hour) =>
+    ['m', 'mm'].flatMap((minute) => [
+        `YYYY-MM-DD ${hour}:${minute}`,
+        `YYYY-MM-DD ${hour}:${minute}:s`,
+        `YYYY-MM-DD ${hour}:${minute}:ss`,
+    ])
+);
+
 const parseTime = (value: string | null | undefined): TimePart | null => {
     if (!value) return null;
-    for (const fmt of ['HH:mm:ss', 'HH:mm']) {
-        const d = dayjs(`${TIME_ANCHOR} ${value}`, `YYYY-MM-DD ${fmt}`, true);
-        if (d.isValid()) return { h: d.hour(), m: d.minute(), s: d.second() };
-    }
-    return null;
+    const parsed = dayjs(`${TIME_ANCHOR} ${value}`, TIME_PARSE_FORMATS, true);
+    if (!parsed.isValid()) return null;
+    return { h: parsed.hour(), m: parsed.minute(), s: parsed.second() };
 };
 
 const toDayjs = (part: TimePart) =>
@@ -52,7 +59,7 @@ const toValue = (part: TimePart) => toDayjs(part).format('HH:mm:ss');
 
 const formatTime = (part: TimePart, fmt: string) => toDayjs(part).format(fmt);
 
-const hasSeconds = (format: string) => format.includes('ss');
+const hasSeconds = (format: string) => format.replace(/\[[^\]]*]/g, '').includes('s');
 
 const CLOSE_ANIMATION_MS = 200;
 

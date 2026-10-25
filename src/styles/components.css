@@ -1,8 +1,8 @@
 @layer components {
   /* ============ cursor image & hotspot tokens (shared by force + scoped) ============ */
-  /* default: thick-outlined rounded arrow, 32×32, tip at 8 5; K=1.12 scale */
+  /* Keep the approved 48px glove artwork; hotspot is the raised fingertip. */
   .animal-cursor {
-    --animal-cursor-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 32 32'%3E%3Cpath d='M8.5 7.9L9.7 21.1Q10.0 23.8 11.6 21.6L13.1 19.8Q13.8 18.8 14.4 19.9L17.0 24.7Q17.8 26.1 19.2 25.3L19.6 25.1Q21.0 24.3 20.2 22.9L17.6 18.1Q17.0 17.1 18.2 17.0L20.5 16.7Q23.3 16.5 21.1 14.8L10.6 6.7Q8.2 4.8 8.5 7.9Z' fill='%23fff7e6' stroke='%23794f27' stroke-width='2.75' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E");
+    --animal-cursor-img: url('../components/Cursor/assets/glove.png');
     --animal-cursor-hotspot: 8 5;
     --animal-cursor-fallback: auto;
     /* text selection: warm yellow base, high-contrast dark text (8.97:1 WCAG AAA) */
@@ -1458,14 +1458,21 @@
     z-index: 1;
   }
 
-  .animal-select-has-clear:hover .animal-select-clear {
+  .animal-select-has-clear:hover .animal-select-clear,
+  .animal-select-has-clear:focus-within .animal-select-clear {
     opacity: 1;
     pointer-events: auto;
   }
 
-  .animal-select-has-clear:hover .animal-select-arrow {
+  .animal-select-has-clear:hover .animal-select-arrow,
+  .animal-select-has-clear:focus-within .animal-select-arrow {
     opacity: 0;
     pointer-events: none;
+  }
+
+  .animal-select-clear:focus-visible {
+    outline: 2px solid var(--animal-primary-color);
+    outline-offset: 2px;
   }
 
   .animal-select-clear:hover {
@@ -7000,6 +7007,9 @@
   .animal-calendar-nav-icon {
     display: block;
     flex-shrink: 0;
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
   }
 
   .animal-calendar-month-label {
@@ -7018,6 +7028,8 @@
   .animal-calendar-month-icon {
     display: block;
     flex-shrink: 0;
+    font-size: inherit;
+    line-height: inherit;
     color: var(--animal-calendar-accent);
   }
 
@@ -7190,6 +7202,9 @@
   .animal-calendar-event-title,
   .animal-calendar-event-time {
     display: inline;
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
   }
 
   .animal-calendar-event[data-span='true'] {

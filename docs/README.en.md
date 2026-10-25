@@ -34,6 +34,13 @@ A React component library with Animal Crossing visual styling. Cream-colored bac
 
 The visual design is inspired by [guokaigdg/animal-island-ui](https://github.com/guokaigdg/animal-island-ui). The internals have been completely rewritten using Tailwind CSS v4 and Radix UI, and the library is published independently as `animal-island-ui-tailwind` on npm.
 
+## In development (unreleased)
+
+This branch syncs upstream `945cb5bb..f3581385`: Calendar, searchable and clearable
+Select, gray dotted backgrounds, Time formatting/locales, and date/time and
+interaction fixes. The approved Title, Progress and default glove cursor designs
+remain in place. See [Unreleased changes](../CHANGELOG.md#unreleased).
+
 ## New in 2.1.1
 
 The version aligns with upstream 2.1.1. This release adds Badge, Avatar / AvatarGroup,

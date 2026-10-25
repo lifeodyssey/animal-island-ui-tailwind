@@ -129,7 +129,6 @@ interface EventLayout {
 const layoutEvents = (
     events: CalendarEvent[],
     gridStart: Dayjs,
-    today: Dayjs,
     nonCountingEvent?: CalendarEvent | null
 ): EventLayout => {
     const segments: EventSegment[] = [];
@@ -137,11 +136,10 @@ const layoutEvents = (
     const rows = Array.from({ length: GRID_CELLS }, () => new Array<boolean>(MAX_EVENT_ROWS).fill(false));
 
     const sorted = [...events]
-        .map((event) => ({
-            event,
-            start: parseDate(event.start) ?? today.startOf('day'),
-            end: parseDate(event.end) ?? parseDate(event.start) ?? today.startOf('day'),
-        }))
+        .flatMap((event) => {
+            const start = parseDate(event.start);
+            return start ? [{ event, start, end: parseDate(event.end) ?? start }] : [];
+        })
         .sort((a, b) => a.start.valueOf() - b.start.valueOf());
 
     for (const { event, start, end } of sorted) {
@@ -255,12 +253,13 @@ export const Calendar: React.FC<CalendarProps> = ({
     const focusDate = clampToGrid(focusCursor, gridStart);
     const focusKey = toDateKey(focusDate);
     const monthKey = viewMonth.format('YYYY-MM');
-    const todayKey = today.format('YYYY-MM-DD');
     const gridStartKey = gridStart.format('YYYY-MM-DD');
     const selectedDate = parseDate(selectedValue);
-    const selectedKey = selectedDate ? toDateKey(clampToGrid(selectedDate, gridStart)) : '';
+    const selectedKey = selectedDate ? toDateKey(selectedDate) : '';
     const wrapperRef = useRef<HTMLDivElement>(null);
     const pendingFocusRef = useRef(false);
+    const requestedPanelFocusRef = useRef<Dayjs | null>(null);
+    const gridHasFocusRef = useRef(false);
     const [measuredWidth, setMeasuredWidth] = useState(0);
 
     useEffect(() => {
@@ -285,6 +284,7 @@ export const Calendar: React.FC<CalendarProps> = ({
     };
 
     useEffect(() => {
+        if (gridHasFocusRef.current) return;
         const next = parseDate(selectedValue);
         if (next) setFocusCursor(next);
     }, [selectedValue]);
@@ -300,24 +300,38 @@ export const Calendar: React.FC<CalendarProps> = ({
 
     const goToMonth = useCallback(
         (month: Dayjs, focus?: Dayjs) => {
+            requestedPanelFocusRef.current = null;
+            if (focus) {
+                const waitsForPanel = isPanelControlled && month.format('YYYY-MM') !== monthKey;
+                if (waitsForPanel) requestedPanelFocusRef.current = focus;
+                if (!waitsForPanel || focus.isSame(clampToGrid(focus, dayjs(gridStartKey)), 'day')) {
+                    setFocusCursor(focus);
+                }
+            }
             if (!isPanelControlled) setInnerPanel(month);
             onPanelChange?.(month.format('YYYY-MM'));
-            if (focus) setFocusCursor(focus);
         },
-        [isPanelControlled, onPanelChange]
+        [isPanelControlled, onPanelChange, monthKey, gridStartKey]
     );
 
     useEffect(() => {
-        if (!pendingFocusRef.current) return;
+        const requestedFocus = requestedPanelFocusRef.current;
+        const acceptedFocus = requestedFocus?.format('YYYY-MM') === monthKey ? requestedFocus : null;
+        if (acceptedFocus) {
+            requestedPanelFocusRef.current = null;
+            setFocusCursor(acceptedFocus);
+        }
+        if (!pendingFocusRef.current && !gridHasFocusRef.current) return;
         pendingFocusRef.current = false;
-        const node = wrapperRef.current?.querySelector<HTMLElement>(`[data-date="${focusKey}"]`);
+        const targetKey = acceptedFocus ? toDateKey(acceptedFocus) : focusKey;
+        const node = wrapperRef.current?.querySelector<HTMLElement>(`[data-date="${targetKey}"]`);
         node?.focus();
     }, [focusKey, monthKey]);
 
     const shiftMonth = useCallback(
-        (delta: number) => {
+        (delta: number, cursor = focusDate) => {
             const next = viewMonth.add(delta, 'month').date(1);
-            goToMonth(next, next.date(Math.min(focusDate.date(), next.daysInMonth())));
+            goToMonth(next, next.date(Math.min(cursor.date(), next.daysInMonth())));
         },
         [viewMonth, focusDate, goToMonth]
     );
@@ -333,10 +347,12 @@ export const Calendar: React.FC<CalendarProps> = ({
     const selectDate = useCallback(
         (date: Dayjs) => {
             const next = toDateKey(date);
+            requestedPanelFocusRef.current = null;
             setFocusCursor(date);
             if (!isControlled) setInnerValue(next);
             onChange?.(next);
             if (date.format('YYYY-MM') !== monthKey) {
+                pendingFocusRef.current = document.activeElement?.getAttribute('data-date') === next;
                 const month = date.date(1);
                 if (!isPanelControlled) setInnerPanel(month);
                 onPanelChange?.(month.format('YYYY-MM'));
@@ -362,16 +378,16 @@ export const Calendar: React.FC<CalendarProps> = ({
     );
 
     const layout = useMemo(
-        () => layoutEvents(layoutEventsSource, dayjs(gridStartKey), dayjs(todayKey), previewEvent),
-        [layoutEventsSource, gridStartKey, todayKey, previewEvent]
+        () => layoutEvents(layoutEventsSource, dayjs(gridStartKey), previewEvent),
+        [layoutEventsSource, gridStartKey, previewEvent]
     );
 
     const eventsByCell = useMemo(() => {
         const map = new Map<number, CalendarEvent[]>();
         const viewStart = dayjs(gridStartKey);
-        const fallbackDay = dayjs(todayKey);
         for (const event of events) {
-            const start = parseDate(event.start) ?? fallbackDay;
+            const start = parseDate(event.start);
+            if (!start) continue;
             const declaredEnd = parseDate(event.end);
             const end = !declaredEnd || declaredEnd.isBefore(start, 'day') ? start : declaredEnd;
             if (!isEventVisibleInGrid(start, end, viewStart)) continue;
@@ -384,27 +400,30 @@ export const Calendar: React.FC<CalendarProps> = ({
             }
         }
         return map;
-    }, [events, gridStartKey, todayKey]);
+    }, [events, gridStartKey]);
 
     const overlaySegments = layout.segments;
 
     const overflowCounts = useMemo(() => {
         const drawn = new Array<number>(GRID_CELLS).fill(0);
         for (const segment of layout.segments) {
+            if (segment.event === previewEvent) continue;
             for (let i = 0; i < segment.span; i += 1) {
                 const at = segment.index + i;
                 if (at < GRID_CELLS) drawn[at] += 1;
             }
         }
         return layout.counts.map((count, i) => count - drawn[i]);
-    }, [layout]);
+    }, [layout, previewEvent]);
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
         const { key } = event;
+        const activeCell = (event.target as HTMLElement).closest<HTMLElement>('[role="gridcell"][data-date]');
+        const activeDate = parseDate(activeCell?.dataset.date) ?? focusDate;
         if (key === 'PageUp' || key === 'PageDown') {
             event.preventDefault();
             pendingFocusRef.current = true;
-            shiftMonth(key === 'PageUp' ? -1 : 1);
+            shiftMonth(key === 'PageUp' ? -1 : 1, activeDate);
             return;
         }
         const delta =
@@ -419,19 +438,19 @@ export const Calendar: React.FC<CalendarProps> = ({
                       : 0;
         if (delta !== 0) {
             event.preventDefault();
-            const next = focusDate.add(delta, 'day');
+            const next = activeDate.add(delta, 'day');
             pendingFocusRef.current = true;
-            setFocusCursor(next);
             if (!next.isSame(viewMonth, 'month')) {
-                const month = next.date(1);
-                if (!isPanelControlled) setInnerPanel(month);
-                onPanelChange?.(month.format('YYYY-MM'));
+                goToMonth(next.date(1), next);
+            } else {
+                requestedPanelFocusRef.current = null;
+                setFocusCursor(next);
             }
             return;
         }
         if (key === 'Enter' || key === ' ') {
             event.preventDefault();
-            selectDate(focusDate);
+            selectDate(activeDate);
         }
     };
 
@@ -448,13 +467,19 @@ export const Calendar: React.FC<CalendarProps> = ({
         setDragHead(gridStart.add(index, 'day'));
     };
 
+    const cancelDrag = useCallback(() => {
+        setDragging(false);
+        setDragAnchor(null);
+        setDragHead(null);
+    }, []);
+
+    useEffect(cancelDrag, [monthKey, draggableEvents, cancelDrag]);
+
     const finishDrag = () => {
         if (!dragging) return;
         const anchor = dragAnchor;
         const head = dragHead;
-        setDragging(false);
-        setDragAnchor(null);
-        setDragHead(null);
+        cancelDrag();
         if (!anchor || !head) return;
         const from = anchor.isBefore(head, 'day') ? anchor : head;
         const to = anchor.isBefore(head, 'day') ? head : anchor;
@@ -464,18 +489,13 @@ export const Calendar: React.FC<CalendarProps> = ({
 
     useEffect(() => {
         if (!dragging) return;
-        const stop = () => {
-            setDragging(false);
-            setDragAnchor(null);
-            setDragHead(null);
-        };
-        document.addEventListener('pointerup', stop);
-        document.addEventListener('pointercancel', stop);
+        document.addEventListener('pointerup', cancelDrag);
+        document.addEventListener('pointercancel', cancelDrag);
         return () => {
-            document.removeEventListener('pointerup', stop);
-            document.removeEventListener('pointercancel', stop);
+            document.removeEventListener('pointerup', cancelDrag);
+            document.removeEventListener('pointercancel', cancelDrag);
         };
-    }, [dragging]);
+    }, [dragging, cancelDrag]);
 
     const renderCell = (cell: Dayjs, index: number) => {
         const cellKey = toDateKey(cell);
@@ -508,6 +528,10 @@ export const Calendar: React.FC<CalendarProps> = ({
                     selected && 'animal-calendar-cell-selected',
                     isToday && 'animal-calendar-cell-today',
                 )}
+                onFocus={() => {
+                    gridHasFocusRef.current = true;
+                    setFocusCursor(cell);
+                }}
                 onClick={() => selectDate(cell)}
                 onMouseDown={(event) => {
                     if (event.button === 0) startDragAt(index);
@@ -536,7 +560,7 @@ export const Calendar: React.FC<CalendarProps> = ({
                 onPointerUp?.(event);
             }}
             onPointerCancel={(event) => {
-                finishDrag();
+                cancelDrag();
                 onPointerCancel?.(event);
             }}
             style={{ width, '--animal-calendar-scale': scale, ...style } as React.CSSProperties}
@@ -568,7 +592,18 @@ export const Calendar: React.FC<CalendarProps> = ({
                 </div>
             </div>
             <div className="animal-calendar-body" onKeyDown={handleKeyDown} onMouseLeave={onMouseLeave}>
-                <table role="grid" aria-label={ariaLabel} aria-labelledby={ariaLabelledBy} className="animal-calendar-table">
+                <table
+                    role="grid"
+                    aria-label={ariaLabel}
+                    aria-labelledby={ariaLabelledBy}
+                    className="animal-calendar-table"
+                    onBlurCapture={(event) => {
+                        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+                            gridHasFocusRef.current = false;
+                            pendingFocusRef.current = false;
+                        }
+                    }}
+                >
                     <thead>
                         <tr role="row">
                             {WEEKDAYS.map((weekday) => (

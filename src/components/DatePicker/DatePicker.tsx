@@ -33,7 +33,7 @@ export interface DatePickerProps {
     size?: DatePickerSize;
     /** 校验状态 */
     status?: DatePickerStatus;
-    /** 展示格式，支持 YYYY / MM / DD / M / D 占位符，默认 YYYY-MM-DD */
+    /** 展示格式，支持 dayjs 核心 token（YYYY / MM / DD / M / D / HH / mm / ss / ddd 等），默认 YYYY-MM-DD */
     format?: string;
     /** 禁用日期判断函数，返回 true 的日期不可选 */
     disabledDate?: (date: Date) => boolean;
@@ -81,7 +81,7 @@ const DoubleChevronRight = (
 
 const parseValue = (value: string | null | undefined): Date | null => {
     if (!value) return null;
-    const d = dayjs(value, ['YYYY-MM-DD', 'YYYY-MM'], true);
+    const d = dayjs(value, ['YYYY-MM-DD', 'YYYY-M-D', 'YYYY-M-DD', 'YYYY-MM-D', 'YYYY-MM', 'YYYY-M'], true);
     return d.isValid() ? d.toDate() : null;
 };
 

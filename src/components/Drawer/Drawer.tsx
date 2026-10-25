@@ -60,22 +60,20 @@ export const Drawer: React.FC<DrawerProps> = ({
     const previouslyFocusedRef = useRef<HTMLElement | null>(null);
     const restoreTransitionRafRef = useRef<number | null>(null);
 
-    // Save/restore focus
+    // Defer entry focus until the opening transition starts; restore it on close or unmount.
     useEffect(() => {
-        if (open) {
-            previouslyFocusedRef.current = document.activeElement as HTMLElement | null;
+        if (!open) return;
+        previouslyFocusedRef.current = document.activeElement as HTMLElement | null;
+        const id = window.setTimeout(() => {
             const dialog = dialogRef.current;
-            if (dialog) {
-                const focusables = getFocusable(dialog);
-                if (focusables.length > 0) {
-                    focusables[0].focus();
-                } else {
-                    dialog.focus();
-                }
-            }
-        } else {
+            if (!dialog) return;
+            const focusables = getFocusable(dialog);
+            (focusables[0] ?? dialog).focus();
+        }, 0);
+        return () => {
+            window.clearTimeout(id);
             previouslyFocusedRef.current?.focus();
-        }
+        };
     }, [open]);
 
     // ESC to close + focus trap
