@@ -4,7 +4,27 @@
  *
  * These checks run in a real Chromium browser where computed CSS is available.
  */
-import { expect, test } from '@playwright/test';
+import { expect, test, type Locator } from '@playwright/test';
+
+/**
+ * The footer sets user-select:none, which would be inherited by an <input> or
+ * <textarea> a consumer puts there. Inject both and assert the CSS re-enables
+ * text selection for them (the footer-scoped `input, textarea` rule).
+ */
+async function expectFooterFieldsSelectable(footer: Locator) {
+    await footer.evaluate((el) => {
+        const input = document.createElement('input');
+        input.setAttribute('data-testid', 'footer-input');
+        const textarea = document.createElement('textarea');
+        textarea.setAttribute('data-testid', 'footer-textarea');
+        el.append(input, textarea);
+    });
+    await expect(footer.getByTestId('footer-input')).toHaveCSS('user-select', 'text');
+    await expect(footer.getByTestId('footer-textarea')).toHaveCSS('user-select', 'text');
+    await footer.evaluate((el) => {
+        el.querySelectorAll('[data-testid^="footer-"]').forEach((n) => n.remove());
+    });
+}
 
 const drawerStory =
     '/iframe.html?id=regression-parity-new-components--drawer-parity&viewMode=story';
@@ -38,6 +58,9 @@ test.describe('Drawer chrome user-select', () => {
         // body must remain selectable
         const body = dialog.locator('.animal-drawer-body');
         await expect(body).toHaveCSS('user-select', 'text');
+
+        // form fields placed in the footer must stay selectable despite the footer's none
+        await expectFooterFieldsSelectable(footer);
     });
 });
 
@@ -67,6 +90,9 @@ test.describe('Modal chrome user-select', () => {
         // body must remain selectable
         const body = dialog.locator('.animal-modal-body');
         await expect(body).toHaveCSS('user-select', 'text');
+
+        // form fields placed in the footer must stay selectable despite the footer's none
+        await expectFooterFieldsSelectable(footer);
 
         // close modal
         await dialog.getByRole('button', { name: '取消' }).click();
