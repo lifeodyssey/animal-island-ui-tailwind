@@ -1,5 +1,11 @@
 import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { cn } from '../../utils/cn';
+
+dayjs.extend(customParseFormat);
+
+const TIME_ANCHOR = '2000-01-01';
 
 export type TimePickerSize = 'small' | 'middle' | 'large';
 
@@ -16,6 +22,7 @@ export interface TimePickerProps {
     allowClear?: boolean;
     size?: TimePickerSize;
     status?: TimePickerStatus;
+    /** 支持 dayjs 时间 token；方括号中的文字不参与秒列判断。不要使用日期 token。 */
     format?: string;
     hourStep?: number;
     minuteStep?: number;
@@ -30,20 +37,29 @@ export interface TimePickerProps {
 
 const pad2 = (n: number) => `${n}`.padStart(2, '0');
 
+const TIME_PARSE_FORMATS = ['H', 'HH'].flatMap((hour) =>
+    ['m', 'mm'].flatMap((minute) => [
+        `YYYY-MM-DD ${hour}:${minute}`,
+        `YYYY-MM-DD ${hour}:${minute}:s`,
+        `YYYY-MM-DD ${hour}:${minute}:ss`,
+    ])
+);
+
 const parseTime = (value: string | null | undefined): TimePart | null => {
     if (!value) return null;
-    const match = /^(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?$/.exec(value);
-    if (!match) return null;
-    const part: TimePart = { h: Number(match[1]), m: Number(match[2]), s: Number(match[3] ?? 0) };
-    return part.h > 23 || part.m > 59 || part.s > 59 ? null : part;
+    const parsed = dayjs(`${TIME_ANCHOR} ${value}`, TIME_PARSE_FORMATS, true);
+    if (!parsed.isValid()) return null;
+    return { h: parsed.hour(), m: parsed.minute(), s: parsed.second() };
 };
 
-const toValue = (part: TimePart) => `${pad2(part.h)}:${pad2(part.m)}:${pad2(part.s)}`;
+const toDayjs = (part: TimePart) =>
+    dayjs(TIME_ANCHOR).hour(part.h).minute(part.m).second(part.s);
 
-const formatTime = (part: TimePart, format: string) =>
-    format.replace('HH', pad2(part.h)).replace('mm', pad2(part.m)).replace('ss', pad2(part.s));
+const toValue = (part: TimePart) => toDayjs(part).format('HH:mm:ss');
 
-const hasSeconds = (format: string) => format.includes('ss');
+const formatTime = (part: TimePart, fmt: string) => toDayjs(part).format(fmt);
+
+const hasSeconds = (format: string) => format.replace(/\[[^\]]*]/g, '').includes('s');
 
 const CLOSE_ANIMATION_MS = 200;
 

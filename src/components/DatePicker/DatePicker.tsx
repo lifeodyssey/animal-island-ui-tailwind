@@ -1,5 +1,9 @@
 import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { cn } from '../../utils/cn';
+
+dayjs.extend(customParseFormat);
 
 export type DatePickerSize = 'small' | 'middle' | 'large';
 
@@ -29,7 +33,7 @@ export interface DatePickerProps {
     size?: DatePickerSize;
     /** 校验状态 */
     status?: DatePickerStatus;
-    /** 展示格式，支持 YYYY / MM / DD / M / D 占位符，默认 YYYY-MM-DD */
+    /** 展示格式，支持 dayjs 核心 token（YYYY / MM / DD / M / D / HH / mm / ss / ddd 等），默认 YYYY-MM-DD */
     format?: string;
     /** 禁用日期判断函数，返回 true 的日期不可选 */
     disabledDate?: (date: Date) => boolean;
@@ -75,29 +79,17 @@ const DoubleChevronRight = (
     </svg>
 );
 
-const pad = (n: number) => `${n}`.padStart(2, '0');
-
 const parseValue = (value: string | null | undefined): Date | null => {
     if (!value) return null;
-    const match = /^(\d{4})-(\d{1,2})(?:-(\d{1,2}))?$/.exec(value);
-    if (!match || Number(match[2]) > 12) return null;
-    const date = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3] ?? 1));
-    return Number.isNaN(date.getTime()) ? null : date;
+    const d = dayjs(value, ['YYYY-MM-DD', 'YYYY-M-D', 'YYYY-M-DD', 'YYYY-MM-D', 'YYYY-MM', 'YYYY-M'], true);
+    return d.isValid() ? d.toDate() : null;
 };
 
-const toValue = (date: Date) => `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
-const toMonthValue = (date: Date) => `${date.getFullYear()}-${pad(date.getMonth() + 1)}`;
+const toValue = (date: Date) => dayjs(date).format('YYYY-MM-DD');
+const toMonthValue = (date: Date) => dayjs(date).format('YYYY-MM');
+const formatDate = (date: Date, fmt: string) => dayjs(date).format(fmt);
 
-const formatDate = (date: Date, format: string) =>
-    format
-        .replace('YYYY', `${date.getFullYear()}`)
-        .replace('MM', pad(date.getMonth() + 1))
-        .replace('DD', pad(date.getDate()))
-        .replace('M', `${date.getMonth() + 1}`)
-        .replace('D', `${date.getDate()}`);
-
-const isSameDay = (a: Date, b: Date) =>
-    a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+const isSameDay = (a: Date, b: Date) => dayjs(a).isSame(dayjs(b), 'day');
 
 const isSameMonth = (a: Date, b: Date) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth();
 

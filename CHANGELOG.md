@@ -5,6 +5,27 @@ All notable changes to `animal-island-ui-tailwind` are documented here.
 This project follows a lightweight Keep a Changelog style and uses semantic
 versioning for npm releases.
 
+## 2.3.0 - 2026-10-25
+
+Align the package version with upstream 2.3.0 while retaining this fork's
+approved visual choices and replacement artwork.
+
+- Sync upstream `945cb5bb..f3581385`: add Calendar with event layout,
+  controlled month navigation, keyboard selection and drag-to-create.
+- Add searchable/clearable Select behavior, `Background type="dots-gray"`,
+  shell-command highlighting and configurable Time date/weekday formats.
+- Use dayjs for date/time parsing while preserving unpadded input support;
+  ignore escaped seconds tokens in TimePicker formats and export `TimeLocale`.
+- Correct Calendar selection outside the visible month, canceled drag handling,
+  keyboard focus, invalid event dates and overflow counts during previews;
+  preserve event typography at narrow widths and navigation icon hover colors.
+- Preserve Select search focus, keyboard navigation, boolean/custom filtering,
+  empty-key clearing, clear callbacks and focus-visible controls; restore Drawer
+  focus on unmount.
+- Retain the approved Title, Progress and default glove cursor designs. Match
+  the upstream 1.4px Card/Background dot pattern and reduced-motion behavior.
+- Update Storybook/Vitest dependencies to resolve the reported advisories.
+
 ## 2.1.1 - 2026-10-11
 
 Align the package version with upstream 2.1.1 while retaining this fork's

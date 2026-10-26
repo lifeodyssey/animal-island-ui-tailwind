@@ -10,6 +10,7 @@ unless the user explicitly requests a different appearance.
 | Progress | Pre-sync: animated diagonal stripes and original track, fill, sizes and percentage styling | Do not adopt the upstream mint gradient, dotted track, highlight or completion brightening. Preserve `infoPosition`, scene variants and custom colors. |
 | Modal | Synced: default `game` | Keep the synced appearance; explicit `default` remains available. |
 | Input | Synced: `#fffdf7` surface | Keep the synced appearance. |
+| Cursor | Approved redrawn 48px glove for the default cursor | Preserve the local glove asset rather than replacing it with the newer upstream arrow. The raindrop variant remains available. |
 | Form | Synced: 12px SVG close icon for error feedback | Use the fork's local SVG; pixel identity with upstream's `naive-icons` asset is not asserted. |
 
 The `.upstream-sync` SHA remains the ported baseline. These intentional visual

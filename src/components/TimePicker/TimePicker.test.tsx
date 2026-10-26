@@ -6,7 +6,10 @@ import { ControlledHost } from '@test/components';
 
 const expectPanelClosed = async () => waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
 
-afterEach(() => { cleanup(); });
+afterEach(() => {
+    cleanup();
+    vi.useRealTimers();
+});
 
 describe('TimePicker', () => {
     describe('rendering', () => {
@@ -87,15 +90,13 @@ describe('TimePicker', () => {
         });
 
         it('此刻按钮设置当前时间', async () => {
+            vi.useFakeTimers({ toFake: ['Date'] });
+            vi.setSystemTime(new Date(2026, 7, 15, 9, 8, 7));
             const user = setup();
             render(<TimePicker defaultValue="08:00:00" />);
             await user.click(screen.getByRole('combobox'));
             await user.click(screen.getByRole('button', { name: '此刻' }));
-            const now = new Date();
-            const pad = (n: number) => `${n}`.padStart(2, '0');
-            expect(
-                screen.getByText(`${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`)
-            ).toBeInTheDocument();
+            expect(screen.getByText('09:08:07')).toBeInTheDocument();
         });
     });
 

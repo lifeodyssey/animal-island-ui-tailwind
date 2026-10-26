@@ -9,6 +9,7 @@ import AxeBuilder from '@axe-core/playwright';
 // "*-stable"/"*-parity" stories so axe sees a settled DOM.
 const stories = [
     { name: 'Upstream components', url: '/iframe.html?id=regression-parity-upstream-behavior--stable&viewMode=story' },
+    { name: 'Calendar', url: '/iframe.html?id=components-calendar--stable&viewMode=story' },
     { name: 'Background', url: '/iframe.html?id=regression-parity-new-components--background-stable&viewMode=story' },
     { name: 'Raindrop Cursor', url: '/iframe.html?id=regression-parity-new-components--cursor-raindrop-scoped&viewMode=story' },
     { name: 'Button & Input', url: '/iframe.html?id=regression-parity-button-input--button-input-parity&viewMode=story' },
@@ -50,7 +51,7 @@ test.describe('accessibility', () => {
             const results = await new AxeBuilder({ page })
                 .disableRules([
                     'color-contrast', // Animal Island uses custom palette, contrast checking needs manual review
-                    ...(story.name === 'Upstream components' ? [] : KNOWN_VIOLATION_RULES),
+                    ...(['Upstream components', 'Calendar'].includes(story.name) ? [] : KNOWN_VIOLATION_RULES),
                 ])
                 .analyze();
 
