@@ -1781,6 +1781,8 @@
     justify-content: center;
     background: var(--animal-mask-bg);
     animation: animal-fade-in 0.25s ease;
+    user-select: none;
+    -webkit-user-select: none;
   }
 
   .animal-modal {
@@ -1824,6 +1826,8 @@
     align-items: center;
     justify-content: space-between;
     padding-bottom: 15px;
+    user-select: none;
+    -webkit-user-select: none;
   }
 
   .animal-modal-title {
@@ -1831,6 +1835,8 @@
     color: var(--animal-text-color-body);
     font-size: 28px;
     font-weight: 700;
+    user-select: none;
+    -webkit-user-select: none;
   }
 
   .animal-modal-body {
@@ -1844,6 +1850,8 @@
     font-size: 20px;
     font-weight: 600;
     line-height: 1.6;
+    user-select: text;
+    -webkit-user-select: text;
   }
 
   .animal-modal-footer {
@@ -1851,6 +1859,14 @@
     align-items: center;
     justify-content: flex-end;
     gap: 12px;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .animal-modal-footer input,
+  .animal-modal-footer textarea {
+    user-select: text;
+    -webkit-user-select: text;
   }
 
   .animal-divider {
@@ -4243,6 +4259,8 @@
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.36s ease;
+    user-select: none;
+    -webkit-user-select: none;
   }
 
   .animal-drawer-mask-open {
@@ -4313,12 +4331,16 @@
     justify-content: space-between;
     padding: 24px 24px 15px 24px;
     flex-shrink: 0;
+    user-select: none;
+    -webkit-user-select: none;
   }
 
   .animal-drawer-title {
     font-size: 28px;
     font-weight: 700;
     color: rgba(114, 93, 66, 1);
+    user-select: none;
+    -webkit-user-select: none;
   }
 
   .animal-drawer-close {
@@ -4335,6 +4357,8 @@
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.2s;
+    user-select: none;
+    -webkit-user-select: none;
   }
 
   .animal-drawer-close:hover {
@@ -4342,7 +4366,7 @@
     color: rgba(114, 93, 66, 1);
   }
 
-  /* Body */
+  /* Body: must be explicitly text so it is not inherited from the mask none. */
   .animal-drawer-body {
     flex: 1;
     overflow-y: auto;
@@ -4351,9 +4375,11 @@
     font-weight: 600;
     line-height: 1.6;
     color: #8a7b66;
+    user-select: text;
+    -webkit-user-select: text;
   }
 
-  /* Footer */
+  /* Footer chrome: inputs/textareas inside must keep text selection. */
   .animal-drawer-footer {
     display: flex;
     align-items: center;
@@ -4361,6 +4387,14 @@
     gap: 12px;
     padding: 0 24px 24px 24px;
     flex-shrink: 0;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .animal-drawer-footer input,
+  .animal-drawer-footer textarea {
+    user-select: text;
+    -webkit-user-select: text;
   }
 }
 
