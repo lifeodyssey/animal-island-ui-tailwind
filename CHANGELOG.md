@@ -5,6 +5,14 @@ All notable changes to `animal-island-ui-tailwind` are documented here.
 This project follows a lightweight Keep a Changelog style and uses semantic
 versioning for npm releases.
 
+## Unreleased
+
+- Sync upstream `f3581385..8df30b8f`: Modal and Drawer chrome (mask, header,
+  title, close button, footer) is no longer text-selectable, so double-clicking
+  a title or the close button no longer leaves a stray selection highlight.
+  Body content stays selectable, and `input`/`textarea` placed in a footer keep
+  normal text selection.
+
 ## 2.3.0 - 2026-10-25
 
 Align the package version with upstream 2.3.0 while retaining this fork's
